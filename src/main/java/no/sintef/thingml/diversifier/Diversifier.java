@@ -1,13 +1,13 @@
 package no.sintef.thingml.diversifier;
 
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.thingml.xtext.constraints.ThingMLHelpers;
 import org.thingml.xtext.thingML.*;
 
 import java.util.*;
 
 class Diversifier {
+
+    //TODO: Introduce probabilities of doing changes and randomness so as Diversifying multiple time the same input configuration actually generates multiple diversified results
 
 	private Map<Instance, Thing> diversifiedThings = new HashMap<Instance, Thing>();
 	private int functionCount = 0;
@@ -17,7 +17,7 @@ class Diversifier {
 	 * @param call
 	 */
 	private void inlineFunctionCall(FunctionCallStatement call) {
-
+		//TODO: later... maybe not so useful and tricky to get completely right
 	}
 
 	/**
@@ -25,7 +25,7 @@ class Diversifier {
 	 * @param call
 	 */
 	private void inlineFunctionCall(FunctionCallExpression call) {
-
+		//TODO: later... maybe not so useful and tricky to get completely right
 	}
 
 	/**
@@ -36,16 +36,7 @@ class Diversifier {
 	 * @param block
 	 */
 	private void asFunctionCall(ActionBlock block) {
-		final Thing t = ThingMLHelpers.findContainingThing(block);
-		final Object parent = block.eContainer().eGet(block.eContainingFeature());
-		if (parent instanceof EList) {
-
-		} else {
-
-		}
-		final Function f = ThingMLFactory.eINSTANCE.createFunction();
-		f.setAbstract(false);
-		f.setBody();
+		//TODO: later... maybe not so useful and tricky to get completely right
 	}
 
 	/**
@@ -77,23 +68,53 @@ class Diversifier {
 	 * @param m
 	 */
 	private void splitMessage(Connector c, Message m) {
-		final Thing thingMsgs = (Thing) m.eContainer();
+        final Thing client = diversifiedThings.get(c.getCli());
+        final Thing server = diversifiedThings.get(c.getSrv());
 		for(Parameter p : m.getParameters()) {
+		    //FIXME: avoid code duplication down there
 			final Message pmsg = ThingMLFactory.eINSTANCE.createMessage();
 			pmsg.setName(m.getName() + p.getName());
-			pmsg.getParameters().add(p);
+			pmsg.getParameters().add(EcoreUtil.copy(p));
+            client.getMessages().add(pmsg);
+            if (c.getRequired().getSends().contains(m)) {
+                c.getRequired().getSends().add(pmsg);
+            }
+            if (c.getRequired().getReceives().contains(m)) {
+                c.getRequired().getReceives().add(pmsg);
+            }
+
+			final Message pmsg2 = EcoreUtil.copy(pmsg);
+			server.getMessages().add(pmsg2);
+            if (c.getProvided().getSends().contains(m)) {
+                c.getProvided().getSends().add(pmsg);
+            }
+            if (c.getProvided().getReceives().contains(m)) {
+                c.getProvided().getReceives().add(pmsg);
+            }
 		}
-		thingMsgs.getMessages().remove(m);
-	}
+
+		//NOTE: this probably does not work in case ports have multiple connectors...
+        /*if (c.getRequired().getSends().contains(m)) {
+            c.getRequired().getSends().remove(m);
+        }
+        if (c.getRequired().getReceives().contains(m)) {
+            c.getRequired().getReceives().remove(m);
+        }
+        if (c.getProvided().getSends().contains(m)) {
+            c.getProvided().getSends().remove(m);
+        }
+        if (c.getProvided().getReceives().contains(m)) {
+            c.getProvided().getReceives().remove(m);
+        }*/
+    }
 
 	/**
 	 * Introduces a proxy, i.e. an instance between
 	 * both sides of the connector c that simply receives
-	 * and re-sends message m
+	 * and re-sends all messages normally going through connector
 	 * @param c
-	 * @param m
 	 */
-	private void introduceProxy(Connector c, Message m) {
+	private void introduceProxy(Connector c) {
 		//TODO: Use the ThingML injector to instantiate the Thing proxy from text (a bit too annoying to do it programmatically...)
 	}
 
@@ -102,7 +123,7 @@ class Diversifier {
 	}
 
 	private void diversify(Connector c) {
-
+        
 	}
 
 	public void diversify(Configuration cfg) {
