@@ -1,8 +1,12 @@
 package no.sintef.thingml.diversifier;
 
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.thingml.compilers.ThingMLCompiler;
+import org.thingml.xtext.constraints.ThingMLHelpers;
 import org.thingml.xtext.thingML.*;
 
+import java.io.File;
+import java.nio.file.Files;
 import java.util.*;
 
 class Diversifier {
@@ -119,7 +123,9 @@ class Diversifier {
 	}
 
 	private void diversify(Thing t) {
-
+		for (Message m : ThingMLHelpers.allMessages(t)) {
+			changeOrderOfParameter(m);
+		}
 	}
 
 	private void diversify(Connector c) {
@@ -140,12 +146,14 @@ class Diversifier {
 
 	public void diversify(Configuration cfg) {
 		diversifiedThings.clear();
+		final ThingMLModel model = (ThingMLModel) cfg.eContainer();
 		for(Instance i : cfg.getInstances()) {
 			//We create a new Thing for each instance
 			final Thing t = EcoreUtil.copy(i.getType());
 			t.setName(t.getName() + i.getName());
 			//instance does now instantiate new type
 			i.setType(t);
+			model.getTypes().add(t);
 			diversifiedThings.put(i, t);
 			diversify(t);
 		}
@@ -154,5 +162,24 @@ class Diversifier {
 				diversify((Connector)c);
 		}
 	}
-	
+
+	public static void main(String args[]) {
+		if (args.length < 1) {
+		    System.out.println("Please provide path to a ThingML model containing at least one configuration.");
+            return;
+        }
+		final File model = new File(args[0]);
+		if (Files.notExists(model.toPath()))
+			return;
+
+		final Diversifier diversifier = new Diversifier();
+
+		final ThingMLModel input = ThingMLCompiler.loadModel(model);
+		for(Configuration cfg : input.getConfigs()) {
+			System.out.println("Diversifying configuration " + cfg.getName());
+			diversifier.diversify(cfg);
+		}
+		ThingMLCompiler.flattenModel(input);
+		ThingMLCompiler.saveAsThingML(input, new File(model.getParent(), "/diversified/" + model.getName()).getAbsolutePath());
+	}
 }

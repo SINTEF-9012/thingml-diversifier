@@ -32,31 +32,66 @@
     </properties>
 
     <dependencies>
-
         <dependency>
             <groupId>org.thingml</groupId>
-            <artifactId>thingml</artifactId>
+            <artifactId>compilers.framework</artifactId>
             <version>${thingml.version}</version>
         </dependency>
-
-        <dependency>
-            <groupId>org.thingml</groupId>
-            <artifactId>thingml.ide</artifactId>
-            <version>${thingml.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.eclipse.xtext</groupId>
-            <artifactId>org.eclipse.xtext</artifactId>
-            <version>${xtextVersion}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.eclipse.xtext</groupId>
-            <artifactId>org.eclipse.xtext.xbase</artifactId>
-            <version>${xtextVersion}</version>
-        </dependency>
-
     </dependencies>
+
+    <build>
+        <sourceDirectory>src/main/java</sourceDirectory>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.1</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>java</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <mainClass>no.sintef.thingml.diversifier.Diversifier</mainClass>
+                </configuration>
+            </plugin>
+            <!-- PLUGIN -->
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>no.sintef.thingml.diversifier.Diversifier</mainClass>
+                        </manifest>
+                    </archive>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <!-- this is used for inheritance merges -->
+                        <phase>package</phase>
+                        <!-- bind to the packaging phase -->
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>
