@@ -123,8 +123,20 @@ class Diversifier {
 	}
 
 	private void diversify(Connector c) {
-        
+
 	}
+
+    /**
+     * Splits configuration into a random number of configurations,
+     * each configuration having at least one instance. Replace connectors
+     * by external connectors as needed
+     * NOTE: we should just use one protocol that works everywhere for now e.g. MQTT , but of course
+     * protocols could also be replaced, etc.
+     * @param cfg
+     */
+	private void splitConfiguration(Configuration cfg) {
+
+    }
 
 	public void diversify(Configuration cfg) {
 		diversifiedThings.clear();
