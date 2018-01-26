@@ -3,6 +3,8 @@ package no.sintef.thingml.diversifier;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.thingml.compilers.ThingMLCompiler;
 import org.thingml.xtext.constraints.ThingMLHelpers;
+import org.thingml.xtext.helpers.AnnotatedElementHelper;
+import org.thingml.xtext.helpers.ThingHelper;
 import org.thingml.xtext.thingML.*;
 
 import java.io.File;
@@ -15,6 +17,7 @@ class Diversifier {
 
 	private Map<Instance, Thing> diversifiedThings = new HashMap<Instance, Thing>();
 	private int functionCount = 0;
+	private byte code;
 
 	/**
 	 * Inlines a function call
@@ -51,6 +54,20 @@ class Diversifier {
 
 	}
 
+
+	/**
+	 * Change order of messages
+	 * @param t
+	 */
+	private void changeOrderOfMessages(Thing t) {
+		System.out.println("Shuffling messages of thing " + t.getName());
+		final List<Message> shuffled = new ArrayList<Message>();
+		shuffled.addAll(t.getMessages());
+		Collections.shuffle(shuffled);
+		t.getMessages().clear();
+		t.getMessages().addAll(shuffled);
+	}
+
 	/**
 	 * Change order of parameters
 	 * @param m
@@ -61,6 +78,15 @@ class Diversifier {
 		Collections.shuffle(shuffled);
 		m.getParameters().clear();
 		m.getParameters().addAll(shuffled);
+	}
+
+	private void generateCodeForMessage(Message m) {
+		if (!AnnotatedElementHelper.hasAnnotation(m, "code")) {
+			final PlatformAnnotation a = ThingMLFactory.eINSTANCE.createPlatformAnnotation();
+			a.setName("code");
+			a.setValue(String.format("0x%02X", (code++)));
+			m.getAnnotations().add(a);
+		}
 	}
 
 	/**
@@ -123,8 +149,13 @@ class Diversifier {
 	}
 
 	private void diversify(Thing t) {
+		changeOrderOfMessages(t);
+		for (Thing i : ThingHelper.allIncludedThings(t)) {
+			changeOrderOfMessages(i);
+		}
 		for (Message m : ThingMLHelpers.allMessages(t)) {
 			changeOrderOfParameter(m);
+			generateCodeForMessage(m);
 		}
 	}
 
@@ -145,6 +176,7 @@ class Diversifier {
     }
 
 	public void diversify(Configuration cfg) {
+		code = 0x00;
 		diversifiedThings.clear();
 		final ThingMLModel model = (ThingMLModel) cfg.eContainer();
 		for(Instance i : cfg.getInstances()) {
@@ -153,14 +185,34 @@ class Diversifier {
 			t.setName(t.getName() + i.getName());
 			//instance does now instantiate new type
 			i.setType(t);
+
+			for(AbstractConnector c : cfg.getConnectors()) {
+				if (c instanceof Connector) {
+					if (((Connector) c).getCli() == i) {
+						for (Port port : t.getPorts()) {
+							if (port.getName().equals(((Connector) c).getRequired().getName())) {
+								((Connector) c).setRequired((RequiredPort) port);
+								break;
+							}
+						}
+					} else if (((Connector) c).getSrv() == i) {
+						for (Port port : t.getPorts()) {
+							if (port.getName().equals(((Connector) c).getProvided().getName())) {
+								((Connector) c).setProvided((ProvidedPort) port);
+								break;
+							}
+						}
+					}
+				}
+			}
 			model.getTypes().add(t);
 			diversifiedThings.put(i, t);
 			diversify(t);
 		}
-		for(AbstractConnector c : cfg.getConnectors()) {
+		/*for(AbstractConnector c : cfg.getConnectors()) {
 			if (c instanceof Connector)
 				diversify((Connector)c);
-		}
+		}*/
 	}
 
 	public static void main(String args[]) {
