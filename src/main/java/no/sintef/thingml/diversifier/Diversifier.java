@@ -89,53 +89,68 @@ class Diversifier {
 		}
 	}
 
+	private void createMessage(Thing t, Message m, List<Parameter> params) {
+		final Message msg = ThingMLFactory.eINSTANCE.createMessage();
+		String name = m.getName();
+		for (Parameter p : params) {
+			name = name + p.getName();
+			System.out.println("DEBUG: " + name);
+			msg.getParameters().add(p);
+		}
+		msg.setName(name);
+		t.getMessages().add(msg);
+		for(Thing thing : ThingMLHelpers.allThings(ThingMLHelpers.findContainingModel(t))) {
+			for (Port port : thing.getPorts()) {
+				if (port.getSends().contains(m)) {
+					port.getSends().add(msg);
+				}
+				if (port.getReceives().contains(m)) {
+					port.getReceives().add(msg);
+				}
+			}
+		}
+	}
+
 	/**
-	 * For this connector c, message m will be splitted
+	 * For this thing t, message m will be splitted
 	 * into m.parameters# messages. Both sides (instances
 	 * and their instance-specific types) will be updated
 	 * to properly handle sending/receiving of split message
-	 * @param c
+	 * @param t
 	 * @param m
 	 */
-	private void splitMessage(Connector c, Message m) {
-        final Thing client = diversifiedThings.get(c.getCli());
-        final Thing server = diversifiedThings.get(c.getSrv());
-		for(Parameter p : m.getParameters()) {
-		    //FIXME: avoid code duplication down there
-			final Message pmsg = ThingMLFactory.eINSTANCE.createMessage();
-			pmsg.setName(m.getName() + p.getName());
-			pmsg.getParameters().add(EcoreUtil.copy(p));
-            client.getMessages().add(pmsg);
-            if (c.getRequired().getSends().contains(m)) {
-                c.getRequired().getSends().add(pmsg);
-            }
-            if (c.getRequired().getReceives().contains(m)) {
-                c.getRequired().getReceives().add(pmsg);
-            }
-
-			final Message pmsg2 = EcoreUtil.copy(pmsg);
-			server.getMessages().add(pmsg2);
-            if (c.getProvided().getSends().contains(m)) {
-                c.getProvided().getSends().add(pmsg);
-            }
-            if (c.getProvided().getReceives().contains(m)) {
-                c.getProvided().getReceives().add(pmsg);
-            }
+	private void splitMessage(Thing t, Message m) {
+		if (m.getParameters().size() < 2) return;
+		List<Parameter> firsts = new ArrayList<>();
+		List<Parameter> lasts = new ArrayList<>();
+		int splitAt = (int) Math.round(Math.random()) % m.getParameters().size();
+		int i = 0;
+		for (Parameter p : m.getParameters()) {
+			if (i < splitAt) {
+				firsts.add(EcoreUtil.copy(p));
+			} else {
+				lasts.add(EcoreUtil.copy(p));
+			}
+			i++;
+		}
+		System.out.println("DEBUG: " + firsts.size() + " + " + lasts.size() + " = " + m.getParameters().size());
+		if (firsts.size() > 0 && lasts.size() > 0) {
+			createMessage((Thing) m.eContainer(), m, firsts);
+			createMessage((Thing) m.eContainer(), m, lasts);
+		}
+		for(Thing thing : ThingMLHelpers.allThings(ThingMLHelpers.findContainingModel(t))) {
+			for (Port port : thing.getPorts()) {
+				if (port.getSends().contains(m)) {
+					port.getSends().remove(m);
+				}
+				if (port.getReceives().contains(m)) {
+					port.getReceives().remove(m);
+				}
+			}
 		}
 
-		//NOTE: this probably does not work in case ports have multiple connectors...
-        /*if (c.getRequired().getSends().contains(m)) {
-            c.getRequired().getSends().remove(m);
-        }
-        if (c.getRequired().getReceives().contains(m)) {
-            c.getRequired().getReceives().remove(m);
-        }
-        if (c.getProvided().getSends().contains(m)) {
-            c.getProvided().getSends().remove(m);
-        }
-        if (c.getProvided().getReceives().contains(m)) {
-            c.getProvided().getReceives().remove(m);
-        }*/
+		((Thing) m.eContainer()).getMessages().remove(m);
+		//TODO: update send/receive logic to send/receive multiple messages instead of the original message
     }
 
 	/**
@@ -148,13 +163,34 @@ class Diversifier {
 		//TODO: Use the ThingML injector to instantiate the Thing proxy from text (a bit too annoying to do it programmatically...)
 	}
 
+	private void diversifyMessages(Thing t) {
+		int i = 0;
+		List<Message> msgs = new ArrayList<>();
+		for(Port p : t.getPorts()) {
+			msgs.addAll(p.getReceives());
+			msgs.addAll(p.getSends());
+		}
+		for (Message m : msgs) {
+			//if (i%2 == 0)
+				changeOrderOfParameter(m);
+			//else
+				splitMessage(t, m);
+			//i++;
+		}
+	}
+
 	private void diversify(Thing t) {
 		changeOrderOfMessages(t);
 		for (Thing i : ThingHelper.allIncludedThings(t)) {
 			changeOrderOfMessages(i);
 		}
+
+		diversifyMessages(t);
+		for (Thing inc : ThingHelper.allIncludedThings(t)) {
+			diversifyMessages(inc);
+		}
+
 		for (Message m : ThingMLHelpers.allMessages(t)) {
-			changeOrderOfParameter(m);
 			generateCodeForMessage(m);
 		}
 	}
@@ -186,6 +222,7 @@ class Diversifier {
 			//instance does now instantiate new type
 			i.setType(t);
 
+			//Remapping connectors' ports to the cloned things
 			for(AbstractConnector c : cfg.getConnectors()) {
 				if (c instanceof Connector) {
 					if (((Connector) c).getCli() == i) {
@@ -205,14 +242,18 @@ class Diversifier {
 					}
 				}
 			}
+
 			model.getTypes().add(t);
 			diversifiedThings.put(i, t);
-			diversify(t);
+
 		}
-		/*for(AbstractConnector c : cfg.getConnectors()) {
+		for(AbstractConnector c : cfg.getConnectors()) {
 			if (c instanceof Connector)
 				diversify((Connector)c);
-		}*/
+		}
+		for(Instance i : cfg.getInstances()) {
+			diversify(diversifiedThings.get(i));
+		}
 	}
 
 	public static void main(String args[]) {
