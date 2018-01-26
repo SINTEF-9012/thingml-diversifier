@@ -1,8 +1,11 @@
 package no.sintef.thingml.diversifier;
 
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.thingml.compilers.ThingMLCompiler;
 import org.thingml.xtext.constraints.ThingMLHelpers;
+import org.thingml.xtext.helpers.ActionHelper;
 import org.thingml.xtext.helpers.AnnotatedElementHelper;
 import org.thingml.xtext.helpers.ThingHelper;
 import org.thingml.xtext.thingML.*;
@@ -89,7 +92,7 @@ class Diversifier {
 		}
 	}
 
-	private void createMessage(Thing t, Message m, List<Parameter> params) {
+	private Message createMessage(Thing t, Message m, List<Parameter> params) {
 		final Message msg = ThingMLFactory.eINSTANCE.createMessage();
 		String name = m.getName();
 		for (Parameter p : params) {
@@ -109,6 +112,7 @@ class Diversifier {
 				}
 			}
 		}
+		return msg;
 	}
 
 	/**
@@ -135,21 +139,61 @@ class Diversifier {
 		}
 		System.out.println("DEBUG: " + firsts.size() + " + " + lasts.size() + " = " + m.getParameters().size());
 		if (firsts.size() > 0 && lasts.size() > 0) {
-			createMessage((Thing) m.eContainer(), m, firsts);
-			createMessage((Thing) m.eContainer(), m, lasts);
-		}
-		for(Thing thing : ThingMLHelpers.allThings(ThingMLHelpers.findContainingModel(t))) {
-			for (Port port : thing.getPorts()) {
-				if (port.getSends().contains(m)) {
-					port.getSends().remove(m);
+			final Message first = createMessage((Thing) m.eContainer(), m, firsts);
+			final Message second = createMessage((Thing) m.eContainer(), m, lasts);
+			for (Thing thing : ThingMLHelpers.allThings(ThingMLHelpers.findContainingModel(t))) {
+				//Updating send actions to send two messages instead of one
+				for(SendAction send : ActionHelper.getAllActions(thing, SendAction.class)) {
+					if (send.getMessage().equals(m)) {
+						final ActionBlock block = ThingMLFactory.eINSTANCE.createActionBlock();
+						final SendAction send1 = ThingMLFactory.eINSTANCE.createSendAction();
+						send1.setMessage(first);
+						send1.setPort(send.getPort());
+						for (Expression p : send.getParameters()) {
+							if (send.getParameters().indexOf(p) >= splitAt)
+								break;
+							send1.getParameters().add(EcoreUtil.copy(p));
+						}
+						block.getActions().add(send1);
+						final SendAction send2 = ThingMLFactory.eINSTANCE.createSendAction();
+						send2.setMessage(second);
+						send2.setPort(send.getPort());
+						for (Expression p : send.getParameters()) {
+							if (send.getParameters().indexOf(p) < splitAt)
+								continue;
+							send2.getParameters().add(EcoreUtil.copy(p));
+						}
+						block.getActions().add(send2);
+
+						final Object parent = send.eContainer().eGet(send.eContainingFeature());
+						if (parent instanceof EList) {
+							EList list = (EList) parent;
+							final int index = list.indexOf(send);
+							list.add(index, block);
+							list.remove(send);
+						} else {
+							final EObject o = send.eContainer();
+							o.eSet(send.eContainingFeature(), block);
+						}
+					}
 				}
-				if (port.getReceives().contains(m)) {
-					port.getReceives().remove(m);
+
+
+				for (Port port : thing.getPorts()) {
+					if (port.getSends().contains(m)) {
+						port.getSends().remove(m);
+					}
+					if (port.getReceives().contains(m)) {
+						port.getReceives().remove(m);
+					}
 				}
 			}
+
+			((Thing) m.eContainer()).getMessages().remove(m);
+
 		}
 
-		((Thing) m.eContainer()).getMessages().remove(m);
+
 		//TODO: update send/receive logic to send/receive multiple messages instead of the original message
     }
 
