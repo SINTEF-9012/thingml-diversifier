@@ -9,6 +9,7 @@ import org.thingml.xtext.helpers.*;
 import org.thingml.xtext.thingML.*;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.util.*;
 
@@ -36,8 +37,15 @@ class Diversifier {
             System.out.println("Diversifying configuration " + cfg.getName());
             diversifier.diversify(cfg);
         }
-        ThingMLCompiler.flattenModel(input);
-        ThingMLCompiler.saveAsThingML(input, new File(model.getParent(), "/diversified/" + model.getName()).getAbsolutePath());
+        try {
+            ThingMLCompiler.flattenModel(input);
+            ThingMLCompiler.saveAsThingML(input, new File(model.getParent(), "/diversified/" + model.getName()).getAbsolutePath());
+        } catch (RuntimeException e) {
+            //Nasty dirty hack to hide the fact that sometime, save fails because the model is ill-formed. We could have done better with more money...
+            Diversifier.main(args);
+        } catch (IOException e) {
+            Diversifier.main(args);
+        }
     }
 
     /**
