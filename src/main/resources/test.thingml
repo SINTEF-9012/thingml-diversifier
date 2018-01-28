@@ -2,6 +2,11 @@ datatype Byte<1>
 @type_checker "Byte"
 @java_type "byte";
 
+datatype Integer<2>
+@type_checker "Integer"
+@java_type "short";
+
+
 protocol Default;
 
 thing fragment Msgs {

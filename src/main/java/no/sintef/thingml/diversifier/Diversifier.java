@@ -48,10 +48,10 @@ class Diversifier {
             ThingMLCompiler.saveAsThingML(input, new File(model.getParent(), "/diversified/" + model.getName()).getAbsolutePath());
         } catch (RuntimeException e) {
             //Nasty dirty hack to hide the fact that sometime, save fails because the model is ill-formed. We could have done better with more money...
-            //e.printStackTrace();
+            e.printStackTrace();
             Diversifier.main(args);
         } catch (IOException e) {
-            //e.printStackTrace();
+            e.printStackTrace();
             Diversifier.main(args);
         }
     }
@@ -92,7 +92,14 @@ class Diversifier {
      * @param p
      */
     private void upSizeParameter(Parameter p) {
-
+        final Type actual = TyperHelper.getBroadType(p.getTypeRef().getType());
+        final ThingMLModel model = ThingMLHelpers.findContainingModel(p);
+        for(Type t : ThingMLHelpers.allSimpleTypes(model)) {
+            final Type newtype = TyperHelper.getBroadType(t);
+            if (TyperHelper.isA(actual, newtype)) {
+                p.getTypeRef().setType(t);
+            }
+        }
     }
 
     /**
@@ -120,6 +127,9 @@ class Diversifier {
         Collections.shuffle(shuffled);
         m.getParameters().clear();
         m.getParameters().addAll(shuffled);
+
+        int upsizeAt = (int) Math.round(Math.random()) % m.getParameters().size();
+        upSizeParameter(m.getParameters().get(upsizeAt));
     }
 
     private void generateCodeForMessage(Message m) {
@@ -279,19 +289,22 @@ class Diversifier {
             s2.setName("S2");
             final State s3 = ThingMLFactory.eINSTANCE.createState();
             s3.setName("S3");
+            final State s4 = ThingMLFactory.eINSTANCE.createState();
+            s4.setName("S4");
             region.setName("generate_" + m.getName() + "_from_" + m1.getName() + "_and_" + m2.getName());
             region.setInitial(_init);
             region.getSubstate().add(_init);
             _init.getSubstate().add(s1);
             _init.getSubstate().add(s2);
             _init.getSubstate().add(s3);
+            _init.getSubstate().add(s4);
             _init.setInitial(s1);
 
 
 		    final SendAction send = ThingMLFactory.eINSTANCE.createSendAction();
 		    send.setPort(iport);
 		    send.setMessage(m);
-		    s3.setEntry(send);
+		    s4.setEntry(send);
 		    for(Parameter param : m.getParameters()) {
 		        final PropertyReference ref = ThingMLFactory.eINSTANCE.createPropertyReference();
 		        ref.setProperty(props.get(param.getName()));
@@ -299,14 +312,14 @@ class Diversifier {
             }
 
 
-            final Transition s3tos1 = ThingMLFactory.eINSTANCE.createTransition();
-            s3tos1.setTarget(s1);
-            s3.getOutgoing().add(s3tos1);
+            final Transition s4tos1 = ThingMLFactory.eINSTANCE.createTransition();
+            s4tos1.setTarget(s1);
+            s4.getOutgoing().add(s4tos1);
 
 
 			Port po1 = null;
 			for(Port _p : t.getPorts()) {
-				if (p.getReceives().contains(m)) {
+				if (p.getReceives().contains(m1)) {
 					po1 = _p;
 					break;
 				}
@@ -315,7 +328,7 @@ class Diversifier {
 			    po1 = p;
             Port po2 = null;
             for(Port _p : t.getPorts()) {
-                if (p.getReceives().contains(m)) {
+                if (p.getReceives().contains(m2)) {
                     po2 = _p;
                     break;
                 }
@@ -324,9 +337,9 @@ class Diversifier {
                 po2 = p;
 
             buildTransitions(m1, po1, s1, s2, props);
-            buildTransitions(m2, po2, s1, s2, props);
-            buildTransitions(m1, po1, s2, s3, props);
-            buildTransitions(m2, po2, s2, s3, props);
+            buildTransitions(m2, po2, s1, s3, props);
+            buildTransitions(m1, po1, s3, s4, props);
+            buildTransitions(m2, po2, s2, s4, props);
 
 
             t.getBehaviour().getRegion().add(region);
