@@ -33,17 +33,25 @@ class Diversifier {
         final Diversifier diversifier = new Diversifier();
 
         final ThingMLModel input = ThingMLCompiler.loadModel(model);
-        for (Configuration cfg : input.getConfigs()) {
+        final List<Configuration> configs = new ArrayList<>();
+        configs.addAll(input.getConfigs());
+        for (Configuration cfg : configs) {
             System.out.println("Diversifying configuration " + cfg.getName());
             diversifier.diversify(cfg);
+            if (args.length >= 2) {
+                final int amount = Integer.parseInt(args[1]);
+                diversifier.splitConfiguration(cfg, amount);
+            }
         }
         try {
             ThingMLCompiler.flattenModel(input);
             ThingMLCompiler.saveAsThingML(input, new File(model.getParent(), "/diversified/" + model.getName()).getAbsolutePath());
         } catch (RuntimeException e) {
             //Nasty dirty hack to hide the fact that sometime, save fails because the model is ill-formed. We could have done better with more money...
+            //e.printStackTrace();
             Diversifier.main(args);
         } catch (IOException e) {
+            //e.printStackTrace();
             Diversifier.main(args);
         }
     }
@@ -441,8 +449,63 @@ class Diversifier {
      *
      * @param cfg
      */
-    private void splitConfiguration(Configuration cfg) {
-
+    private void splitConfiguration(Configuration cfg, int amount) {
+        if (cfg.getInstances().size() > amount) {
+            final ThingMLModel model = (ThingMLModel) cfg.eContainer();
+            int offset = model.getConfigs().size();
+            for(int i = 0; i < amount; i++) {
+                final Configuration c = ThingMLFactory.eINSTANCE.createConfiguration();
+                c.setName(cfg.getName() + i);
+                model.getConfigs().add(c);
+            }
+            final List<Instance> shuffled = new ArrayList<Instance>();
+            shuffled.addAll(cfg.getInstances());
+            Collections.shuffle(shuffled);
+            cfg.getInstances().clear();
+            cfg.getInstances().addAll(shuffled);
+            List<Instance> instances = new ArrayList<>();
+            instances.addAll(cfg.getInstances());
+            int id = 0;
+            for(Instance i : instances) {
+                final Configuration c = model.getConfigs().get((id%amount)+offset);
+                System.out.println("[" + i + "] Adding instance " + i.getName() + " to configuration " + c.getName());
+                c.getInstances().add(i);
+                id++;
+            }
+            final List<AbstractConnector> connectors = new ArrayList<>();
+            connectors.addAll(cfg.getConnectors());
+            for(AbstractConnector c :connectors) {
+                if (c instanceof Connector) {
+                    final Connector conn = (Connector) c;
+                    final Instance i1 = conn.getCli();
+                    final Instance i2 = conn.getSrv();
+                    System.out.println("DEBUG c1: " + i1.eContainer() + ", c2: " + i2.eContainer());
+                    if (i1.eContainer() == i2.eContainer()) {
+                        ((Configuration)i1.eContainer()).getConnectors().add(conn);
+                    } else {
+                        final Configuration cfg1 = (Configuration) i1.eContainer();
+                        final ExternalConnector ext1 = ThingMLFactory.eINSTANCE.createExternalConnector();
+                        ext1.setInst(i1);
+                        ext1.setPort(conn.getRequired());
+                        ext1.setProtocol(model.getProtocols().get(0));//FIXME
+                        cfg1.getConnectors().add(ext1);
+                        final Configuration cfg2 = (Configuration) i2.eContainer();
+                        final ExternalConnector ext2 = ThingMLFactory.eINSTANCE.createExternalConnector();
+                        ext2.setInst(i2);
+                        ext2.setPort(conn.getProvided());
+                        ext2.setProtocol(model.getProtocols().get(0));//FIXME
+                        cfg2.getConnectors().add(ext2);
+                    }
+                } else {//External connector
+                    final ExternalConnector ext = (ExternalConnector)c;
+                    final Configuration conf = (Configuration)ext.getInst().eContainer();
+                    conf.getConnectors().add(ext);
+                }
+            }
+            model.getConfigs().remove(cfg);
+        } else {
+            System.err.println("Cannot split configuration with " + cfg.getInstances().size() + " instances in " + amount);
+        }
     }
 
     public void diversify(Configuration cfg) {
