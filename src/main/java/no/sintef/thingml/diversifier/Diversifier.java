@@ -1,11 +1,16 @@
 package no.sintef.thingml.diversifier;
 
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.thingml.compilers.ThingMLCompiler;
 import org.thingml.xtext.constraints.ThingMLHelpers;
-import org.thingml.xtext.helpers.*;
+import org.thingml.xtext.constraints.Types;
+import org.thingml.xtext.helpers.ActionHelper;
+import org.thingml.xtext.helpers.AnnotatedElementHelper;
+import org.thingml.xtext.helpers.StateContainerHelper;
+import org.thingml.xtext.helpers.TyperHelper;
 import org.thingml.xtext.thingML.*;
 
 import java.io.File;
@@ -16,10 +21,17 @@ import java.util.*;
 class Diversifier {
 
     //TODO: Introduce probabilities of doing changes and randomness so as Diversifying multiple time the same input configuration actually generates multiple diversified results
+    //NOTE: Done to some extent
 
-    //private Map<Instance, Thing> diversifiedThings = new HashMap<Instance, Thing>();
     private int functionCount = 0;
     private byte code;
+    private int param = 0;
+    private Random rnd;
+
+    public Diversifier(int seed) {
+        rnd = new Random(seed * System.currentTimeMillis() - seed);
+        code = (byte) rnd.nextInt(255);
+    }
 
     public static void main(String args[]) {
         if (args.length < 1) {
@@ -27,21 +39,26 @@ class Diversifier {
             return;
         }
         final File model = new File(args[0]);
-        if (Files.notExists(model.toPath()))
+        if (Files.notExists(model.toPath())) {
+            System.out.println("Input file does not exist.");
             return;
-
-        final Diversifier diversifier = new Diversifier();
+        }
 
         final ThingMLModel input = ThingMLCompiler.loadModel(model);
+        final Diversifier diversifier = new Diversifier(input.hashCode());
         final List<Configuration> configs = new ArrayList<>();
         configs.addAll(input.getConfigs());
         for (Configuration cfg : configs) {
             System.out.println("Diversifying configuration " + cfg.getName());
-            diversifier.diversify(cfg);
+            int amount = 1;
             if (args.length >= 2) {
-                final int amount = Integer.parseInt(args[1]);
-                diversifier.splitConfiguration(cfg, amount);
+                amount = Integer.parseInt(args[1]);
             }
+            int iterations = 1;
+            if (args.length >= 3) {
+                iterations = Integer.parseInt(args[2]);
+            }
+            diversifier.diversify(cfg, amount, iterations);
         }
         try {
             ThingMLCompiler.flattenModel(input);
@@ -56,45 +73,153 @@ class Diversifier {
         }
     }
 
-    /**
-     * Inlines a function call
-     *
-     * @param call
-     */
-    private void inlineFunctionCall(FunctionCallStatement call) {
-        //TODO: later... maybe not so useful and tricky to get completely right
+    public void diversify(Configuration cfg, int amount, int iterations) {
+        final ThingMLModel model = (ThingMLModel) cfg.eContainer();
+
+        for (int i = 0; i < iterations; i++) {
+            for (Thing t : ThingMLHelpers.allThings(model)) {
+                if (!AnnotatedElementHelper.isDefined(t, "diversify", "not")) {
+                    changeOrderOfMessages(t);
+                }
+            }
+            final TreeIterator<EObject> it = model.eAllContents();
+            while (it.hasNext()) {
+                final EObject o = it.next();
+                if (o instanceof Message) {
+                    final Thing t = ThingMLHelpers.findContainingThing(o);
+                    if (!AnnotatedElementHelper.isDefined(t, "diversify", "not")) {
+                        final Message m = (Message) o;
+                        addRandomParameter(m, model);
+                        upSizeParameter(m);
+                        changeOrderOfParameter(m);
+                    }
+                }
+            }
+        }
+
+        for (int i = 0; i < iterations; i++) {
+            final TreeIterator<EObject> it2 = model.eAllContents();
+            while (it2.hasNext()) {
+                final EObject o = it2.next();
+                if (o instanceof Message) {
+                    final Thing t = ThingMLHelpers.findContainingThing(o);
+                    if (!AnnotatedElementHelper.isDefined(t, "diversify", "not")) {
+                        final Message m = (Message) o;
+                        splitMessage(model, m);
+                    }
+                }
+            }
+        }
+
+        for (int i = 0; i < iterations; i++) {
+            final TreeIterator<EObject> it3 = model.eAllContents();
+            while (it3.hasNext()) {
+                final EObject o = it3.next();
+                if (o instanceof Message) {
+                    final Thing t = ThingMLHelpers.findContainingThing(o);
+                    if (!AnnotatedElementHelper.isDefined(t, "diversify", "not")) {
+                        final Message m = (Message) o;
+                        addRandomParameter(m, model);
+                        changeOrderOfParameter(m);
+                        generateCodeForMessage(m);
+                    }
+                }
+            }
+        }
+
+        addLogs(model);
+        //splitConfiguration(cfg, amount);
     }
 
-    /**
-     * Inlines a function call
-     *
-     * @param call
-     */
-    private void inlineFunctionCall(FunctionCallExpression call) {
-        //TODO: later... maybe not so useful and tricky to get completely right
+    private void addLogs(ThingMLModel model) {
+        //pretty print messages on send
+        for (SendAction send : ActionHelper.getAllActions(model, SendAction.class)) {
+            final Thing t = ThingMLHelpers.findContainingThing(send);
+            final Port ip = createOrGetInternalPort(t);
+            if (!EcoreUtil.equals(ip, send.getPort())) {
+                final PrintAction print = ThingMLFactory.eINSTANCE.createPrintAction();
+                print.setLine(true);
+                final byte code = (byte)Short.parseShort(AnnotatedElementHelper.annotationOrElse(send.getMessage(), "code", "0x00").substring(2), 16);
+                final StringLiteral codeliteral = ThingMLFactory.eINSTANCE.createStringLiteral();
+                final StringLiteral comma = ThingMLFactory.eINSTANCE.createStringLiteral();
+                codeliteral.setStringValue(""+code);
+                comma.setStringValue(", ");
+                print.getMsg().add(codeliteral);
+                print.getMsg().add(EcoreUtil.copy(comma));
+                for (Expression e : send.getParameters()) {
+                    print.getMsg().add(EcoreUtil.copy(e));
+                    print.getMsg().add(EcoreUtil.copy(comma));
+                }
+                final ActionBlock block = ThingMLFactory.eINSTANCE.createActionBlock();
+                block.getActions().add(print);
+                final Object parent = send.eContainer().eGet(send.eContainingFeature());
+                if (parent instanceof EList) {
+                    EList list = (EList) parent;
+                    final int index = list.indexOf(send);
+                    block.getActions().add(send);
+                    list.add(index, block);
+                    list.remove(send);
+                } else {
+                    block.getActions().add(send);
+                    final EObject o = send.eContainer();
+                    o.eSet(send.eContainingFeature(), block);
+                }
+            }
+        }
     }
 
-    /**
-     * Transforms a an action block in a call to a function
-     * implementing this block. Note that the block can be
-     * pre-existing or created on the fly by arbitrarily
-     * grouping successive n-actions in a block
-     *
-     * @param block
-     */
-    private void asFunctionCall(ActionBlock block) {
-        //TODO: later... maybe not so useful and tricky to get completely right
+    private void addRandomParameter(Message m, ThingMLModel model) {
+        System.out.println("Adding random parameter to message " + m.getName());
+        int insertAt = rnd.nextInt(m.getParameters().size());
+        final Parameter randomP = ThingMLFactory.eINSTANCE.createParameter();
+        randomP.setName("r" + (param++));
+        final TypeRef typeref = ThingMLFactory.eINSTANCE.createTypeRef();
+        Type bt = null;
+        for (Type t : model.getTypes()) {
+            if (t instanceof PrimitiveType) {
+                final PrimitiveType pt = (PrimitiveType) t;
+                if (TyperHelper.getBroadType(pt) == Types.BYTE_TYPE) {
+                    bt = pt;
+                    break;
+                }
+            }
+        }
+        typeref.setType(bt);
+        randomP.setTypeRef(typeref);
+        m.getParameters().add(insertAt, randomP);
+
+        //Update send actions
+        for (Thing thing : ThingMLHelpers.allThings(model)) {
+            for (SendAction send : ActionHelper.getAllActions(thing, SendAction.class)) {
+                if (EcoreUtil.equals(send.getMessage(), m)) {
+                    final FunctionCallExpression call = ThingMLFactory.eINSTANCE.createFunctionCallExpression();
+                    Function rnd = null;
+                    for (Function f : ThingMLHelpers.allFunctions(thing)) {
+                        if (f.getName().equals("rnd")) {
+                            rnd = f;
+                            break;
+                        }
+                    }
+                    call.setFunction(rnd);
+                    send.getParameters().add(insertAt, call);
+                }
+            }
+        }
     }
 
     /**
      * Upsize parameter e.g. Byte -> Integer
      *
-     * @param p
+     * @message m
      */
-    private void upSizeParameter(Parameter p) {
+    private void upSizeParameter(Message m) {
+        if (m.getParameters().size() == 0) return;
+        int upsizeAt = rnd.nextInt(m.getParameters().size());
+        final Parameter p = m.getParameters().get(upsizeAt);
+        System.out.println("Upsizing parameter " + p.getName());
         final Type actual = TyperHelper.getBroadType(p.getTypeRef().getType());
         final ThingMLModel model = ThingMLHelpers.findContainingModel(p);
-        for(Type t : ThingMLHelpers.allSimpleTypes(model)) {
+        for (Type t : ThingMLHelpers.allSimpleTypes(model)) {
             final Type newtype = TyperHelper.getBroadType(t);
             if (TyperHelper.isA(actual, newtype)) {
                 p.getTypeRef().setType(t);
@@ -122,23 +247,48 @@ class Diversifier {
      * @param m
      */
     private void changeOrderOfParameter(Message m) {
+        if (m.getParameters().size() == 0) return;
+        System.out.println("Changing parameter order for message " + m.getName());
+        final List<Parameter> original = new ArrayList<>();
+        original.addAll(m.getParameters());
         final List<Parameter> shuffled = new ArrayList<Parameter>();
         shuffled.addAll(m.getParameters());
         Collections.shuffle(shuffled);
         m.getParameters().clear();
         m.getParameters().addAll(shuffled);
 
-        int upsizeAt = (int) Math.round(Math.random()) % m.getParameters().size();
-        upSizeParameter(m.getParameters().get(upsizeAt));
+        //Re-ordering actual parameters in send actions
+        for (Thing thing : ThingMLHelpers.allThings(ThingMLHelpers.findContainingModel(m))) {
+            for (SendAction send : ActionHelper.getAllActions(thing, SendAction.class)) {
+                if (EcoreUtil.equals(send.getMessage(), m)) {
+                    final List<Expression> params = new ArrayList<>();
+                    for (Parameter p : send.getMessage().getParameters()) {
+                        final int index = original.indexOf(p);
+                        params.add(send.getParameters().get(index));
+                    }
+                    send.getParameters().clear();
+                    send.getParameters().addAll(params);
+                }
+            }
+        }
     }
 
     private void generateCodeForMessage(Message m) {
-        if (!AnnotatedElementHelper.hasAnnotation(m, "code")) {
-            final PlatformAnnotation a = ThingMLFactory.eINSTANCE.createPlatformAnnotation();
-            a.setName("code");
-            a.setValue(String.format("0x%02X", (code++)));
+        PlatformAnnotation a = null;
+        for (PlatformAnnotation annot : m.getAnnotations()) {
+            if (annot.getName().equals("code")) {
+                a = annot;
+                break;
+            }
+        }
+        if (a == null) {
+            a = ThingMLFactory.eINSTANCE.createPlatformAnnotation();
             m.getAnnotations().add(a);
         }
+        a.setName("code");
+        a.setValue(String.format("0x%02X", code));
+        if (code < 127) code++;
+        else code = -128;
     }
 
     private Message createMessage(Thing t, Message m, List<Parameter> params) {
@@ -146,21 +296,17 @@ class Diversifier {
         String name = m.getName();
         for (Parameter p : params) {
             name = name + p.getName();
-            System.out.println("DEBUG: " + name);
-            msg.getParameters().add(p);
+            msg.getParameters().add(EcoreUtil.copy(p));
         }
         msg.setName(name);
-        t.getMessages().add(msg);
-        for (Thing thing : ThingMLHelpers.allThings(ThingMLHelpers.findContainingModel(t))) {
-            for (Port port : thing.getPorts()) {
-                if (port.getSends().contains(m)) {
-                    port.getSends().add(msg);
-                }
-                if (port.getReceives().contains(m)) {
-                    port.getReceives().add(msg);
-                }
-            }
+
+        for (Message message : t.getMessages()) {
+            if (message.getName().equals(msg.getName()))
+                return null;
         }
+
+        System.out.println("Creating new message " + msg.getName());
+        t.getMessages().add(msg);
         return msg;
     }
 
@@ -170,100 +316,92 @@ class Diversifier {
      * and their instance-specific types) will be updated
      * to properly handle sending/receiving of split message
      *
-     * @param t
      * @param m
      */
-    private void splitMessage(Thing t, Message m) {
+    private void splitMessage(ThingMLModel model, Message m) {
         if (m.getParameters().size() < 2) return;
-        List<Parameter> firsts = new ArrayList<>();
-        List<Parameter> lasts = new ArrayList<>();
-        int splitAt = (int) Math.round(Math.random()) % m.getParameters().size();
-        int i = 0;
-        for (Parameter p : m.getParameters()) {
-            if (i < splitAt) {
-                firsts.add(EcoreUtil.copy(p));
-            } else {
-                lasts.add(EcoreUtil.copy(p));
-            }
-            i++;
-        }
-        System.out.println("DEBUG: " + firsts.size() + " + " + lasts.size() + " = " + m.getParameters().size());
-        if (firsts.size() > 0 && lasts.size() > 0) {
-            final Message first = createMessage((Thing) m.eContainer(), m, firsts);
-            final Message second = createMessage((Thing) m.eContainer(), m, lasts);
-            for (Thing thing : ThingMLHelpers.allThings(ThingMLHelpers.findContainingModel(t))) {
-                //Updating send actions to send two messages instead of one
-                for (SendAction send : ActionHelper.getAllActions(thing, SendAction.class)) {
-                    if (send.getMessage().equals(m)) {
-                        final ActionBlock block = ThingMLFactory.eINSTANCE.createActionBlock();
-                        final SendAction send1 = ThingMLFactory.eINSTANCE.createSendAction();
-                        send1.setMessage(first);
-                        send1.setPort(send.getPort());
-                        for (Expression p : send.getParameters()) {
-                            if (send.getParameters().indexOf(p) >= splitAt)
-                                break;
-                            send1.getParameters().add(EcoreUtil.copy(p));
-                        }
-                        block.getActions().add(send1);
-                        final SendAction send2 = ThingMLFactory.eINSTANCE.createSendAction();
-                        send2.setMessage(second);
-                        send2.setPort(send.getPort());
-                        for (Expression p : send.getParameters()) {
-                            if (send.getParameters().indexOf(p) < splitAt)
-                                continue;
-                            send2.getParameters().add(EcoreUtil.copy(p));
-                        }
-                        block.getActions().add(send2);
+        int splitAt = rnd.nextInt(m.getParameters().size());
+        if (splitAt == 0 || splitAt == m.getParameters().size()) return;
 
-                        final Object parent = send.eContainer().eGet(send.eContainingFeature());
-                        if (parent instanceof EList) {
-                            EList list = (EList) parent;
-                            final int index = list.indexOf(send);
-                            list.add(index, block);
-                            list.remove(send);
-                        } else {
-                            final EObject o = send.eContainer();
-                            o.eSet(send.eContainingFeature(), block);
-                        }
-                    }
+        System.out.println("Splitting message " + m.getName());
+        final Message first = createMessage((Thing) m.eContainer(), m, m.getParameters().subList(0, splitAt));
+        final Message second = createMessage((Thing) m.eContainer(), m, m.getParameters().subList(splitAt, m.getParameters().size()));
+        if (first == null || second == null) return;
+
+        final Map<Thing, Map<Message, Port>> mappings = new HashMap<>();
+
+        for (Thing thing : ThingMLHelpers.allThings(model)) {
+            final List<Port> ports = new ArrayList<>();
+            ports.addAll(thing.getPorts());
+            for (Port port : ports) {
+                if (port.getSends().contains(m)) {
+                    System.out.println(" adding messages " + first.getName() + " and " + second.getName() + " to sent messages of port " + port.getName() + " of thing " + thing.getName());
+                    port.getSends().add(first);
+                    port.getSends().add(second);
+                    System.out.println(" removing message " + m.getName() + " from sent messages of port " + port.getName() + " of thing " + thing.getName());
+                    port.getSends().remove(m);
                 }
+                if (port.getReceives().contains(m)) {
+                    if (mappings.get(thing) == null) mappings.put(thing, new HashMap<>());
+                    final Map<Message, Port> msgMappings = mappings.get(thing);
+                    msgMappings.put(m, port);
+                    final Port ip = createOrGetInternalPort(thing);
+                    System.out.println(" removing message " + m.getName() + " from received messages of port " + port.getName() + " of thing " + thing.getName());
+                    port.getReceives().remove(m);
+                    System.out.println(" adding message " + first.getName() + " and " + second.getName() + " to received messages of port " + port.getName() + " of thing " + thing.getName());
+                    port.getReceives().add(first);
+                    port.getReceives().add(second);
+                    System.out.println(" adding message " + m.getName() + " to internal port " + ip.getName() + " of thing " + thing.getName());
+                    ip.getReceives().add(m);
+                    ip.getSends().add(m);
+                    updateHandlers(thing, port, m);
+                }
+            }
+        }
 
-                //Move original message into an internal port
-                final List<Port> ports = new ArrayList<>();
-                ports.addAll(thing.getPorts());
-                for (Port port : ports) {
-                    boolean found = false;
-					/*if (port.getSends().contains(m)) {
-						found = true;
-						final Port iport = createOrGetInternalPort(thing, port);
-						port.getSends().remove(m);
-						iport.getSends().add(m);
-						iport.getReceives().add(m);
-					}*/
-                    if (port.getReceives().contains(m)) {
-                        found = true;
-                        final Port iport = createOrGetInternalPort(thing, port);
-                        port.getReceives().remove(m);
-                        iport.getSends().add(m);
-                        iport.getReceives().add(m);
+        for (Thing thing : ThingMLHelpers.allThings(model)) {
+            //Updating send actions to send two messages instead of one
+            for (SendAction send : ActionHelper.getAllActions(thing, SendAction.class)) {
+                if (EcoreUtil.equals(send.getMessage(), m)) {
+                    final ActionBlock block = ThingMLFactory.eINSTANCE.createActionBlock();
+
+                    final SendAction send1 = ThingMLFactory.eINSTANCE.createSendAction();
+                    send1.setMessage(first);
+                    send1.setPort(send.getPort());
+                    for (Expression p : send.getParameters().subList(0, splitAt)) {
+                        send1.getParameters().add(EcoreUtil.copy(p));
                     }
-                    if (found) {
-                        final Port iport = createOrGetInternalPort(thing, port);
-                        createRegion(thing, port, iport, m, first, second);
-                        updateHandlers(thing, port, iport, m);
+                    block.getActions().add(send1);
+
+                    final SendAction send2 = ThingMLFactory.eINSTANCE.createSendAction();
+                    send2.setMessage(second);
+                    send2.setPort(send.getPort());
+                    for (Expression p : send.getParameters().subList(splitAt, m.getParameters().size())) {
+                        send2.getParameters().add(EcoreUtil.copy(p));
+                    }
+                    block.getActions().add(send2);
+
+                    final Object parent = send.eContainer().eGet(send.eContainingFeature());
+                    if (parent instanceof EList) {
+                        EList list = (EList) parent;
+                        final int index = list.indexOf(send);
+                        list.add(index, block);
+                        list.remove(send);
+                    } else {
+                        final EObject o = send.eContainer();
+                        o.eSet(send.eContainingFeature(), block);
                     }
                 }
             }
-
-            //((Thing) m.eContainer()).getMessages().remove(m);
-
         }
-
-
-        //TODO: update send/receive logic to send/receive multiple messages instead of the original message
+        for(Thing thing : mappings.keySet()) {
+            for(Map.Entry<Message, Port> map : mappings.get(thing).entrySet()) {
+                createRegion(thing, map.getValue(), map.getKey(), first, second);
+            }
+        }
     }
 
-    private void createRegion(Thing t, Port p, Port iport, Message m, Message m1, Message m2) {
+    private void createRegion(Thing t, Port port, Message m, Message m1, Message m2) {
         if (t.getBehaviour() != null) {
             for (StateContainer r : StateContainerHelper.allContainedRegions(t.getBehaviour())) {
                 if (r instanceof Region)
@@ -301,14 +439,16 @@ class Diversifier {
             _init.setInitial(s1);
 
 
-		    final SendAction send = ThingMLFactory.eINSTANCE.createSendAction();
-		    send.setPort(iport);
-		    send.setMessage(m);
-		    s4.setEntry(send);
-		    for(Parameter param : m.getParameters()) {
-		        final PropertyReference ref = ThingMLFactory.eINSTANCE.createPropertyReference();
-		        ref.setProperty(props.get(param.getName()));
-		        send.getParameters().add(ref);
+            final ActionBlock block = ThingMLFactory.eINSTANCE.createActionBlock();
+            final SendAction send = ThingMLFactory.eINSTANCE.createSendAction();
+            send.setPort(createOrGetInternalPort(t));
+            send.setMessage(m);
+            block.getActions().add(send);
+            s4.setEntry(block);
+            for (Parameter param : m.getParameters()) {
+                final PropertyReference ref = ThingMLFactory.eINSTANCE.createPropertyReference();
+                ref.setProperty(props.get(param.getName()));
+                send.getParameters().add(ref);
             }
 
 
@@ -316,39 +456,19 @@ class Diversifier {
             s4tos1.setTarget(s1);
             s4.getOutgoing().add(s4tos1);
 
-
-			Port po1 = null;
-			for(Port _p : t.getPorts()) {
-				if (p.getReceives().contains(m1)) {
-					po1 = _p;
-					break;
-				}
-			}
-			if (po1 == null)
-			    po1 = p;
-            Port po2 = null;
-            for(Port _p : t.getPorts()) {
-                if (p.getReceives().contains(m2)) {
-                    po2 = _p;
-                    break;
-                }
-            }
-            if (po2 == null)
-                po2 = p;
-
-            buildTransitions(m1, po1, s1, s2, props);
-            buildTransitions(m2, po2, s1, s3, props);
-            buildTransitions(m1, po1, s3, s4, props);
-            buildTransitions(m2, po2, s2, s4, props);
-
+            buildTransitions(m1, port, s1, s2, props);
+            buildTransitions(m2, port, s1, s3, props);
+            buildTransitions(m1, port, s3, s4, props);
+            buildTransitions(m2, port, s2, s4, props);
 
             t.getBehaviour().getRegion().add(region);
         }
     }
 
     private void buildTransitions(Message m, Port p, State from, State to, Map<String, Property> props) {
+        System.out.println("Building new transition from " + from.getName() + " to " + to.getName() + " on event " + p.getName() + "?" + m.getName());
         final ReceiveMessage rm1 = ThingMLFactory.eINSTANCE.createReceiveMessage();
-        rm1.setName("e");
+        rm1.setName("ev");
         rm1.setPort(p);
         rm1.setMessage(m);
         final Transition t = ThingMLFactory.eINSTANCE.createTransition();
@@ -362,7 +482,7 @@ class Diversifier {
 
     private ActionBlock buildActionForTransition(Message m, Map<String, Property> props, ReceiveMessage rm) {
         final ActionBlock b = ThingMLFactory.eINSTANCE.createActionBlock();
-        for(Parameter p1 : m.getParameters()) {
+        for (Parameter p1 : m.getParameters()) {
             final VariableAssignment va = ThingMLFactory.eINSTANCE.createVariableAssignment();
             va.setProperty(props.get(p1.getName()));
             final EventReference ref = ThingMLFactory.eINSTANCE.createEventReference();
@@ -374,33 +494,33 @@ class Diversifier {
         return b;
     }
 
-    private void updateHandlers(Thing thing, Port port, Port iport, Message m) {
-        //Update handlers so that they listen to the internal port where the original message will be re-built
-        System.out.println("creating internal port in thing " + thing.getName());
-        Map<Message, List<Handler>> mess = StateHelper.allMessageHandlers(thing).get(port);
-        if (mess == null) return;
-        for (List<Handler> handlers : mess.values()) {
-            for (Handler handler : handlers) {
-                ReceiveMessage rm = (ReceiveMessage) handler.getEvent();
-                if (rm.getMessage().equals(m)) {
-                    rm.setPort(iport);
+    private void updateHandlers(Thing thing, Port p, Message m) {
+        TreeIterator<EObject> it = thing.eAllContents();
+        while (it.hasNext()) {
+            final EObject o = it.next();
+            if (o instanceof Handler) {
+                final Handler h = (Handler) o;
+                if (h.getEvent() != null) {
+                    final ReceiveMessage rm = (ReceiveMessage) h.getEvent();
+                    if (EcoreUtil.equals(rm.getMessage(), m) && EcoreUtil.equals(rm.getPort(), p))
+                        rm.setPort(createOrGetInternalPort(ThingMLHelpers.findContainingThing(rm)));
                 }
             }
         }
     }
 
-    private Port createOrGetInternalPort(Thing thing, Port port) {
+    private Port createOrGetInternalPort(Thing thing) {
         Port result = null;
         for (Port p : thing.getPorts()) {
             if (!(p instanceof InternalPort)) continue;
-            if (p.getName().endsWith(port.getName())) {
+            if (p.getName().equals("diversified")) {
                 result = p;
                 break;
             }
         }
         if (result == null) {
             result = ThingMLFactory.eINSTANCE.createInternalPort();
-            result.setName("i_" + port.getName());
+            result.setName("diversified");
             thing.getPorts().add(result);
         }
         return result;
@@ -417,42 +537,6 @@ class Diversifier {
         //TODO: Use the ThingML injector to instantiate the Thing proxy from text (a bit too annoying to do it programmatically...)
     }
 
-    private void diversifyMessages(Thing t) {
-        int i = 0;
-        List<Message> msgs = new ArrayList<>();
-        for (Port p : t.getPorts()) {
-            msgs.addAll(p.getReceives());
-            msgs.addAll(p.getSends());
-        }
-        for (Message m : msgs) {
-            //if (i%2 == 0)
-            changeOrderOfParameter(m);
-            //else
-            splitMessage(t, m);
-            //i++;
-        }
-    }
-
-    private void diversify(Thing t) {
-        changeOrderOfMessages(t);
-        for (Thing i : ThingHelper.allIncludedThings(t)) {
-            changeOrderOfMessages(i);
-        }
-
-        diversifyMessages(t);
-        for (Thing inc : ThingHelper.allIncludedThings(t)) {
-            diversifyMessages(inc);
-        }
-
-        for (Message m : ThingMLHelpers.allMessages(t)) {
-            generateCodeForMessage(m);
-        }
-    }
-
-    private void diversify(Connector c) {
-
-    }
-
     /**
      * Splits configuration into a random number of configurations,
      * each configuration having at least one instance. Replace connectors
@@ -464,9 +548,10 @@ class Diversifier {
      */
     private void splitConfiguration(Configuration cfg, int amount) {
         if (cfg.getInstances().size() > amount) {
+            System.out.println("Splitting configuration " + cfg.getName() + " in " + amount);
             final ThingMLModel model = (ThingMLModel) cfg.eContainer();
             int offset = model.getConfigs().size();
-            for(int i = 0; i < amount; i++) {
+            for (int i = 0; i < amount; i++) {
                 final Configuration c = ThingMLFactory.eINSTANCE.createConfiguration();
                 c.setName(cfg.getName() + i);
                 model.getConfigs().add(c);
@@ -479,22 +564,21 @@ class Diversifier {
             List<Instance> instances = new ArrayList<>();
             instances.addAll(cfg.getInstances());
             int id = 0;
-            for(Instance i : instances) {
-                final Configuration c = model.getConfigs().get((id%amount)+offset);
-                System.out.println("[" + i + "] Adding instance " + i.getName() + " to configuration " + c.getName());
+            for (Instance i : instances) {
+                final Configuration c = model.getConfigs().get((id % amount) + offset);
+                System.out.println("Adding instance " + i.getName() + " to configuration " + c.getName());
                 c.getInstances().add(i);
                 id++;
             }
             final List<AbstractConnector> connectors = new ArrayList<>();
             connectors.addAll(cfg.getConnectors());
-            for(AbstractConnector c :connectors) {
+            for (AbstractConnector c : connectors) {
                 if (c instanceof Connector) {
                     final Connector conn = (Connector) c;
                     final Instance i1 = conn.getCli();
                     final Instance i2 = conn.getSrv();
-                    System.out.println("DEBUG c1: " + i1.eContainer() + ", c2: " + i2.eContainer());
                     if (i1.eContainer() == i2.eContainer()) {
-                        ((Configuration)i1.eContainer()).getConnectors().add(conn);
+                        ((Configuration) i1.eContainer()).getConnectors().add(conn);
                     } else {
                         final Configuration cfg1 = (Configuration) i1.eContainer();
                         final ExternalConnector ext1 = ThingMLFactory.eINSTANCE.createExternalConnector();
@@ -510,8 +594,8 @@ class Diversifier {
                         cfg2.getConnectors().add(ext2);
                     }
                 } else {//External connector
-                    final ExternalConnector ext = (ExternalConnector)c;
-                    final Configuration conf = (Configuration)ext.getInst().eContainer();
+                    final ExternalConnector ext = (ExternalConnector) c;
+                    final Configuration conf = (Configuration) ext.getInst().eContainer();
                     conf.getConnectors().add(ext);
                 }
             }
@@ -519,58 +603,5 @@ class Diversifier {
         } else {
             System.err.println("Cannot split configuration with " + cfg.getInstances().size() + " instances in " + amount);
         }
-    }
-
-    public void diversify(Configuration cfg) {
-        code = 0x00;
-        //diversifiedThings.clear();
-        //List<Thing> toRemove = new ArrayList<>();
-        final ThingMLModel model = (ThingMLModel) cfg.eContainer();
-        for (Instance i : cfg.getInstances()) {
-            //toRemove.add(i.getType());
-            //We create a new Thing for each instance
-            //final Thing t = EcoreUtil.copy(i.getType()); //NOTE: it turns out that for now, instance-specific types are equivalent to the original type... so we do not really need to make those clones...
-            //t.setName(t.getName() + i.getName());
-            //instance does now instantiate new type
-            //i.setType(t);
-
-            //Remapping connectors' ports to the cloned things
-            for (AbstractConnector c : cfg.getConnectors()) {
-                if (c instanceof Connector) {
-                    if (((Connector) c).getCli() == i) {
-                        for (Port port : i.getType().getPorts()) {
-                            if (port.getName().equals(((Connector) c).getRequired().getName())) {
-                                ((Connector) c).setRequired((RequiredPort) port);
-                                break;
-                            }
-                        }
-                    } else if (((Connector) c).getSrv() == i) {
-                        for (Port port : i.getType().getPorts()) {
-                            if (port.getName().equals(((Connector) c).getProvided().getName())) {
-                                ((Connector) c).setProvided((ProvidedPort) port);
-                                break;
-                            }
-                        }
-                    }
-                }
-            }
-
-            //model.getTypes().add(t);
-            //diversifiedThings.put(i, t);
-
-        }
-        //for (Thing t : toRemove) {
-        //	model.getTypes().remove(t);
-        //}
-        for (AbstractConnector c : cfg.getConnectors()) {
-            if (c instanceof Connector)
-                diversify((Connector) c);
-        }
-        for (Thing t : ThingMLHelpers.allThings(model)) {
-            diversify(t);
-        }
-        //for(Instance i : cfg.getInstances()) {
-        //	diversify(diversifiedThings.get(i));
-        //}
     }
 }
