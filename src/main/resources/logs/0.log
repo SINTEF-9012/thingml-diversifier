@@ -1,0 +1,3996 @@
+#CLI: Come get some app!m1(212, 86, 98, 26, 148)!
+-76, 212, 86, 98, 26, 148,
+#CLI: Come get some app!m2(212, 86, 98)!
+-75, 212, 86, 98,
+#APP: Ooh, I needed that app?m1(212, 86, 98, 26, 148)!
+#APP: Ooh, I needed that app?m2(212, 86, 98)!
+#APP: Come get some app!m3(212)!
+-74, 212,
+#CLI: Ooh, I needed that app?m3(212)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(212, 86, 59, 89, 249)!
+-76, 212, 86, 59, 89, 249,
+#CLI: Come get some app!m2(212, 86, 59)!
+-75, 212, 86, 59,
+#APP: Ooh, I needed that app?m1(212, 86, 59, 89, 249)!
+#APP: Ooh, I needed that app?m2(212, 86, 59)!
+#APP: Come get some app!m3(212)!
+-74, 212,
+#CLI: Ooh, I needed that app?m3(212)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(212, 86, 175, 16, 76)!
+-76, 212, 86, 175, 16, 76,
+#CLI: Come get some app!m2(212, 86, 175)!
+-75, 212, 86, 175,
+#APP: Ooh, I needed that app?m1(212, 86, 175, 16, 76)!
+#APP: Ooh, I needed that app?m2(212, 86, 175)!
+#APP: Come get some app!m3(212)!
+-74, 212,
+#CLI: Ooh, I needed that app?m3(212)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(212, 86, 58, 10, 36)!
+-76, 212, 86, 58, 10, 36,
+#CLI: Come get some app!m2(212, 86, 58)!
+-75, 212, 86, 58,
+#APP: Ooh, I needed that app?m1(212, 86, 58, 10, 36)!
+#APP: Ooh, I needed that app?m2(212, 86, 58)!
+#APP: Come get some app!m3(212)!
+-74, 212,
+#CLI: Ooh, I needed that app?m3(212)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(212, 86, 186, 100, 228)!
+-76, 212, 86, 186, 100, 228,
+#CLI: Come get some app!m2(212, 86, 186)!
+-75, 212, 86, 186,
+#APP: Ooh, I needed that app?m1(212, 86, 186, 100, 228)!
+#APP: Ooh, I needed that app?m2(212, 86, 186)!
+#APP: Come get some app!m3(212)!
+-74, 212,
+#CLI: Ooh, I needed that app?m3(212)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(212, 86, 222, 19, 168)!
+-76, 212, 86, 222, 19, 168,
+#CLI: Come get some app!m2(212, 86, 222)!
+-75, 212, 86, 222,
+#APP: Ooh, I needed that app?m1(212, 86, 222, 19, 168)!
+#APP: Ooh, I needed that app?m2(212, 86, 222)!
+#APP: Come get some app!m3(212)!
+-74, 212,
+#CLI: Ooh, I needed that app?m3(212)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(212, 86, 26, 116, 51)!
+-76, 212, 86, 26, 116, 51,
+#CLI: Come get some app!m2(212, 86, 26)!
+-75, 212, 86, 26,
+#APP: Ooh, I needed that app?m1(212, 86, 26, 116, 51)!
+#APP: Ooh, I needed that app?m2(212, 86, 26)!
+#APP: Come get some app!m3(212)!
+-74, 212,
+#CLI: Ooh, I needed that app?m3(212)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(212, 86, 6, 33, 234)!
+-76, 212, 86, 6, 33, 234,
+#CLI: Come get some app!m2(212, 86, 6)!
+-75, 212, 86, 6,
+#APP: Ooh, I needed that app?m1(212, 86, 6, 33, 234)!
+#APP: Ooh, I needed that app?m2(212, 86, 6)!
+#APP: Come get some app!m3(212)!
+-74, 212,
+#CLI: Ooh, I needed that app?m3(212)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(212, 86, 214, 218, 203)!
+-76, 212, 86, 214, 218, 203,
+#CLI: Come get some app!m2(212, 86, 214)!
+-75, 212, 86, 214,
+#APP: Ooh, I needed that app?m1(212, 86, 214, 218, 203)!
+#APP: Ooh, I needed that app?m2(212, 86, 214)!
+#APP: Come get some app!m3(212)!
+-74, 212,
+#CLI: Ooh, I needed that app?m3(212)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(212, 86, 185, 224, 160)!
+-76, 212, 86, 185, 224, 160,
+#CLI: Come get some app!m2(212, 86, 185)!
+-75, 212, 86, 185,
+#APP: Ooh, I needed that app?m1(212, 86, 185, 224, 160)!
+#APP: Ooh, I needed that app?m2(212, 86, 185)!
+#APP: Come get some app!m3(212)!
+-74, 212,
+#CLI: Ooh, I needed that app?m3(212)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(212, 86, 99, 242, 127)!
+-76, 212, 86, 99, 242, 127,
+#CLI: Come get some app!m2(212, 86, 99)!
+-75, 212, 86, 99,
+#APP: Ooh, I needed that app?m1(212, 86, 99, 242, 127)!
+#APP: Ooh, I needed that app?m2(212, 86, 99)!
+#APP: Come get some app!m3(212)!
+-74, 212,
+#CLI: Ooh, I needed that app?m3(212)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(212, 86, 143, 44, 193)!
+-76, 212, 86, 143, 44, 193,
+#CLI: Come get some app!m2(212, 86, 143)!
+-75, 212, 86, 143,
+#APP: Ooh, I needed that app?m1(212, 86, 143, 44, 193)!
+#APP: Ooh, I needed that app?m2(212, 86, 143)!
+#APP: Come get some app!m3(212)!
+-74, 212,
+#CLI: Ooh, I needed that app?m3(212)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(212, 86, 151, 172, 220)!
+-76, 212, 86, 151, 172, 220,
+#CLI: Come get some app!m2(212, 86, 151)!
+-75, 212, 86, 151,
+#APP: Ooh, I needed that app?m1(212, 86, 151, 172, 220)!
+#APP: Ooh, I needed that app?m2(212, 86, 151)!
+#APP: Come get some app!m3(212)!
+-74, 212,
+#CLI: Ooh, I needed that app?m3(212)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(212, 86, 114, 132, 72)!
+-76, 212, 86, 114, 132, 72,
+#CLI: Come get some app!m2(212, 86, 114)!
+-75, 212, 86, 114,
+#APP: Ooh, I needed that app?m1(212, 86, 114, 132, 72)!
+#APP: Ooh, I needed that app?m2(212, 86, 114)!
+#APP: Come get some app!m3(212)!
+-74, 212,
+#CLI: Ooh, I needed that app?m3(212)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(212, 86, 250, 159, 27)!
+-76, 212, 86, 250, 159, 27,
+#CLI: Come get some app!m2(212, 86, 250)!
+-75, 212, 86, 250,
+#APP: Ooh, I needed that app?m1(212, 86, 250, 159, 27)!
+#APP: Ooh, I needed that app?m2(212, 86, 250)!
+#APP: Come get some app!m3(212)!
+-74, 212,
+#CLI: Ooh, I needed that app?m3(212)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(212, 86, 175, 146, 219)!
+-76, 212, 86, 175, 146, 219,
+#CLI: Come get some app!m2(212, 86, 175)!
+-75, 212, 86, 175,
+#APP: Ooh, I needed that app?m1(212, 86, 175, 146, 219)!
+#APP: Ooh, I needed that app?m2(212, 86, 175)!
+#APP: Come get some app!m3(212)!
+-74, 212,
+#CLI: Ooh, I needed that app?m3(212)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(212, 86, 137, 141, 180)!
+-76, 212, 86, 137, 141, 180,
+#CLI: Come get some app!m2(212, 86, 137)!
+-75, 212, 86, 137,
+#APP: Ooh, I needed that app?m1(212, 86, 137, 141, 180)!
+#APP: Ooh, I needed that app?m2(212, 86, 137)!
+#APP: Come get some app!m3(212)!
+-74, 212,
+#CLI: Ooh, I needed that app?m3(212)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(212, 86, 195, 147, 49)!
+-76, 212, 86, 195, 147, 49,
+#CLI: Come get some app!m2(212, 86, 195)!
+-75, 212, 86, 195,
+#APP: Ooh, I needed that app?m1(212, 86, 195, 147, 49)!
+#APP: Ooh, I needed that app?m2(212, 86, 195)!
+#APP: Come get some app!m3(212)!
+-74, 212,
+#CLI: Ooh, I needed that app?m3(212)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(212, 86, 255, 180, 129)!
+-76, 212, 86, 255, 180, 129,
+#CLI: Come get some app!m2(212, 86, 255)!
+-75, 212, 86, 255,
+#APP: Ooh, I needed that app?m1(212, 86, 255, 180, 129)!
+#APP: Ooh, I needed that app?m2(212, 86, 255)!
+#APP: Come get some app!m3(212)!
+-74, 212,
+#CLI: Ooh, I needed that app?m3(212)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(212, 86, 91, 164, 170)!
+-76, 212, 86, 91, 164, 170,
+#CLI: Come get some app!m2(212, 86, 91)!
+-75, 212, 86, 91,
+#APP: Ooh, I needed that app?m1(212, 86, 91, 164, 170)!
+#APP: Ooh, I needed that app?m2(212, 86, 91)!
+#APP: Come get some app!m3(212)!
+-74, 212,
+#CLI: Ooh, I needed that app?m3(212)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(212, 86, 245, 82, 121)!
+-76, 212, 86, 245, 82, 121,
+#CLI: Come get some app!m2(212, 86, 245)!
+-75, 212, 86, 245,
+#APP: Ooh, I needed that app?m1(212, 86, 245, 82, 121)!
+#APP: Ooh, I needed that app?m2(212, 86, 245)!
+#APP: Come get some app!m3(212)!
+-74, 212,
+#CLI: Ooh, I needed that app?m3(212)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(212, 86, 120, 70, 219)!
+-76, 212, 86, 120, 70, 219,
+#CLI: Come get some app!m2(212, 86, 120)!
+-75, 212, 86, 120,
+#APP: Ooh, I needed that app?m1(212, 86, 120, 70, 219)!
+#APP: Ooh, I needed that app?m2(212, 86, 120)!
+#APP: Come get some app!m3(212)!
+-74, 212,
+#CLI: Ooh, I needed that app?m3(212)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(212, 86, 45, 253, 190)!
+-76, 212, 86, 45, 253, 190,
+#CLI: Come get some app!m2(212, 86, 45)!
+-75, 212, 86, 45,
+#APP: Ooh, I needed that app?m1(212, 86, 45, 253, 190)!
+#APP: Ooh, I needed that app?m2(212, 86, 45)!
+#APP: Come get some app!m3(212)!
+-74, 212,
+#CLI: Ooh, I needed that app?m3(212)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(212, 86, 132, 66, 101)!
+-76, 212, 86, 132, 66, 101,
+#CLI: Come get some app!m2(212, 86, 132)!
+-75, 212, 86, 132,
+#APP: Ooh, I needed that app?m1(212, 86, 132, 66, 101)!
+#APP: Ooh, I needed that app?m2(212, 86, 132)!
+#APP: Come get some app!m3(212)!
+-74, 212,
+#CLI: Ooh, I needed that app?m3(212)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(212, 86, 17, 65, 107)!
+-76, 212, 86, 17, 65, 107,
+#CLI: Come get some app!m2(212, 86, 17)!
+-75, 212, 86, 17,
+#APP: Ooh, I needed that app?m1(212, 86, 17, 65, 107)!
+#APP: Ooh, I needed that app?m2(212, 86, 17)!
+#APP: Come get some app!m3(212)!
+-74, 212,
+#CLI: Ooh, I needed that app?m3(212)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(212, 86, 16, 121, 163)!
+-76, 212, 86, 16, 121, 163,
+#CLI: Come get some app!m2(212, 86, 16)!
+-75, 212, 86, 16,
+#APP: Ooh, I needed that app?m1(212, 86, 16, 121, 163)!
+#APP: Ooh, I needed that app?m2(212, 86, 16)!
+#APP: Come get some app!m3(212)!
+-74, 212,
+#CLI: Ooh, I needed that app?m3(212)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(212, 86, 176, 242, 18)!
+-76, 212, 86, 176, 242, 18,
+#CLI: Come get some app!m2(212, 86, 176)!
+-75, 212, 86, 176,
+#APP: Ooh, I needed that app?m1(212, 86, 176, 242, 18)!
+#APP: Ooh, I needed that app?m2(212, 86, 176)!
+#APP: Come get some app!m3(212)!
+-74, 212,
+#CLI: Ooh, I needed that app?m3(212)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(212, 86, 222, 227, 17)!
+-76, 212, 86, 222, 227, 17,
+#CLI: Come get some app!m2(212, 86, 222)!
+-75, 212, 86, 222,
+#APP: Ooh, I needed that app?m1(212, 86, 222, 227, 17)!
+#APP: Ooh, I needed that app?m2(212, 86, 222)!
+#APP: Come get some app!m3(212)!
+-74, 212,
+#CLI: Ooh, I needed that app?m3(212)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(212, 86, 38, 11, 28)!
+-76, 212, 86, 38, 11, 28,
+#CLI: Come get some app!m2(212, 86, 38)!
+-75, 212, 86, 38,
+#APP: Ooh, I needed that app?m1(212, 86, 38, 11, 28)!
+#APP: Ooh, I needed that app?m2(212, 86, 38)!
+#APP: Come get some app!m3(212)!
+-74, 212,
+#CLI: Ooh, I needed that app?m3(212)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(212, 86, 227, 112, 185)!
+-76, 212, 86, 227, 112, 185,
+#CLI: Come get some app!m2(212, 86, 227)!
+-75, 212, 86, 227,
+#APP: Ooh, I needed that app?m1(212, 86, 227, 112, 185)!
+#APP: Ooh, I needed that app?m2(212, 86, 227)!
+#APP: Come get some app!m3(212)!
+-74, 212,
+#CLI: Ooh, I needed that app?m3(212)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(212, 86, 113, 77, 71)!
+-76, 212, 86, 113, 77, 71,
+#CLI: Come get some app!m2(212, 86, 113)!
+-75, 212, 86, 113,
+#APP: Ooh, I needed that app?m1(212, 86, 113, 77, 71)!
+#APP: Ooh, I needed that app?m2(212, 86, 113)!
+#APP: Come get some app!m3(212)!
+-74, 212,
+#CLI: Ooh, I needed that app?m3(212)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(212, 86, 50, 242, 41)!
+-76, 212, 86, 50, 242, 41,
+#CLI: Come get some app!m2(212, 86, 50)!
+-75, 212, 86, 50,
+#APP: Ooh, I needed that app?m1(212, 86, 50, 242, 41)!
+#APP: Ooh, I needed that app?m2(212, 86, 50)!
+#APP: Come get some app!m3(212)!
+-74, 212,
+#CLI: Ooh, I needed that app?m3(212)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(212, 86, 2, 27, 53)!
+-76, 212, 86, 2, 27, 53,
+#CLI: Come get some app!m2(212, 86, 2)!
+-75, 212, 86, 2,
+#APP: Ooh, I needed that app?m1(212, 86, 2, 27, 53)!
+#APP: Ooh, I needed that app?m2(212, 86, 2)!
+#APP: Come get some app!m3(212)!
+-74, 212,
+#CLI: Ooh, I needed that app?m3(212)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(212, 86, 35, 116, 192)!
+-76, 212, 86, 35, 116, 192,
+#CLI: Come get some app!m2(212, 86, 35)!
+-75, 212, 86, 35,
+#APP: Ooh, I needed that app?m1(212, 86, 35, 116, 192)!
+#APP: Ooh, I needed that app?m2(212, 86, 35)!
+#APP: Come get some app!m3(212)!
+-74, 212,
+#CLI: Ooh, I needed that app?m3(212)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(212, 86, 247, 45, 108)!
+-76, 212, 86, 247, 45, 108,
+#CLI: Come get some app!m2(212, 86, 247)!
+-75, 212, 86, 247,
+#APP: Ooh, I needed that app?m1(212, 86, 247, 45, 108)!
+#APP: Ooh, I needed that app?m2(212, 86, 247)!
+#APP: Come get some app!m3(212)!
+-74, 212,
+#CLI: Ooh, I needed that app?m3(212)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(212, 86, 129, 63, 236)!
+-76, 212, 86, 129, 63, 236,
+#CLI: Come get some app!m2(212, 86, 129)!
+-75, 212, 86, 129,
+#APP: Ooh, I needed that app?m1(212, 86, 129, 63, 236)!
+#APP: Ooh, I needed that app?m2(212, 86, 129)!
+#APP: Come get some app!m3(212)!
+-74, 212,
+#CLI: Ooh, I needed that app?m3(212)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(212, 86, 137, 165, 167)!
+-76, 212, 86, 137, 165, 167,
+#CLI: Come get some app!m2(212, 86, 137)!
+-75, 212, 86, 137,
+#APP: Ooh, I needed that app?m1(212, 86, 137, 165, 167)!
+#APP: Ooh, I needed that app?m2(212, 86, 137)!
+#APP: Come get some app!m3(212)!
+-74, 212,
+#CLI: Ooh, I needed that app?m3(212)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(212, 86, 165, 19, 15)!
+-76, 212, 86, 165, 19, 15,
+#CLI: Come get some app!m2(212, 86, 165)!
+-75, 212, 86, 165,
+#APP: Ooh, I needed that app?m1(212, 86, 165, 19, 15)!
+#APP: Ooh, I needed that app?m2(212, 86, 165)!
+#APP: Come get some app!m3(212)!
+-74, 212,
+#CLI: Ooh, I needed that app?m3(212)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(212, 86, 233, 26, 157)!
+-76, 212, 86, 233, 26, 157,
+#CLI: Come get some app!m2(212, 86, 233)!
+-75, 212, 86, 233,
+#APP: Ooh, I needed that app?m1(212, 86, 233, 26, 157)!
+#APP: Ooh, I needed that app?m2(212, 86, 233)!
+#APP: Come get some app!m3(212)!
+-74, 212,
+#CLI: Ooh, I needed that app?m3(212)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(212, 86, 189, 209, 37)!
+-76, 212, 86, 189, 209, 37,
+#CLI: Come get some app!m2(212, 86, 189)!
+-75, 212, 86, 189,
+#APP: Ooh, I needed that app?m1(212, 86, 189, 209, 37)!
+#APP: Ooh, I needed that app?m2(212, 86, 189)!
+#APP: Come get some app!m3(212)!
+-74, 212,
+#CLI: Ooh, I needed that app?m3(212)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(212, 86, 239, 147, 14)!
+-76, 212, 86, 239, 147, 14,
+#CLI: Come get some app!m2(212, 86, 239)!
+-75, 212, 86, 239,
+#APP: Ooh, I needed that app?m1(212, 86, 239, 147, 14)!
+#APP: Ooh, I needed that app?m2(212, 86, 239)!
+#APP: Come get some app!m3(212)!
+-74, 212,
+#CLI: Ooh, I needed that app?m3(212)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(212, 86, 176, 5, 146)!
+-76, 212, 86, 176, 5, 146,
+#CLI: Come get some app!m2(212, 86, 176)!
+-75, 212, 86, 176,
+#APP: Ooh, I needed that app?m1(212, 86, 176, 5, 146)!
+#APP: Ooh, I needed that app?m2(212, 86, 176)!
+#APP: Come get some app!m3(212)!
+-74, 212,
+#CLI: Ooh, I needed that app?m3(212)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(212, 86, 212, 110, 157)!
+-76, 212, 86, 212, 110, 157,
+#CLI: Come get some app!m2(212, 86, 212)!
+-75, 212, 86, 212,
+#APP: Ooh, I needed that app?m1(212, 86, 212, 110, 157)!
+#APP: Ooh, I needed that app?m2(212, 86, 212)!
+#APP: Come get some app!m3(212)!
+-74, 212,
+#CLI: Ooh, I needed that app?m3(212)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(212, 86, 182, 132, 129)!
+-76, 212, 86, 182, 132, 129,
+#CLI: Come get some app!m2(212, 86, 182)!
+-75, 212, 86, 182,
+#APP: Ooh, I needed that app?m1(212, 86, 182, 132, 129)!
+#APP: Ooh, I needed that app?m2(212, 86, 182)!
+#APP: Come get some app!m3(212)!
+-74, 212,
+#CLI: Ooh, I needed that app?m3(212)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(212, 86, 227, 232, 36)!
+-76, 212, 86, 227, 232, 36,
+#CLI: Come get some app!m2(212, 86, 227)!
+-75, 212, 86, 227,
+#APP: Ooh, I needed that app?m1(212, 86, 227, 232, 36)!
+#APP: Ooh, I needed that app?m2(212, 86, 227)!
+#APP: Come get some app!m3(212)!
+-74, 212,
+#CLI: Ooh, I needed that app?m3(212)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(212, 86, 131, 183, 192)!
+-76, 212, 86, 131, 183, 192,
+#CLI: Come get some app!m2(212, 86, 131)!
+-75, 212, 86, 131,
+#APP: Ooh, I needed that app?m1(212, 86, 131, 183, 192)!
+#APP: Ooh, I needed that app?m2(212, 86, 131)!
+#APP: Come get some app!m3(212)!
+-74, 212,
+#CLI: Ooh, I needed that app?m3(212)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(212, 86, 235, 52, 247)!
+-76, 212, 86, 235, 52, 247,
+#CLI: Come get some app!m2(212, 86, 235)!
+-75, 212, 86, 235,
+#APP: Ooh, I needed that app?m1(212, 86, 235, 52, 247)!
+#APP: Ooh, I needed that app?m2(212, 86, 235)!
+#APP: Come get some app!m3(212)!
+-74, 212,
+#CLI: Ooh, I needed that app?m3(212)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(212, 86, 181, 103, 74)!
+-76, 212, 86, 181, 103, 74,
+#CLI: Come get some app!m2(212, 86, 181)!
+-75, 212, 86, 181,
+#APP: Ooh, I needed that app?m1(212, 86, 181, 103, 74)!
+#APP: Ooh, I needed that app?m2(212, 86, 181)!
+#APP: Come get some app!m3(212)!
+-74, 212,
+#CLI: Ooh, I needed that app?m3(212)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(212, 86, 5, 195, 136)!
+-76, 212, 86, 5, 195, 136,
+#CLI: Come get some app!m2(212, 86, 5)!
+-75, 212, 86, 5,
+#APP: Ooh, I needed that app?m1(212, 86, 5, 195, 136)!
+#APP: Ooh, I needed that app?m2(212, 86, 5)!
+#APP: Come get some app!m3(212)!
+-74, 212,
+#CLI: Ooh, I needed that app?m3(212)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(212, 86, 246, 210, 74)!
+-76, 212, 86, 246, 210, 74,
+#CLI: Come get some app!m2(212, 86, 246)!
+-75, 212, 86, 246,
+#APP: Ooh, I needed that app?m1(212, 86, 246, 210, 74)!
+#APP: Ooh, I needed that app?m2(212, 86, 246)!
+#APP: Come get some app!m3(212)!
+-74, 212,
+#CLI: Ooh, I needed that app?m3(212)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(212, 86, 28, 4, 154)!
+-76, 212, 86, 28, 4, 154,
+#CLI: Come get some app!m2(212, 86, 28)!
+-75, 212, 86, 28,
+#APP: Ooh, I needed that app?m1(212, 86, 28, 4, 154)!
+#APP: Ooh, I needed that app?m2(212, 86, 28)!
+#APP: Come get some app!m3(212)!
+-74, 212,
+#CLI: Ooh, I needed that app?m3(212)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(212, 86, 109, 121, 53)!
+-76, 212, 86, 109, 121, 53,
+#CLI: Come get some app!m2(212, 86, 109)!
+-75, 212, 86, 109,
+#APP: Ooh, I needed that app?m1(212, 86, 109, 121, 53)!
+#APP: Ooh, I needed that app?m2(212, 86, 109)!
+#APP: Come get some app!m3(212)!
+-74, 212,
+#CLI: Ooh, I needed that app?m3(212)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(212, 86, 154, 78, 26)!
+-76, 212, 86, 154, 78, 26,
+#CLI: Come get some app!m2(212, 86, 154)!
+-75, 212, 86, 154,
+#APP: Ooh, I needed that app?m1(212, 86, 154, 78, 26)!
+#APP: Ooh, I needed that app?m2(212, 86, 154)!
+#APP: Come get some app!m3(212)!
+-74, 212,
+#CLI: Ooh, I needed that app?m3(212)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(212, 86, 171, 217, 227)!
+-76, 212, 86, 171, 217, 227,
+#CLI: Come get some app!m2(212, 86, 171)!
+-75, 212, 86, 171,
+#APP: Ooh, I needed that app?m1(212, 86, 171, 217, 227)!
+#APP: Ooh, I needed that app?m2(212, 86, 171)!
+#APP: Come get some app!m3(212)!
+-74, 212,
+#CLI: Ooh, I needed that app?m3(212)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(212, 86, 141, 54, 70)!
+-76, 212, 86, 141, 54, 70,
+#CLI: Come get some app!m2(212, 86, 141)!
+-75, 212, 86, 141,
+#APP: Ooh, I needed that app?m1(212, 86, 141, 54, 70)!
+#APP: Ooh, I needed that app?m2(212, 86, 141)!
+#APP: Come get some app!m3(212)!
+-74, 212,
+#CLI: Ooh, I needed that app?m3(212)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(212, 86, 80, 61, 237)!
+-76, 212, 86, 80, 61, 237,
+#CLI: Come get some app!m2(212, 86, 80)!
+-75, 212, 86, 80,
+#APP: Ooh, I needed that app?m1(212, 86, 80, 61, 237)!
+#APP: Ooh, I needed that app?m2(212, 86, 80)!
+#APP: Come get some app!m3(212)!
+-74, 212,
+#CLI: Ooh, I needed that app?m3(212)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(212, 86, 125, 139, 15)!
+-76, 212, 86, 125, 139, 15,
+#CLI: Come get some app!m2(212, 86, 125)!
+-75, 212, 86, 125,
+#APP: Ooh, I needed that app?m1(212, 86, 125, 139, 15)!
+#APP: Ooh, I needed that app?m2(212, 86, 125)!
+#APP: Come get some app!m3(212)!
+-74, 212,
+#CLI: Ooh, I needed that app?m3(212)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(212, 86, 184, 29, 40)!
+-76, 212, 86, 184, 29, 40,
+#CLI: Come get some app!m2(212, 86, 184)!
+-75, 212, 86, 184,
+#APP: Ooh, I needed that app?m1(212, 86, 184, 29, 40)!
+#APP: Ooh, I needed that app?m2(212, 86, 184)!
+#APP: Come get some app!m3(212)!
+-74, 212,
+#CLI: Ooh, I needed that app?m3(212)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(212, 86, 139, 251, 85)!
+-76, 212, 86, 139, 251, 85,
+#CLI: Come get some app!m2(212, 86, 139)!
+-75, 212, 86, 139,
+#APP: Ooh, I needed that app?m1(212, 86, 139, 251, 85)!
+#APP: Ooh, I needed that app?m2(212, 86, 139)!
+#APP: Come get some app!m3(212)!
+-74, 212,
+#CLI: Ooh, I needed that app?m3(212)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(212, 86, 163, 239, 178)!
+-76, 212, 86, 163, 239, 178,
+#CLI: Come get some app!m2(212, 86, 163)!
+-75, 212, 86, 163,
+#APP: Ooh, I needed that app?m1(212, 86, 163, 239, 178)!
+#APP: Ooh, I needed that app?m2(212, 86, 163)!
+#APP: Come get some app!m3(212)!
+-74, 212,
+#CLI: Ooh, I needed that app?m3(212)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(212, 86, 166, 41, 242)!
+-76, 212, 86, 166, 41, 242,
+#CLI: Come get some app!m2(212, 86, 166)!
+-75, 212, 86, 166,
+#APP: Ooh, I needed that app?m1(212, 86, 166, 41, 242)!
+#APP: Ooh, I needed that app?m2(212, 86, 166)!
+#APP: Come get some app!m3(212)!
+-74, 212,
+#CLI: Ooh, I needed that app?m3(212)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(212, 86, 71, 244, 11)!
+-76, 212, 86, 71, 244, 11,
+#CLI: Come get some app!m2(212, 86, 71)!
+-75, 212, 86, 71,
+#APP: Ooh, I needed that app?m1(212, 86, 71, 244, 11)!
+#APP: Ooh, I needed that app?m2(212, 86, 71)!
+#APP: Come get some app!m3(212)!
+-74, 212,
+#CLI: Ooh, I needed that app?m3(212)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(212, 86, 1, 41, 112)!
+-76, 212, 86, 1, 41, 112,
+#CLI: Come get some app!m2(212, 86, 1)!
+-75, 212, 86, 1,
+#APP: Ooh, I needed that app?m1(212, 86, 1, 41, 112)!
+#APP: Ooh, I needed that app?m2(212, 86, 1)!
+#APP: Come get some app!m3(212)!
+-74, 212,
+#CLI: Ooh, I needed that app?m3(212)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(212, 86, 172, 91, 115)!
+-76, 212, 86, 172, 91, 115,
+#CLI: Come get some app!m2(212, 86, 172)!
+-75, 212, 86, 172,
+#APP: Ooh, I needed that app?m1(212, 86, 172, 91, 115)!
+#APP: Ooh, I needed that app?m2(212, 86, 172)!
+#APP: Come get some app!m3(212)!
+-74, 212,
+#CLI: Ooh, I needed that app?m3(212)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(212, 86, 146, 220, 120)!
+-76, 212, 86, 146, 220, 120,
+#CLI: Come get some app!m2(212, 86, 146)!
+-75, 212, 86, 146,
+#APP: Ooh, I needed that app?m1(212, 86, 146, 220, 120)!
+#APP: Ooh, I needed that app?m2(212, 86, 146)!
+#APP: Come get some app!m3(212)!
+-74, 212,
+#CLI: Ooh, I needed that app?m3(212)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(212, 86, 113, 171, 247)!
+-76, 212, 86, 113, 171, 247,
+#CLI: Come get some app!m2(212, 86, 113)!
+-75, 212, 86, 113,
+#APP: Ooh, I needed that app?m1(212, 86, 113, 171, 247)!
+#APP: Ooh, I needed that app?m2(212, 86, 113)!
+#APP: Come get some app!m3(212)!
+-74, 212,
+#CLI: Ooh, I needed that app?m3(212)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(212, 86, 79, 89, 194)!
+-76, 212, 86, 79, 89, 194,
+#CLI: Come get some app!m2(212, 86, 79)!
+-75, 212, 86, 79,
+#APP: Ooh, I needed that app?m1(212, 86, 79, 89, 194)!
+#APP: Ooh, I needed that app?m2(212, 86, 79)!
+#APP: Come get some app!m3(212)!
+-74, 212,
+#CLI: Ooh, I needed that app?m3(212)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(212, 86, 233, 40, 82)!
+-76, 212, 86, 233, 40, 82,
+#CLI: Come get some app!m2(212, 86, 233)!
+-75, 212, 86, 233,
+#APP: Ooh, I needed that app?m1(212, 86, 233, 40, 82)!
+#APP: Ooh, I needed that app?m2(212, 86, 233)!
+#APP: Come get some app!m3(212)!
+-74, 212,
+#CLI: Ooh, I needed that app?m3(212)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(212, 86, 38, 46, 82)!
+-76, 212, 86, 38, 46, 82,
+#CLI: Come get some app!m2(212, 86, 38)!
+-75, 212, 86, 38,
+#APP: Ooh, I needed that app?m1(212, 86, 38, 46, 82)!
+#APP: Ooh, I needed that app?m2(212, 86, 38)!
+#APP: Come get some app!m3(212)!
+-74, 212,
+#CLI: Ooh, I needed that app?m3(212)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(212, 86, 251, 249, 120)!
+-76, 212, 86, 251, 249, 120,
+#CLI: Come get some app!m2(212, 86, 251)!
+-75, 212, 86, 251,
+#APP: Ooh, I needed that app?m1(212, 86, 251, 249, 120)!
+#APP: Ooh, I needed that app?m2(212, 86, 251)!
+#APP: Come get some app!m3(212)!
+-74, 212,
+#CLI: Ooh, I needed that app?m3(212)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(212, 86, 103, 127, 135)!
+-76, 212, 86, 103, 127, 135,
+#CLI: Come get some app!m2(212, 86, 103)!
+-75, 212, 86, 103,
+#APP: Ooh, I needed that app?m1(212, 86, 103, 127, 135)!
+#APP: Ooh, I needed that app?m2(212, 86, 103)!
+#APP: Come get some app!m3(212)!
+-74, 212,
+#CLI: Ooh, I needed that app?m3(212)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(212, 86, 63, 7, 96)!
+-76, 212, 86, 63, 7, 96,
+#CLI: Come get some app!m2(212, 86, 63)!
+-75, 212, 86, 63,
+#APP: Ooh, I needed that app?m1(212, 86, 63, 7, 96)!
+#APP: Ooh, I needed that app?m2(212, 86, 63)!
+#APP: Come get some app!m3(212)!
+-74, 212,
+#CLI: Ooh, I needed that app?m3(212)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(212, 86, 190, 19, 155)!
+-76, 212, 86, 190, 19, 155,
+#CLI: Come get some app!m2(212, 86, 190)!
+-75, 212, 86, 190,
+#APP: Ooh, I needed that app?m1(212, 86, 190, 19, 155)!
+#APP: Ooh, I needed that app?m2(212, 86, 190)!
+#APP: Come get some app!m3(212)!
+-74, 212,
+#CLI: Ooh, I needed that app?m3(212)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(212, 86, 46, 62, 7)!
+-76, 212, 86, 46, 62, 7,
+#CLI: Come get some app!m2(212, 86, 46)!
+-75, 212, 86, 46,
+#APP: Ooh, I needed that app?m1(212, 86, 46, 62, 7)!
+#APP: Ooh, I needed that app?m2(212, 86, 46)!
+#APP: Come get some app!m3(212)!
+-74, 212,
+#CLI: Ooh, I needed that app?m3(212)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(212, 86, 45, 145, 240)!
+-76, 212, 86, 45, 145, 240,
+#CLI: Come get some app!m2(212, 86, 45)!
+-75, 212, 86, 45,
+#APP: Ooh, I needed that app?m1(212, 86, 45, 145, 240)!
+#APP: Ooh, I needed that app?m2(212, 86, 45)!
+#APP: Come get some app!m3(212)!
+-74, 212,
+#CLI: Ooh, I needed that app?m3(212)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(212, 86, 70, 36, 130)!
+-76, 212, 86, 70, 36, 130,
+#CLI: Come get some app!m2(212, 86, 70)!
+-75, 212, 86, 70,
+#APP: Ooh, I needed that app?m1(212, 86, 70, 36, 130)!
+#APP: Ooh, I needed that app?m2(212, 86, 70)!
+#APP: Come get some app!m3(212)!
+-74, 212,
+#CLI: Ooh, I needed that app?m3(212)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(212, 86, 244, 254, 123)!
+-76, 212, 86, 244, 254, 123,
+#CLI: Come get some app!m2(212, 86, 244)!
+-75, 212, 86, 244,
+#APP: Ooh, I needed that app?m1(212, 86, 244, 254, 123)!
+#APP: Ooh, I needed that app?m2(212, 86, 244)!
+#APP: Come get some app!m3(212)!
+-74, 212,
+#CLI: Ooh, I needed that app?m3(212)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(212, 86, 144, 203, 9)!
+-76, 212, 86, 144, 203, 9,
+#CLI: Come get some app!m2(212, 86, 144)!
+-75, 212, 86, 144,
+#APP: Ooh, I needed that app?m1(212, 86, 144, 203, 9)!
+#APP: Ooh, I needed that app?m2(212, 86, 144)!
+#APP: Come get some app!m3(212)!
+-74, 212,
+#CLI: Ooh, I needed that app?m3(212)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(212, 86, 106, 22, 109)!
+-76, 212, 86, 106, 22, 109,
+#CLI: Come get some app!m2(212, 86, 106)!
+-75, 212, 86, 106,
+#APP: Ooh, I needed that app?m1(212, 86, 106, 22, 109)!
+#APP: Ooh, I needed that app?m2(212, 86, 106)!
+#APP: Come get some app!m3(212)!
+-74, 212,
+#CLI: Ooh, I needed that app?m3(212)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(212, 86, 146, 213, 68)!
+-76, 212, 86, 146, 213, 68,
+#CLI: Come get some app!m2(212, 86, 146)!
+-75, 212, 86, 146,
+#APP: Ooh, I needed that app?m1(212, 86, 146, 213, 68)!
+#APP: Ooh, I needed that app?m2(212, 86, 146)!
+#APP: Come get some app!m3(212)!
+-74, 212,
+#CLI: Ooh, I needed that app?m3(212)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(212, 86, 8, 193, 215)!
+-76, 212, 86, 8, 193, 215,
+#CLI: Come get some app!m2(212, 86, 8)!
+-75, 212, 86, 8,
+#APP: Ooh, I needed that app?m1(212, 86, 8, 193, 215)!
+#APP: Ooh, I needed that app?m2(212, 86, 8)!
+#APP: Come get some app!m3(212)!
+-74, 212,
+#CLI: Ooh, I needed that app?m3(212)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(212, 86, 40, 41, 53)!
+-76, 212, 86, 40, 41, 53,
+#CLI: Come get some app!m2(212, 86, 40)!
+-75, 212, 86, 40,
+#APP: Ooh, I needed that app?m1(212, 86, 40, 41, 53)!
+#APP: Ooh, I needed that app?m2(212, 86, 40)!
+#APP: Come get some app!m3(212)!
+-74, 212,
+#CLI: Ooh, I needed that app?m3(212)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(212, 86, 140, 255, 44)!
+-76, 212, 86, 140, 255, 44,
+#CLI: Come get some app!m2(212, 86, 140)!
+-75, 212, 86, 140,
+#APP: Ooh, I needed that app?m1(212, 86, 140, 255, 44)!
+#APP: Ooh, I needed that app?m2(212, 86, 140)!
+#APP: Come get some app!m3(212)!
+-74, 212,
+#CLI: Ooh, I needed that app?m3(212)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(212, 86, 66, 67, 14)!
+-76, 212, 86, 66, 67, 14,
+#CLI: Come get some app!m2(212, 86, 66)!
+-75, 212, 86, 66,
+#APP: Ooh, I needed that app?m1(212, 86, 66, 67, 14)!
+#APP: Ooh, I needed that app?m2(212, 86, 66)!
+#APP: Come get some app!m3(212)!
+-74, 212,
+#CLI: Ooh, I needed that app?m3(212)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(212, 86, 57, 20, 229)!
+-76, 212, 86, 57, 20, 229,
+#CLI: Come get some app!m2(212, 86, 57)!
+-75, 212, 86, 57,
+#APP: Ooh, I needed that app?m1(212, 86, 57, 20, 229)!
+#APP: Ooh, I needed that app?m2(212, 86, 57)!
+#APP: Come get some app!m3(212)!
+-74, 212,
+#CLI: Ooh, I needed that app?m3(212)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(212, 86, 112, 40, 183)!
+-76, 212, 86, 112, 40, 183,
+#CLI: Come get some app!m2(212, 86, 112)!
+-75, 212, 86, 112,
+#APP: Ooh, I needed that app?m1(212, 86, 112, 40, 183)!
+#APP: Ooh, I needed that app?m2(212, 86, 112)!
+#APP: Come get some app!m3(212)!
+-74, 212,
+#CLI: Ooh, I needed that app?m3(212)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(212, 86, 128, 15, 168)!
+-76, 212, 86, 128, 15, 168,
+#CLI: Come get some app!m2(212, 86, 128)!
+-75, 212, 86, 128,
+#APP: Ooh, I needed that app?m1(212, 86, 128, 15, 168)!
+#APP: Ooh, I needed that app?m2(212, 86, 128)!
+#APP: Come get some app!m3(212)!
+-74, 212,
+#CLI: Ooh, I needed that app?m3(212)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(212, 86, 172, 75, 241)!
+-76, 212, 86, 172, 75, 241,
+#CLI: Come get some app!m2(212, 86, 172)!
+-75, 212, 86, 172,
+#APP: Ooh, I needed that app?m1(212, 86, 172, 75, 241)!
+#APP: Ooh, I needed that app?m2(212, 86, 172)!
+#APP: Come get some app!m3(212)!
+-74, 212,
+#CLI: Ooh, I needed that app?m3(212)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(212, 86, 190, 191, 136)!
+-76, 212, 86, 190, 191, 136,
+#CLI: Come get some app!m2(212, 86, 190)!
+-75, 212, 86, 190,
+#APP: Ooh, I needed that app?m1(212, 86, 190, 191, 136)!
+#APP: Ooh, I needed that app?m2(212, 86, 190)!
+#APP: Come get some app!m3(212)!
+-74, 212,
+#CLI: Ooh, I needed that app?m3(212)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(212, 86, 55, 79, 237)!
+-76, 212, 86, 55, 79, 237,
+#CLI: Come get some app!m2(212, 86, 55)!
+-75, 212, 86, 55,
+#APP: Ooh, I needed that app?m1(212, 86, 55, 79, 237)!
+#APP: Ooh, I needed that app?m2(212, 86, 55)!
+#APP: Come get some app!m3(212)!
+-74, 212,
+#CLI: Ooh, I needed that app?m3(212)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(212, 86, 25, 35, 44)!
+-76, 212, 86, 25, 35, 44,
+#CLI: Come get some app!m2(212, 86, 25)!
+-75, 212, 86, 25,
+#APP: Ooh, I needed that app?m1(212, 86, 25, 35, 44)!
+#APP: Ooh, I needed that app?m2(212, 86, 25)!
+#APP: Come get some app!m3(212)!
+-74, 212,
+#CLI: Ooh, I needed that app?m3(212)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(212, 86, 114, 121, 51)!
+-76, 212, 86, 114, 121, 51,
+#CLI: Come get some app!m2(212, 86, 114)!
+-75, 212, 86, 114,
+#APP: Ooh, I needed that app?m1(212, 86, 114, 121, 51)!
+#APP: Ooh, I needed that app?m2(212, 86, 114)!
+#APP: Come get some app!m3(212)!
+-74, 212,
+#CLI: Ooh, I needed that app?m3(212)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(212, 86, 177, 66, 124)!
+-76, 212, 86, 177, 66, 124,
+#CLI: Come get some app!m2(212, 86, 177)!
+-75, 212, 86, 177,
+#APP: Ooh, I needed that app?m1(212, 86, 177, 66, 124)!
+#APP: Ooh, I needed that app?m2(212, 86, 177)!
+#APP: Come get some app!m3(212)!
+-74, 212,
+#CLI: Ooh, I needed that app?m3(212)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(212, 86, 202, 121, 187)!
+-76, 212, 86, 202, 121, 187,
+#CLI: Come get some app!m2(212, 86, 202)!
+-75, 212, 86, 202,
+#APP: Ooh, I needed that app?m1(212, 86, 202, 121, 187)!
+#APP: Ooh, I needed that app?m2(212, 86, 202)!
+#APP: Come get some app!m3(212)!
+-74, 212,
+#CLI: Ooh, I needed that app?m3(212)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(212, 86, 126, 234, 12)!
+-76, 212, 86, 126, 234, 12,
+#CLI: Come get some app!m2(212, 86, 126)!
+-75, 212, 86, 126,
+#APP: Ooh, I needed that app?m1(212, 86, 126, 234, 12)!
+#APP: Ooh, I needed that app?m2(212, 86, 126)!
+#APP: Come get some app!m3(212)!
+-74, 212,
+#CLI: Ooh, I needed that app?m3(212)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(212, 86, 132, 32, 194)!
+-76, 212, 86, 132, 32, 194,
+#CLI: Come get some app!m2(212, 86, 132)!
+-75, 212, 86, 132,
+#APP: Ooh, I needed that app?m1(212, 86, 132, 32, 194)!
+#APP: Ooh, I needed that app?m2(212, 86, 132)!
+#APP: Come get some app!m3(212)!
+-74, 212,
+#CLI: Ooh, I needed that app?m3(212)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(212, 86, 45, 89, 128)!
+-76, 212, 86, 45, 89, 128,
+#CLI: Come get some app!m2(212, 86, 45)!
+-75, 212, 86, 45,
+#APP: Ooh, I needed that app?m1(212, 86, 45, 89, 128)!
+#APP: Ooh, I needed that app?m2(212, 86, 45)!
+#APP: Come get some app!m3(212)!
+-74, 212,
+#CLI: Ooh, I needed that app?m3(212)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(212, 86, 215, 245, 35)!
+-76, 212, 86, 215, 245, 35,
+#CLI: Come get some app!m2(212, 86, 215)!
+-75, 212, 86, 215,
+#APP: Ooh, I needed that app?m1(212, 86, 215, 245, 35)!
+#APP: Ooh, I needed that app?m2(212, 86, 215)!
+#APP: Come get some app!m3(212)!
+-74, 212,
+#CLI: Ooh, I needed that app?m3(212)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(212, 86, 205, 243, 237)!
+-76, 212, 86, 205, 243, 237,
+#CLI: Come get some app!m2(212, 86, 205)!
+-75, 212, 86, 205,
+#APP: Ooh, I needed that app?m1(212, 86, 205, 243, 237)!
+#APP: Ooh, I needed that app?m2(212, 86, 205)!
+#APP: Come get some app!m3(212)!
+-74, 212,
+#CLI: Ooh, I needed that app?m3(212)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(212, 86, 79, 117, 26)!
+-76, 212, 86, 79, 117, 26,
+#CLI: Come get some app!m2(212, 86, 79)!
+-75, 212, 86, 79,
+#CLI: What are you waitin for? Christmas?
+#APP: Ooh, I needed that app?m1(212, 86, 79, 117, 26)!
+#APP: Ooh, I needed that app?m2(212, 86, 79)!
+#APP: Come get some app!m3(212)!
+-74, 212,
+#CLI: Come get some app!m1(106, 63, 161, 180, 163)!
+-76, 106, 63, 161, 180, 163,
+#CLI: Come get some app!m2(106, 63, 161)!
+-75, 106, 63, 161,
+#APP: Ooh, I needed that app?m1(106, 63, 161, 180, 163)!
+#APP: Ooh, I needed that app?m2(106, 63, 161)!
+#APP: Come get some app!m3(106)!
+-74, 106,
+#CLI: Ooh, I needed that app?m3(106)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(106, 63, 120, 145, 125)!
+-76, 106, 63, 120, 145, 125,
+#CLI: Come get some app!m2(106, 63, 120)!
+-75, 106, 63, 120,
+#APP: Ooh, I needed that app?m1(106, 63, 120, 145, 125)!
+#APP: Ooh, I needed that app?m2(106, 63, 120)!
+#APP: Come get some app!m3(106)!
+-74, 106,
+#CLI: Ooh, I needed that app?m3(106)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(106, 63, 200, 189, 61)!
+-76, 106, 63, 200, 189, 61,
+#CLI: Come get some app!m2(106, 63, 200)!
+-75, 106, 63, 200,
+#APP: Ooh, I needed that app?m1(106, 63, 200, 189, 61)!
+#APP: Ooh, I needed that app?m2(106, 63, 200)!
+#APP: Come get some app!m3(106)!
+-74, 106,
+#CLI: Ooh, I needed that app?m3(106)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(106, 63, 132, 222, 76)!
+-76, 106, 63, 132, 222, 76,
+#CLI: Come get some app!m2(106, 63, 132)!
+-75, 106, 63, 132,
+#APP: Ooh, I needed that app?m1(106, 63, 132, 222, 76)!
+#APP: Ooh, I needed that app?m2(106, 63, 132)!
+#APP: Come get some app!m3(106)!
+-74, 106,
+#CLI: Ooh, I needed that app?m3(106)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(106, 63, 53, 106, 157)!
+-76, 106, 63, 53, 106, 157,
+#CLI: Come get some app!m2(106, 63, 53)!
+-75, 106, 63, 53,
+#APP: Ooh, I needed that app?m1(106, 63, 53, 106, 157)!
+#APP: Ooh, I needed that app?m2(106, 63, 53)!
+#APP: Come get some app!m3(106)!
+-74, 106,
+#CLI: Ooh, I needed that app?m3(106)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(106, 63, 220, 181, 97)!
+-76, 106, 63, 220, 181, 97,
+#CLI: Come get some app!m2(106, 63, 220)!
+-75, 106, 63, 220,
+#APP: Ooh, I needed that app?m1(106, 63, 220, 181, 97)!
+#APP: Ooh, I needed that app?m2(106, 63, 220)!
+#APP: Come get some app!m3(106)!
+-74, 106,
+#CLI: Ooh, I needed that app?m3(106)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(106, 63, 179, 104, 111)!
+-76, 106, 63, 179, 104, 111,
+#CLI: Come get some app!m2(106, 63, 179)!
+-75, 106, 63, 179,
+#APP: Ooh, I needed that app?m1(106, 63, 179, 104, 111)!
+#APP: Ooh, I needed that app?m2(106, 63, 179)!
+#APP: Come get some app!m3(106)!
+-74, 106,
+#CLI: Ooh, I needed that app?m3(106)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(106, 63, 210, 91, 253)!
+-76, 106, 63, 210, 91, 253,
+#CLI: Come get some app!m2(106, 63, 210)!
+-75, 106, 63, 210,
+#APP: Ooh, I needed that app?m1(106, 63, 210, 91, 253)!
+#APP: Ooh, I needed that app?m2(106, 63, 210)!
+#APP: Come get some app!m3(106)!
+-74, 106,
+#CLI: Ooh, I needed that app?m3(106)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(106, 63, 36, 67, 27)!
+-76, 106, 63, 36, 67, 27,
+#CLI: Come get some app!m2(106, 63, 36)!
+-75, 106, 63, 36,
+#APP: Ooh, I needed that app?m1(106, 63, 36, 67, 27)!
+#APP: Ooh, I needed that app?m2(106, 63, 36)!
+#APP: Come get some app!m3(106)!
+-74, 106,
+#CLI: Ooh, I needed that app?m3(106)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(106, 63, 202, 173, 136)!
+-76, 106, 63, 202, 173, 136,
+#CLI: Come get some app!m2(106, 63, 202)!
+-75, 106, 63, 202,
+#APP: Ooh, I needed that app?m1(106, 63, 202, 173, 136)!
+#APP: Ooh, I needed that app?m2(106, 63, 202)!
+#APP: Come get some app!m3(106)!
+-74, 106,
+#CLI: Ooh, I needed that app?m3(106)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(106, 63, 142, 222, 5)!
+-76, 106, 63, 142, 222, 5,
+#CLI: Come get some app!m2(106, 63, 142)!
+-75, 106, 63, 142,
+#APP: Ooh, I needed that app?m1(106, 63, 142, 222, 5)!
+#APP: Ooh, I needed that app?m2(106, 63, 142)!
+#APP: Come get some app!m3(106)!
+-74, 106,
+#CLI: Ooh, I needed that app?m3(106)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(106, 63, 214, 211, 187)!
+-76, 106, 63, 214, 211, 187,
+#CLI: Come get some app!m2(106, 63, 214)!
+-75, 106, 63, 214,
+#APP: Ooh, I needed that app?m1(106, 63, 214, 211, 187)!
+#APP: Ooh, I needed that app?m2(106, 63, 214)!
+#APP: Come get some app!m3(106)!
+-74, 106,
+#CLI: Ooh, I needed that app?m3(106)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(106, 63, 41, 199, 225)!
+-76, 106, 63, 41, 199, 225,
+#CLI: Come get some app!m2(106, 63, 41)!
+-75, 106, 63, 41,
+#APP: Ooh, I needed that app?m1(106, 63, 41, 199, 225)!
+#APP: Ooh, I needed that app?m2(106, 63, 41)!
+#APP: Come get some app!m3(106)!
+-74, 106,
+#CLI: Ooh, I needed that app?m3(106)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(106, 63, 149, 104, 49)!
+-76, 106, 63, 149, 104, 49,
+#CLI: Come get some app!m2(106, 63, 149)!
+-75, 106, 63, 149,
+#APP: Ooh, I needed that app?m1(106, 63, 149, 104, 49)!
+#APP: Ooh, I needed that app?m2(106, 63, 149)!
+#APP: Come get some app!m3(106)!
+-74, 106,
+#CLI: Ooh, I needed that app?m3(106)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(106, 63, 5, 44, 203)!
+-76, 106, 63, 5, 44, 203,
+#CLI: Come get some app!m2(106, 63, 5)!
+-75, 106, 63, 5,
+#APP: Ooh, I needed that app?m1(106, 63, 5, 44, 203)!
+#APP: Ooh, I needed that app?m2(106, 63, 5)!
+#APP: Come get some app!m3(106)!
+-74, 106,
+#CLI: Ooh, I needed that app?m3(106)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(106, 63, 148, 178, 105)!
+-76, 106, 63, 148, 178, 105,
+#CLI: Come get some app!m2(106, 63, 148)!
+-75, 106, 63, 148,
+#APP: Ooh, I needed that app?m1(106, 63, 148, 178, 105)!
+#APP: Ooh, I needed that app?m2(106, 63, 148)!
+#APP: Come get some app!m3(106)!
+-74, 106,
+#CLI: Ooh, I needed that app?m3(106)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(106, 63, 6, 25, 91)!
+-76, 106, 63, 6, 25, 91,
+#CLI: Come get some app!m2(106, 63, 6)!
+-75, 106, 63, 6,
+#APP: Ooh, I needed that app?m1(106, 63, 6, 25, 91)!
+#APP: Ooh, I needed that app?m2(106, 63, 6)!
+#APP: Come get some app!m3(106)!
+-74, 106,
+#CLI: Ooh, I needed that app?m3(106)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(106, 63, 193, 109, 22)!
+-76, 106, 63, 193, 109, 22,
+#CLI: Come get some app!m2(106, 63, 193)!
+-75, 106, 63, 193,
+#APP: Ooh, I needed that app?m1(106, 63, 193, 109, 22)!
+#APP: Ooh, I needed that app?m2(106, 63, 193)!
+#APP: Come get some app!m3(106)!
+-74, 106,
+#CLI: Ooh, I needed that app?m3(106)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(106, 63, 95, 7, 104)!
+-76, 106, 63, 95, 7, 104,
+#CLI: Come get some app!m2(106, 63, 95)!
+-75, 106, 63, 95,
+#APP: Ooh, I needed that app?m1(106, 63, 95, 7, 104)!
+#APP: Ooh, I needed that app?m2(106, 63, 95)!
+#APP: Come get some app!m3(106)!
+-74, 106,
+#CLI: Ooh, I needed that app?m3(106)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(106, 63, 94, 56, 153)!
+-76, 106, 63, 94, 56, 153,
+#CLI: Come get some app!m2(106, 63, 94)!
+-75, 106, 63, 94,
+#APP: Ooh, I needed that app?m1(106, 63, 94, 56, 153)!
+#APP: Ooh, I needed that app?m2(106, 63, 94)!
+#APP: Come get some app!m3(106)!
+-74, 106,
+#CLI: Ooh, I needed that app?m3(106)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(106, 63, 71, 196, 2)!
+-76, 106, 63, 71, 196, 2,
+#CLI: Come get some app!m2(106, 63, 71)!
+-75, 106, 63, 71,
+#APP: Ooh, I needed that app?m1(106, 63, 71, 196, 2)!
+#APP: Ooh, I needed that app?m2(106, 63, 71)!
+#APP: Come get some app!m3(106)!
+-74, 106,
+#CLI: Ooh, I needed that app?m3(106)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(106, 63, 185, 183, 214)!
+-76, 106, 63, 185, 183, 214,
+#CLI: Come get some app!m2(106, 63, 185)!
+-75, 106, 63, 185,
+#APP: Ooh, I needed that app?m1(106, 63, 185, 183, 214)!
+#APP: Ooh, I needed that app?m2(106, 63, 185)!
+#APP: Come get some app!m3(106)!
+-74, 106,
+#CLI: Ooh, I needed that app?m3(106)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(106, 63, 88, 14, 182)!
+-76, 106, 63, 88, 14, 182,
+#CLI: Come get some app!m2(106, 63, 88)!
+-75, 106, 63, 88,
+#APP: Ooh, I needed that app?m1(106, 63, 88, 14, 182)!
+#APP: Ooh, I needed that app?m2(106, 63, 88)!
+#APP: Come get some app!m3(106)!
+-74, 106,
+#CLI: Ooh, I needed that app?m3(106)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(106, 63, 35, 226, 28)!
+-76, 106, 63, 35, 226, 28,
+#CLI: Come get some app!m2(106, 63, 35)!
+-75, 106, 63, 35,
+#APP: Ooh, I needed that app?m1(106, 63, 35, 226, 28)!
+#APP: Ooh, I needed that app?m2(106, 63, 35)!
+#APP: Come get some app!m3(106)!
+-74, 106,
+#CLI: Ooh, I needed that app?m3(106)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(106, 63, 248, 121, 105)!
+-76, 106, 63, 248, 121, 105,
+#CLI: Come get some app!m2(106, 63, 248)!
+-75, 106, 63, 248,
+#APP: Ooh, I needed that app?m1(106, 63, 248, 121, 105)!
+#APP: Ooh, I needed that app?m2(106, 63, 248)!
+#APP: Come get some app!m3(106)!
+-74, 106,
+#CLI: Ooh, I needed that app?m3(106)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(106, 63, 52, 69, 35)!
+-76, 106, 63, 52, 69, 35,
+#CLI: Come get some app!m2(106, 63, 52)!
+-75, 106, 63, 52,
+#APP: Ooh, I needed that app?m1(106, 63, 52, 69, 35)!
+#APP: Ooh, I needed that app?m2(106, 63, 52)!
+#APP: Come get some app!m3(106)!
+-74, 106,
+#CLI: Ooh, I needed that app?m3(106)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(106, 63, 168, 58, 212)!
+-76, 106, 63, 168, 58, 212,
+#CLI: Come get some app!m2(106, 63, 168)!
+-75, 106, 63, 168,
+#APP: Ooh, I needed that app?m1(106, 63, 168, 58, 212)!
+#APP: Ooh, I needed that app?m2(106, 63, 168)!
+#APP: Come get some app!m3(106)!
+-74, 106,
+#CLI: Ooh, I needed that app?m3(106)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(106, 63, 47, 210, 96)!
+-76, 106, 63, 47, 210, 96,
+#CLI: Come get some app!m2(106, 63, 47)!
+-75, 106, 63, 47,
+#APP: Ooh, I needed that app?m1(106, 63, 47, 210, 96)!
+#APP: Ooh, I needed that app?m2(106, 63, 47)!
+#APP: Come get some app!m3(106)!
+-74, 106,
+#CLI: Ooh, I needed that app?m3(106)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(106, 63, 249, 233, 171)!
+-76, 106, 63, 249, 233, 171,
+#CLI: Come get some app!m2(106, 63, 249)!
+-75, 106, 63, 249,
+#APP: Ooh, I needed that app?m1(106, 63, 249, 233, 171)!
+#APP: Ooh, I needed that app?m2(106, 63, 249)!
+#APP: Come get some app!m3(106)!
+-74, 106,
+#CLI: Ooh, I needed that app?m3(106)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(106, 63, 124, 239, 125)!
+-76, 106, 63, 124, 239, 125,
+#CLI: Come get some app!m2(106, 63, 124)!
+-75, 106, 63, 124,
+#APP: Ooh, I needed that app?m1(106, 63, 124, 239, 125)!
+#APP: Ooh, I needed that app?m2(106, 63, 124)!
+#APP: Come get some app!m3(106)!
+-74, 106,
+#CLI: Ooh, I needed that app?m3(106)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(106, 63, 6, 130, 105)!
+-76, 106, 63, 6, 130, 105,
+#CLI: Come get some app!m2(106, 63, 6)!
+-75, 106, 63, 6,
+#APP: Ooh, I needed that app?m1(106, 63, 6, 130, 105)!
+#APP: Ooh, I needed that app?m2(106, 63, 6)!
+#APP: Come get some app!m3(106)!
+-74, 106,
+#CLI: Ooh, I needed that app?m3(106)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(106, 63, 112, 26, 6)!
+-76, 106, 63, 112, 26, 6,
+#CLI: Come get some app!m2(106, 63, 112)!
+-75, 106, 63, 112,
+#APP: Ooh, I needed that app?m1(106, 63, 112, 26, 6)!
+#APP: Ooh, I needed that app?m2(106, 63, 112)!
+#APP: Come get some app!m3(106)!
+-74, 106,
+#CLI: Ooh, I needed that app?m3(106)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(106, 63, 48, 114, 195)!
+-76, 106, 63, 48, 114, 195,
+#CLI: Come get some app!m2(106, 63, 48)!
+-75, 106, 63, 48,
+#APP: Ooh, I needed that app?m1(106, 63, 48, 114, 195)!
+#APP: Ooh, I needed that app?m2(106, 63, 48)!
+#APP: Come get some app!m3(106)!
+-74, 106,
+#CLI: Ooh, I needed that app?m3(106)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(106, 63, 228, 99, 8)!
+-76, 106, 63, 228, 99, 8,
+#CLI: Come get some app!m2(106, 63, 228)!
+-75, 106, 63, 228,
+#APP: Ooh, I needed that app?m1(106, 63, 228, 99, 8)!
+#APP: Ooh, I needed that app?m2(106, 63, 228)!
+#APP: Come get some app!m3(106)!
+-74, 106,
+#CLI: Ooh, I needed that app?m3(106)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(106, 63, 38, 145, 162)!
+-76, 106, 63, 38, 145, 162,
+#CLI: Come get some app!m2(106, 63, 38)!
+-75, 106, 63, 38,
+#APP: Ooh, I needed that app?m1(106, 63, 38, 145, 162)!
+#APP: Ooh, I needed that app?m2(106, 63, 38)!
+#APP: Come get some app!m3(106)!
+-74, 106,
+#CLI: Ooh, I needed that app?m3(106)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(106, 63, 249, 12, 98)!
+-76, 106, 63, 249, 12, 98,
+#CLI: Come get some app!m2(106, 63, 249)!
+-75, 106, 63, 249,
+#APP: Ooh, I needed that app?m1(106, 63, 249, 12, 98)!
+#APP: Ooh, I needed that app?m2(106, 63, 249)!
+#APP: Come get some app!m3(106)!
+-74, 106,
+#CLI: Ooh, I needed that app?m3(106)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(106, 63, 254, 232, 129)!
+-76, 106, 63, 254, 232, 129,
+#CLI: Come get some app!m2(106, 63, 254)!
+-75, 106, 63, 254,
+#APP: Ooh, I needed that app?m1(106, 63, 254, 232, 129)!
+#APP: Ooh, I needed that app?m2(106, 63, 254)!
+#APP: Come get some app!m3(106)!
+-74, 106,
+#CLI: Ooh, I needed that app?m3(106)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(106, 63, 156, 184, 162)!
+-76, 106, 63, 156, 184, 162,
+#CLI: Come get some app!m2(106, 63, 156)!
+-75, 106, 63, 156,
+#APP: Ooh, I needed that app?m1(106, 63, 156, 184, 162)!
+#APP: Ooh, I needed that app?m2(106, 63, 156)!
+#APP: Come get some app!m3(106)!
+-74, 106,
+#CLI: Ooh, I needed that app?m3(106)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(106, 63, 45, 250, 128)!
+-76, 106, 63, 45, 250, 128,
+#CLI: Come get some app!m2(106, 63, 45)!
+-75, 106, 63, 45,
+#APP: Ooh, I needed that app?m1(106, 63, 45, 250, 128)!
+#APP: Ooh, I needed that app?m2(106, 63, 45)!
+#APP: Come get some app!m3(106)!
+-74, 106,
+#CLI: Ooh, I needed that app?m3(106)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(106, 63, 35, 223, 86)!
+-76, 106, 63, 35, 223, 86,
+#CLI: Come get some app!m2(106, 63, 35)!
+-75, 106, 63, 35,
+#APP: Ooh, I needed that app?m1(106, 63, 35, 223, 86)!
+#APP: Ooh, I needed that app?m2(106, 63, 35)!
+#APP: Come get some app!m3(106)!
+-74, 106,
+#CLI: Ooh, I needed that app?m3(106)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(106, 63, 167, 65, 242)!
+-76, 106, 63, 167, 65, 242,
+#CLI: Come get some app!m2(106, 63, 167)!
+-75, 106, 63, 167,
+#APP: Ooh, I needed that app?m1(106, 63, 167, 65, 242)!
+#APP: Ooh, I needed that app?m2(106, 63, 167)!
+#APP: Come get some app!m3(106)!
+-74, 106,
+#CLI: Ooh, I needed that app?m3(106)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(106, 63, 37, 103, 255)!
+-76, 106, 63, 37, 103, 255,
+#CLI: Come get some app!m2(106, 63, 37)!
+-75, 106, 63, 37,
+#APP: Ooh, I needed that app?m1(106, 63, 37, 103, 255)!
+#APP: Ooh, I needed that app?m2(106, 63, 37)!
+#APP: Come get some app!m3(106)!
+-74, 106,
+#CLI: Ooh, I needed that app?m3(106)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(106, 63, 89, 152, 141)!
+-76, 106, 63, 89, 152, 141,
+#CLI: Come get some app!m2(106, 63, 89)!
+-75, 106, 63, 89,
+#APP: Ooh, I needed that app?m1(106, 63, 89, 152, 141)!
+#APP: Ooh, I needed that app?m2(106, 63, 89)!
+#APP: Come get some app!m3(106)!
+-74, 106,
+#CLI: Ooh, I needed that app?m3(106)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(106, 63, 12, 4, 88)!
+-76, 106, 63, 12, 4, 88,
+#CLI: Come get some app!m2(106, 63, 12)!
+-75, 106, 63, 12,
+#APP: Ooh, I needed that app?m1(106, 63, 12, 4, 88)!
+#APP: Ooh, I needed that app?m2(106, 63, 12)!
+#APP: Come get some app!m3(106)!
+-74, 106,
+#CLI: Ooh, I needed that app?m3(106)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(106, 63, 108, 195, 153)!
+-76, 106, 63, 108, 195, 153,
+#CLI: Come get some app!m2(106, 63, 108)!
+-75, 106, 63, 108,
+#APP: Ooh, I needed that app?m1(106, 63, 108, 195, 153)!
+#APP: Ooh, I needed that app?m2(106, 63, 108)!
+#APP: Come get some app!m3(106)!
+-74, 106,
+#CLI: Ooh, I needed that app?m3(106)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(106, 63, 164, 193, 232)!
+-76, 106, 63, 164, 193, 232,
+#CLI: Come get some app!m2(106, 63, 164)!
+-75, 106, 63, 164,
+#APP: Ooh, I needed that app?m1(106, 63, 164, 193, 232)!
+#APP: Ooh, I needed that app?m2(106, 63, 164)!
+#APP: Come get some app!m3(106)!
+-74, 106,
+#CLI: Ooh, I needed that app?m3(106)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(106, 63, 75, 174, 172)!
+-76, 106, 63, 75, 174, 172,
+#CLI: Come get some app!m2(106, 63, 75)!
+-75, 106, 63, 75,
+#APP: Ooh, I needed that app?m1(106, 63, 75, 174, 172)!
+#APP: Ooh, I needed that app?m2(106, 63, 75)!
+#APP: Come get some app!m3(106)!
+-74, 106,
+#CLI: Ooh, I needed that app?m3(106)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(106, 63, 161, 3, 117)!
+-76, 106, 63, 161, 3, 117,
+#CLI: Come get some app!m2(106, 63, 161)!
+-75, 106, 63, 161,
+#APP: Ooh, I needed that app?m1(106, 63, 161, 3, 117)!
+#APP: Ooh, I needed that app?m2(106, 63, 161)!
+#APP: Come get some app!m3(106)!
+-74, 106,
+#CLI: Ooh, I needed that app?m3(106)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(106, 63, 163, 93, 110)!
+-76, 106, 63, 163, 93, 110,
+#CLI: Come get some app!m2(106, 63, 163)!
+-75, 106, 63, 163,
+#APP: Ooh, I needed that app?m1(106, 63, 163, 93, 110)!
+#APP: Ooh, I needed that app?m2(106, 63, 163)!
+#APP: Come get some app!m3(106)!
+-74, 106,
+#CLI: Ooh, I needed that app?m3(106)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(106, 63, 185, 155, 201)!
+-76, 106, 63, 185, 155, 201,
+#CLI: Come get some app!m2(106, 63, 185)!
+-75, 106, 63, 185,
+#APP: Ooh, I needed that app?m1(106, 63, 185, 155, 201)!
+#APP: Ooh, I needed that app?m2(106, 63, 185)!
+#APP: Come get some app!m3(106)!
+-74, 106,
+#CLI: Ooh, I needed that app?m3(106)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(106, 63, 142, 206, 165)!
+-76, 106, 63, 142, 206, 165,
+#CLI: Come get some app!m2(106, 63, 142)!
+-75, 106, 63, 142,
+#APP: Ooh, I needed that app?m1(106, 63, 142, 206, 165)!
+#APP: Ooh, I needed that app?m2(106, 63, 142)!
+#APP: Come get some app!m3(106)!
+-74, 106,
+#CLI: Ooh, I needed that app?m3(106)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(106, 63, 80, 143, 208)!
+-76, 106, 63, 80, 143, 208,
+#CLI: Come get some app!m2(106, 63, 80)!
+-75, 106, 63, 80,
+#APP: Ooh, I needed that app?m1(106, 63, 80, 143, 208)!
+#APP: Ooh, I needed that app?m2(106, 63, 80)!
+#APP: Come get some app!m3(106)!
+-74, 106,
+#CLI: Ooh, I needed that app?m3(106)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(106, 63, 53, 90, 27)!
+-76, 106, 63, 53, 90, 27,
+#CLI: Come get some app!m2(106, 63, 53)!
+-75, 106, 63, 53,
+#APP: Ooh, I needed that app?m1(106, 63, 53, 90, 27)!
+#APP: Ooh, I needed that app?m2(106, 63, 53)!
+#APP: Come get some app!m3(106)!
+-74, 106,
+#CLI: Ooh, I needed that app?m3(106)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(106, 63, 101, 179, 69)!
+-76, 106, 63, 101, 179, 69,
+#CLI: Come get some app!m2(106, 63, 101)!
+-75, 106, 63, 101,
+#APP: Ooh, I needed that app?m1(106, 63, 101, 179, 69)!
+#APP: Ooh, I needed that app?m2(106, 63, 101)!
+#APP: Come get some app!m3(106)!
+-74, 106,
+#CLI: Ooh, I needed that app?m3(106)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(106, 63, 102, 59, 127)!
+-76, 106, 63, 102, 59, 127,
+#CLI: Come get some app!m2(106, 63, 102)!
+-75, 106, 63, 102,
+#APP: Ooh, I needed that app?m1(106, 63, 102, 59, 127)!
+#APP: Ooh, I needed that app?m2(106, 63, 102)!
+#APP: Come get some app!m3(106)!
+-74, 106,
+#CLI: Ooh, I needed that app?m3(106)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(106, 63, 197, 158, 241)!
+-76, 106, 63, 197, 158, 241,
+#CLI: Come get some app!m2(106, 63, 197)!
+-75, 106, 63, 197,
+#APP: Ooh, I needed that app?m1(106, 63, 197, 158, 241)!
+#APP: Ooh, I needed that app?m2(106, 63, 197)!
+#APP: Come get some app!m3(106)!
+-74, 106,
+#CLI: Ooh, I needed that app?m3(106)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(106, 63, 5, 220, 129)!
+-76, 106, 63, 5, 220, 129,
+#CLI: Come get some app!m2(106, 63, 5)!
+-75, 106, 63, 5,
+#APP: Ooh, I needed that app?m1(106, 63, 5, 220, 129)!
+#APP: Ooh, I needed that app?m2(106, 63, 5)!
+#APP: Come get some app!m3(106)!
+-74, 106,
+#CLI: Ooh, I needed that app?m3(106)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(106, 63, 243, 216, 241)!
+-76, 106, 63, 243, 216, 241,
+#CLI: Come get some app!m2(106, 63, 243)!
+-75, 106, 63, 243,
+#APP: Ooh, I needed that app?m1(106, 63, 243, 216, 241)!
+#APP: Ooh, I needed that app?m2(106, 63, 243)!
+#APP: Come get some app!m3(106)!
+-74, 106,
+#CLI: Ooh, I needed that app?m3(106)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(106, 63, 105, 226, 20)!
+-76, 106, 63, 105, 226, 20,
+#CLI: Come get some app!m2(106, 63, 105)!
+-75, 106, 63, 105,
+#APP: Ooh, I needed that app?m1(106, 63, 105, 226, 20)!
+#APP: Ooh, I needed that app?m2(106, 63, 105)!
+#APP: Come get some app!m3(106)!
+-74, 106,
+#CLI: Ooh, I needed that app?m3(106)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(106, 63, 88, 208, 165)!
+-76, 106, 63, 88, 208, 165,
+#CLI: Come get some app!m2(106, 63, 88)!
+-75, 106, 63, 88,
+#APP: Ooh, I needed that app?m1(106, 63, 88, 208, 165)!
+#APP: Ooh, I needed that app?m2(106, 63, 88)!
+#APP: Come get some app!m3(106)!
+-74, 106,
+#CLI: Ooh, I needed that app?m3(106)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(106, 63, 8, 254, 178)!
+-76, 106, 63, 8, 254, 178,
+#CLI: Come get some app!m2(106, 63, 8)!
+-75, 106, 63, 8,
+#APP: Ooh, I needed that app?m1(106, 63, 8, 254, 178)!
+#APP: Ooh, I needed that app?m2(106, 63, 8)!
+#APP: Come get some app!m3(106)!
+-74, 106,
+#CLI: Ooh, I needed that app?m3(106)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(106, 63, 202, 148, 6)!
+-76, 106, 63, 202, 148, 6,
+#CLI: Come get some app!m2(106, 63, 202)!
+-75, 106, 63, 202,
+#APP: Ooh, I needed that app?m1(106, 63, 202, 148, 6)!
+#APP: Ooh, I needed that app?m2(106, 63, 202)!
+#APP: Come get some app!m3(106)!
+-74, 106,
+#CLI: Ooh, I needed that app?m3(106)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(106, 63, 55, 124, 165)!
+-76, 106, 63, 55, 124, 165,
+#CLI: Come get some app!m2(106, 63, 55)!
+-75, 106, 63, 55,
+#APP: Ooh, I needed that app?m1(106, 63, 55, 124, 165)!
+#APP: Ooh, I needed that app?m2(106, 63, 55)!
+#APP: Come get some app!m3(106)!
+-74, 106,
+#CLI: Ooh, I needed that app?m3(106)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(106, 63, 6, 237, 198)!
+-76, 106, 63, 6, 237, 198,
+#CLI: Come get some app!m2(106, 63, 6)!
+-75, 106, 63, 6,
+#APP: Ooh, I needed that app?m1(106, 63, 6, 237, 198)!
+#APP: Ooh, I needed that app?m2(106, 63, 6)!
+#APP: Come get some app!m3(106)!
+-74, 106,
+#CLI: Ooh, I needed that app?m3(106)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(106, 63, 227, 142, 74)!
+-76, 106, 63, 227, 142, 74,
+#CLI: Come get some app!m2(106, 63, 227)!
+-75, 106, 63, 227,
+#APP: Ooh, I needed that app?m1(106, 63, 227, 142, 74)!
+#APP: Ooh, I needed that app?m2(106, 63, 227)!
+#APP: Come get some app!m3(106)!
+-74, 106,
+#CLI: Ooh, I needed that app?m3(106)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(106, 63, 145, 208, 101)!
+-76, 106, 63, 145, 208, 101,
+#CLI: Come get some app!m2(106, 63, 145)!
+-75, 106, 63, 145,
+#APP: Ooh, I needed that app?m1(106, 63, 145, 208, 101)!
+#APP: Ooh, I needed that app?m2(106, 63, 145)!
+#APP: Come get some app!m3(106)!
+-74, 106,
+#CLI: Ooh, I needed that app?m3(106)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(106, 63, 238, 168, 220)!
+-76, 106, 63, 238, 168, 220,
+#CLI: Come get some app!m2(106, 63, 238)!
+-75, 106, 63, 238,
+#APP: Ooh, I needed that app?m1(106, 63, 238, 168, 220)!
+#APP: Ooh, I needed that app?m2(106, 63, 238)!
+#APP: Come get some app!m3(106)!
+-74, 106,
+#CLI: Ooh, I needed that app?m3(106)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(106, 63, 84, 229, 147)!
+-76, 106, 63, 84, 229, 147,
+#CLI: Come get some app!m2(106, 63, 84)!
+-75, 106, 63, 84,
+#APP: Ooh, I needed that app?m1(106, 63, 84, 229, 147)!
+#APP: Ooh, I needed that app?m2(106, 63, 84)!
+#APP: Come get some app!m3(106)!
+-74, 106,
+#CLI: Ooh, I needed that app?m3(106)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(106, 63, 121, 36, 222)!
+-76, 106, 63, 121, 36, 222,
+#CLI: Come get some app!m2(106, 63, 121)!
+-75, 106, 63, 121,
+#APP: Ooh, I needed that app?m1(106, 63, 121, 36, 222)!
+#APP: Ooh, I needed that app?m2(106, 63, 121)!
+#APP: Come get some app!m3(106)!
+-74, 106,
+#CLI: Ooh, I needed that app?m3(106)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(106, 63, 139, 69, 224)!
+-76, 106, 63, 139, 69, 224,
+#CLI: Come get some app!m2(106, 63, 139)!
+-75, 106, 63, 139,
+#APP: Ooh, I needed that app?m1(106, 63, 139, 69, 224)!
+#APP: Ooh, I needed that app?m2(106, 63, 139)!
+#APP: Come get some app!m3(106)!
+-74, 106,
+#CLI: Ooh, I needed that app?m3(106)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(106, 63, 81, 49, 179)!
+-76, 106, 63, 81, 49, 179,
+#CLI: Come get some app!m2(106, 63, 81)!
+-75, 106, 63, 81,
+#APP: Ooh, I needed that app?m1(106, 63, 81, 49, 179)!
+#APP: Ooh, I needed that app?m2(106, 63, 81)!
+#APP: Come get some app!m3(106)!
+-74, 106,
+#CLI: Ooh, I needed that app?m3(106)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(106, 63, 177, 212, 28)!
+-76, 106, 63, 177, 212, 28,
+#CLI: Come get some app!m2(106, 63, 177)!
+-75, 106, 63, 177,
+#APP: Ooh, I needed that app?m1(106, 63, 177, 212, 28)!
+#APP: Ooh, I needed that app?m2(106, 63, 177)!
+#APP: Come get some app!m3(106)!
+-74, 106,
+#CLI: Ooh, I needed that app?m3(106)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(106, 63, 84, 4, 242)!
+-76, 106, 63, 84, 4, 242,
+#CLI: Come get some app!m2(106, 63, 84)!
+-75, 106, 63, 84,
+#APP: Ooh, I needed that app?m1(106, 63, 84, 4, 242)!
+#APP: Ooh, I needed that app?m2(106, 63, 84)!
+#APP: Come get some app!m3(106)!
+-74, 106,
+#CLI: Ooh, I needed that app?m3(106)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(106, 63, 232, 26, 235)!
+-76, 106, 63, 232, 26, 235,
+#CLI: Come get some app!m2(106, 63, 232)!
+-75, 106, 63, 232,
+#APP: Ooh, I needed that app?m1(106, 63, 232, 26, 235)!
+#APP: Ooh, I needed that app?m2(106, 63, 232)!
+#APP: Come get some app!m3(106)!
+-74, 106,
+#CLI: Ooh, I needed that app?m3(106)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(106, 63, 40, 158, 174)!
+-76, 106, 63, 40, 158, 174,
+#CLI: Come get some app!m2(106, 63, 40)!
+-75, 106, 63, 40,
+#APP: Ooh, I needed that app?m1(106, 63, 40, 158, 174)!
+#APP: Ooh, I needed that app?m2(106, 63, 40)!
+#APP: Come get some app!m3(106)!
+-74, 106,
+#CLI: Ooh, I needed that app?m3(106)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(106, 63, 174, 50, 242)!
+-76, 106, 63, 174, 50, 242,
+#CLI: Come get some app!m2(106, 63, 174)!
+-75, 106, 63, 174,
+#APP: Ooh, I needed that app?m1(106, 63, 174, 50, 242)!
+#APP: Ooh, I needed that app?m2(106, 63, 174)!
+#APP: Come get some app!m3(106)!
+-74, 106,
+#CLI: Ooh, I needed that app?m3(106)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(106, 63, 105, 152, 219)!
+-76, 106, 63, 105, 152, 219,
+#CLI: Come get some app!m2(106, 63, 105)!
+-75, 106, 63, 105,
+#APP: Ooh, I needed that app?m1(106, 63, 105, 152, 219)!
+#APP: Ooh, I needed that app?m2(106, 63, 105)!
+#APP: Come get some app!m3(106)!
+-74, 106,
+#CLI: Ooh, I needed that app?m3(106)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(106, 63, 245, 198, 79)!
+-76, 106, 63, 245, 198, 79,
+#CLI: Come get some app!m2(106, 63, 245)!
+-75, 106, 63, 245,
+#APP: Ooh, I needed that app?m1(106, 63, 245, 198, 79)!
+#APP: Ooh, I needed that app?m2(106, 63, 245)!
+#APP: Come get some app!m3(106)!
+-74, 106,
+#CLI: Ooh, I needed that app?m3(106)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(106, 63, 208, 39, 94)!
+-76, 106, 63, 208, 39, 94,
+#CLI: Come get some app!m2(106, 63, 208)!
+-75, 106, 63, 208,
+#APP: Ooh, I needed that app?m1(106, 63, 208, 39, 94)!
+#APP: Ooh, I needed that app?m2(106, 63, 208)!
+#APP: Come get some app!m3(106)!
+-74, 106,
+#CLI: Ooh, I needed that app?m3(106)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(106, 63, 162, 86, 174)!
+-76, 106, 63, 162, 86, 174,
+#CLI: Come get some app!m2(106, 63, 162)!
+-75, 106, 63, 162,
+#APP: Ooh, I needed that app?m1(106, 63, 162, 86, 174)!
+#APP: Ooh, I needed that app?m2(106, 63, 162)!
+#APP: Come get some app!m3(106)!
+-74, 106,
+#CLI: Ooh, I needed that app?m3(106)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(106, 63, 89, 219, 27)!
+-76, 106, 63, 89, 219, 27,
+#CLI: Come get some app!m2(106, 63, 89)!
+-75, 106, 63, 89,
+#APP: Ooh, I needed that app?m1(106, 63, 89, 219, 27)!
+#APP: Ooh, I needed that app?m2(106, 63, 89)!
+#APP: Come get some app!m3(106)!
+-74, 106,
+#CLI: Ooh, I needed that app?m3(106)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(106, 63, 16, 85, 49)!
+-76, 106, 63, 16, 85, 49,
+#CLI: Come get some app!m2(106, 63, 16)!
+-75, 106, 63, 16,
+#APP: Ooh, I needed that app?m1(106, 63, 16, 85, 49)!
+#APP: Ooh, I needed that app?m2(106, 63, 16)!
+#APP: Come get some app!m3(106)!
+-74, 106,
+#CLI: Ooh, I needed that app?m3(106)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(106, 63, 140, 143, 31)!
+-76, 106, 63, 140, 143, 31,
+#CLI: Come get some app!m2(106, 63, 140)!
+-75, 106, 63, 140,
+#APP: Ooh, I needed that app?m1(106, 63, 140, 143, 31)!
+#APP: Ooh, I needed that app?m2(106, 63, 140)!
+#APP: Come get some app!m3(106)!
+-74, 106,
+#CLI: Ooh, I needed that app?m3(106)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(106, 63, 22, 224, 82)!
+-76, 106, 63, 22, 224, 82,
+#CLI: Come get some app!m2(106, 63, 22)!
+-75, 106, 63, 22,
+#APP: Ooh, I needed that app?m1(106, 63, 22, 224, 82)!
+#APP: Ooh, I needed that app?m2(106, 63, 22)!
+#APP: Come get some app!m3(106)!
+-74, 106,
+#CLI: Ooh, I needed that app?m3(106)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(106, 63, 236, 247, 32)!
+-76, 106, 63, 236, 247, 32,
+#CLI: Come get some app!m2(106, 63, 236)!
+-75, 106, 63, 236,
+#APP: Ooh, I needed that app?m1(106, 63, 236, 247, 32)!
+#APP: Ooh, I needed that app?m2(106, 63, 236)!
+#APP: Come get some app!m3(106)!
+-74, 106,
+#CLI: Ooh, I needed that app?m3(106)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(106, 63, 198, 178, 153)!
+-76, 106, 63, 198, 178, 153,
+#CLI: Come get some app!m2(106, 63, 198)!
+-75, 106, 63, 198,
+#APP: Ooh, I needed that app?m1(106, 63, 198, 178, 153)!
+#APP: Ooh, I needed that app?m2(106, 63, 198)!
+#APP: Come get some app!m3(106)!
+-74, 106,
+#CLI: Ooh, I needed that app?m3(106)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(106, 63, 4, 5, 136)!
+-76, 106, 63, 4, 5, 136,
+#CLI: Come get some app!m2(106, 63, 4)!
+-75, 106, 63, 4,
+#APP: Ooh, I needed that app?m1(106, 63, 4, 5, 136)!
+#APP: Ooh, I needed that app?m2(106, 63, 4)!
+#APP: Come get some app!m3(106)!
+-74, 106,
+#CLI: Ooh, I needed that app?m3(106)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(106, 63, 231, 224, 96)!
+-76, 106, 63, 231, 224, 96,
+#CLI: Come get some app!m2(106, 63, 231)!
+-75, 106, 63, 231,
+#APP: Ooh, I needed that app?m1(106, 63, 231, 224, 96)!
+#APP: Ooh, I needed that app?m2(106, 63, 231)!
+#APP: Come get some app!m3(106)!
+-74, 106,
+#CLI: Ooh, I needed that app?m3(106)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(106, 63, 235, 141, 163)!
+-76, 106, 63, 235, 141, 163,
+#CLI: Come get some app!m2(106, 63, 235)!
+-75, 106, 63, 235,
+#APP: Ooh, I needed that app?m1(106, 63, 235, 141, 163)!
+#APP: Ooh, I needed that app?m2(106, 63, 235)!
+#APP: Come get some app!m3(106)!
+-74, 106,
+#CLI: Ooh, I needed that app?m3(106)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(106, 63, 25, 25, 141)!
+-76, 106, 63, 25, 25, 141,
+#CLI: Come get some app!m2(106, 63, 25)!
+-75, 106, 63, 25,
+#APP: Ooh, I needed that app?m1(106, 63, 25, 25, 141)!
+#APP: Ooh, I needed that app?m2(106, 63, 25)!
+#APP: Come get some app!m3(106)!
+-74, 106,
+#CLI: Ooh, I needed that app?m3(106)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(106, 63, 231, 76, 188)!
+-76, 106, 63, 231, 76, 188,
+#CLI: Come get some app!m2(106, 63, 231)!
+-75, 106, 63, 231,
+#APP: Ooh, I needed that app?m1(106, 63, 231, 76, 188)!
+#APP: Ooh, I needed that app?m2(106, 63, 231)!
+#APP: Come get some app!m3(106)!
+-74, 106,
+#CLI: Ooh, I needed that app?m3(106)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(106, 63, 178, 155, 254)!
+-76, 106, 63, 178, 155, 254,
+#CLI: Come get some app!m2(106, 63, 178)!
+-75, 106, 63, 178,
+#APP: Ooh, I needed that app?m1(106, 63, 178, 155, 254)!
+#APP: Ooh, I needed that app?m2(106, 63, 178)!
+#APP: Come get some app!m3(106)!
+-74, 106,
+#CLI: Ooh, I needed that app?m3(106)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(106, 63, 145, 169, 8)!
+-76, 106, 63, 145, 169, 8,
+#CLI: Come get some app!m2(106, 63, 145)!
+-75, 106, 63, 145,
+#APP: Ooh, I needed that app?m1(106, 63, 145, 169, 8)!
+#APP: Ooh, I needed that app?m2(106, 63, 145)!
+#APP: Come get some app!m3(106)!
+-74, 106,
+#CLI: Ooh, I needed that app?m3(106)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(106, 63, 255, 219, 126)!
+-76, 106, 63, 255, 219, 126,
+#CLI: Come get some app!m2(106, 63, 255)!
+-75, 106, 63, 255,
+#APP: Ooh, I needed that app?m1(106, 63, 255, 219, 126)!
+#APP: Ooh, I needed that app?m2(106, 63, 255)!
+#APP: Come get some app!m3(106)!
+-74, 106,
+#CLI: Ooh, I needed that app?m3(106)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(106, 63, 109, 82, 214)!
+-76, 106, 63, 109, 82, 214,
+#CLI: Come get some app!m2(106, 63, 109)!
+-75, 106, 63, 109,
+#APP: Ooh, I needed that app?m1(106, 63, 109, 82, 214)!
+#APP: Ooh, I needed that app?m2(106, 63, 109)!
+#APP: Come get some app!m3(106)!
+-74, 106,
+#CLI: Ooh, I needed that app?m3(106)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(106, 63, 118, 108, 62)!
+-76, 106, 63, 118, 108, 62,
+#CLI: Come get some app!m2(106, 63, 118)!
+-75, 106, 63, 118,
+#APP: Ooh, I needed that app?m1(106, 63, 118, 108, 62)!
+#APP: Ooh, I needed that app?m2(106, 63, 118)!
+#APP: Come get some app!m3(106)!
+-74, 106,
+#CLI: Ooh, I needed that app?m3(106)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(106, 63, 151, 0, 210)!
+-76, 106, 63, 151, 0, 210,
+#CLI: Come get some app!m2(106, 63, 151)!
+-75, 106, 63, 151,
+#APP: Ooh, I needed that app?m1(106, 63, 151, 0, 210)!
+#APP: Ooh, I needed that app?m2(106, 63, 151)!
+#APP: Come get some app!m3(106)!
+-74, 106,
+#CLI: Ooh, I needed that app?m3(106)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(106, 63, 224, 18, 28)!
+-76, 106, 63, 224, 18, 28,
+#CLI: Come get some app!m2(106, 63, 224)!
+-75, 106, 63, 224,
+#APP: Ooh, I needed that app?m1(106, 63, 224, 18, 28)!
+#APP: Ooh, I needed that app?m2(106, 63, 224)!
+#APP: Come get some app!m3(106)!
+-74, 106,
+#CLI: Ooh, I needed that app?m3(106)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(106, 63, 234, 28, 104)!
+-76, 106, 63, 234, 28, 104,
+#CLI: Come get some app!m2(106, 63, 234)!
+-75, 106, 63, 234,
+#APP: Ooh, I needed that app?m1(106, 63, 234, 28, 104)!
+#APP: Ooh, I needed that app?m2(106, 63, 234)!
+#APP: Come get some app!m3(106)!
+-74, 106,
+#CLI: Ooh, I needed that app?m3(106)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(106, 63, 125, 135, 228)!
+-76, 106, 63, 125, 135, 228,
+#CLI: Come get some app!m2(106, 63, 125)!
+-75, 106, 63, 125,
+#CLI: What are you waitin for? Christmas?
+#APP: Ooh, I needed that app?m1(106, 63, 125, 135, 228)!
+#APP: Ooh, I needed that app?m2(106, 63, 125)!
+#APP: Come get some app!m3(106)!
+-74, 106,
+#CLI: Come get some app!m1(144, 34, 205, 82, 176)!
+-76, 144, 34, 205, 82, 176,
+#CLI: Come get some app!m2(144, 34, 205)!
+-75, 144, 34, 205,
+#APP: Ooh, I needed that app?m1(144, 34, 205, 82, 176)!
+#APP: Ooh, I needed that app?m2(144, 34, 205)!
+#APP: Come get some app!m3(144)!
+-74, 144,
+#CLI: Ooh, I needed that app?m3(144)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(144, 34, 195, 98, 59)!
+-76, 144, 34, 195, 98, 59,
+#CLI: Come get some app!m2(144, 34, 195)!
+-75, 144, 34, 195,
+#APP: Ooh, I needed that app?m1(144, 34, 195, 98, 59)!
+#APP: Ooh, I needed that app?m2(144, 34, 195)!
+#APP: Come get some app!m3(144)!
+-74, 144,
+#CLI: Ooh, I needed that app?m3(144)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(144, 34, 64, 224, 30)!
+-76, 144, 34, 64, 224, 30,
+#CLI: Come get some app!m2(144, 34, 64)!
+-75, 144, 34, 64,
+#APP: Ooh, I needed that app?m1(144, 34, 64, 224, 30)!
+#APP: Ooh, I needed that app?m2(144, 34, 64)!
+#APP: Come get some app!m3(144)!
+-74, 144,
+#CLI: Ooh, I needed that app?m3(144)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(144, 34, 149, 105, 224)!
+-76, 144, 34, 149, 105, 224,
+#CLI: Come get some app!m2(144, 34, 149)!
+-75, 144, 34, 149,
+#APP: Ooh, I needed that app?m1(144, 34, 149, 105, 224)!
+#APP: Ooh, I needed that app?m2(144, 34, 149)!
+#APP: Come get some app!m3(144)!
+-74, 144,
+#CLI: Ooh, I needed that app?m3(144)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(144, 34, 102, 226, 100)!
+-76, 144, 34, 102, 226, 100,
+#CLI: Come get some app!m2(144, 34, 102)!
+-75, 144, 34, 102,
+#APP: Ooh, I needed that app?m1(144, 34, 102, 226, 100)!
+#APP: Ooh, I needed that app?m2(144, 34, 102)!
+#APP: Come get some app!m3(144)!
+-74, 144,
+#CLI: Ooh, I needed that app?m3(144)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(144, 34, 120, 11, 213)!
+-76, 144, 34, 120, 11, 213,
+#CLI: Come get some app!m2(144, 34, 120)!
+-75, 144, 34, 120,
+#APP: Ooh, I needed that app?m1(144, 34, 120, 11, 213)!
+#APP: Ooh, I needed that app?m2(144, 34, 120)!
+#APP: Come get some app!m3(144)!
+-74, 144,
+#CLI: Ooh, I needed that app?m3(144)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(144, 34, 75, 35, 149)!
+-76, 144, 34, 75, 35, 149,
+#CLI: Come get some app!m2(144, 34, 75)!
+-75, 144, 34, 75,
+#APP: Ooh, I needed that app?m1(144, 34, 75, 35, 149)!
+#APP: Ooh, I needed that app?m2(144, 34, 75)!
+#APP: Come get some app!m3(144)!
+-74, 144,
+#CLI: Ooh, I needed that app?m3(144)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(144, 34, 17, 221, 121)!
+-76, 144, 34, 17, 221, 121,
+#CLI: Come get some app!m2(144, 34, 17)!
+-75, 144, 34, 17,
+#APP: Ooh, I needed that app?m1(144, 34, 17, 221, 121)!
+#APP: Ooh, I needed that app?m2(144, 34, 17)!
+#APP: Come get some app!m3(144)!
+-74, 144,
+#CLI: Ooh, I needed that app?m3(144)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(144, 34, 192, 73, 236)!
+-76, 144, 34, 192, 73, 236,
+#CLI: Come get some app!m2(144, 34, 192)!
+-75, 144, 34, 192,
+#APP: Ooh, I needed that app?m1(144, 34, 192, 73, 236)!
+#APP: Ooh, I needed that app?m2(144, 34, 192)!
+#APP: Come get some app!m3(144)!
+-74, 144,
+#CLI: Ooh, I needed that app?m3(144)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(144, 34, 68, 171, 95)!
+-76, 144, 34, 68, 171, 95,
+#CLI: Come get some app!m2(144, 34, 68)!
+-75, 144, 34, 68,
+#APP: Ooh, I needed that app?m1(144, 34, 68, 171, 95)!
+#APP: Ooh, I needed that app?m2(144, 34, 68)!
+#APP: Come get some app!m3(144)!
+-74, 144,
+#CLI: Ooh, I needed that app?m3(144)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(144, 34, 86, 212, 122)!
+-76, 144, 34, 86, 212, 122,
+#CLI: Come get some app!m2(144, 34, 86)!
+-75, 144, 34, 86,
+#APP: Ooh, I needed that app?m1(144, 34, 86, 212, 122)!
+#APP: Ooh, I needed that app?m2(144, 34, 86)!
+#APP: Come get some app!m3(144)!
+-74, 144,
+#CLI: Ooh, I needed that app?m3(144)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(144, 34, 9, 213, 138)!
+-76, 144, 34, 9, 213, 138,
+#CLI: Come get some app!m2(144, 34, 9)!
+-75, 144, 34, 9,
+#APP: Ooh, I needed that app?m1(144, 34, 9, 213, 138)!
+#APP: Ooh, I needed that app?m2(144, 34, 9)!
+#APP: Come get some app!m3(144)!
+-74, 144,
+#CLI: Ooh, I needed that app?m3(144)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(144, 34, 200, 49, 216)!
+-76, 144, 34, 200, 49, 216,
+#CLI: Come get some app!m2(144, 34, 200)!
+-75, 144, 34, 200,
+#APP: Ooh, I needed that app?m1(144, 34, 200, 49, 216)!
+#APP: Ooh, I needed that app?m2(144, 34, 200)!
+#APP: Come get some app!m3(144)!
+-74, 144,
+#CLI: Ooh, I needed that app?m3(144)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(144, 34, 50, 59, 228)!
+-76, 144, 34, 50, 59, 228,
+#CLI: Come get some app!m2(144, 34, 50)!
+-75, 144, 34, 50,
+#APP: Ooh, I needed that app?m1(144, 34, 50, 59, 228)!
+#APP: Ooh, I needed that app?m2(144, 34, 50)!
+#APP: Come get some app!m3(144)!
+-74, 144,
+#CLI: Ooh, I needed that app?m3(144)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(144, 34, 151, 40, 66)!
+-76, 144, 34, 151, 40, 66,
+#CLI: Come get some app!m2(144, 34, 151)!
+-75, 144, 34, 151,
+#APP: Ooh, I needed that app?m1(144, 34, 151, 40, 66)!
+#APP: Ooh, I needed that app?m2(144, 34, 151)!
+#APP: Come get some app!m3(144)!
+-74, 144,
+#CLI: Ooh, I needed that app?m3(144)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(144, 34, 126, 106, 132)!
+-76, 144, 34, 126, 106, 132,
+#CLI: Come get some app!m2(144, 34, 126)!
+-75, 144, 34, 126,
+#APP: Ooh, I needed that app?m1(144, 34, 126, 106, 132)!
+#APP: Ooh, I needed that app?m2(144, 34, 126)!
+#APP: Come get some app!m3(144)!
+-74, 144,
+#CLI: Ooh, I needed that app?m3(144)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(144, 34, 140, 226, 187)!
+-76, 144, 34, 140, 226, 187,
+#CLI: Come get some app!m2(144, 34, 140)!
+-75, 144, 34, 140,
+#APP: Ooh, I needed that app?m1(144, 34, 140, 226, 187)!
+#APP: Ooh, I needed that app?m2(144, 34, 140)!
+#APP: Come get some app!m3(144)!
+-74, 144,
+#CLI: Ooh, I needed that app?m3(144)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(144, 34, 87, 243, 111)!
+-76, 144, 34, 87, 243, 111,
+#CLI: Come get some app!m2(144, 34, 87)!
+-75, 144, 34, 87,
+#APP: Ooh, I needed that app?m1(144, 34, 87, 243, 111)!
+#APP: Ooh, I needed that app?m2(144, 34, 87)!
+#APP: Come get some app!m3(144)!
+-74, 144,
+#CLI: Ooh, I needed that app?m3(144)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(144, 34, 113, 132, 208)!
+-76, 144, 34, 113, 132, 208,
+#CLI: Come get some app!m2(144, 34, 113)!
+-75, 144, 34, 113,
+#APP: Ooh, I needed that app?m1(144, 34, 113, 132, 208)!
+#APP: Ooh, I needed that app?m2(144, 34, 113)!
+#APP: Come get some app!m3(144)!
+-74, 144,
+#CLI: Ooh, I needed that app?m3(144)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(144, 34, 90, 178, 44)!
+-76, 144, 34, 90, 178, 44,
+#CLI: Come get some app!m2(144, 34, 90)!
+-75, 144, 34, 90,
+#APP: Ooh, I needed that app?m1(144, 34, 90, 178, 44)!
+#APP: Ooh, I needed that app?m2(144, 34, 90)!
+#APP: Come get some app!m3(144)!
+-74, 144,
+#CLI: Ooh, I needed that app?m3(144)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(144, 34, 217, 31, 233)!
+-76, 144, 34, 217, 31, 233,
+#CLI: Come get some app!m2(144, 34, 217)!
+-75, 144, 34, 217,
+#APP: Ooh, I needed that app?m1(144, 34, 217, 31, 233)!
+#APP: Ooh, I needed that app?m2(144, 34, 217)!
+#APP: Come get some app!m3(144)!
+-74, 144,
+#CLI: Ooh, I needed that app?m3(144)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(144, 34, 76, 178, 2)!
+-76, 144, 34, 76, 178, 2,
+#CLI: Come get some app!m2(144, 34, 76)!
+-75, 144, 34, 76,
+#APP: Ooh, I needed that app?m1(144, 34, 76, 178, 2)!
+#APP: Ooh, I needed that app?m2(144, 34, 76)!
+#APP: Come get some app!m3(144)!
+-74, 144,
+#CLI: Ooh, I needed that app?m3(144)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(144, 34, 85, 100, 82)!
+-76, 144, 34, 85, 100, 82,
+#CLI: Come get some app!m2(144, 34, 85)!
+-75, 144, 34, 85,
+#APP: Ooh, I needed that app?m1(144, 34, 85, 100, 82)!
+#APP: Ooh, I needed that app?m2(144, 34, 85)!
+#APP: Come get some app!m3(144)!
+-74, 144,
+#CLI: Ooh, I needed that app?m3(144)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(144, 34, 48, 161, 68)!
+-76, 144, 34, 48, 161, 68,
+#CLI: Come get some app!m2(144, 34, 48)!
+-75, 144, 34, 48,
+#APP: Ooh, I needed that app?m1(144, 34, 48, 161, 68)!
+#APP: Ooh, I needed that app?m2(144, 34, 48)!
+#APP: Come get some app!m3(144)!
+-74, 144,
+#CLI: Ooh, I needed that app?m3(144)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(144, 34, 243, 191, 33)!
+-76, 144, 34, 243, 191, 33,
+#CLI: Come get some app!m2(144, 34, 243)!
+-75, 144, 34, 243,
+#APP: Ooh, I needed that app?m1(144, 34, 243, 191, 33)!
+#APP: Ooh, I needed that app?m2(144, 34, 243)!
+#APP: Come get some app!m3(144)!
+-74, 144,
+#CLI: Ooh, I needed that app?m3(144)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(144, 34, 111, 199, 52)!
+-76, 144, 34, 111, 199, 52,
+#CLI: Come get some app!m2(144, 34, 111)!
+-75, 144, 34, 111,
+#APP: Ooh, I needed that app?m1(144, 34, 111, 199, 52)!
+#APP: Ooh, I needed that app?m2(144, 34, 111)!
+#APP: Come get some app!m3(144)!
+-74, 144,
+#CLI: Ooh, I needed that app?m3(144)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(144, 34, 59, 213, 237)!
+-76, 144, 34, 59, 213, 237,
+#CLI: Come get some app!m2(144, 34, 59)!
+-75, 144, 34, 59,
+#APP: Ooh, I needed that app?m1(144, 34, 59, 213, 237)!
+#APP: Ooh, I needed that app?m2(144, 34, 59)!
+#APP: Come get some app!m3(144)!
+-74, 144,
+#CLI: Ooh, I needed that app?m3(144)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(144, 34, 98, 230, 6)!
+-76, 144, 34, 98, 230, 6,
+#CLI: Come get some app!m2(144, 34, 98)!
+-75, 144, 34, 98,
+#APP: Ooh, I needed that app?m1(144, 34, 98, 230, 6)!
+#APP: Ooh, I needed that app?m2(144, 34, 98)!
+#APP: Come get some app!m3(144)!
+-74, 144,
+#CLI: Ooh, I needed that app?m3(144)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(144, 34, 117, 160, 42)!
+-76, 144, 34, 117, 160, 42,
+#CLI: Come get some app!m2(144, 34, 117)!
+-75, 144, 34, 117,
+#APP: Ooh, I needed that app?m1(144, 34, 117, 160, 42)!
+#APP: Ooh, I needed that app?m2(144, 34, 117)!
+#APP: Come get some app!m3(144)!
+-74, 144,
+#CLI: Ooh, I needed that app?m3(144)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(144, 34, 215, 58, 85)!
+-76, 144, 34, 215, 58, 85,
+#CLI: Come get some app!m2(144, 34, 215)!
+-75, 144, 34, 215,
+#APP: Ooh, I needed that app?m1(144, 34, 215, 58, 85)!
+#APP: Ooh, I needed that app?m2(144, 34, 215)!
+#APP: Come get some app!m3(144)!
+-74, 144,
+#CLI: Ooh, I needed that app?m3(144)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(144, 34, 97, 218, 207)!
+-76, 144, 34, 97, 218, 207,
+#CLI: Come get some app!m2(144, 34, 97)!
+-75, 144, 34, 97,
+#APP: Ooh, I needed that app?m1(144, 34, 97, 218, 207)!
+#APP: Ooh, I needed that app?m2(144, 34, 97)!
+#APP: Come get some app!m3(144)!
+-74, 144,
+#CLI: Ooh, I needed that app?m3(144)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(144, 34, 170, 187, 14)!
+-76, 144, 34, 170, 187, 14,
+#CLI: Come get some app!m2(144, 34, 170)!
+-75, 144, 34, 170,
+#APP: Ooh, I needed that app?m1(144, 34, 170, 187, 14)!
+#APP: Ooh, I needed that app?m2(144, 34, 170)!
+#APP: Come get some app!m3(144)!
+-74, 144,
+#CLI: Ooh, I needed that app?m3(144)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(144, 34, 78, 157, 84)!
+-76, 144, 34, 78, 157, 84,
+#CLI: Come get some app!m2(144, 34, 78)!
+-75, 144, 34, 78,
+#APP: Ooh, I needed that app?m1(144, 34, 78, 157, 84)!
+#APP: Ooh, I needed that app?m2(144, 34, 78)!
+#APP: Come get some app!m3(144)!
+-74, 144,
+#CLI: Ooh, I needed that app?m3(144)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(144, 34, 209, 211, 234)!
+-76, 144, 34, 209, 211, 234,
+#CLI: Come get some app!m2(144, 34, 209)!
+-75, 144, 34, 209,
+#APP: Ooh, I needed that app?m1(144, 34, 209, 211, 234)!
+#APP: Ooh, I needed that app?m2(144, 34, 209)!
+#APP: Come get some app!m3(144)!
+-74, 144,
+#CLI: Ooh, I needed that app?m3(144)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(144, 34, 101, 14, 238)!
+-76, 144, 34, 101, 14, 238,
+#CLI: Come get some app!m2(144, 34, 101)!
+-75, 144, 34, 101,
+#APP: Ooh, I needed that app?m1(144, 34, 101, 14, 238)!
+#APP: Ooh, I needed that app?m2(144, 34, 101)!
+#APP: Come get some app!m3(144)!
+-74, 144,
+#CLI: Ooh, I needed that app?m3(144)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(144, 34, 96, 30, 149)!
+-76, 144, 34, 96, 30, 149,
+#CLI: Come get some app!m2(144, 34, 96)!
+-75, 144, 34, 96,
+#APP: Ooh, I needed that app?m1(144, 34, 96, 30, 149)!
+#APP: Ooh, I needed that app?m2(144, 34, 96)!
+#APP: Come get some app!m3(144)!
+-74, 144,
+#CLI: Ooh, I needed that app?m3(144)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(144, 34, 149, 96, 143)!
+-76, 144, 34, 149, 96, 143,
+#CLI: Come get some app!m2(144, 34, 149)!
+-75, 144, 34, 149,
+#APP: Ooh, I needed that app?m1(144, 34, 149, 96, 143)!
+#APP: Ooh, I needed that app?m2(144, 34, 149)!
+#APP: Come get some app!m3(144)!
+-74, 144,
+#CLI: Ooh, I needed that app?m3(144)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(144, 34, 147, 184, 106)!
+-76, 144, 34, 147, 184, 106,
+#CLI: Come get some app!m2(144, 34, 147)!
+-75, 144, 34, 147,
+#APP: Ooh, I needed that app?m1(144, 34, 147, 184, 106)!
+#APP: Ooh, I needed that app?m2(144, 34, 147)!
+#APP: Come get some app!m3(144)!
+-74, 144,
+#CLI: Ooh, I needed that app?m3(144)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(144, 34, 101, 213, 93)!
+-76, 144, 34, 101, 213, 93,
+#CLI: Come get some app!m2(144, 34, 101)!
+-75, 144, 34, 101,
+#APP: Ooh, I needed that app?m1(144, 34, 101, 213, 93)!
+#APP: Ooh, I needed that app?m2(144, 34, 101)!
+#APP: Come get some app!m3(144)!
+-74, 144,
+#CLI: Ooh, I needed that app?m3(144)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(144, 34, 46, 70, 46)!
+-76, 144, 34, 46, 70, 46,
+#CLI: Come get some app!m2(144, 34, 46)!
+-75, 144, 34, 46,
+#APP: Ooh, I needed that app?m1(144, 34, 46, 70, 46)!
+#APP: Ooh, I needed that app?m2(144, 34, 46)!
+#APP: Come get some app!m3(144)!
+-74, 144,
+#CLI: Ooh, I needed that app?m3(144)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(144, 34, 152, 79, 87)!
+-76, 144, 34, 152, 79, 87,
+#CLI: Come get some app!m2(144, 34, 152)!
+-75, 144, 34, 152,
+#APP: Ooh, I needed that app?m1(144, 34, 152, 79, 87)!
+#APP: Ooh, I needed that app?m2(144, 34, 152)!
+#APP: Come get some app!m3(144)!
+-74, 144,
+#CLI: Ooh, I needed that app?m3(144)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(144, 34, 220, 9, 10)!
+-76, 144, 34, 220, 9, 10,
+#CLI: Come get some app!m2(144, 34, 220)!
+-75, 144, 34, 220,
+#APP: Ooh, I needed that app?m1(144, 34, 220, 9, 10)!
+#APP: Ooh, I needed that app?m2(144, 34, 220)!
+#APP: Come get some app!m3(144)!
+-74, 144,
+#CLI: Ooh, I needed that app?m3(144)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(144, 34, 114, 166, 11)!
+-76, 144, 34, 114, 166, 11,
+#CLI: Come get some app!m2(144, 34, 114)!
+-75, 144, 34, 114,
+#APP: Ooh, I needed that app?m1(144, 34, 114, 166, 11)!
+#APP: Ooh, I needed that app?m2(144, 34, 114)!
+#APP: Come get some app!m3(144)!
+-74, 144,
+#CLI: Ooh, I needed that app?m3(144)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(144, 34, 50, 169, 140)!
+-76, 144, 34, 50, 169, 140,
+#CLI: Come get some app!m2(144, 34, 50)!
+-75, 144, 34, 50,
+#APP: Ooh, I needed that app?m1(144, 34, 50, 169, 140)!
+#APP: Ooh, I needed that app?m2(144, 34, 50)!
+#APP: Come get some app!m3(144)!
+-74, 144,
+#CLI: Ooh, I needed that app?m3(144)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(144, 34, 157, 68, 177)!
+-76, 144, 34, 157, 68, 177,
+#CLI: Come get some app!m2(144, 34, 157)!
+-75, 144, 34, 157,
+#APP: Ooh, I needed that app?m1(144, 34, 157, 68, 177)!
+#APP: Ooh, I needed that app?m2(144, 34, 157)!
+#APP: Come get some app!m3(144)!
+-74, 144,
+#CLI: Ooh, I needed that app?m3(144)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(144, 34, 79, 158, 117)!
+-76, 144, 34, 79, 158, 117,
+#CLI: Come get some app!m2(144, 34, 79)!
+-75, 144, 34, 79,
+#APP: Ooh, I needed that app?m1(144, 34, 79, 158, 117)!
+#APP: Ooh, I needed that app?m2(144, 34, 79)!
+#APP: Come get some app!m3(144)!
+-74, 144,
+#CLI: Ooh, I needed that app?m3(144)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(144, 34, 63, 148, 120)!
+-76, 144, 34, 63, 148, 120,
+#CLI: Come get some app!m2(144, 34, 63)!
+-75, 144, 34, 63,
+#APP: Ooh, I needed that app?m1(144, 34, 63, 148, 120)!
+#APP: Ooh, I needed that app?m2(144, 34, 63)!
+#APP: Come get some app!m3(144)!
+-74, 144,
+#CLI: Ooh, I needed that app?m3(144)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(144, 34, 190, 46, 103)!
+-76, 144, 34, 190, 46, 103,
+#CLI: Come get some app!m2(144, 34, 190)!
+-75, 144, 34, 190,
+#APP: Ooh, I needed that app?m1(144, 34, 190, 46, 103)!
+#APP: Ooh, I needed that app?m2(144, 34, 190)!
+#APP: Come get some app!m3(144)!
+-74, 144,
+#CLI: Ooh, I needed that app?m3(144)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(144, 34, 63, 54, 50)!
+-76, 144, 34, 63, 54, 50,
+#CLI: Come get some app!m2(144, 34, 63)!
+-75, 144, 34, 63,
+#APP: Ooh, I needed that app?m1(144, 34, 63, 54, 50)!
+#APP: Ooh, I needed that app?m2(144, 34, 63)!
+#APP: Come get some app!m3(144)!
+-74, 144,
+#CLI: Ooh, I needed that app?m3(144)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(144, 34, 78, 143, 184)!
+-76, 144, 34, 78, 143, 184,
+#CLI: Come get some app!m2(144, 34, 78)!
+-75, 144, 34, 78,
+#APP: Ooh, I needed that app?m1(144, 34, 78, 143, 184)!
+#APP: Ooh, I needed that app?m2(144, 34, 78)!
+#APP: Come get some app!m3(144)!
+-74, 144,
+#CLI: Ooh, I needed that app?m3(144)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(144, 34, 170, 240, 227)!
+-76, 144, 34, 170, 240, 227,
+#CLI: Come get some app!m2(144, 34, 170)!
+-75, 144, 34, 170,
+#APP: Ooh, I needed that app?m1(144, 34, 170, 240, 227)!
+#APP: Ooh, I needed that app?m2(144, 34, 170)!
+#APP: Come get some app!m3(144)!
+-74, 144,
+#CLI: Ooh, I needed that app?m3(144)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(144, 34, 213, 90, 120)!
+-76, 144, 34, 213, 90, 120,
+#CLI: Come get some app!m2(144, 34, 213)!
+-75, 144, 34, 213,
+#APP: Ooh, I needed that app?m1(144, 34, 213, 90, 120)!
+#APP: Ooh, I needed that app?m2(144, 34, 213)!
+#APP: Come get some app!m3(144)!
+-74, 144,
+#CLI: Ooh, I needed that app?m3(144)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(144, 34, 128, 247, 154)!
+-76, 144, 34, 128, 247, 154,
+#CLI: Come get some app!m2(144, 34, 128)!
+-75, 144, 34, 128,
+#APP: Ooh, I needed that app?m1(144, 34, 128, 247, 154)!
+#APP: Ooh, I needed that app?m2(144, 34, 128)!
+#APP: Come get some app!m3(144)!
+-74, 144,
+#CLI: Ooh, I needed that app?m3(144)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(144, 34, 24, 142, 203)!
+-76, 144, 34, 24, 142, 203,
+#CLI: Come get some app!m2(144, 34, 24)!
+-75, 144, 34, 24,
+#APP: Ooh, I needed that app?m1(144, 34, 24, 142, 203)!
+#APP: Ooh, I needed that app?m2(144, 34, 24)!
+#APP: Come get some app!m3(144)!
+-74, 144,
+#CLI: Ooh, I needed that app?m3(144)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(144, 34, 227, 106, 4)!
+-76, 144, 34, 227, 106, 4,
+#CLI: Come get some app!m2(144, 34, 227)!
+-75, 144, 34, 227,
+#APP: Ooh, I needed that app?m1(144, 34, 227, 106, 4)!
+#APP: Ooh, I needed that app?m2(144, 34, 227)!
+#APP: Come get some app!m3(144)!
+-74, 144,
+#CLI: Ooh, I needed that app?m3(144)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(144, 34, 171, 243, 124)!
+-76, 144, 34, 171, 243, 124,
+#CLI: Come get some app!m2(144, 34, 171)!
+-75, 144, 34, 171,
+#APP: Ooh, I needed that app?m1(144, 34, 171, 243, 124)!
+#APP: Ooh, I needed that app?m2(144, 34, 171)!
+#APP: Come get some app!m3(144)!
+-74, 144,
+#CLI: Ooh, I needed that app?m3(144)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(144, 34, 226, 203, 85)!
+-76, 144, 34, 226, 203, 85,
+#CLI: Come get some app!m2(144, 34, 226)!
+-75, 144, 34, 226,
+#APP: Ooh, I needed that app?m1(144, 34, 226, 203, 85)!
+#APP: Ooh, I needed that app?m2(144, 34, 226)!
+#APP: Come get some app!m3(144)!
+-74, 144,
+#CLI: Ooh, I needed that app?m3(144)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(144, 34, 41, 6, 246)!
+-76, 144, 34, 41, 6, 246,
+#CLI: Come get some app!m2(144, 34, 41)!
+-75, 144, 34, 41,
+#APP: Ooh, I needed that app?m1(144, 34, 41, 6, 246)!
+#APP: Ooh, I needed that app?m2(144, 34, 41)!
+#APP: Come get some app!m3(144)!
+-74, 144,
+#CLI: Ooh, I needed that app?m3(144)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(144, 34, 107, 209, 144)!
+-76, 144, 34, 107, 209, 144,
+#CLI: Come get some app!m2(144, 34, 107)!
+-75, 144, 34, 107,
+#APP: Ooh, I needed that app?m1(144, 34, 107, 209, 144)!
+#APP: Ooh, I needed that app?m2(144, 34, 107)!
+#APP: Come get some app!m3(144)!
+-74, 144,
+#CLI: Ooh, I needed that app?m3(144)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(144, 34, 3, 172, 222)!
+-76, 144, 34, 3, 172, 222,
+#CLI: Come get some app!m2(144, 34, 3)!
+-75, 144, 34, 3,
+#APP: Ooh, I needed that app?m1(144, 34, 3, 172, 222)!
+#APP: Ooh, I needed that app?m2(144, 34, 3)!
+#APP: Come get some app!m3(144)!
+-74, 144,
+#CLI: Ooh, I needed that app?m3(144)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(144, 34, 76, 172, 247)!
+-76, 144, 34, 76, 172, 247,
+#CLI: Come get some app!m2(144, 34, 76)!
+-75, 144, 34, 76,
+#APP: Ooh, I needed that app?m1(144, 34, 76, 172, 247)!
+#APP: Ooh, I needed that app?m2(144, 34, 76)!
+#APP: Come get some app!m3(144)!
+-74, 144,
+#CLI: Ooh, I needed that app?m3(144)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(144, 34, 108, 138, 41)!
+-76, 144, 34, 108, 138, 41,
+#CLI: Come get some app!m2(144, 34, 108)!
+-75, 144, 34, 108,
+#APP: Ooh, I needed that app?m1(144, 34, 108, 138, 41)!
+#APP: Ooh, I needed that app?m2(144, 34, 108)!
+#APP: Come get some app!m3(144)!
+-74, 144,
+#CLI: Ooh, I needed that app?m3(144)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(144, 34, 176, 92, 139)!
+-76, 144, 34, 176, 92, 139,
+#CLI: Come get some app!m2(144, 34, 176)!
+-75, 144, 34, 176,
+#APP: Ooh, I needed that app?m1(144, 34, 176, 92, 139)!
+#APP: Ooh, I needed that app?m2(144, 34, 176)!
+#APP: Come get some app!m3(144)!
+-74, 144,
+#CLI: Ooh, I needed that app?m3(144)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(144, 34, 41, 11, 158)!
+-76, 144, 34, 41, 11, 158,
+#CLI: Come get some app!m2(144, 34, 41)!
+-75, 144, 34, 41,
+#APP: Ooh, I needed that app?m1(144, 34, 41, 11, 158)!
+#APP: Ooh, I needed that app?m2(144, 34, 41)!
+#APP: Come get some app!m3(144)!
+-74, 144,
+#CLI: Ooh, I needed that app?m3(144)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(144, 34, 11, 125, 31)!
+-76, 144, 34, 11, 125, 31,
+#CLI: Come get some app!m2(144, 34, 11)!
+-75, 144, 34, 11,
+#APP: Ooh, I needed that app?m1(144, 34, 11, 125, 31)!
+#APP: Ooh, I needed that app?m2(144, 34, 11)!
+#APP: Come get some app!m3(144)!
+-74, 144,
+#CLI: Ooh, I needed that app?m3(144)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(144, 34, 49, 147, 248)!
+-76, 144, 34, 49, 147, 248,
+#CLI: Come get some app!m2(144, 34, 49)!
+-75, 144, 34, 49,
+#APP: Ooh, I needed that app?m1(144, 34, 49, 147, 248)!
+#APP: Ooh, I needed that app?m2(144, 34, 49)!
+#APP: Come get some app!m3(144)!
+-74, 144,
+#CLI: Ooh, I needed that app?m3(144)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(144, 34, 26, 89, 144)!
+-76, 144, 34, 26, 89, 144,
+#CLI: Come get some app!m2(144, 34, 26)!
+-75, 144, 34, 26,
+#APP: Ooh, I needed that app?m1(144, 34, 26, 89, 144)!
+#APP: Ooh, I needed that app?m2(144, 34, 26)!
+#APP: Come get some app!m3(144)!
+-74, 144,
+#CLI: Ooh, I needed that app?m3(144)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(144, 34, 169, 207, 123)!
+-76, 144, 34, 169, 207, 123,
+#CLI: Come get some app!m2(144, 34, 169)!
+-75, 144, 34, 169,
+#APP: Ooh, I needed that app?m1(144, 34, 169, 207, 123)!
+#APP: Ooh, I needed that app?m2(144, 34, 169)!
+#APP: Come get some app!m3(144)!
+-74, 144,
+#CLI: Ooh, I needed that app?m3(144)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(144, 34, 129, 101, 26)!
+-76, 144, 34, 129, 101, 26,
+#CLI: Come get some app!m2(144, 34, 129)!
+-75, 144, 34, 129,
+#APP: Ooh, I needed that app?m1(144, 34, 129, 101, 26)!
+#APP: Ooh, I needed that app?m2(144, 34, 129)!
+#APP: Come get some app!m3(144)!
+-74, 144,
+#CLI: Ooh, I needed that app?m3(144)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(144, 34, 154, 101, 184)!
+-76, 144, 34, 154, 101, 184,
+#CLI: Come get some app!m2(144, 34, 154)!
+-75, 144, 34, 154,
+#APP: Ooh, I needed that app?m1(144, 34, 154, 101, 184)!
+#APP: Ooh, I needed that app?m2(144, 34, 154)!
+#APP: Come get some app!m3(144)!
+-74, 144,
+#CLI: Ooh, I needed that app?m3(144)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(144, 34, 172, 169, 228)!
+-76, 144, 34, 172, 169, 228,
+#CLI: Come get some app!m2(144, 34, 172)!
+-75, 144, 34, 172,
+#APP: Ooh, I needed that app?m1(144, 34, 172, 169, 228)!
+#APP: Ooh, I needed that app?m2(144, 34, 172)!
+#APP: Come get some app!m3(144)!
+-74, 144,
+#CLI: Ooh, I needed that app?m3(144)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(144, 34, 134, 113, 126)!
+-76, 144, 34, 134, 113, 126,
+#CLI: Come get some app!m2(144, 34, 134)!
+-75, 144, 34, 134,
+#APP: Ooh, I needed that app?m1(144, 34, 134, 113, 126)!
+#APP: Ooh, I needed that app?m2(144, 34, 134)!
+#APP: Come get some app!m3(144)!
+-74, 144,
+#CLI: Ooh, I needed that app?m3(144)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(144, 34, 18, 14, 251)!
+-76, 144, 34, 18, 14, 251,
+#CLI: Come get some app!m2(144, 34, 18)!
+-75, 144, 34, 18,
+#APP: Ooh, I needed that app?m1(144, 34, 18, 14, 251)!
+#APP: Ooh, I needed that app?m2(144, 34, 18)!
+#APP: Come get some app!m3(144)!
+-74, 144,
+#CLI: Ooh, I needed that app?m3(144)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(144, 34, 19, 205, 165)!
+-76, 144, 34, 19, 205, 165,
+#CLI: Come get some app!m2(144, 34, 19)!
+-75, 144, 34, 19,
+#APP: Ooh, I needed that app?m1(144, 34, 19, 205, 165)!
+#APP: Ooh, I needed that app?m2(144, 34, 19)!
+#APP: Come get some app!m3(144)!
+-74, 144,
+#CLI: Ooh, I needed that app?m3(144)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(144, 34, 177, 79, 170)!
+-76, 144, 34, 177, 79, 170,
+#CLI: Come get some app!m2(144, 34, 177)!
+-75, 144, 34, 177,
+#APP: Ooh, I needed that app?m1(144, 34, 177, 79, 170)!
+#APP: Ooh, I needed that app?m2(144, 34, 177)!
+#APP: Come get some app!m3(144)!
+-74, 144,
+#CLI: Ooh, I needed that app?m3(144)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(144, 34, 149, 93, 88)!
+-76, 144, 34, 149, 93, 88,
+#CLI: Come get some app!m2(144, 34, 149)!
+-75, 144, 34, 149,
+#APP: Ooh, I needed that app?m1(144, 34, 149, 93, 88)!
+#APP: Ooh, I needed that app?m2(144, 34, 149)!
+#APP: Come get some app!m3(144)!
+-74, 144,
+#CLI: Ooh, I needed that app?m3(144)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(144, 34, 63, 186, 124)!
+-76, 144, 34, 63, 186, 124,
+#CLI: Come get some app!m2(144, 34, 63)!
+-75, 144, 34, 63,
+#APP: Ooh, I needed that app?m1(144, 34, 63, 186, 124)!
+#APP: Ooh, I needed that app?m2(144, 34, 63)!
+#APP: Come get some app!m3(144)!
+-74, 144,
+#CLI: Ooh, I needed that app?m3(144)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(144, 34, 169, 126, 143)!
+-76, 144, 34, 169, 126, 143,
+#CLI: Come get some app!m2(144, 34, 169)!
+-75, 144, 34, 169,
+#APP: Ooh, I needed that app?m1(144, 34, 169, 126, 143)!
+#APP: Ooh, I needed that app?m2(144, 34, 169)!
+#APP: Come get some app!m3(144)!
+-74, 144,
+#CLI: Ooh, I needed that app?m3(144)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(144, 34, 223, 100, 154)!
+-76, 144, 34, 223, 100, 154,
+#CLI: Come get some app!m2(144, 34, 223)!
+-75, 144, 34, 223,
+#APP: Ooh, I needed that app?m1(144, 34, 223, 100, 154)!
+#APP: Ooh, I needed that app?m2(144, 34, 223)!
+#APP: Come get some app!m3(144)!
+-74, 144,
+#CLI: Ooh, I needed that app?m3(144)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(144, 34, 164, 34, 139)!
+-76, 144, 34, 164, 34, 139,
+#CLI: Come get some app!m2(144, 34, 164)!
+-75, 144, 34, 164,
+#APP: Ooh, I needed that app?m1(144, 34, 164, 34, 139)!
+#APP: Ooh, I needed that app?m2(144, 34, 164)!
+#APP: Come get some app!m3(144)!
+-74, 144,
+#CLI: Ooh, I needed that app?m3(144)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(144, 34, 206, 97, 121)!
+-76, 144, 34, 206, 97, 121,
+#CLI: Come get some app!m2(144, 34, 206)!
+-75, 144, 34, 206,
+#APP: Ooh, I needed that app?m1(144, 34, 206, 97, 121)!
+#APP: Ooh, I needed that app?m2(144, 34, 206)!
+#APP: Come get some app!m3(144)!
+-74, 144,
+#CLI: Ooh, I needed that app?m3(144)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(144, 34, 71, 81, 41)!
+-76, 144, 34, 71, 81, 41,
+#CLI: Come get some app!m2(144, 34, 71)!
+-75, 144, 34, 71,
+#APP: Ooh, I needed that app?m1(144, 34, 71, 81, 41)!
+#APP: Ooh, I needed that app?m2(144, 34, 71)!
+#APP: Come get some app!m3(144)!
+-74, 144,
+#CLI: Ooh, I needed that app?m3(144)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(144, 34, 245, 206, 36)!
+-76, 144, 34, 245, 206, 36,
+#CLI: Come get some app!m2(144, 34, 245)!
+-75, 144, 34, 245,
+#APP: Ooh, I needed that app?m1(144, 34, 245, 206, 36)!
+#APP: Ooh, I needed that app?m2(144, 34, 245)!
+#APP: Come get some app!m3(144)!
+-74, 144,
+#CLI: Ooh, I needed that app?m3(144)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(144, 34, 125, 176, 155)!
+-76, 144, 34, 125, 176, 155,
+#CLI: Come get some app!m2(144, 34, 125)!
+-75, 144, 34, 125,
+#APP: Ooh, I needed that app?m1(144, 34, 125, 176, 155)!
+#APP: Ooh, I needed that app?m2(144, 34, 125)!
+#APP: Come get some app!m3(144)!
+-74, 144,
+#CLI: Ooh, I needed that app?m3(144)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(144, 34, 132, 189, 161)!
+-76, 144, 34, 132, 189, 161,
+#CLI: Come get some app!m2(144, 34, 132)!
+-75, 144, 34, 132,
+#APP: Ooh, I needed that app?m1(144, 34, 132, 189, 161)!
+#APP: Ooh, I needed that app?m2(144, 34, 132)!
+#APP: Come get some app!m3(144)!
+-74, 144,
+#CLI: Ooh, I needed that app?m3(144)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(144, 34, 183, 31, 173)!
+-76, 144, 34, 183, 31, 173,
+#CLI: Come get some app!m2(144, 34, 183)!
+-75, 144, 34, 183,
+#APP: Ooh, I needed that app?m1(144, 34, 183, 31, 173)!
+#APP: Ooh, I needed that app?m2(144, 34, 183)!
+#APP: Come get some app!m3(144)!
+-74, 144,
+#CLI: Ooh, I needed that app?m3(144)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(144, 34, 4, 4, 223)!
+-76, 144, 34, 4, 4, 223,
+#CLI: Come get some app!m2(144, 34, 4)!
+-75, 144, 34, 4,
+#APP: Ooh, I needed that app?m1(144, 34, 4, 4, 223)!
+#APP: Ooh, I needed that app?m2(144, 34, 4)!
+#APP: Come get some app!m3(144)!
+-74, 144,
+#CLI: Ooh, I needed that app?m3(144)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(144, 34, 21, 94, 81)!
+-76, 144, 34, 21, 94, 81,
+#CLI: Come get some app!m2(144, 34, 21)!
+-75, 144, 34, 21,
+#APP: Ooh, I needed that app?m1(144, 34, 21, 94, 81)!
+#APP: Ooh, I needed that app?m2(144, 34, 21)!
+#APP: Come get some app!m3(144)!
+-74, 144,
+#CLI: Ooh, I needed that app?m3(144)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(144, 34, 148, 35, 72)!
+-76, 144, 34, 148, 35, 72,
+#CLI: Come get some app!m2(144, 34, 148)!
+-75, 144, 34, 148,
+#APP: Ooh, I needed that app?m1(144, 34, 148, 35, 72)!
+#APP: Ooh, I needed that app?m2(144, 34, 148)!
+#APP: Come get some app!m3(144)!
+-74, 144,
+#CLI: Ooh, I needed that app?m3(144)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(144, 34, 183, 37, 126)!
+-76, 144, 34, 183, 37, 126,
+#CLI: Come get some app!m2(144, 34, 183)!
+-75, 144, 34, 183,
+#APP: Ooh, I needed that app?m1(144, 34, 183, 37, 126)!
+#APP: Ooh, I needed that app?m2(144, 34, 183)!
+#APP: Come get some app!m3(144)!
+-74, 144,
+#CLI: Ooh, I needed that app?m3(144)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(144, 34, 128, 170, 54)!
+-76, 144, 34, 128, 170, 54,
+#CLI: Come get some app!m2(144, 34, 128)!
+-75, 144, 34, 128,
+#APP: Ooh, I needed that app?m1(144, 34, 128, 170, 54)!
+#APP: Ooh, I needed that app?m2(144, 34, 128)!
+#APP: Come get some app!m3(144)!
+-74, 144,
+#CLI: Ooh, I needed that app?m3(144)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(144, 34, 3, 38, 246)!
+-76, 144, 34, 3, 38, 246,
+#CLI: Come get some app!m2(144, 34, 3)!
+-75, 144, 34, 3,
+#APP: Ooh, I needed that app?m1(144, 34, 3, 38, 246)!
+#APP: Ooh, I needed that app?m2(144, 34, 3)!
+#APP: Come get some app!m3(144)!
+-74, 144,
+#CLI: Ooh, I needed that app?m3(144)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(144, 34, 182, 212, 248)!
+-76, 144, 34, 182, 212, 248,
+#CLI: Come get some app!m2(144, 34, 182)!
+-75, 144, 34, 182,
+#APP: Ooh, I needed that app?m1(144, 34, 182, 212, 248)!
+#APP: Ooh, I needed that app?m2(144, 34, 182)!
+#APP: Come get some app!m3(144)!
+-74, 144,
+#CLI: Ooh, I needed that app?m3(144)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(144, 34, 134, 243, 72)!
+-76, 144, 34, 134, 243, 72,
+#CLI: Come get some app!m2(144, 34, 134)!
+-75, 144, 34, 134,
+#APP: Ooh, I needed that app?m1(144, 34, 134, 243, 72)!
+#APP: Ooh, I needed that app?m2(144, 34, 134)!
+#APP: Come get some app!m3(144)!
+-74, 144,
+#CLI: Ooh, I needed that app?m3(144)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(144, 34, 176, 128, 27)!
+-76, 144, 34, 176, 128, 27,
+#CLI: Come get some app!m2(144, 34, 176)!
+-75, 144, 34, 176,
+#APP: Ooh, I needed that app?m1(144, 34, 176, 128, 27)!
+#APP: Ooh, I needed that app?m2(144, 34, 176)!
+#APP: Come get some app!m3(144)!
+-74, 144,
+#CLI: Ooh, I needed that app?m3(144)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(144, 34, 54, 248, 73)!
+-76, 144, 34, 54, 248, 73,
+#CLI: Come get some app!m2(144, 34, 54)!
+-75, 144, 34, 54,
+#APP: Ooh, I needed that app?m1(144, 34, 54, 248, 73)!
+#APP: Ooh, I needed that app?m2(144, 34, 54)!
+#APP: Come get some app!m3(144)!
+-74, 144,
+#CLI: Ooh, I needed that app?m3(144)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(144, 34, 227, 177, 249)!
+-76, 144, 34, 227, 177, 249,
+#CLI: Come get some app!m2(144, 34, 227)!
+-75, 144, 34, 227,
+#APP: Ooh, I needed that app?m1(144, 34, 227, 177, 249)!
+#APP: Ooh, I needed that app?m2(144, 34, 227)!
+#APP: Come get some app!m3(144)!
+-74, 144,
+#CLI: Ooh, I needed that app?m3(144)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(144, 34, 121, 244, 2)!
+-76, 144, 34, 121, 244, 2,
+#CLI: Come get some app!m2(144, 34, 121)!
+-75, 144, 34, 121,
+#APP: Ooh, I needed that app?m1(144, 34, 121, 244, 2)!
+#APP: Ooh, I needed that app?m2(144, 34, 121)!
+#APP: Come get some app!m3(144)!
+-74, 144,
+#CLI: Ooh, I needed that app?m3(144)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(144, 34, 250, 47, 62)!
+-76, 144, 34, 250, 47, 62,
+#CLI: Come get some app!m2(144, 34, 250)!
+-75, 144, 34, 250,
+#APP: Ooh, I needed that app?m1(144, 34, 250, 47, 62)!
+#APP: Ooh, I needed that app?m2(144, 34, 250)!
+#APP: Come get some app!m3(144)!
+-74, 144,
+#CLI: Ooh, I needed that app?m3(144)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(144, 34, 124, 76, 159)!
+-76, 144, 34, 124, 76, 159,
+#CLI: Come get some app!m2(144, 34, 124)!
+-75, 144, 34, 124,
+#CLI: What are you waitin for? Christmas?
+#APP: Ooh, I needed that app?m1(144, 34, 124, 76, 159)!
+#APP: Ooh, I needed that app?m2(144, 34, 124)!
+#APP: Come get some app!m3(144)!
+-74, 144,
+#CLI: Come get some app!m1(19, 42, 53, 129, 153)!
+-76, 19, 42, 53, 129, 153,
+#CLI: Come get some app!m2(19, 42, 53)!
+-75, 19, 42, 53,
+#APP: Ooh, I needed that app?m1(19, 42, 53, 129, 153)!
+#APP: Ooh, I needed that app?m2(19, 42, 53)!
+#APP: Come get some app!m3(19)!
+-74, 19,
+#CLI: Ooh, I needed that app?m3(19)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(19, 42, 65, 74, 187)!
+-76, 19, 42, 65, 74, 187,
+#CLI: Come get some app!m2(19, 42, 65)!
+-75, 19, 42, 65,
+#APP: Ooh, I needed that app?m1(19, 42, 65, 74, 187)!
+#APP: Ooh, I needed that app?m2(19, 42, 65)!
+#APP: Come get some app!m3(19)!
+-74, 19,
+#CLI: Ooh, I needed that app?m3(19)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(19, 42, 233, 249, 55)!
+-76, 19, 42, 233, 249, 55,
+#CLI: Come get some app!m2(19, 42, 233)!
+-75, 19, 42, 233,
+#APP: Ooh, I needed that app?m1(19, 42, 233, 249, 55)!
+#APP: Ooh, I needed that app?m2(19, 42, 233)!
+#APP: Come get some app!m3(19)!
+-74, 19,
+#CLI: Ooh, I needed that app?m3(19)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(19, 42, 209, 232, 221)!
+-76, 19, 42, 209, 232, 221,
+#CLI: Come get some app!m2(19, 42, 209)!
+-75, 19, 42, 209,
+#APP: Ooh, I needed that app?m1(19, 42, 209, 232, 221)!
+#APP: Ooh, I needed that app?m2(19, 42, 209)!
+#APP: Come get some app!m3(19)!
+-74, 19,
+#CLI: Ooh, I needed that app?m3(19)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(19, 42, 158, 1, 228)!
+-76, 19, 42, 158, 1, 228,
+#CLI: Come get some app!m2(19, 42, 158)!
+-75, 19, 42, 158,
+#APP: Ooh, I needed that app?m1(19, 42, 158, 1, 228)!
+#APP: Ooh, I needed that app?m2(19, 42, 158)!
+#APP: Come get some app!m3(19)!
+-74, 19,
+#CLI: Ooh, I needed that app?m3(19)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(19, 42, 149, 87, 169)!
+-76, 19, 42, 149, 87, 169,
+#CLI: Come get some app!m2(19, 42, 149)!
+-75, 19, 42, 149,
+#APP: Ooh, I needed that app?m1(19, 42, 149, 87, 169)!
+#APP: Ooh, I needed that app?m2(19, 42, 149)!
+#APP: Come get some app!m3(19)!
+-74, 19,
+#CLI: Ooh, I needed that app?m3(19)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(19, 42, 233, 204, 85)!
+-76, 19, 42, 233, 204, 85,
+#CLI: Come get some app!m2(19, 42, 233)!
+-75, 19, 42, 233,
+#APP: Ooh, I needed that app?m1(19, 42, 233, 204, 85)!
+#APP: Ooh, I needed that app?m2(19, 42, 233)!
+#APP: Come get some app!m3(19)!
+-74, 19,
+#CLI: Ooh, I needed that app?m3(19)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(19, 42, 95, 116, 55)!
+-76, 19, 42, 95, 116, 55,
+#CLI: Come get some app!m2(19, 42, 95)!
+-75, 19, 42, 95,
+#APP: Ooh, I needed that app?m1(19, 42, 95, 116, 55)!
+#APP: Ooh, I needed that app?m2(19, 42, 95)!
+#APP: Come get some app!m3(19)!
+-74, 19,
+#CLI: Ooh, I needed that app?m3(19)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(19, 42, 161, 13, 0)!
+-76, 19, 42, 161, 13, 0,
+#CLI: Come get some app!m2(19, 42, 161)!
+-75, 19, 42, 161,
+#APP: Ooh, I needed that app?m1(19, 42, 161, 13, 0)!
+#APP: Ooh, I needed that app?m2(19, 42, 161)!
+#APP: Come get some app!m3(19)!
+-74, 19,
+#CLI: Ooh, I needed that app?m3(19)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(19, 42, 122, 207, 95)!
+-76, 19, 42, 122, 207, 95,
+#CLI: Come get some app!m2(19, 42, 122)!
+-75, 19, 42, 122,
+#APP: Ooh, I needed that app?m1(19, 42, 122, 207, 95)!
+#APP: Ooh, I needed that app?m2(19, 42, 122)!
+#APP: Come get some app!m3(19)!
+-74, 19,
+#CLI: Ooh, I needed that app?m3(19)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(19, 42, 99, 151, 241)!
+-76, 19, 42, 99, 151, 241,
+#CLI: Come get some app!m2(19, 42, 99)!
+-75, 19, 42, 99,
+#APP: Ooh, I needed that app?m1(19, 42, 99, 151, 241)!
+#APP: Ooh, I needed that app?m2(19, 42, 99)!
+#APP: Come get some app!m3(19)!
+-74, 19,
+#CLI: Ooh, I needed that app?m3(19)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(19, 42, 133, 2, 226)!
+-76, 19, 42, 133, 2, 226,
+#CLI: Come get some app!m2(19, 42, 133)!
+-75, 19, 42, 133,
+#APP: Ooh, I needed that app?m1(19, 42, 133, 2, 226)!
+#APP: Ooh, I needed that app?m2(19, 42, 133)!
+#APP: Come get some app!m3(19)!
+-74, 19,
+#CLI: Ooh, I needed that app?m3(19)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(19, 42, 254, 42, 129)!
+-76, 19, 42, 254, 42, 129,
+#CLI: Come get some app!m2(19, 42, 254)!
+-75, 19, 42, 254,
+#APP: Ooh, I needed that app?m1(19, 42, 254, 42, 129)!
+#APP: Ooh, I needed that app?m2(19, 42, 254)!
+#APP: Come get some app!m3(19)!
+-74, 19,
+#CLI: Ooh, I needed that app?m3(19)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(19, 42, 156, 211, 59)!
+-76, 19, 42, 156, 211, 59,
+#CLI: Come get some app!m2(19, 42, 156)!
+-75, 19, 42, 156,
+#APP: Ooh, I needed that app?m1(19, 42, 156, 211, 59)!
+#APP: Ooh, I needed that app?m2(19, 42, 156)!
+#APP: Come get some app!m3(19)!
+-74, 19,
+#CLI: Ooh, I needed that app?m3(19)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(19, 42, 61, 32, 171)!
+-76, 19, 42, 61, 32, 171,
+#CLI: Come get some app!m2(19, 42, 61)!
+-75, 19, 42, 61,
+#APP: Ooh, I needed that app?m1(19, 42, 61, 32, 171)!
+#APP: Ooh, I needed that app?m2(19, 42, 61)!
+#APP: Come get some app!m3(19)!
+-74, 19,
+#CLI: Ooh, I needed that app?m3(19)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(19, 42, 40, 84, 22)!
+-76, 19, 42, 40, 84, 22,
+#CLI: Come get some app!m2(19, 42, 40)!
+-75, 19, 42, 40,
+#APP: Ooh, I needed that app?m1(19, 42, 40, 84, 22)!
+#APP: Ooh, I needed that app?m2(19, 42, 40)!
+#APP: Come get some app!m3(19)!
+-74, 19,
+#CLI: Ooh, I needed that app?m3(19)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(19, 42, 170, 81, 181)!
+-76, 19, 42, 170, 81, 181,
+#CLI: Come get some app!m2(19, 42, 170)!
+-75, 19, 42, 170,
+#APP: Ooh, I needed that app?m1(19, 42, 170, 81, 181)!
+#APP: Ooh, I needed that app?m2(19, 42, 170)!
+#APP: Come get some app!m3(19)!
+-74, 19,
+#CLI: Ooh, I needed that app?m3(19)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(19, 42, 22, 184, 33)!
+-76, 19, 42, 22, 184, 33,
+#CLI: Come get some app!m2(19, 42, 22)!
+-75, 19, 42, 22,
+#APP: Ooh, I needed that app?m1(19, 42, 22, 184, 33)!
+#APP: Ooh, I needed that app?m2(19, 42, 22)!
+#APP: Come get some app!m3(19)!
+-74, 19,
+#CLI: Ooh, I needed that app?m3(19)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(19, 42, 0, 63, 128)!
+-76, 19, 42, 0, 63, 128,
+#CLI: Come get some app!m2(19, 42, 0)!
+-75, 19, 42, 0,
+#APP: Ooh, I needed that app?m1(19, 42, 0, 63, 128)!
+#APP: Ooh, I needed that app?m2(19, 42, 0)!
+#APP: Come get some app!m3(19)!
+-74, 19,
+#CLI: Ooh, I needed that app?m3(19)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(19, 42, 134, 192, 95)!
+-76, 19, 42, 134, 192, 95,
+#CLI: Come get some app!m2(19, 42, 134)!
+-75, 19, 42, 134,
+#APP: Ooh, I needed that app?m1(19, 42, 134, 192, 95)!
+#APP: Ooh, I needed that app?m2(19, 42, 134)!
+#APP: Come get some app!m3(19)!
+-74, 19,
+#CLI: Ooh, I needed that app?m3(19)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(19, 42, 248, 178, 234)!
+-76, 19, 42, 248, 178, 234,
+#CLI: Come get some app!m2(19, 42, 248)!
+-75, 19, 42, 248,
+#APP: Ooh, I needed that app?m1(19, 42, 248, 178, 234)!
+#APP: Ooh, I needed that app?m2(19, 42, 248)!
+#APP: Come get some app!m3(19)!
+-74, 19,
+#CLI: Ooh, I needed that app?m3(19)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(19, 42, 198, 81, 191)!
+-76, 19, 42, 198, 81, 191,
+#CLI: Come get some app!m2(19, 42, 198)!
+-75, 19, 42, 198,
+#APP: Ooh, I needed that app?m1(19, 42, 198, 81, 191)!
+#APP: Ooh, I needed that app?m2(19, 42, 198)!
+#APP: Come get some app!m3(19)!
+-74, 19,
+#CLI: Ooh, I needed that app?m3(19)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(19, 42, 87, 6, 81)!
+-76, 19, 42, 87, 6, 81,
+#CLI: Come get some app!m2(19, 42, 87)!
+-75, 19, 42, 87,
+#APP: Ooh, I needed that app?m1(19, 42, 87, 6, 81)!
+#APP: Ooh, I needed that app?m2(19, 42, 87)!
+#APP: Come get some app!m3(19)!
+-74, 19,
+#CLI: Ooh, I needed that app?m3(19)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(19, 42, 68, 139, 156)!
+-76, 19, 42, 68, 139, 156,
+#CLI: Come get some app!m2(19, 42, 68)!
+-75, 19, 42, 68,
+#APP: Ooh, I needed that app?m1(19, 42, 68, 139, 156)!
+#APP: Ooh, I needed that app?m2(19, 42, 68)!
+#APP: Come get some app!m3(19)!
+-74, 19,
+#CLI: Ooh, I needed that app?m3(19)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(19, 42, 254, 132, 52)!
+-76, 19, 42, 254, 132, 52,
+#CLI: Come get some app!m2(19, 42, 254)!
+-75, 19, 42, 254,
+#APP: Ooh, I needed that app?m1(19, 42, 254, 132, 52)!
+#APP: Ooh, I needed that app?m2(19, 42, 254)!
+#APP: Come get some app!m3(19)!
+-74, 19,
+#CLI: Ooh, I needed that app?m3(19)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(19, 42, 191, 202, 151)!
+-76, 19, 42, 191, 202, 151,
+#CLI: Come get some app!m2(19, 42, 191)!
+-75, 19, 42, 191,
+#APP: Ooh, I needed that app?m1(19, 42, 191, 202, 151)!
+#APP: Ooh, I needed that app?m2(19, 42, 191)!
+#APP: Come get some app!m3(19)!
+-74, 19,
+#CLI: Ooh, I needed that app?m3(19)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(19, 42, 63, 223, 170)!
+-76, 19, 42, 63, 223, 170,
+#CLI: Come get some app!m2(19, 42, 63)!
+-75, 19, 42, 63,
+#APP: Ooh, I needed that app?m1(19, 42, 63, 223, 170)!
+#APP: Ooh, I needed that app?m2(19, 42, 63)!
+#APP: Come get some app!m3(19)!
+-74, 19,
+#CLI: Ooh, I needed that app?m3(19)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(19, 42, 2, 200, 162)!
+-76, 19, 42, 2, 200, 162,
+#CLI: Come get some app!m2(19, 42, 2)!
+-75, 19, 42, 2,
+#APP: Ooh, I needed that app?m1(19, 42, 2, 200, 162)!
+#APP: Ooh, I needed that app?m2(19, 42, 2)!
+#APP: Come get some app!m3(19)!
+-74, 19,
+#CLI: Ooh, I needed that app?m3(19)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(19, 42, 154, 155, 177)!
+-76, 19, 42, 154, 155, 177,
+#CLI: Come get some app!m2(19, 42, 154)!
+-75, 19, 42, 154,
+#APP: Ooh, I needed that app?m1(19, 42, 154, 155, 177)!
+#APP: Ooh, I needed that app?m2(19, 42, 154)!
+#APP: Come get some app!m3(19)!
+-74, 19,
+#CLI: Ooh, I needed that app?m3(19)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(19, 42, 232, 156, 20)!
+-76, 19, 42, 232, 156, 20,
+#CLI: Come get some app!m2(19, 42, 232)!
+-75, 19, 42, 232,
+#APP: Ooh, I needed that app?m1(19, 42, 232, 156, 20)!
+#APP: Ooh, I needed that app?m2(19, 42, 232)!
+#APP: Come get some app!m3(19)!
+-74, 19,
+#CLI: Ooh, I needed that app?m3(19)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(19, 42, 100, 53, 72)!
+-76, 19, 42, 100, 53, 72,
+#CLI: Come get some app!m2(19, 42, 100)!
+-75, 19, 42, 100,
+#APP: Ooh, I needed that app?m1(19, 42, 100, 53, 72)!
+#APP: Ooh, I needed that app?m2(19, 42, 100)!
+#APP: Come get some app!m3(19)!
+-74, 19,
+#CLI: Ooh, I needed that app?m3(19)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(19, 42, 28, 220, 96)!
+-76, 19, 42, 28, 220, 96,
+#CLI: Come get some app!m2(19, 42, 28)!
+-75, 19, 42, 28,
+#APP: Ooh, I needed that app?m1(19, 42, 28, 220, 96)!
+#APP: Ooh, I needed that app?m2(19, 42, 28)!
+#APP: Come get some app!m3(19)!
+-74, 19,
+#CLI: Ooh, I needed that app?m3(19)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(19, 42, 82, 171, 169)!
+-76, 19, 42, 82, 171, 169,
+#CLI: Come get some app!m2(19, 42, 82)!
+-75, 19, 42, 82,
+#APP: Ooh, I needed that app?m1(19, 42, 82, 171, 169)!
+#APP: Ooh, I needed that app?m2(19, 42, 82)!
+#APP: Come get some app!m3(19)!
+-74, 19,
+#CLI: Ooh, I needed that app?m3(19)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(19, 42, 187, 186, 11)!
+-76, 19, 42, 187, 186, 11,
+#CLI: Come get some app!m2(19, 42, 187)!
+-75, 19, 42, 187,
+#APP: Ooh, I needed that app?m1(19, 42, 187, 186, 11)!
+#APP: Ooh, I needed that app?m2(19, 42, 187)!
+#APP: Come get some app!m3(19)!
+-74, 19,
+#CLI: Ooh, I needed that app?m3(19)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(19, 42, 255, 85, 123)!
+-76, 19, 42, 255, 85, 123,
+#CLI: Come get some app!m2(19, 42, 255)!
+-75, 19, 42, 255,
+#APP: Ooh, I needed that app?m1(19, 42, 255, 85, 123)!
+#APP: Ooh, I needed that app?m2(19, 42, 255)!
+#APP: Come get some app!m3(19)!
+-74, 19,
+#CLI: Ooh, I needed that app?m3(19)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(19, 42, 178, 193, 143)!
+-76, 19, 42, 178, 193, 143,
+#CLI: Come get some app!m2(19, 42, 178)!
+-75, 19, 42, 178,
+#APP: Ooh, I needed that app?m1(19, 42, 178, 193, 143)!
+#APP: Ooh, I needed that app?m2(19, 42, 178)!
+#APP: Come get some app!m3(19)!
+-74, 19,
+#CLI: Ooh, I needed that app?m3(19)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(19, 42, 253, 212, 59)!
+-76, 19, 42, 253, 212, 59,
+#CLI: Come get some app!m2(19, 42, 253)!
+-75, 19, 42, 253,
+#APP: Ooh, I needed that app?m1(19, 42, 253, 212, 59)!
+#APP: Ooh, I needed that app?m2(19, 42, 253)!
+#APP: Come get some app!m3(19)!
+-74, 19,
+#CLI: Ooh, I needed that app?m3(19)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(19, 42, 46, 97, 38)!
+-76, 19, 42, 46, 97, 38,
+#CLI: Come get some app!m2(19, 42, 46)!
+-75, 19, 42, 46,
+#APP: Ooh, I needed that app?m1(19, 42, 46, 97, 38)!
+#APP: Ooh, I needed that app?m2(19, 42, 46)!
+#APP: Come get some app!m3(19)!
+-74, 19,
+#CLI: Ooh, I needed that app?m3(19)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(19, 42, 186, 173, 208)!
+-76, 19, 42, 186, 173, 208,
+#CLI: Come get some app!m2(19, 42, 186)!
+-75, 19, 42, 186,
+#APP: Ooh, I needed that app?m1(19, 42, 186, 173, 208)!
+#APP: Ooh, I needed that app?m2(19, 42, 186)!
+#APP: Come get some app!m3(19)!
+-74, 19,
+#CLI: Ooh, I needed that app?m3(19)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(19, 42, 247, 166, 164)!
+-76, 19, 42, 247, 166, 164,
+#CLI: Come get some app!m2(19, 42, 247)!
+-75, 19, 42, 247,
+#APP: Ooh, I needed that app?m1(19, 42, 247, 166, 164)!
+#APP: Ooh, I needed that app?m2(19, 42, 247)!
+#APP: Come get some app!m3(19)!
+-74, 19,
+#CLI: Ooh, I needed that app?m3(19)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(19, 42, 148, 184, 16)!
+-76, 19, 42, 148, 184, 16,
+#CLI: Come get some app!m2(19, 42, 148)!
+-75, 19, 42, 148,
+#APP: Ooh, I needed that app?m1(19, 42, 148, 184, 16)!
+#APP: Ooh, I needed that app?m2(19, 42, 148)!
+#APP: Come get some app!m3(19)!
+-74, 19,
+#CLI: Ooh, I needed that app?m3(19)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(19, 42, 74, 108, 169)!
+-76, 19, 42, 74, 108, 169,
+#CLI: Come get some app!m2(19, 42, 74)!
+-75, 19, 42, 74,
+#APP: Ooh, I needed that app?m1(19, 42, 74, 108, 169)!
+#APP: Ooh, I needed that app?m2(19, 42, 74)!
+#APP: Come get some app!m3(19)!
+-74, 19,
+#CLI: Ooh, I needed that app?m3(19)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(19, 42, 136, 122, 19)!
+-76, 19, 42, 136, 122, 19,
+#CLI: Come get some app!m2(19, 42, 136)!
+-75, 19, 42, 136,
+#APP: Ooh, I needed that app?m1(19, 42, 136, 122, 19)!
+#APP: Ooh, I needed that app?m2(19, 42, 136)!
+#APP: Come get some app!m3(19)!
+-74, 19,
+#CLI: Ooh, I needed that app?m3(19)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(19, 42, 248, 45, 58)!
+-76, 19, 42, 248, 45, 58,
+#CLI: Come get some app!m2(19, 42, 248)!
+-75, 19, 42, 248,
+#APP: Ooh, I needed that app?m1(19, 42, 248, 45, 58)!
+#APP: Ooh, I needed that app?m2(19, 42, 248)!
+#APP: Come get some app!m3(19)!
+-74, 19,
+#CLI: Ooh, I needed that app?m3(19)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(19, 42, 143, 144, 61)!
+-76, 19, 42, 143, 144, 61,
+#CLI: Come get some app!m2(19, 42, 143)!
+-75, 19, 42, 143,
+#APP: Ooh, I needed that app?m1(19, 42, 143, 144, 61)!
+#APP: Ooh, I needed that app?m2(19, 42, 143)!
+#APP: Come get some app!m3(19)!
+-74, 19,
+#CLI: Ooh, I needed that app?m3(19)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(19, 42, 211, 145, 89)!
+-76, 19, 42, 211, 145, 89,
+#CLI: Come get some app!m2(19, 42, 211)!
+-75, 19, 42, 211,
+#APP: Ooh, I needed that app?m1(19, 42, 211, 145, 89)!
+#APP: Ooh, I needed that app?m2(19, 42, 211)!
+#APP: Come get some app!m3(19)!
+-74, 19,
+#CLI: Ooh, I needed that app?m3(19)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(19, 42, 226, 78, 193)!
+-76, 19, 42, 226, 78, 193,
+#CLI: Come get some app!m2(19, 42, 226)!
+-75, 19, 42, 226,
+#APP: Ooh, I needed that app?m1(19, 42, 226, 78, 193)!
+#APP: Ooh, I needed that app?m2(19, 42, 226)!
+#APP: Come get some app!m3(19)!
+-74, 19,
+#CLI: Ooh, I needed that app?m3(19)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(19, 42, 87, 7, 175)!
+-76, 19, 42, 87, 7, 175,
+#CLI: Come get some app!m2(19, 42, 87)!
+-75, 19, 42, 87,
+#APP: Ooh, I needed that app?m1(19, 42, 87, 7, 175)!
+#APP: Ooh, I needed that app?m2(19, 42, 87)!
+#APP: Come get some app!m3(19)!
+-74, 19,
+#CLI: Ooh, I needed that app?m3(19)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(19, 42, 36, 32, 41)!
+-76, 19, 42, 36, 32, 41,
+#CLI: Come get some app!m2(19, 42, 36)!
+-75, 19, 42, 36,
+#APP: Ooh, I needed that app?m1(19, 42, 36, 32, 41)!
+#APP: Ooh, I needed that app?m2(19, 42, 36)!
+#APP: Come get some app!m3(19)!
+-74, 19,
+#CLI: Ooh, I needed that app?m3(19)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(19, 42, 235, 110, 24)!
+-76, 19, 42, 235, 110, 24,
+#CLI: Come get some app!m2(19, 42, 235)!
+-75, 19, 42, 235,
+#APP: Ooh, I needed that app?m1(19, 42, 235, 110, 24)!
+#APP: Ooh, I needed that app?m2(19, 42, 235)!
+#APP: Come get some app!m3(19)!
+-74, 19,
+#CLI: Ooh, I needed that app?m3(19)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(19, 42, 206, 223, 49)!
+-76, 19, 42, 206, 223, 49,
+#CLI: Come get some app!m2(19, 42, 206)!
+-75, 19, 42, 206,
+#APP: Ooh, I needed that app?m1(19, 42, 206, 223, 49)!
+#APP: Ooh, I needed that app?m2(19, 42, 206)!
+#APP: Come get some app!m3(19)!
+-74, 19,
+#CLI: Ooh, I needed that app?m3(19)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(19, 42, 210, 118, 197)!
+-76, 19, 42, 210, 118, 197,
+#CLI: Come get some app!m2(19, 42, 210)!
+-75, 19, 42, 210,
+#APP: Ooh, I needed that app?m1(19, 42, 210, 118, 197)!
+#APP: Ooh, I needed that app?m2(19, 42, 210)!
+#APP: Come get some app!m3(19)!
+-74, 19,
+#CLI: Ooh, I needed that app?m3(19)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(19, 42, 78, 247, 36)!
+-76, 19, 42, 78, 247, 36,
+#CLI: Come get some app!m2(19, 42, 78)!
+-75, 19, 42, 78,
+#APP: Ooh, I needed that app?m1(19, 42, 78, 247, 36)!
+#APP: Ooh, I needed that app?m2(19, 42, 78)!
+#APP: Come get some app!m3(19)!
+-74, 19,
+#CLI: Ooh, I needed that app?m3(19)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(19, 42, 155, 17, 171)!
+-76, 19, 42, 155, 17, 171,
+#CLI: Come get some app!m2(19, 42, 155)!
+-75, 19, 42, 155,
+#APP: Ooh, I needed that app?m1(19, 42, 155, 17, 171)!
+#APP: Ooh, I needed that app?m2(19, 42, 155)!
+#APP: Come get some app!m3(19)!
+-74, 19,
+#CLI: Ooh, I needed that app?m3(19)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(19, 42, 31, 192, 135)!
+-76, 19, 42, 31, 192, 135,
+#CLI: Come get some app!m2(19, 42, 31)!
+-75, 19, 42, 31,
+#APP: Ooh, I needed that app?m1(19, 42, 31, 192, 135)!
+#APP: Ooh, I needed that app?m2(19, 42, 31)!
+#APP: Come get some app!m3(19)!
+-74, 19,
+#CLI: Ooh, I needed that app?m3(19)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(19, 42, 99, 224, 130)!
+-76, 19, 42, 99, 224, 130,
+#CLI: Come get some app!m2(19, 42, 99)!
+-75, 19, 42, 99,
+#APP: Ooh, I needed that app?m1(19, 42, 99, 224, 130)!
+#APP: Ooh, I needed that app?m2(19, 42, 99)!
+#APP: Come get some app!m3(19)!
+-74, 19,
+#CLI: Ooh, I needed that app?m3(19)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(19, 42, 161, 81, 204)!
+-76, 19, 42, 161, 81, 204,
+#CLI: Come get some app!m2(19, 42, 161)!
+-75, 19, 42, 161,
+#APP: Ooh, I needed that app?m1(19, 42, 161, 81, 204)!
+#APP: Ooh, I needed that app?m2(19, 42, 161)!
+#APP: Come get some app!m3(19)!
+-74, 19,
+#CLI: Ooh, I needed that app?m3(19)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(19, 42, 18, 201, 76)!
+-76, 19, 42, 18, 201, 76,
+#CLI: Come get some app!m2(19, 42, 18)!
+-75, 19, 42, 18,
+#APP: Ooh, I needed that app?m1(19, 42, 18, 201, 76)!
+#APP: Ooh, I needed that app?m2(19, 42, 18)!
+#APP: Come get some app!m3(19)!
+-74, 19,
+#CLI: Ooh, I needed that app?m3(19)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(19, 42, 125, 93, 154)!
+-76, 19, 42, 125, 93, 154,
+#CLI: Come get some app!m2(19, 42, 125)!
+-75, 19, 42, 125,
+#APP: Ooh, I needed that app?m1(19, 42, 125, 93, 154)!
+#APP: Ooh, I needed that app?m2(19, 42, 125)!
+#APP: Come get some app!m3(19)!
+-74, 19,
+#CLI: Ooh, I needed that app?m3(19)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(19, 42, 198, 166, 41)!
+-76, 19, 42, 198, 166, 41,
+#CLI: Come get some app!m2(19, 42, 198)!
+-75, 19, 42, 198,
+#APP: Ooh, I needed that app?m1(19, 42, 198, 166, 41)!
+#APP: Ooh, I needed that app?m2(19, 42, 198)!
+#APP: Come get some app!m3(19)!
+-74, 19,
+#CLI: Ooh, I needed that app?m3(19)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(19, 42, 78, 132, 237)!
+-76, 19, 42, 78, 132, 237,
+#CLI: Come get some app!m2(19, 42, 78)!
+-75, 19, 42, 78,
+#APP: Ooh, I needed that app?m1(19, 42, 78, 132, 237)!
+#APP: Ooh, I needed that app?m2(19, 42, 78)!
+#APP: Come get some app!m3(19)!
+-74, 19,
+#CLI: Ooh, I needed that app?m3(19)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(19, 42, 58, 242, 96)!
+-76, 19, 42, 58, 242, 96,
+#CLI: Come get some app!m2(19, 42, 58)!
+-75, 19, 42, 58,
+#APP: Ooh, I needed that app?m1(19, 42, 58, 242, 96)!
+#APP: Ooh, I needed that app?m2(19, 42, 58)!
+#APP: Come get some app!m3(19)!
+-74, 19,
+#CLI: Ooh, I needed that app?m3(19)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(19, 42, 79, 5, 252)!
+-76, 19, 42, 79, 5, 252,
+#CLI: Come get some app!m2(19, 42, 79)!
+-75, 19, 42, 79,
+#APP: Ooh, I needed that app?m1(19, 42, 79, 5, 252)!
+#APP: Ooh, I needed that app?m2(19, 42, 79)!
+#APP: Come get some app!m3(19)!
+-74, 19,
+#CLI: Ooh, I needed that app?m3(19)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(19, 42, 140, 241, 80)!
+-76, 19, 42, 140, 241, 80,
+#CLI: Come get some app!m2(19, 42, 140)!
+-75, 19, 42, 140,
+#APP: Ooh, I needed that app?m1(19, 42, 140, 241, 80)!
+#APP: Ooh, I needed that app?m2(19, 42, 140)!
+#APP: Come get some app!m3(19)!
+-74, 19,
+#CLI: Ooh, I needed that app?m3(19)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(19, 42, 132, 106, 62)!
+-76, 19, 42, 132, 106, 62,
+#CLI: Come get some app!m2(19, 42, 132)!
+-75, 19, 42, 132,
+#APP: Ooh, I needed that app?m1(19, 42, 132, 106, 62)!
+#APP: Ooh, I needed that app?m2(19, 42, 132)!
+#APP: Come get some app!m3(19)!
+-74, 19,
+#CLI: Ooh, I needed that app?m3(19)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(19, 42, 112, 253, 168)!
+-76, 19, 42, 112, 253, 168,
+#CLI: Come get some app!m2(19, 42, 112)!
+-75, 19, 42, 112,
+#APP: Ooh, I needed that app?m1(19, 42, 112, 253, 168)!
+#APP: Ooh, I needed that app?m2(19, 42, 112)!
+#APP: Come get some app!m3(19)!
+-74, 19,
+#CLI: Ooh, I needed that app?m3(19)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(19, 42, 106, 172, 177)!
+-76, 19, 42, 106, 172, 177,
+#CLI: Come get some app!m2(19, 42, 106)!
+-75, 19, 42, 106,
+#APP: Ooh, I needed that app?m1(19, 42, 106, 172, 177)!
+#APP: Ooh, I needed that app?m2(19, 42, 106)!
+#APP: Come get some app!m3(19)!
+-74, 19,
+#CLI: Ooh, I needed that app?m3(19)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(19, 42, 195, 108, 143)!
+-76, 19, 42, 195, 108, 143,
+#CLI: Come get some app!m2(19, 42, 195)!
+-75, 19, 42, 195,
+#APP: Ooh, I needed that app?m1(19, 42, 195, 108, 143)!
+#APP: Ooh, I needed that app?m2(19, 42, 195)!
+#APP: Come get some app!m3(19)!
+-74, 19,
+#CLI: Ooh, I needed that app?m3(19)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(19, 42, 141, 198, 225)!
+-76, 19, 42, 141, 198, 225,
+#CLI: Come get some app!m2(19, 42, 141)!
+-75, 19, 42, 141,
+#APP: Ooh, I needed that app?m1(19, 42, 141, 198, 225)!
+#APP: Ooh, I needed that app?m2(19, 42, 141)!
+#APP: Come get some app!m3(19)!
+-74, 19,
+#CLI: Ooh, I needed that app?m3(19)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(19, 42, 99, 175, 171)!
+-76, 19, 42, 99, 175, 171,
+#CLI: Come get some app!m2(19, 42, 99)!
+-75, 19, 42, 99,
+#APP: Ooh, I needed that app?m1(19, 42, 99, 175, 171)!
+#APP: Ooh, I needed that app?m2(19, 42, 99)!
+#APP: Come get some app!m3(19)!
+-74, 19,
+#CLI: Ooh, I needed that app?m3(19)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(19, 42, 192, 24, 157)!
+-76, 19, 42, 192, 24, 157,
+#CLI: Come get some app!m2(19, 42, 192)!
+-75, 19, 42, 192,
+#APP: Ooh, I needed that app?m1(19, 42, 192, 24, 157)!
+#APP: Ooh, I needed that app?m2(19, 42, 192)!
+#APP: Come get some app!m3(19)!
+-74, 19,
+#CLI: Ooh, I needed that app?m3(19)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(19, 42, 123, 162, 37)!
+-76, 19, 42, 123, 162, 37,
+#CLI: Come get some app!m2(19, 42, 123)!
+-75, 19, 42, 123,
+#APP: Ooh, I needed that app?m1(19, 42, 123, 162, 37)!
+#APP: Ooh, I needed that app?m2(19, 42, 123)!
+#APP: Come get some app!m3(19)!
+-74, 19,
+#CLI: Ooh, I needed that app?m3(19)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(19, 42, 5, 241, 66)!
+-76, 19, 42, 5, 241, 66,
+#CLI: Come get some app!m2(19, 42, 5)!
+-75, 19, 42, 5,
+#APP: Ooh, I needed that app?m1(19, 42, 5, 241, 66)!
+#APP: Ooh, I needed that app?m2(19, 42, 5)!
+#APP: Come get some app!m3(19)!
+-74, 19,
+#CLI: Ooh, I needed that app?m3(19)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(19, 42, 46, 161, 249)!
+-76, 19, 42, 46, 161, 249,
+#CLI: Come get some app!m2(19, 42, 46)!
+-75, 19, 42, 46,
+#APP: Ooh, I needed that app?m1(19, 42, 46, 161, 249)!
+#APP: Ooh, I needed that app?m2(19, 42, 46)!
+#APP: Come get some app!m3(19)!
+-74, 19,
+#CLI: Ooh, I needed that app?m3(19)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(19, 42, 19, 55, 245)!
+-76, 19, 42, 19, 55, 245,
+#CLI: Come get some app!m2(19, 42, 19)!
+-75, 19, 42, 19,
+#APP: Ooh, I needed that app?m1(19, 42, 19, 55, 245)!
+#APP: Ooh, I needed that app?m2(19, 42, 19)!
+#APP: Come get some app!m3(19)!
+-74, 19,
+#CLI: Ooh, I needed that app?m3(19)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(19, 42, 100, 150, 214)!
+-76, 19, 42, 100, 150, 214,
+#CLI: Come get some app!m2(19, 42, 100)!
+-75, 19, 42, 100,
+#APP: Ooh, I needed that app?m1(19, 42, 100, 150, 214)!
+#APP: Ooh, I needed that app?m2(19, 42, 100)!
+#APP: Come get some app!m3(19)!
+-74, 19,
+#CLI: Ooh, I needed that app?m3(19)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(19, 42, 71, 152, 70)!
+-76, 19, 42, 71, 152, 70,
+#CLI: Come get some app!m2(19, 42, 71)!
+-75, 19, 42, 71,
+#APP: Ooh, I needed that app?m1(19, 42, 71, 152, 70)!
+#APP: Ooh, I needed that app?m2(19, 42, 71)!
+#APP: Come get some app!m3(19)!
+-74, 19,
+#CLI: Ooh, I needed that app?m3(19)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(19, 42, 213, 122, 8)!
+-76, 19, 42, 213, 122, 8,
+#CLI: Come get some app!m2(19, 42, 213)!
+-75, 19, 42, 213,
+#APP: Ooh, I needed that app?m1(19, 42, 213, 122, 8)!
+#APP: Ooh, I needed that app?m2(19, 42, 213)!
+#APP: Come get some app!m3(19)!
+-74, 19,
+#CLI: Ooh, I needed that app?m3(19)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(19, 42, 21, 58, 124)!
+-76, 19, 42, 21, 58, 124,
+#CLI: Come get some app!m2(19, 42, 21)!
+-75, 19, 42, 21,
+#APP: Ooh, I needed that app?m1(19, 42, 21, 58, 124)!
+#APP: Ooh, I needed that app?m2(19, 42, 21)!
+#APP: Come get some app!m3(19)!
+-74, 19,
+#CLI: Ooh, I needed that app?m3(19)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(19, 42, 232, 47, 21)!
+-76, 19, 42, 232, 47, 21,
+#CLI: Come get some app!m2(19, 42, 232)!
+-75, 19, 42, 232,
+#APP: Ooh, I needed that app?m1(19, 42, 232, 47, 21)!
+#APP: Ooh, I needed that app?m2(19, 42, 232)!
+#APP: Come get some app!m3(19)!
+-74, 19,
+#CLI: Ooh, I needed that app?m3(19)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(19, 42, 126, 186, 26)!
+-76, 19, 42, 126, 186, 26,
+#CLI: Come get some app!m2(19, 42, 126)!
+-75, 19, 42, 126,
+#APP: Ooh, I needed that app?m1(19, 42, 126, 186, 26)!
+#APP: Ooh, I needed that app?m2(19, 42, 126)!
+#APP: Come get some app!m3(19)!
+-74, 19,
+#CLI: Ooh, I needed that app?m3(19)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(19, 42, 227, 177, 152)!
+-76, 19, 42, 227, 177, 152,
+#CLI: Come get some app!m2(19, 42, 227)!
+-75, 19, 42, 227,
+#APP: Ooh, I needed that app?m1(19, 42, 227, 177, 152)!
+#APP: Ooh, I needed that app?m2(19, 42, 227)!
+#APP: Come get some app!m3(19)!
+-74, 19,
+#CLI: Ooh, I needed that app?m3(19)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(19, 42, 18, 221, 228)!
+-76, 19, 42, 18, 221, 228,
+#CLI: Come get some app!m2(19, 42, 18)!
+-75, 19, 42, 18,
+#APP: Ooh, I needed that app?m1(19, 42, 18, 221, 228)!
+#APP: Ooh, I needed that app?m2(19, 42, 18)!
+#APP: Come get some app!m3(19)!
+-74, 19,
+#CLI: Ooh, I needed that app?m3(19)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(19, 42, 46, 143, 110)!
+-76, 19, 42, 46, 143, 110,
+#CLI: Come get some app!m2(19, 42, 46)!
+-75, 19, 42, 46,
+#APP: Ooh, I needed that app?m1(19, 42, 46, 143, 110)!
+#APP: Ooh, I needed that app?m2(19, 42, 46)!
+#APP: Come get some app!m3(19)!
+-74, 19,
+#CLI: Ooh, I needed that app?m3(19)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(19, 42, 66, 152, 18)!
+-76, 19, 42, 66, 152, 18,
+#CLI: Come get some app!m2(19, 42, 66)!
+-75, 19, 42, 66,
+#APP: Ooh, I needed that app?m1(19, 42, 66, 152, 18)!
+#APP: Ooh, I needed that app?m2(19, 42, 66)!
+#APP: Come get some app!m3(19)!
+-74, 19,
+#CLI: Ooh, I needed that app?m3(19)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(19, 42, 170, 203, 72)!
+-76, 19, 42, 170, 203, 72,
+#CLI: Come get some app!m2(19, 42, 170)!
+-75, 19, 42, 170,
+#APP: Ooh, I needed that app?m1(19, 42, 170, 203, 72)!
+#APP: Ooh, I needed that app?m2(19, 42, 170)!
+#APP: Come get some app!m3(19)!
+-74, 19,
+#CLI: Ooh, I needed that app?m3(19)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(19, 42, 152, 152, 200)!
+-76, 19, 42, 152, 152, 200,
+#CLI: Come get some app!m2(19, 42, 152)!
+-75, 19, 42, 152,
+#APP: Ooh, I needed that app?m1(19, 42, 152, 152, 200)!
+#APP: Ooh, I needed that app?m2(19, 42, 152)!
+#APP: Come get some app!m3(19)!
+-74, 19,
+#CLI: Ooh, I needed that app?m3(19)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(19, 42, 86, 96, 12)!
+-76, 19, 42, 86, 96, 12,
+#CLI: Come get some app!m2(19, 42, 86)!
+-75, 19, 42, 86,
+#APP: Ooh, I needed that app?m1(19, 42, 86, 96, 12)!
+#APP: Ooh, I needed that app?m2(19, 42, 86)!
+#APP: Come get some app!m3(19)!
+-74, 19,
+#CLI: Ooh, I needed that app?m3(19)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(19, 42, 159, 40, 213)!
+-76, 19, 42, 159, 40, 213,
+#CLI: Come get some app!m2(19, 42, 159)!
+-75, 19, 42, 159,
+#APP: Ooh, I needed that app?m1(19, 42, 159, 40, 213)!
+#APP: Ooh, I needed that app?m2(19, 42, 159)!
+#APP: Come get some app!m3(19)!
+-74, 19,
+#CLI: Ooh, I needed that app?m3(19)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(19, 42, 160, 89, 164)!
+-76, 19, 42, 160, 89, 164,
+#CLI: Come get some app!m2(19, 42, 160)!
+-75, 19, 42, 160,
+#APP: Ooh, I needed that app?m1(19, 42, 160, 89, 164)!
+#APP: Ooh, I needed that app?m2(19, 42, 160)!
+#APP: Come get some app!m3(19)!
+-74, 19,
+#CLI: Ooh, I needed that app?m3(19)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(19, 42, 167, 40, 203)!
+-76, 19, 42, 167, 40, 203,
+#CLI: Come get some app!m2(19, 42, 167)!
+-75, 19, 42, 167,
+#APP: Ooh, I needed that app?m1(19, 42, 167, 40, 203)!
+#APP: Ooh, I needed that app?m2(19, 42, 167)!
+#APP: Come get some app!m3(19)!
+-74, 19,
+#CLI: Ooh, I needed that app?m3(19)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(19, 42, 106, 177, 79)!
+-76, 19, 42, 106, 177, 79,
+#CLI: Come get some app!m2(19, 42, 106)!
+-75, 19, 42, 106,
+#APP: Ooh, I needed that app?m1(19, 42, 106, 177, 79)!
+#APP: Ooh, I needed that app?m2(19, 42, 106)!
+#APP: Come get some app!m3(19)!
+-74, 19,
+#CLI: Ooh, I needed that app?m3(19)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(19, 42, 124, 22, 105)!
+-76, 19, 42, 124, 22, 105,
+#CLI: Come get some app!m2(19, 42, 124)!
+-75, 19, 42, 124,
+#APP: Ooh, I needed that app?m1(19, 42, 124, 22, 105)!
+#APP: Ooh, I needed that app?m2(19, 42, 124)!
+#APP: Come get some app!m3(19)!
+-74, 19,
+#CLI: Ooh, I needed that app?m3(19)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(19, 42, 147, 47, 6)!
+-76, 19, 42, 147, 47, 6,
+#CLI: Come get some app!m2(19, 42, 147)!
+-75, 19, 42, 147,
+#APP: Ooh, I needed that app?m1(19, 42, 147, 47, 6)!
+#APP: Ooh, I needed that app?m2(19, 42, 147)!
+#APP: Come get some app!m3(19)!
+-74, 19,
+#CLI: Ooh, I needed that app?m3(19)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(19, 42, 9, 235, 143)!
+-76, 19, 42, 9, 235, 143,
+#CLI: Come get some app!m2(19, 42, 9)!
+-75, 19, 42, 9,
+#APP: Ooh, I needed that app?m1(19, 42, 9, 235, 143)!
+#APP: Ooh, I needed that app?m2(19, 42, 9)!
+#APP: Come get some app!m3(19)!
+-74, 19,
+#CLI: Ooh, I needed that app?m3(19)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(19, 42, 197, 82, 192)!
+-76, 19, 42, 197, 82, 192,
+#CLI: Come get some app!m2(19, 42, 197)!
+-75, 19, 42, 197,
+#APP: Ooh, I needed that app?m1(19, 42, 197, 82, 192)!
+#APP: Ooh, I needed that app?m2(19, 42, 197)!
+#APP: Come get some app!m3(19)!
+-74, 19,
+#CLI: Ooh, I needed that app?m3(19)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(19, 42, 133, 251, 46)!
+-76, 19, 42, 133, 251, 46,
+#CLI: Come get some app!m2(19, 42, 133)!
+-75, 19, 42, 133,
+#APP: Ooh, I needed that app?m1(19, 42, 133, 251, 46)!
+#APP: Ooh, I needed that app?m2(19, 42, 133)!
+#APP: Come get some app!m3(19)!
+-74, 19,
+#CLI: Ooh, I needed that app?m3(19)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(19, 42, 15, 118, 158)!
+-76, 19, 42, 15, 118, 158,
+#CLI: Come get some app!m2(19, 42, 15)!
+-75, 19, 42, 15,
+#APP: Ooh, I needed that app?m1(19, 42, 15, 118, 158)!
+#APP: Ooh, I needed that app?m2(19, 42, 15)!
+#APP: Come get some app!m3(19)!
+-74, 19,
+#CLI: Ooh, I needed that app?m3(19)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(19, 42, 89, 178, 35)!
+-76, 19, 42, 89, 178, 35,
+#CLI: Come get some app!m2(19, 42, 89)!
+-75, 19, 42, 89,
+#APP: Ooh, I needed that app?m1(19, 42, 89, 178, 35)!
+#APP: Ooh, I needed that app?m2(19, 42, 89)!
+#APP: Come get some app!m3(19)!
+-74, 19,
+#CLI: Ooh, I needed that app?m3(19)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(19, 42, 120, 214, 109)!
+-76, 19, 42, 120, 214, 109,
+#CLI: Come get some app!m2(19, 42, 120)!
+-75, 19, 42, 120,
+#CLI: What are you waitin for? Christmas?
+#APP: Ooh, I needed that app?m1(19, 42, 120, 214, 109)!
+#APP: Ooh, I needed that app?m2(19, 42, 120)!
+#APP: Come get some app!m3(19)!
+-74, 19,

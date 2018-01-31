@@ -148,6 +148,19 @@ class Diversifier {
             }
         }
 
+        if (iterations==0) {
+            final TreeIterator<EObject> it3 = model.eAllContents();
+            while (it3.hasNext()) {
+                final EObject o = it3.next();
+                if (o instanceof Message) {
+                    final Thing t = ThingMLHelpers.findContainingThing(o);
+                    if (!AnnotatedElementHelper.isDefined(t, "diversify", "not")) {
+                        final Message m = (Message) o;
+                        generateCodeForMessage(m);
+                    }
+                }
+            }
+        }
         addLogs(model);
         //splitConfiguration(cfg, amount);
     }
