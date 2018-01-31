@@ -1,0 +1,494 @@
+datatype Byte<1>
+	@type_checker "Byte"
+	@java_type "byte"
+datatype Integer<2>
+	@type_checker "Integer"
+	@java_type "short"
+thing fragment Msgs {
+	message m2(c : Integer, r23 : Byte, r6 : Byte, r2 : Integer, b : Byte@upsize "not", a : Byte@upsize "not", r3 : Byte)
+	@code "0x1A"
+	message m1(r4 : Integer, a : Byte@upsize "not", r24 : Byte, e : Byte, b : Byte@upsize "not", d : Byte, r0 : Byte, c : Integer, r7 : Byte)
+	@code "0x1B"
+	message m3(a : Integer, r1 : Integer, r25 : Byte, r5 : Byte, r8 : Byte)
+	@code "0x1C"
+	message m3a(r9 : Byte, r26 : Byte, a : Integer)
+	@code "0x1D"
+	message m3r1r5(r5 : Byte, r27 : Byte, r1 : Integer, r10 : Byte)
+	@code "0x1E"
+	message m1cr0r4de(r11 : Byte, e : Byte, r4 : Integer, r0 : Byte, r28 : Byte, d : Byte, c : Integer)
+	@code "0x1F"
+	message m1ba(r12 : Byte, b : Byte @upsize "not", r29 : Byte, a : Byte @upsize "not")
+	@code "0x20"
+	message m2r3r2(r3 : Byte, r13 : Byte, r2 : Integer, r30 : Byte)
+	@code "0x21"
+	message m2abc(c : Integer, r14 : Byte, r31 : Byte, b : Byte @upsize "not", a : Byte @upsize "not")
+	@code "0x22"
+	message m3r1r5r1(r15 : Byte, r1 : Integer, r32 : Byte)
+	@code "0x23"
+	message m3r1r5r5(r5 : Byte, r16 : Byte, r33 : Byte)
+	@code "0x24"
+	message m1cr0r4dec(c : Integer, r17 : Byte, r34 : Byte)
+	@code "0x25"
+	message m1cr0r4der0r4de(r35 : Byte, e : Byte, d : Byte, r0 : Byte, r18 : Byte, r4 : Integer)
+	@code "0x26"
+	message m1bab(r19 : Byte, r36 : Byte, b : Byte @upsize "not")
+	@code "0x27"
+	message m1baa(a : Byte @upsize "not", r37 : Byte, r20 : Byte)
+	@code "0x28"
+	message m2r3r2r3(r3 : Byte, r21 : Byte, r38 : Byte)
+	@code "0x29"
+	message m2r3r2r2(r22 : Byte, r39 : Byte, r2 : Integer)
+	@code "0x2A"
+	function rnd() : Byte do
+		return `Math.floor(Math.random() * Math.floor(256))`
+	end
+}
+thing App includes Msgs {
+	provided port app {
+		sends m3a
+	sends m3r1r5r1 sends m3r1r5r5 receives m2abc receives m1cr0r4dec
+		receives m1cr0r4der0r4de receives m1bab receives m1baa receives m2r3r2r3 receives m2r3r2r2
+	}
+	internal port diversified {
+		sends m1 sends m2abc sends m2 sends m1cr0r4dec sends m1cr0r4der0r4de sends m1cr0r4de sends m1bab sends m1baa sends m1ba sends m2r3r2r3 sends m2r3r2r2 sends m2r3r2 receives m1 receives m2abc receives m2 receives m1cr0r4dec receives m1cr0r4der0r4de receives m1cr0r4de receives m1bab receives m1baa receives m1ba receives m2r3r2r3 receives m2r3r2r2 receives m2r3r2
+	}
+	property id : Byte
+	statechart init WaitForM1 {
+		state WaitForM1 {
+			transition -> WaitForM2
+			event e : diversified?m1
+			action do
+				id = e.a
+				println "#APP: Ooh, I needed that app?m1(" , e.a , ", " , e.b , ", " , e.c , ", " , e.d , ", " , e.e , ")!"
+			end
+		}
+		state WaitForM2 {
+			transition -> SendAck
+			event e : diversified?m2
+			action println "#APP: Ooh, I needed that app?m2(" , e.a , ", " , e.b , ", " , e.c , ")!"
+		}
+		state SendAck {
+			on entry do
+				println "#APP: Come get some app!m3(" , id , ")!"
+				do
+					do
+						println "29" , ", " , rnd(), ", " , rnd(), ", " , id , ", "
+						app!m3a(rnd(), rnd(), id)
+					end
+					do
+						do
+							println "35" , ", " , rnd(), ", " , rnd(), ", " , rnd(), ", "
+							app!m3r1r5r1(rnd(), rnd(), rnd())
+						end
+						do
+							println "36" , ", " , rnd(), ", " , rnd(), ", " , rnd(), ", "
+							app!m3r1r5r5(rnd(), rnd(), rnd())
+						end
+					end
+				end
+			end
+			transition -> WaitForM1
+		}
+		region generate_m1_from_m1cr0r4de_and_m1ba init INIT {
+			composite state INIT init S1 {
+				property c : Integer
+				property r0 : Byte
+				property r4 : Integer
+				property d : Byte
+				property e : Byte
+				property b : Byte
+				property a : Byte
+				state S1 @diversify "not" {
+					transition -> S2
+					event ev : diversified?m1cr0r4de
+					action do
+						c = ev.c
+						r0 = ev.r0
+						r4 = ev.r4
+						d = ev.d
+						e = ev.e
+					end
+					transition -> S3
+					event ev : diversified?m1ba
+					action do
+						b = ev.b
+						a = ev.a
+					end
+				}
+				state S2 @diversify "not" {
+					transition -> S4
+					event ev : diversified?m1ba
+					action do
+						b = ev.b
+						a = ev.a
+					end
+				}
+				state S3 @diversify "not" {
+					transition -> S4
+					event ev : diversified?m1cr0r4de
+					action do
+						c = ev.c
+						r0 = ev.r0
+						r4 = ev.r4
+						d = ev.d
+						e = ev.e
+					end
+				}
+				state S4 @diversify "not" {
+					on entry do
+						diversified!m1(r4, a, rnd(), e, b, d, r0, c, rnd())
+					end
+					transition -> S1
+				}
+			}
+		}
+		region generate_m2_from_m2r3r2_and_m2abc init INIT {
+			composite state INIT init S1 {
+				property r3 : Byte
+				property r2 : Integer
+				property a : Byte
+				property b : Byte
+				property c : Integer
+				state S1 @diversify "not" {
+					transition -> S2
+					event ev : diversified?m2r3r2
+					action do
+						r3 = ev.r3
+						r2 = ev.r2
+					end
+					transition -> S3
+					event ev : app?m2abc
+					action do
+						a = ev.a
+						b = ev.b
+						c = ev.c
+					end
+				}
+				state S2 @diversify "not" {
+					transition -> S4
+					event ev : app?m2abc
+					action do
+						a = ev.a
+						b = ev.b
+						c = ev.c
+					end
+				}
+				state S3 @diversify "not" {
+					transition -> S4
+					event ev : diversified?m2r3r2
+					action do
+						r3 = ev.r3
+						r2 = ev.r2
+					end
+				}
+				state S4 @diversify "not" {
+					on entry do
+						diversified!m2(c, rnd(), rnd(), r2, b, a, r3)
+					end
+					transition -> S1
+				}
+			}
+		}
+		region generate_m1cr0r4de_from_m1cr0r4dec_and_m1cr0r4der0r4de init INIT {
+			composite state INIT init S1 {
+				property c : Integer
+				property r0 : Byte
+				property r4 : Integer
+				property d : Byte
+				property e : Byte
+				state S1 @diversify "not" {
+					transition -> S2
+					event ev : app?m1cr0r4dec
+					action do
+						c = ev.c
+					end
+					transition -> S3
+					event ev : app?m1cr0r4der0r4de
+					action do
+						r0 = ev.r0
+						r4 = ev.r4
+						d = ev.d
+						e = ev.e
+					end
+				}
+				state S2 @diversify "not" {
+					transition -> S4
+					event ev : app?m1cr0r4der0r4de
+					action do
+						r0 = ev.r0
+						r4 = ev.r4
+						d = ev.d
+						e = ev.e
+					end
+				}
+				state S3 @diversify "not" {
+					transition -> S4
+					event ev : app?m1cr0r4dec
+					action do
+						c = ev.c
+					end
+				}
+				state S4 @diversify "not" {
+					on entry do
+						diversified!m1cr0r4de(rnd(), e, r4, r0, rnd(), d, c)
+					end
+					transition -> S1
+				}
+			}
+		}
+		region generate_m1ba_from_m1bab_and_m1baa init INIT {
+			composite state INIT init S1 {
+				property b : Byte
+				property a : Byte
+				state S1 @diversify "not" {
+					transition -> S2
+					event ev : app?m1bab
+					action do
+						b = ev.b
+					end
+					transition -> S3
+					event ev : app?m1baa
+					action do
+						a = ev.a
+					end
+				}
+				state S2 @diversify "not" {
+					transition -> S4
+					event ev : app?m1baa
+					action do
+						a = ev.a
+					end
+				}
+				state S3 @diversify "not" {
+					transition -> S4
+					event ev : app?m1bab
+					action do
+						b = ev.b
+					end
+				}
+				state S4 @diversify "not" {
+					on entry do
+						diversified!m1ba(rnd(), b, rnd(), a)
+					end
+					transition -> S1
+				}
+			}
+		}
+		region generate_m2r3r2_from_m2r3r2r3_and_m2r3r2r2 init INIT {
+			composite state INIT init S1 {
+				property r3 : Byte
+				property r2 : Integer
+				state S1 @diversify "not" {
+					transition -> S2
+					event ev : app?m2r3r2r3
+					action do
+						r3 = ev.r3
+					end
+					transition -> S3
+					event ev : app?m2r3r2r2
+					action do
+						r2 = ev.r2
+					end
+				}
+				state S2 @diversify "not" {
+					transition -> S4
+					event ev : app?m2r3r2r2
+					action do
+						r2 = ev.r2
+					end
+				}
+				state S3 @diversify "not" {
+					transition -> S4
+					event ev : app?m2r3r2r3
+					action do
+						r3 = ev.r3
+					end
+				}
+				state S4 @diversify "not" {
+					on entry do
+						diversified!m2r3r2(r3, rnd(), r2, rnd())
+					end
+					transition -> S1
+				}
+			}
+		}
+	}
+}
+thing Client includes Msgs {
+	required port app {
+		sends m2abc sends m1cr0r4dec
+		sends m1cr0r4der0r4de sends m1bab sends m1baa sends m2r3r2r3 sends m2r3r2r2 receives m3a
+	receives m3r1r5r1 receives m3r1r5r5
+	}
+	internal port diversified {
+		sends m3 sends m3r1r5r1 sends m3r1r5r5 sends m3r1r5 receives m3 receives m3r1r5r1 receives m3r1r5r5 receives m3r1r5
+	}
+	property counter : Integer = 0
+	property _a : Byte
+	property _b : Byte
+	property _c : Byte
+	property _d : Byte
+	property _e : Byte
+	statechart init RUN {
+		on entry do
+			_a = rnd()
+			_b = rnd()
+		end
+		state RUN {
+			on entry do
+				_c = rnd()
+				_d = rnd()
+				_e = rnd()
+				println "#CLI: Come get some app!m1(" , _a , ", " , _b , ", " , _c , ", " , _d , ", " , _e , ")!"
+				do
+					do
+						do
+							println "37" , ", " , _c , ", " , rnd(), ", " , rnd(), ", "
+							app!m1cr0r4dec(_c, rnd(), rnd())
+						end
+						do
+							println "38" , ", " , rnd(), ", " , _e , ", " , _d , ", " , rnd(), ", " , rnd(), ", " , rnd(), ", "
+							app!m1cr0r4der0r4de(rnd(), _e, _d, rnd(), rnd(), rnd())
+						end
+					end
+					do
+						do
+							println "39" , ", " , rnd(), ", " , rnd(), ", " , _b , ", "
+							app!m1bab(rnd(), rnd(), _b)
+						end
+						do
+							println "40" , ", " , _a , ", " , rnd(), ", " , rnd(), ", "
+							app!m1baa(_a, rnd(), rnd())
+						end
+					end
+				end
+				println "#CLI: Come get some app!m2(" , _a , ", " , _b , ", " , _c , ")!"
+				do
+					do
+						do
+							println "41" , ", " , rnd(), ", " , rnd(), ", " , rnd(), ", "
+							app!m2r3r2r3(rnd(), rnd(), rnd())
+						end
+						do
+							println "42" , ", " , rnd(), ", " , rnd(), ", " , rnd(), ", "
+							app!m2r3r2r2(rnd(), rnd(), rnd())
+						end
+					end
+					do
+						println "34" , ", " , _c , ", " , rnd(), ", " , rnd(), ", " , _b , ", " , _a , ", "
+						app!m2abc(_c, rnd(), rnd(), _b, _a)
+					end
+				end
+				counter ++
+			end
+			transition -> STOP
+			guard counter == 100
+			transition -> RUN
+			event e : diversified?m3
+			guard e.a == _a
+			action do
+				println "#CLI: Ooh, I needed that app?m3(" , e.a , ")!"
+				println "#CLI: We meet again, Doctor Jones!"
+			end
+			transition -> ERROR
+			event e : diversified?m3
+			guard e.a != _a
+			action do
+				println "#CLI: Ooh, I needed that app?m3(" , e.a , ")!"
+				println "#CLI: Damn, you re ugly."
+			end
+		}
+		final state STOP {
+			on entry println "#CLI: What are you waitin for? Christmas?"
+		}
+		final state ERROR {
+			on entry println "#CLI: Heh, heh, heh... what a mess!"
+		}
+		region generate_m3_from_m3a_and_m3r1r5 init INIT {
+			composite state INIT init S1 {
+				property a : Integer
+				property r1 : Integer
+				property r5 : Byte
+				state S1 @diversify "not" {
+					transition -> S2
+					event ev : app?m3a
+					action do
+						a = ev.a
+					end
+					transition -> S3
+					event ev : diversified?m3r1r5
+					action do
+						r1 = ev.r1
+						r5 = ev.r5
+					end
+				}
+				state S2 @diversify "not" {
+					transition -> S4
+					event ev : diversified?m3r1r5
+					action do
+						r1 = ev.r1
+						r5 = ev.r5
+					end
+				}
+				state S3 @diversify "not" {
+					transition -> S4
+					event ev : app?m3a
+					action do
+						a = ev.a
+					end
+				}
+				state S4 @diversify "not" {
+					on entry do
+						diversified!m3(a, r1, rnd(), r5, rnd())
+					end
+					transition -> S1
+				}
+			}
+		}
+		region generate_m3r1r5_from_m3r1r5r1_and_m3r1r5r5 init INIT {
+			composite state INIT init S1 {
+				property r1 : Integer
+				property r5 : Byte
+				state S1 @diversify "not" {
+					transition -> S2
+					event ev : app?m3r1r5r1
+					action do
+						r1 = ev.r1
+					end
+					transition -> S3
+					event ev : app?m3r1r5r5
+					action do
+						r5 = ev.r5
+					end
+				}
+				state S2 @diversify "not" {
+					transition -> S4
+					event ev : app?m3r1r5r5
+					action do
+						r5 = ev.r5
+					end
+				}
+				state S3 @diversify "not" {
+					transition -> S4
+					event ev : app?m3r1r5r1
+					action do
+						r1 = ev.r1
+					end
+				}
+				state S4 @diversify "not" {
+					on entry do
+						diversified!m3r1r5(r5, rnd(), r1, rnd())
+					end
+					transition -> S1
+				}
+			}
+		}
+	}
+}
+protocol Default ;
+
+configuration test {
+	instance app : App
+	instance client1 : Client
+	connector client1.app => app . app
+}

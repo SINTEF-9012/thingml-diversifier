@@ -28,7 +28,7 @@ class Diversifier {
     private int param = 0;
     private Random rnd;
 
-    private final boolean debug = true;
+    private final boolean debug = false;
 
     public Diversifier(int seed) {
         rnd = new Random(seed * System.currentTimeMillis() - seed);

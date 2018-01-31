@@ -14,7 +14,7 @@ thing fragment Msgs {
 	message m3(a : Byte)
 	
 	function rnd() : Byte do 
-		return 0xBB
+		return `Math.floor(Math.random() * Math.floor(256))`
 	end
 }
 
@@ -33,19 +33,19 @@ thing App includes Msgs {
 			event e : app?m1
 			action do
 				id = e.a
-				println "got app?m1(", e.a, ", ", e.b, ", ", e.c, ", ", e.d, ", ", e.e, ")"
+				println "#APP: Ooh, I needed that app?m1(", e.a, ", ", e.b, ", ", e.c, ", ", e.d, ", ", e.e, ")!"
 			end
 		}
 			
 		state WaitForM2 {
 			transition -> SendAck
 			event e : app?m2
-			action println "got app?m2(", e.a, ", ", e.b, ", ", e.c, ")"
+			action println "#APP: Ooh, I needed that app?m2(", e.a, ", ", e.b, ", ", e.c, ")!"
 		}
 			
 		state SendAck {
 			on entry do
-				println "sending app!m3(", id, ")"
+				println "#APP: Come get some app!m3(", id, ")!"
 				app!m3(id)
 			end
 				
@@ -81,9 +81,9 @@ thing Client includes Msgs {
 				_c = rnd()
 				_d = rnd()
 				_e = rnd()
-				println "sending app!m1(", _a, ", ", _b, ", ", _c, ", ", _d, ", ", _e, ")"
+				println "#CLI: Come get some app!m1(", _a, ", ", _b, ", ", _c, ", ", _d, ", ", _e, ")!"
 				app!m1(_a, _b, _c, _d, _e)
-				println "sending app!m2(", _a, ", ", _b, ", ", _c, ")"
+				println "#CLI: Come get some app!m2(", _a, ", ", _b, ", ", _c, ")!"
 				app!m2(_a, _b, _c)
 				counter++
 			end
@@ -93,15 +93,28 @@ thing Client includes Msgs {
 			
 			transition -> RUN
 			event e : app?m3
+			guard e.a == _a
 			action do
-				println "got app?m3(", e.a, ")"
-				if (e.a == _a) do
-					println "success!"
-				end
+				println "#CLI: Ooh, I needed that app?m3(", e.a, ")!"
+				println "#CLI: We meet again, Doctor Jones!"
+			end
+			
+			transition -> ERROR
+			event e : app?m3
+			guard e.a != _a
+			action do
+				println "#CLI: Ooh, I needed that app?m3(", e.a, ")!"
+				println "#CLI: Damn, you re ugly."
 			end
 		}
 		
-		final state STOP {}
+		final state STOP {
+			on entry println "#CLI: What are you waitin for? Christmas?"
+		}
+		
+		final state ERROR {
+			on entry println "#CLI: Heh, heh, heh... what a mess!"
+		}
 	}
 
 }

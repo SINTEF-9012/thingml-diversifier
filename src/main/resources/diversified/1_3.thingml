@@ -1,0 +1,234 @@
+datatype Byte<1>
+	@type_checker "Byte"
+	@java_type "byte"
+datatype Integer<2>
+	@type_checker "Integer"
+	@java_type "short"
+thing fragment Msgs {
+	message m1(r3 : Byte, c : Byte, d : Byte, b : Byte@upsize "not", a : Byte@upsize "not", r0 : Integer, e : Byte)
+	@code "0x4B"
+	message m3(r4 : Byte, r1 : Integer, a : Byte)
+	@code "0x4C"
+	message m2(a : Byte@upsize "not", r2 : Byte, b : Byte@upsize "not", c : Byte, r5 : Byte)
+	@code "0x4D"
+	message m1d(d : Byte, r6 : Byte)
+	@code "0x4E"
+	message m1bcr0ae(c : Byte, a : Byte @upsize "not", e : Byte, r0 : Integer, b : Byte @upsize "not", r7 : Byte)
+	@code "0x4F"
+	message m2a(a : Byte @upsize "not", r8 : Byte)
+	@code "0x50"
+	message m2r2cb(c : Byte, r2 : Byte, b : Byte @upsize "not", r9 : Byte)
+	@code "0x51"
+	function rnd() : Byte do
+		return `Math.floor(Math.random() * Math.floor(256))`
+	end
+}
+thing App includes Msgs {
+	provided port app {
+		sends m3
+	receives m1d receives m1bcr0ae
+		receives m2a receives m2r2cb
+	}
+	internal port diversified {
+		sends m1 sends m2a sends m2r2cb sends m2 receives m1 receives m2a receives m2r2cb receives m2
+	}
+	property id : Byte
+	statechart init WaitForM1 {
+		state WaitForM1 {
+			transition -> WaitForM2
+			event e : diversified?m1
+			action do
+				id = e.a
+				println "#APP: Ooh, I needed that app?m1(" , e.a , ", " , e.b , ", " , e.c , ", " , e.d , ", " , e.e , ")!"
+			end
+		}
+		state WaitForM2 {
+			transition -> SendAck
+			event e : diversified?m2
+			action println "#APP: Ooh, I needed that app?m2(" , e.a , ", " , e.b , ", " , e.c , ")!"
+		}
+		state SendAck {
+			on entry do
+				println "#APP: Come get some app!m3(" , id , ")!"
+				do
+					println "76" , ", " , rnd(), ", " , rnd(), ", " , id , ", "
+					app!m3(rnd(), rnd(), id)
+				end
+			end
+			transition -> WaitForM1
+		}
+		region generate_m1_from_m1d_and_m1bcr0ae init INIT {
+			composite state INIT init S1 {
+				property d : Byte
+				property b : Byte
+				property c : Byte
+				property r0 : Integer
+				property a : Byte
+				property e : Byte
+				state S1 @diversify "not" {
+					transition -> S2
+					event ev : app?m1d
+					action do
+						d = ev.d
+					end
+					transition -> S3
+					event ev : app?m1bcr0ae
+					action do
+						b = ev.b
+						c = ev.c
+						r0 = ev.r0
+						a = ev.a
+						e = ev.e
+					end
+				}
+				state S2 @diversify "not" {
+					transition -> S4
+					event ev : app?m1bcr0ae
+					action do
+						b = ev.b
+						c = ev.c
+						r0 = ev.r0
+						a = ev.a
+						e = ev.e
+					end
+				}
+				state S3 @diversify "not" {
+					transition -> S4
+					event ev : app?m1d
+					action do
+						d = ev.d
+					end
+				}
+				state S4 @diversify "not" {
+					on entry do
+						diversified!m1(rnd(), c, d, b, a, r0, e)
+					end
+					transition -> S1
+				}
+			}
+		}
+		region generate_m2_from_m2a_and_m2r2cb init INIT {
+			composite state INIT init S1 {
+				property a : Byte
+				property r2 : Byte
+				property c : Byte
+				property b : Byte
+				state S1 @diversify "not" {
+					transition -> S2
+					event ev : app?m2a
+					action do
+						a = ev.a
+					end
+					transition -> S3
+					event ev : app?m2r2cb
+					action do
+						r2 = ev.r2
+						c = ev.c
+						b = ev.b
+					end
+				}
+				state S2 @diversify "not" {
+					transition -> S4
+					event ev : app?m2r2cb
+					action do
+						r2 = ev.r2
+						c = ev.c
+						b = ev.b
+					end
+				}
+				state S3 @diversify "not" {
+					transition -> S4
+					event ev : app?m2a
+					action do
+						a = ev.a
+					end
+				}
+				state S4 @diversify "not" {
+					on entry do
+						diversified!m2(a, r2, b, c, rnd())
+					end
+					transition -> S1
+				}
+			}
+		}
+	}
+}
+thing Client includes Msgs {
+	required port app {
+		sends m1d sends m1bcr0ae
+		sends m2a sends m2r2cb receives m3
+	}
+	internal port diversified {
+	}
+	property counter : Integer = 0
+	property _a : Byte
+	property _b : Byte
+	property _c : Byte
+	property _d : Byte
+	property _e : Byte
+	statechart init RUN {
+		on entry do
+			_a = rnd()
+			_b = rnd()
+		end
+		state RUN {
+			on entry do
+				_c = rnd()
+				_d = rnd()
+				_e = rnd()
+				println "#CLI: Come get some app!m1(" , _a , ", " , _b , ", " , _c , ", " , _d , ", " , _e , ")!"
+				do
+					do
+						println "78" , ", " , _d , ", " , rnd(), ", "
+						app!m1d(_d, rnd())
+					end
+					do
+						println "79" , ", " , _c , ", " , _a , ", " , _e , ", " , rnd(), ", " , _b , ", " , rnd(), ", "
+						app!m1bcr0ae(_c, _a, _e, rnd(), _b, rnd())
+					end
+				end
+				println "#CLI: Come get some app!m2(" , _a , ", " , _b , ", " , _c , ")!"
+				do
+					do
+						println "80" , ", " , _a , ", " , rnd(), ", "
+						app!m2a(_a, rnd())
+					end
+					do
+						println "81" , ", " , _c , ", " , rnd(), ", " , _b , ", " , rnd(), ", "
+						app!m2r2cb(_c, rnd(), _b, rnd())
+					end
+				end
+				counter ++
+			end
+			transition -> STOP
+			guard counter == 100
+			transition -> RUN
+			event e : app?m3
+			guard e.a == _a
+			action do
+				println "#CLI: Ooh, I needed that app?m3(" , e.a , ")!"
+				println "#CLI: We meet again, Doctor Jones!"
+			end
+			transition -> ERROR
+			event e : app?m3
+			guard e.a != _a
+			action do
+				println "#CLI: Ooh, I needed that app?m3(" , e.a , ")!"
+				println "#CLI: Damn, you re ugly."
+			end
+		}
+		final state STOP {
+			on entry println "#CLI: What are you waitin for? Christmas?"
+		}
+		final state ERROR {
+			on entry println "#CLI: Heh, heh, heh... what a mess!"
+		}
+	}
+}
+protocol Default ;
+
+configuration test {
+	instance app : App
+	instance client1 : Client
+	connector client1.app => app . app
+}
