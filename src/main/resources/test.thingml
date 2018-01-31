@@ -9,8 +9,8 @@ datatype Integer<2>
 protocol Default;
 
 thing fragment Msgs {
-	message m1(a : Byte, b : Byte, c : Byte, d : Byte, e : Byte)
-	message m2(a : Byte, b : Byte, c : Byte)
+	message m1(a : Byte@upsize "not", b : Byte@upsize "not", c : Byte, d : Byte, e : Byte)
+	message m2(a : Byte@upsize "not", b : Byte@upsize "not", c : Byte)
 	message m3(a : Byte)
 	
 	function rnd() : Byte do 
