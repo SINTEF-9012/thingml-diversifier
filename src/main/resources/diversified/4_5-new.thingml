@@ -1,0 +1,552 @@
+datatype Byte<1>
+	@type_checker "Byte"
+	@java_type "byte"
+datatype Integer<2>
+	@type_checker "Integer"
+	@java_type "short"
+thing fragment Msgs {
+	message m3bis(a : Byte, r103 : Byte, r5 : Byte, r60 : Byte, r2 : Byte, r16 : Byte, r104 : Byte, r41 : Byte, r106 : Byte, r25 : Byte, r8 : Byte, r105 : Byte, r81 : Byte)
+	@code "0xFE"
+	message m1bis(a : Byte @upsize "not", c : Byte, r61 : Byte, r17 : Byte, r26 : Byte, b : Byte @upsize "not", r11 : Byte, r42 : Byte, d : Byte, r7 : Byte, e : Byte, r82 : Byte, r0 : Byte)
+	@code "0xFF"
+	message m3(r108 : Byte, a : Byte, r83 : Byte, r62 : Byte, r10 : Byte, r6 : Byte, r107 : Byte, r27 : Byte, r109 : Byte, r18 : Byte, r110 : Byte, r2 : Byte, r43 : Byte)
+	@code "0x00"
+	message m2bisbis(r111 : Byte, r1 : Byte, c : Byte, r3 : Byte, r12 : Byte, r63 : Byte, r19 : Byte, r112 : Byte, r44 : Byte, r84 : Byte, b : Byte @upsize "not", r28 : Byte, a : Byte @upsize "not")
+	@code "0x01"
+	message m2bis(r29 : Byte, r113 : Byte, a : Byte @upsize "not", r1 : Byte, r85 : Byte, r45 : Byte, r3 : Byte, r114 : Byte, r12 : Byte, r20 : Byte, b : Byte @upsize "not", r64 : Byte, c : Byte)
+	@code "0x02"
+	message m1(r0 : Byte, a : Byte@upsize "not", c : Byte, r65 : Byte, b : Byte@upsize "not", e : Byte, r14 : Byte, r30 : Byte, d : Byte, r46 : Byte, r4 : Byte, r21 : Byte, r86 : Byte)
+	@code "0x03"
+	message m1bisbis(r13 : Byte, r66 : Byte, c : Byte, r87 : Byte, e : Byte, r22 : Byte, d : Byte, b : Byte @upsize "not", r7 : Byte, r0 : Byte, r47 : Byte, a : Byte @upsize "not", r31 : Byte)
+	@code "0x04"
+	message m3bisbis(r2 : Byte, r48 : Byte, r118 : Byte, r23 : Byte, r117 : Byte, r15 : Byte, r5 : Byte, a : Byte, r115 : Byte, r88 : Byte, r116 : Byte, r67 : Byte, r32 : Byte)
+	@code "0x05"
+	message m2(r89 : Byte, b : Byte@upsize "not", r33 : Byte, a : Byte@upsize "not", r68 : Byte, r1 : Byte, r120 : Byte, r49 : Byte, r24 : Byte, c : Byte, r119 : Byte, r3 : Byte, r9 : Byte)
+	@code "0x06"
+	message m1bisbisbis(r50 : Byte, r69 : Byte, a : Byte @upsize "not", d : Byte, r7 : Byte, e : Byte, r34 : Byte, r13 : Byte, r90 : Byte, c : Byte, r0 : Byte, r22 : Byte, b : Byte @upsize "not")
+	@code "0x07"
+	message m3r6(r91 : Byte, r126 : Byte, r128 : Byte, r123 : Byte, r124 : Byte, r121 : Byte, r125 : Byte, r6 : Byte, r122 : Byte, r51 : Byte, r70 : Byte, r127 : Byte, r35 : Byte)
+	@code "0x08"
+	message m3r18r10r2a(r129 : Byte, r131 : Byte, r52 : Byte, r36 : Byte, r10 : Byte, r2 : Byte, r71 : Byte, r132 : Byte, r133 : Byte, a : Byte, r130 : Byte, r92 : Byte, r18 : Byte)
+	@code "0x09"
+	message m3bisr16r2ar8(r8 : Byte, r138 : Byte, r37 : Byte, r137 : Byte, r134 : Byte, r53 : Byte, r135 : Byte, r2 : Byte, r136 : Byte, r16 : Byte, r72 : Byte, r93 : Byte, a : Byte)
+	@code "0x0A"
+	message m3bisr5(r139 : Byte, r145 : Byte, r140 : Byte, r144 : Byte, r141 : Byte, r5 : Byte, r54 : Byte, r146 : Byte, r143 : Byte, r73 : Byte, r94 : Byte, r142 : Byte, r38 : Byte)
+	@code "0x0B"
+	message m3bisbisr23r15r2(r149 : Byte, r95 : Byte, r150 : Byte, r23 : Byte, r2 : Byte, r152 : Byte, r148 : Byte, r74 : Byte, r151 : Byte, r147 : Byte, r55 : Byte, r15 : Byte, r39 : Byte)
+	@code "0x0C"
+	message m3bisbisar5(r158 : Byte, r96 : Byte, r155 : Byte, r159 : Byte, r40 : Byte, r157 : Byte, r154 : Byte, r156 : Byte, r5 : Byte, r56 : Byte, r153 : Byte, a : Byte, r75 : Byte)
+	@code "0x0D"
+	message m3r6bis(r97 : Byte, r165 : Byte, r166 : Byte, r160 : Byte, r6 : Byte, r167 : Byte, r164 : Byte, r57 : Byte, r161 : Byte, r163 : Byte, r162 : Byte, r76 : Byte, r35 : Byte)
+	@code "0x0E"
+	message m3bisr16r2ar8bis(a : Byte, r8 : Byte, r98 : Byte, r170 : Byte, r77 : Byte, r171 : Byte, r169 : Byte, r168 : Byte, r2 : Byte, r172 : Byte, r58 : Byte, r16 : Byte, r37 : Byte)
+	@code "0x0F"
+	message m3bisbisr23r15r2bis(r15 : Byte, r2 : Byte, r23 : Byte, r99 : Byte, r173 : Byte, r178 : Byte, r59 : Byte, r177 : Byte, r78 : Byte, r175 : Byte, r176 : Byte, r174 : Byte, r39 : Byte)
+	@code "0x10"
+	message m3r6bisbis(r6 : Byte, r182 : Byte, r180 : Byte, r184 : Byte, r185 : Byte, r57 : Byte, r183 : Byte, r35 : Byte, r179 : Byte, r79 : Byte, r186 : Byte, r181 : Byte, r100 : Byte)
+	@code "0x11"
+	message m3bisbisr23r15r2bisbis(r189 : Byte, r191 : Byte, r39 : Byte, r59 : Byte, r192 : Byte, r187 : Byte, r23 : Byte, r101 : Byte, r188 : Byte, r15 : Byte, r80 : Byte, r190 : Byte, r2 : Byte)
+	@code "0x12"
+	message m3bisbisr23r15r2bisbisbis(r23 : Byte, r39 : Byte, r195 : Byte, r59 : Byte, r196 : Byte, r2 : Byte, r15 : Byte, r194 : Byte, r198 : Byte, r197 : Byte, r80 : Byte, r193 : Byte, r102 : Byte)
+	@code "0x13"
+	function rnd() : Byte do
+		return `Math.floor(Math.random() * Math.floor(256))`
+	end
+}
+thing App includes Msgs {
+	provided port app {
+		sends m3r6
+	sends m3r18r10r2a sends m3bisr16r2ar8 sends m3bisr5 sends m3bisbisr23r15r2 sends m3bisbisar5 sends m3r6bis sends m3bisr16r2ar8bis sends m3bisbisr23r15r2bis sends m3r6bisbis sends m3bisbisr23r15r2bisbis sends m3bisbisr23r15r2bisbisbis receives m1 receives m2
+		receives m1bis receives m2bis receives m1bisbis receives m2bisbis receives m1bisbisbis
+	}
+	internal port diversified {
+	}
+	property id : Byte
+	statechart init WaitForM1 {
+		state WaitForM1 {
+			transition -> WaitForM2
+			event e : app?m1
+			action do
+				id = e.a
+				println "#APP: Ooh, I needed that app?m1(" , e.a , ", " , e.b , ", " , e.c , ", " , e.d , ", " , e.e , ")!"
+			end
+			transition -> WaitForM2
+			event e : app?m1bis
+			action do
+				id = e.a
+				println "#APP: Ooh, I needed that app?m1(" , e.a , ", " , e.b , ", " , e.c , ", " , e.d , ", " , e.e , ")!"
+			end
+			transition -> WaitForM2
+			event e : app?m1bisbis
+			action do
+				id = e.a
+				println "#APP: Ooh, I needed that app?m1(" , e.a , ", " , e.b , ", " , e.c , ", " , e.d , ", " , e.e , ")!"
+			end
+			transition -> WaitForM2
+			event e : app?m1bisbisbis
+			action do
+				id = e.a
+				println "#APP: Ooh, I needed that app?m1(" , e.a , ", " , e.b , ", " , e.c , ", " , e.d , ", " , e.e , ")!"
+			end
+		}
+		state WaitForM2 {
+			transition -> SendAck
+			event e : app?m2
+			action println "#APP: Ooh, I needed that app?m2(" , e.a , ", " , e.b , ", " , e.c , ")!"
+			transition -> SendAck
+			event e : app?m2bis
+			action println "#APP: Ooh, I needed that app?m2(" , e.a , ", " , e.b , ", " , e.c , ")!"
+			transition -> SendAck
+			event e : app?m2bisbis
+			action println "#APP: Ooh, I needed that app?m2(" , e.a , ", " , e.b , ", " , e.c , ")!"
+		}
+		state SendAck {
+			on entry do
+				println "#APP: Come get some app!m3(" , id , ")!"
+				if (rnd()< 204) do
+					do
+						if (rnd()< 17) do
+							do
+								println "8" , ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", "
+								app!m3r6(rnd(), rnd(), rnd(), rnd(), rnd(), rnd(), rnd(), rnd(), rnd(), rnd(), rnd(), rnd(), rnd())
+							end
+						end
+						else do
+							if (rnd()< 105) do
+								do
+									println "14" , ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", "
+									app!m3r6bis(rnd(), rnd(), rnd(), rnd(), rnd(), rnd(), rnd(), rnd(), rnd(), rnd(), rnd(), rnd(), rnd())
+								end
+							end
+							else do
+								do
+									println "17" , ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", "
+									app!m3r6bisbis(rnd(), rnd(), rnd(), rnd(), rnd(), rnd(), rnd(), rnd(), rnd(), rnd(), rnd(), rnd(), rnd())
+								end
+							end
+						end
+						do
+							println "9" , ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , id , ", " , rnd(), ", " , rnd(), ", " , rnd(), ", "
+							app!m3r18r10r2a(rnd(), rnd(), rnd(), rnd(), rnd(), rnd(), rnd(), rnd(), rnd(), id, rnd(), rnd(), rnd())
+						end
+					end
+				end
+				else do
+					if (rnd()< 213) do
+						do
+							if (rnd()< 200) do
+								do
+									println "10" , ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , id , ", "
+									app!m3bisr16r2ar8(rnd(), rnd(), rnd(), rnd(), rnd(), rnd(), rnd(), rnd(), rnd(), rnd(), rnd(), rnd(), id)
+								end
+							end
+							else do
+								do
+									println "15" , ", " , id , ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", "
+									app!m3bisr16r2ar8bis(id, rnd(), rnd(), rnd(), rnd(), rnd(), rnd(), rnd(), rnd(), rnd(), rnd(), rnd(), rnd())
+								end
+							end
+							do
+								println "11" , ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", "
+								app!m3bisr5(rnd(), rnd(), rnd(), rnd(), rnd(), rnd(), rnd(), rnd(), rnd(), rnd(), rnd(), rnd(), rnd())
+							end
+						end
+					end
+					else do
+						do
+							if (rnd()< 218) do
+								do
+									println "12" , ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", "
+									app!m3bisbisr23r15r2(rnd(), rnd(), rnd(), rnd(), rnd(), rnd(), rnd(), rnd(), rnd(), rnd(), rnd(), rnd(), rnd())
+								end
+							end
+							else do
+								if (rnd()< 41) do
+									do
+										println "16" , ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", "
+										app!m3bisbisr23r15r2bis(rnd(), rnd(), rnd(), rnd(), rnd(), rnd(), rnd(), rnd(), rnd(), rnd(), rnd(), rnd(), rnd())
+									end
+								end
+								else do
+									if (rnd()< 242) do
+										do
+											println "18" , ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", "
+											app!m3bisbisr23r15r2bisbis(rnd(), rnd(), rnd(), rnd(), rnd(), rnd(), rnd(), rnd(), rnd(), rnd(), rnd(), rnd(), rnd())
+										end
+									end
+									else do
+										do
+											println "19" , ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", "
+											app!m3bisbisr23r15r2bisbisbis(rnd(), rnd(), rnd(), rnd(), rnd(), rnd(), rnd(), rnd(), rnd(), rnd(), rnd(), rnd(), rnd())
+										end
+									end
+								end
+							end
+							do
+								println "13" , ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , id , ", " , rnd(), ", "
+								app!m3bisbisar5(rnd(), rnd(), rnd(), rnd(), rnd(), rnd(), rnd(), rnd(), rnd(), rnd(), rnd(), id, rnd())
+							end
+						end
+					end
+				end
+			end
+			transition -> WaitForM1
+		}
+	}
+}
+thing Client includes Msgs {
+	required port app {
+		sends m1 sends m2
+		sends m1bis sends m2bis sends m1bisbis sends m2bisbis sends m1bisbisbis receives m3r6
+	receives m3r18r10r2a receives m3bisr16r2ar8 receives m3bisr5 receives m3bisbisr23r15r2 receives m3bisbisar5 receives m3r6bis receives m3bisr16r2ar8bis receives m3bisbisr23r15r2bis receives m3r6bisbis receives m3bisbisr23r15r2bisbis receives m3bisbisr23r15r2bisbisbis
+	}
+	internal port diversified {
+		sends m3 sends m3bisr16r2ar8 sends m3bisr5 sends m3bis sends m3bisbisr23r15r2 sends m3bisbisar5 sends m3bisbis sends m3bisr16r2ar8bis sends m3bisbisr23r15r2bis sends m3bisbisr23r15r2bisbis sends m3bisbisr23r15r2bisbisbis receives m3 receives m3bisr16r2ar8 receives m3bisr5 receives m3bis receives m3bisbisr23r15r2 receives m3bisbisar5 receives m3bisbis receives m3bisr16r2ar8bis receives m3bisbisr23r15r2bis receives m3bisbisr23r15r2bisbis receives m3bisbisr23r15r2bisbisbis
+	}
+	property counter : Integer = 0
+	property _a : Byte
+	property _b : Byte
+	property _c : Byte
+	property _d : Byte
+	property _e : Byte
+	statechart init RUN {
+		on entry do
+			_a = rnd()
+			_b = rnd()
+		end
+		state RUN {
+			on entry do
+				_c = rnd()
+				_d = rnd()
+				_e = rnd()
+				println "#CLI: Come get some app!m1(" , _a , ", " , _b , ", " , _c , ", " , _d , ", " , _e , ")!"
+				if (rnd()< 58) do
+					do
+						println "3" , ", " , rnd(), ", " , _a , ", " , _c , ", " , rnd(), ", " , _b , ", " , _e , ", " , rnd(), ", " , rnd(), ", " , _d , ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", "
+						app!m1(rnd(), _a, _c, rnd(), _b, _e, rnd(), rnd(), _d, rnd(), rnd(), rnd(), rnd())
+					end
+				end
+				else do
+					if (rnd()< 95) do
+						do
+							println "-1" , ", " , _a , ", " , _c , ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , _b , ", " , rnd(), ", " , rnd(), ", " , _d , ", " , rnd(), ", " , _e , ", " , rnd(), ", " , rnd(), ", "
+							app!m1bis(_a, _c, rnd(), rnd(), rnd(), _b, rnd(), rnd(), _d, rnd(), _e, rnd(), rnd())
+						end
+					end
+					else do
+						if (rnd()< 164) do
+							do
+								println "4" , ", " , rnd(), ", " , rnd(), ", " , _c , ", " , rnd(), ", " , _e , ", " , rnd(), ", " , _d , ", " , _b , ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , _a , ", " , rnd(), ", "
+								app!m1bisbis(rnd(), rnd(), _c, rnd(), _e, rnd(), _d, _b, rnd(), rnd(), rnd(), _a, rnd())
+							end
+						end
+						else do
+							do
+								println "7" , ", " , rnd(), ", " , rnd(), ", " , _a , ", " , _d , ", " , rnd(), ", " , _e , ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , _c , ", " , rnd(), ", " , rnd(), ", " , _b , ", "
+								app!m1bisbisbis(rnd(), rnd(), _a, _d, rnd(), _e, rnd(), rnd(), rnd(), _c, rnd(), rnd(), _b)
+							end
+						end
+					end
+				end
+				println "#CLI: Come get some app!m2(" , _a , ", " , _b , ", " , _c , ")!"
+				if (rnd()< 130) do
+					do
+						println "6" , ", " , rnd(), ", " , _b , ", " , rnd(), ", " , _a , ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , _c , ", " , rnd(), ", " , rnd(), ", " , rnd(), ", "
+						app!m2(rnd(), _b, rnd(), _a, rnd(), rnd(), rnd(), rnd(), rnd(), _c, rnd(), rnd(), rnd())
+					end
+				end
+				else do
+					if (rnd()< 161) do
+						do
+							println "2" , ", " , rnd(), ", " , rnd(), ", " , _a , ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , _b , ", " , rnd(), ", " , _c , ", "
+							app!m2bis(rnd(), rnd(), _a, rnd(), rnd(), rnd(), rnd(), rnd(), rnd(), rnd(), _b, rnd(), _c)
+						end
+					end
+					else do
+						do
+							println "1" , ", " , rnd(), ", " , rnd(), ", " , _c , ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , rnd(), ", " , _b , ", " , rnd(), ", " , _a , ", "
+							app!m2bisbis(rnd(), rnd(), _c, rnd(), rnd(), rnd(), rnd(), rnd(), rnd(), rnd(), _b, rnd(), _a)
+						end
+					end
+				end
+				counter ++
+			end
+			transition -> STOP
+			guard counter == 100
+			transition -> RUN
+			event e : diversified?m3
+			guard e.a == _a
+			action do
+				println "#CLI: Ooh, I needed that app?m3(" , e.a , ")!"
+				println "#CLI: We meet again, Doctor Jones!"
+			end
+			transition -> ERROR
+			event e : diversified?m3
+			guard e.a != _a
+			action do
+				println "#CLI: Ooh, I needed that app?m3(" , e.a , ")!"
+				println "#CLI: Damn, you re ugly."
+			end
+			transition -> RUN
+			event e : diversified?m3bis
+			guard e.a == _a
+			action do
+				println "#CLI: Ooh, I needed that app?m3(" , e.a , ")!"
+				println "#CLI: We meet again, Doctor Jones!"
+			end
+			transition -> ERROR
+			event e : diversified?m3bis
+			guard e.a != _a
+			action do
+				println "#CLI: Ooh, I needed that app?m3(" , e.a , ")!"
+				println "#CLI: Damn, you re ugly."
+			end
+			transition -> RUN
+			event e : diversified?m3bisbis
+			guard e.a == _a
+			action do
+				println "#CLI: Ooh, I needed that app?m3(" , e.a , ")!"
+				println "#CLI: We meet again, Doctor Jones!"
+			end
+			transition -> ERROR
+			event e : diversified?m3bisbis
+			guard e.a != _a
+			action do
+				println "#CLI: Ooh, I needed that app?m3(" , e.a , ")!"
+				println "#CLI: Damn, you re ugly."
+			end
+		}
+		final state STOP {
+			on entry println "#CLI: What are you waitin for? Christmas?"
+		}
+		final state ERROR {
+			on entry println "#CLI: Heh, heh, heh... what a mess!"
+		}
+		region generate_m3_from_m3r6_and_m3r18r10r2a init INIT {
+			composite state INIT init S1 {
+				property r6 : Byte
+				property r18 : Byte
+				property r10 : Byte
+				property r2 : Byte
+				property a : Byte
+				state S1 @diversify "not" {
+					transition -> S2
+					event ev : app?m3r6
+					action do
+						r6 = ev.r6
+					end
+					transition -> S3
+					event ev : app?m3r18r10r2a
+					action do
+						r18 = ev.r18
+						r10 = ev.r10
+						r2 = ev.r2
+						a = ev.a
+					end
+					transition -> S2
+					event ev : app?m3r6bis
+					action do
+						r6 = ev.r6
+					end
+					transition -> S2
+					event ev : app?m3r6bisbis
+					action do
+						r6 = ev.r6
+					end
+				}
+				state S2 @diversify "not" {
+					transition -> S4
+					event ev : app?m3r18r10r2a
+					action do
+						r18 = ev.r18
+						r10 = ev.r10
+						r2 = ev.r2
+						a = ev.a
+					end
+				}
+				state S3 @diversify "not" {
+					transition -> S4
+					event ev : app?m3r6
+					action do
+						r6 = ev.r6
+					end
+					transition -> S4
+					event ev : app?m3r6bis
+					action do
+						r6 = ev.r6
+					end
+					transition -> S4
+					event ev : app?m3r6bisbis
+					action do
+						r6 = ev.r6
+					end
+				}
+				state S4 @diversify "not" {
+					on entry do
+						diversified!m3(rnd(), a, rnd(), rnd(), r10, r6, rnd(), rnd(), rnd(), r18, rnd(), r2, rnd())
+					end
+					transition -> S1
+				}
+			}
+		}
+		region generate_m3bis_from_m3bisr16r2ar8_and_m3bisr5 init INIT {
+			composite state INIT init S1 {
+				property r16 : Byte
+				property r2 : Byte
+				property a : Byte
+				property r8 : Byte
+				property r5 : Byte
+				state S1 @diversify "not" {
+					transition -> S2
+					event ev : app?m3bisr16r2ar8
+					action do
+						r16 = ev.r16
+						r2 = ev.r2
+						a = ev.a
+						r8 = ev.r8
+					end
+					transition -> S3
+					event ev : app?m3bisr5
+					action do
+						r5 = ev.r5
+					end
+					transition -> S2
+					event ev : app?m3bisr16r2ar8bis
+					action do
+						r16 = ev.r16
+						r2 = ev.r2
+						a = ev.a
+						r8 = ev.r8
+					end
+				}
+				state S2 @diversify "not" {
+					transition -> S4
+					event ev : app?m3bisr5
+					action do
+						r5 = ev.r5
+					end
+				}
+				state S3 @diversify "not" {
+					transition -> S4
+					event ev : app?m3bisr16r2ar8
+					action do
+						r16 = ev.r16
+						r2 = ev.r2
+						a = ev.a
+						r8 = ev.r8
+					end
+					transition -> S4
+					event ev : app?m3bisr16r2ar8bis
+					action do
+						r16 = ev.r16
+						r2 = ev.r2
+						a = ev.a
+						r8 = ev.r8
+					end
+				}
+				state S4 @diversify "not" {
+					on entry do
+						diversified!m3bis(a, rnd(), r5, rnd(), r2, r16, rnd(), rnd(), rnd(), rnd(), r8, rnd(), rnd())
+					end
+					transition -> S1
+				}
+			}
+		}
+		region generate_m3bisbis_from_m3bisbisr23r15r2_and_m3bisbisar5 init INIT {
+			composite state INIT init S1 {
+				property r23 : Byte
+				property r15 : Byte
+				property r2 : Byte
+				property a : Byte
+				property r5 : Byte
+				state S1 @diversify "not" {
+					transition -> S2
+					event ev : app?m3bisbisr23r15r2
+					action do
+						r23 = ev.r23
+						r15 = ev.r15
+						r2 = ev.r2
+					end
+					transition -> S3
+					event ev : app?m3bisbisar5
+					action do
+						a = ev.a
+						r5 = ev.r5
+					end
+					transition -> S2
+					event ev : app?m3bisbisr23r15r2bis
+					action do
+						r23 = ev.r23
+						r15 = ev.r15
+						r2 = ev.r2
+					end
+					transition -> S2
+					event ev : app?m3bisbisr23r15r2bisbis
+					action do
+						r23 = ev.r23
+						r15 = ev.r15
+						r2 = ev.r2
+					end
+					transition -> S2
+					event ev : app?m3bisbisr23r15r2bisbisbis
+					action do
+						r23 = ev.r23
+						r15 = ev.r15
+						r2 = ev.r2
+					end
+				}
+				state S2 @diversify "not" {
+					transition -> S4
+					event ev : app?m3bisbisar5
+					action do
+						a = ev.a
+						r5 = ev.r5
+					end
+				}
+				state S3 @diversify "not" {
+					transition -> S4
+					event ev : app?m3bisbisr23r15r2
+					action do
+						r23 = ev.r23
+						r15 = ev.r15
+						r2 = ev.r2
+					end
+					transition -> S4
+					event ev : app?m3bisbisr23r15r2bis
+					action do
+						r23 = ev.r23
+						r15 = ev.r15
+						r2 = ev.r2
+					end
+					transition -> S4
+					event ev : app?m3bisbisr23r15r2bisbis
+					action do
+						r23 = ev.r23
+						r15 = ev.r15
+						r2 = ev.r2
+					end
+					transition -> S4
+					event ev : app?m3bisbisr23r15r2bisbisbis
+					action do
+						r23 = ev.r23
+						r15 = ev.r15
+						r2 = ev.r2
+					end
+				}
+				state S4 @diversify "not" {
+					on entry do
+						diversified!m3bisbis(r2, rnd(), rnd(), r23, rnd(), r15, r5, a, rnd(), rnd(), rnd(), rnd(), rnd())
+					end
+					transition -> S1
+				}
+			}
+		}
+	}
+}
+protocol Default ;
+
+configuration test {
+	instance app : App
+	instance client1 : Client
+	connector client1.app => app . app
+}

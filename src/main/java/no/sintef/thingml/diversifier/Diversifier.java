@@ -160,6 +160,30 @@ class Diversifier {
             }
         }
 
+
+        int maxSize = 0;
+        final TreeIterator<EObject> it6 = model.eAllContents();
+        while (it6.hasNext()) {
+            final EObject o = it6.next();
+            if (o instanceof Message) {
+                final Message m = (Message)o;
+                if (m.getParameters().size()>maxSize)
+                    maxSize = m.getParameters().size();
+            }
+        }
+
+        final TreeIterator<EObject> it5 = model.eAllContents();
+        while (it5.hasNext()) {
+            final EObject o = it5.next();
+            if (o instanceof Message) {
+                final Message m = (Message)o;
+                final int size = m.getParameters().size();
+                for (int i = size; i<maxSize; i++) {
+                    addRandomParameter(m, model);
+                }
+            }
+        }
+
             final TreeIterator<EObject> it3 = model.eAllContents();
             while (it3.hasNext()) {
                 final EObject o = it3.next();
