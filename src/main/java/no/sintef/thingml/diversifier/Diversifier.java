@@ -23,7 +23,6 @@ class Diversifier {
     //TODO: Introduce probabilities of doing changes and randomness so as Diversifying multiple time the same input configuration actually generates multiple diversified results
     //NOTE: Done to some extent
 
-    private int functionCount = 0;
     private byte code;
     private int param = 0;
     private Random rnd;
@@ -94,10 +93,13 @@ class Diversifier {
                         addRandomParameter(m, model);
                         upSizeParameter(m);
                         changeOrderOfParameter(m);
+                        duplicateMessage(m, model);
                     }
                 }
             }
         }
+
+        rnd.setSeed(model.hashCode() * System.currentTimeMillis() - model.hashCode());
 
         for (int i = 0; i < iterations; i++) {
             List<Message> msgs = new ArrayList<>();
@@ -132,6 +134,8 @@ class Diversifier {
             }
         }
 
+        rnd.setSeed(model.hashCode() * System.currentTimeMillis() - model.hashCode());
+
         for (int i = 0; i < iterations; i++) {
             final TreeIterator<EObject> it3 = model.eAllContents();
             while (it3.hasNext()) {
@@ -142,13 +146,12 @@ class Diversifier {
                         final Message m = (Message) o;
                         addRandomParameter(m, model);
                         changeOrderOfParameter(m);
-                        generateCodeForMessage(m);
+                        duplicateMessage(m, model);
                     }
                 }
             }
         }
 
-        if (iterations==0) {
             final TreeIterator<EObject> it3 = model.eAllContents();
             while (it3.hasNext()) {
                 final EObject o = it3.next();
@@ -160,7 +163,7 @@ class Diversifier {
                     }
                 }
             }
-        }
+
         addLogs(model);
         //splitConfiguration(cfg, amount);
     }
@@ -202,6 +205,79 @@ class Diversifier {
         }
     }
 
+    private Function findRandom(Thing thing) {
+        Function rnd = null;
+        for (Function f : ThingMLHelpers.allFunctions(thing)) {
+            if (f.getName().equals("rnd")) {
+                rnd = f;
+                break;
+            }
+        }
+        return rnd;
+    }
+
+    private void duplicateMessage(Message m, ThingMLModel model) {
+        final Thing t = ThingMLHelpers.findContainingThing(m);
+        for(Message msg : t.getMessages()) {
+            if (msg.getName().equals(m.getName() + "bis"))
+                return;
+        }
+        final Message m2 = EcoreUtil.copy(m);
+        m2.setName(m.getName() + "bis");
+        t.getMessages().add(m2);
+
+        for (Thing thing : ThingMLHelpers.allThings(model)) {
+            for (Port port : thing.getPorts()) {
+                if (port.getSends().contains(m)) {
+                    System.out.println(" adding messages " + m2.getName() + " to sent messages of port " + port.getName() + " of thing " + thing.getName());
+                    port.getSends().add(m2);
+                    duplicateSendAction(thing, port, m, m2);
+                }
+                if (port.getReceives().contains(m)) {
+                    System.out.println(" adding message " + m2.getName() + " to received messages of  port " + port.getName() + " of thing " + thing.getName());
+                    port.getReceives().add(m2);
+                    duplicateHandlers(thing, port, m, m2);
+                }
+            }
+        }
+    }
+
+    private void duplicateSendAction(Thing thing, Port p, Message m, Message m2) {
+        for (SendAction send : ActionHelper.getAllActions(thing, SendAction.class)) {
+            if (EcoreUtil.equals(send.getMessage(), m) && EcoreUtil.equals(send.getPort(), p)) {
+                final ConditionalAction ca = ThingMLFactory.eINSTANCE.createConditionalAction();
+                final LowerExpression lower = ThingMLFactory.eINSTANCE.createLowerExpression();
+                final Function rnd = findRandom(thing);
+                final FunctionCallExpression call = ThingMLFactory.eINSTANCE.createFunctionCallExpression();
+                call.setFunction(rnd);
+                final IntegerLiteral threshold = ThingMLFactory.eINSTANCE.createIntegerLiteral();
+                threshold.setIntValue(this.rnd.nextInt(256));
+                lower.setLhs(call);
+                lower.setRhs(threshold);
+                ca.setCondition(lower);
+
+                final Object parent = send.eContainer().eGet(send.eContainingFeature());
+                if (parent instanceof EList) {
+                    EList list = (EList) parent;
+                    final int index = list.indexOf(send);
+                    list.add(index, ca);
+                } else {
+                    final EObject o = send.eContainer();
+                    o.eSet(send.eContainingFeature(), ca);
+                }
+
+                final ActionBlock b1 = ThingMLFactory.eINSTANCE.createActionBlock();
+                b1.getActions().add(send);
+                ca.setAction(b1);
+                final SendAction send2 = EcoreUtil.copy(send);
+                send2.setMessage(m2);
+                final ActionBlock b2 = ThingMLFactory.eINSTANCE.createActionBlock();
+                b2.getActions().add(send2);
+                ca.setElseAction(b2);
+            }
+        }
+    }
+
     private void addRandomParameter(Message m, ThingMLModel model) {
         System.out.println("Adding random parameter to message " + m.getName());
         int insertAt = rnd.nextInt(m.getParameters().size());
@@ -227,14 +303,7 @@ class Diversifier {
             for (SendAction send : ActionHelper.getAllActions(thing, SendAction.class)) {
                 if (EcoreUtil.equals(send.getMessage(), m)) {
                     final FunctionCallExpression call = ThingMLFactory.eINSTANCE.createFunctionCallExpression();
-                    Function rnd = null;
-                    for (Function f : ThingMLHelpers.allFunctions(thing)) {
-                        if (f.getName().equals("rnd")) {
-                            rnd = f;
-                            break;
-                        }
-                    }
-                    call.setFunction(rnd);
+                    call.setFunction(findRandom(thing));
                     send.getParameters().add(insertAt, call);
                 }
             }
@@ -571,6 +640,58 @@ class Diversifier {
                     final ReceiveMessage rm = (ReceiveMessage) h.getEvent();
                     if (EcoreUtil.equals(rm.getMessage(), m) && EcoreUtil.equals(rm.getPort(), p))
                         rm.setPort(createOrGetInternalPort(ThingMLHelpers.findContainingThing(rm)));
+                }
+            }
+        }
+    }
+
+    private void duplicateHandlers(Thing thing, Port p, Message m, Message m2) {
+        TreeIterator<EObject> it = thing.eAllContents();
+        while (it.hasNext()) {
+            final EObject o = it.next();
+            if (o instanceof Handler) {
+                final Handler h = (Handler) o;
+                if (h.getEvent() != null && h.getEvent() instanceof ReceiveMessage) {
+                    final ReceiveMessage rm = (ReceiveMessage) h.getEvent();
+                    if (EcoreUtil.equals(m, rm.getMessage()) && EcoreUtil.equals(p, rm.getPort())) {
+                        System.out.println("Duplicating handler " + p.getName() + "?" + m.getName() + " in thing " + thing.getName());
+                        Handler h2 = null;
+                        if (h instanceof Transition) {
+                            h2 = ThingMLFactory.eINSTANCE.createTransition();
+                            ((State)h.eContainer()).getOutgoing().add((Transition) h2);
+                            ((Transition) h2).setTarget(((Transition) h).getTarget());
+                        }
+                        else {
+                            h2 = ThingMLFactory.eINSTANCE.createInternalTransition();
+                            ((State)h.eContainer()).getInternal().add((InternalTransition) h2);
+                        }
+                        if (h.getName() != null)
+                            h2.setName(h.getName() + "bis");
+                        final ReceiveMessage rm2 = ThingMLFactory.eINSTANCE.createReceiveMessage();
+                        rm2.setName(rm.getName());
+                        rm2.setPort(rm.getPort());
+                        rm2.setMessage(m2);
+                        h2.setEvent(rm2);
+
+                        if (h.getGuard() != null) {
+                            h2.setGuard(EcoreUtil.copy(h.getGuard()));
+                            for(EventReference ref : ThingMLHelpers.getAllExpressions(h2.getGuard(), EventReference.class)) {
+                                System.out.println("Fixing event ref on parameter " + ref.getParameter().getName() + " of message " + m2.getName());
+                                ref.setReceiveMsg(rm2);
+                                ref.setParameter(m2.getParameters().get(m.getParameters().indexOf(ref.getParameter())));
+                            }
+                        }
+
+                        if (h.getAction() != null) {
+                            h2.setAction(EcoreUtil.copy(h.getAction()));
+                        }
+                        for(EventReference ref : ThingMLHelpers.getAllExpressions(h2.getAction(), EventReference.class)) {
+                            System.out.println("Fixing event ref on parameter " + ref.getParameter().getName() + " of message " + m2.getName());
+                            ref.setReceiveMsg(rm2);
+                            ref.setParameter(m2.getParameters().get(m.getParameters().indexOf(ref.getParameter())));
+                        }
+
+                    }
                 }
             }
         }
