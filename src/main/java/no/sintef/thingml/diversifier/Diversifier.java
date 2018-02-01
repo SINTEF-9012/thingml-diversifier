@@ -84,6 +84,7 @@ class Diversifier {
                 }
             }
             final TreeIterator<EObject> it = model.eAllContents();
+            int index = 0;
             while (it.hasNext()) {
                 final EObject o = it.next();
                 if (o instanceof Message) {
@@ -91,9 +92,11 @@ class Diversifier {
                     if (!AnnotatedElementHelper.isDefined(t, "diversify", "not")) {
                         final Message m = (Message) o;
                         addRandomParameter(m, model);
-                        upSizeParameter(m);
+                        //upSizeParameter(m);
                         changeOrderOfParameter(m);
-                        duplicateMessage(m, model);
+                        if (index%2 == 0)
+                            duplicateMessage(m, model);
+                        index++;
                     }
                 }
             }
@@ -102,6 +105,7 @@ class Diversifier {
         rnd.setSeed(model.hashCode() * System.currentTimeMillis() - model.hashCode());
 
         for (int i = 0; i < iterations; i++) {
+            int index = 0;
             List<Message> msgs = new ArrayList<>();
             final TreeIterator<EObject> it2 = model.eAllContents();
             while (it2.hasNext()) {
@@ -114,17 +118,19 @@ class Diversifier {
                                 final List<Message> sent = new ArrayList<>();
                                 sent.addAll(p.getSends());
                                 for(Message m : sent) {
-                                    if (!msgs.contains(m)) {
+                                    if (!msgs.contains(m) && index%2==0) {
                                         msgs.add(m);
                                         splitMessage(model, m);
+                                        index++;
                                     }
                                 }
                                 final List<Message> received = new ArrayList<>();
                                 sent.addAll(p.getReceives());
                                 for(Message m : received) {
-                                    if (!msgs.contains(m)) {
+                                    if (!msgs.contains(m)  && index%2==0) {
                                         msgs.add(m);
                                         splitMessage(model, m);
+                                        index++;
                                     }
                                 }
                             }
@@ -135,8 +141,8 @@ class Diversifier {
         }
 
         rnd.setSeed(model.hashCode() * System.currentTimeMillis() - model.hashCode());
-
         for (int i = 0; i < iterations; i++) {
+            int index = 0;
             final TreeIterator<EObject> it3 = model.eAllContents();
             while (it3.hasNext()) {
                 final EObject o = it3.next();
@@ -146,7 +152,9 @@ class Diversifier {
                         final Message m = (Message) o;
                         addRandomParameter(m, model);
                         changeOrderOfParameter(m);
-                        duplicateMessage(m, model);
+                        if (index%2 == 0)
+                            duplicateMessage(m, model);
+                        index++;
                     }
                 }
             }
