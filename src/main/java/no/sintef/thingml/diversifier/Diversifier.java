@@ -31,7 +31,7 @@ class Diversifier {
 
     public Diversifier(int seed) {
         rnd = new Random(seed * System.currentTimeMillis() - seed);
-        code = (byte) rnd.nextInt(255);
+        code = 0;//(byte) rnd.nextInt(255);
     }
 
     public static void main(String args[]) {
@@ -45,7 +45,7 @@ class Diversifier {
             return;
         }
 
-        final ThingMLModel input = ThingMLCompiler.loadModel(model);
+        final ThingMLModel input = ThingMLCompiler.flattenModel(ThingMLCompiler.loadModel(model));
         final Diversifier diversifier = new Diversifier(input.hashCode());
         final List<Configuration> configs = new ArrayList<>();
         configs.addAll(input.getConfigs());
@@ -62,8 +62,8 @@ class Diversifier {
             diversifier.diversify(cfg, amount, iterations);
         }
         try {
-            ThingMLCompiler.flattenModel(input);
-            ThingMLCompiler.saveAsThingML(input, new File(model.getParent(), "/diversified/" + model.getName()).getAbsolutePath());
+            final ThingMLModel flat = ThingMLCompiler.flattenModel(input);
+            ThingMLCompiler.saveAsThingML(flat, new File(model.getParent(), "/diversified/" + model.getName()).getAbsolutePath());
         } catch (RuntimeException e) {
             //Nasty dirty hack to hide the fact that sometime, save fails because the model is ill-formed. We could have done better with more money...
             e.printStackTrace();
@@ -76,6 +76,36 @@ class Diversifier {
 
     public void diversify(Configuration cfg, int amount, int iterations) {
         final ThingMLModel model = (ThingMLModel) cfg.eContainer();
+
+        /**
+         * Add random parameters so that they all have the same sizes.
+         * (This also gives some more flexibility for the split transformation).
+         */
+        int maxSize = 0;
+        final TreeIterator<EObject> it6 = model.eAllContents();
+        while (it6.hasNext()) {
+            final EObject o = it6.next();
+            if (o instanceof Message) {
+                final Message m = (Message)o;
+                if (m.getParameters().size()>maxSize)
+                    maxSize = m.getParameters().size();
+            }
+        }
+
+        final TreeIterator<EObject> it5 = model.eAllContents();
+        while (it5.hasNext()) {
+            final EObject o = it5.next();
+            if (o instanceof Message) {
+                final Message m = (Message)o;
+                final int size = m.getParameters().size();
+                for (int i = size; i<maxSize; i++) {
+                    addRandomParameter(m, model);
+                }
+            }
+        }
+
+
+
 
         for (int i = 0; i < iterations; i++) {
             for (Thing t : ThingMLHelpers.allThings(model)) {
@@ -91,10 +121,10 @@ class Diversifier {
                     final Thing t = ThingMLHelpers.findContainingThing(o);
                     if (!AnnotatedElementHelper.isDefined(t, "diversify", "not")) {
                         final Message m = (Message) o;
-                        addRandomParameter(m, model);
+                        //addRandomParameter(m, model);
                         //upSizeParameter(m);
-                        changeOrderOfParameter(m);
-                        if (index%2 == 0)
+                        //changeOrderOfParameter(m);
+                        //if (index%2 == 0)
                             duplicateMessage(m, model);
                         index++;
                     }
@@ -118,7 +148,7 @@ class Diversifier {
                                 final List<Message> sent = new ArrayList<>();
                                 sent.addAll(p.getSends());
                                 for(Message m : sent) {
-                                    if (!msgs.contains(m) && index%2==0) {
+                                    if (!msgs.contains(m)/* && index%2==0*/) {
                                         msgs.add(m);
                                         splitMessage(model, m);
                                         index++;
@@ -127,7 +157,7 @@ class Diversifier {
                                 final List<Message> received = new ArrayList<>();
                                 sent.addAll(p.getReceives());
                                 for(Message m : received) {
-                                    if (!msgs.contains(m)  && index%2==0) {
+                                    if (!msgs.contains(m)/* && index%2==0*/) {
                                         msgs.add(m);
                                         splitMessage(model, m);
                                         index++;
@@ -140,7 +170,33 @@ class Diversifier {
             }
         }
 
-        rnd.setSeed(model.hashCode() * System.currentTimeMillis() - model.hashCode());
+
+        maxSize = 0;
+        final TreeIterator<EObject> it10 = model.eAllContents();
+        while (it10.hasNext()) {
+            final EObject o = it10.next();
+            if (o instanceof Message) {
+                final Message m = (Message)o;
+                if (m.getParameters().size()>maxSize)
+                    maxSize = m.getParameters().size();
+            }
+        }
+
+        final TreeIterator<EObject> it11 = model.eAllContents();
+        while (it11.hasNext()) {
+            final EObject o = it11.next();
+            if (o instanceof Message) {
+                final Message m = (Message)o;
+                final int size = m.getParameters().size();
+                for (int i = size; i<maxSize; i++) {
+                    addRandomParameter(m, model);
+                }
+            }
+        }
+
+
+
+        /*rnd.setSeed(model.hashCode() * System.currentTimeMillis() - model.hashCode());
         for (int i = 0; i < iterations; i++) {
             int index = 0;
             final TreeIterator<EObject> it3 = model.eAllContents();
@@ -150,39 +206,15 @@ class Diversifier {
                     final Thing t = ThingMLHelpers.findContainingThing(o);
                     if (!AnnotatedElementHelper.isDefined(t, "diversify", "not")) {
                         final Message m = (Message) o;
-                        addRandomParameter(m, model);
-                        changeOrderOfParameter(m);
-                        if (index%2 == 0)
+                        //addRandomParameter(m, model);
+                        //changeOrderOfParameter(m);
+                        //if (index%2 == 0)
                             duplicateMessage(m, model);
                         index++;
                     }
                 }
             }
-        }
-
-
-        int maxSize = 0;
-        final TreeIterator<EObject> it6 = model.eAllContents();
-        while (it6.hasNext()) {
-            final EObject o = it6.next();
-            if (o instanceof Message) {
-                final Message m = (Message)o;
-                if (m.getParameters().size()>maxSize)
-                    maxSize = m.getParameters().size();
-            }
-        }
-
-        final TreeIterator<EObject> it5 = model.eAllContents();
-        while (it5.hasNext()) {
-            final EObject o = it5.next();
-            if (o instanceof Message) {
-                final Message m = (Message)o;
-                final int size = m.getParameters().size();
-                for (int i = size; i<maxSize; i++) {
-                    addRandomParameter(m, model);
-                }
-            }
-        }
+        }*/
 
             final TreeIterator<EObject> it3 = model.eAllContents();
             while (it3.hasNext()) {
@@ -221,17 +253,15 @@ class Diversifier {
                 }
                 final ActionBlock block = ThingMLFactory.eINSTANCE.createActionBlock();
                 block.getActions().add(print);
-                final Object parent = send.eContainer().eGet(send.eContainingFeature());
-                if (parent instanceof EList) {
-                    EList list = (EList) parent;
+                if (send.eContainingFeature().getUpperBound() == -1) {//Collection
+                    final EList list = (EList)send.eContainer().eGet(send.eContainingFeature());
                     final int index = list.indexOf(send);
                     block.getActions().add(send);
                     list.add(index, block);
                     list.remove(send);
                 } else {
+                    send.eContainer().eSet(send.eContainingFeature(), block);
                     block.getActions().add(send);
-                    final EObject o = send.eContainer();
-                    o.eSet(send.eContainingFeature(), block);
                 }
             }
         }
@@ -275,11 +305,12 @@ class Diversifier {
     }
 
     private void duplicateSendAction(Thing thing, Port p, Message m, Message m2) {
+        final Function rnd = findRandom(thing);
+        if (rnd == null) return;
         for (SendAction send : ActionHelper.getAllActions(thing, SendAction.class)) {
             if (EcoreUtil.equals(send.getMessage(), m) && EcoreUtil.equals(send.getPort(), p)) {
                 final ConditionalAction ca = ThingMLFactory.eINSTANCE.createConditionalAction();
                 final LowerExpression lower = ThingMLFactory.eINSTANCE.createLowerExpression();
-                final Function rnd = findRandom(thing);
                 final FunctionCallExpression call = ThingMLFactory.eINSTANCE.createFunctionCallExpression();
                 call.setFunction(rnd);
                 final IntegerLiteral threshold = ThingMLFactory.eINSTANCE.createIntegerLiteral();
@@ -312,7 +343,9 @@ class Diversifier {
 
     private void addRandomParameter(Message m, ThingMLModel model) {
         System.out.println("Adding random parameter to message " + m.getName());
-        int insertAt = rnd.nextInt(m.getParameters().size());
+        int insertAt = 0;
+        if (m.getParameters().size() > 0)
+            insertAt = rnd.nextInt(m.getParameters().size());
         final Parameter randomP = ThingMLFactory.eINSTANCE.createParameter();
         randomP.setName("r" + (param++));
         final TypeRef typeref = ThingMLFactory.eINSTANCE.createTypeRef();
@@ -332,11 +365,18 @@ class Diversifier {
 
         //Update send actions
         for (Thing thing : ThingMLHelpers.allThings(model)) {
+            final Function rnd = findRandom(thing);
             for (SendAction send : ActionHelper.getAllActions(thing, SendAction.class)) {
                 if (EcoreUtil.equals(send.getMessage(), m)) {
-                    final FunctionCallExpression call = ThingMLFactory.eINSTANCE.createFunctionCallExpression();
-                    call.setFunction(findRandom(thing));
-                    send.getParameters().add(insertAt, call);
+                    if (rnd != null) {
+                        final FunctionCallExpression call = ThingMLFactory.eINSTANCE.createFunctionCallExpression();
+                        call.setFunction(rnd);
+                        send.getParameters().add(insertAt, call);
+                    } else {
+                        final ByteLiteral b = ThingMLFactory.eINSTANCE.createByteLiteral();
+                        b.setByteValue((byte)this.rnd.nextInt(256));
+                        send.getParameters().add(insertAt, b);
+                    }
                 }
             }
         }
@@ -502,15 +542,27 @@ class Diversifier {
      * @param m
      */
     private void splitMessage(ThingMLModel model, Message m) {
-        if (m.getParameters().size() < 2) return;
+        //if (m.getParameters().size() < 2) return;
         int splitAt = rnd.nextInt(m.getParameters().size());
-        if (splitAt == 0 || splitAt == m.getParameters().size()) return;
+        //if (splitAt == 0 || splitAt == m.getParameters().size()) return;
+
+        System.out.println("Splitting message " + m.getName() + " at index " + splitAt + "...");
 
         final Message first = createMessage((Thing) m.eContainer(), m, m.getParameters().subList(0, splitAt));
         final Message second = createMessage((Thing) m.eContainer(), m, m.getParameters().subList(splitAt, m.getParameters().size()));
-        if (first == null || second == null) return;
+        if (first == null || second == null) {
+            final Thing t = (Thing) m.eContainer();
+            if (first != null) {
+                t.getMessages().remove(first);
+            }
+            if (second != null) {
+                t.getMessages().remove(second);
+            }
+            return;
+        }
 
-        System.out.println("Splitting message " + m.getName());
+        System.out.println("Splitting message " + m.getName() + " at index " + splitAt + ": OK!");
+
         final Map<Thing, Map<Message, Port>> mappings = new HashMap<>();
 
         for (Thing thing : ThingMLHelpers.allThings(model)) {
@@ -716,13 +768,12 @@ class Diversifier {
 
                         if (h.getAction() != null) {
                             h2.setAction(EcoreUtil.copy(h.getAction()));
+                            for(EventReference ref : ThingMLHelpers.getAllExpressions(h2.getAction(), EventReference.class)) {
+                                System.out.println("Fixing event ref on parameter " + ref.getParameter().getName() + " of message " + m2.getName());
+                                ref.setReceiveMsg(rm2);
+                                ref.setParameter(m2.getParameters().get(m.getParameters().indexOf(ref.getParameter())));
+                            }
                         }
-                        for(EventReference ref : ThingMLHelpers.getAllExpressions(h2.getAction(), EventReference.class)) {
-                            System.out.println("Fixing event ref on parameter " + ref.getParameter().getName() + " of message " + m2.getName());
-                            ref.setReceiveMsg(rm2);
-                            ref.setParameter(m2.getParameters().get(m.getParameters().indexOf(ref.getParameter())));
-                        }
-
                     }
                 }
             }
