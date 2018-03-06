@@ -951,6 +951,7 @@ thing Client includes Msgs {
 			action do
 				println "#CLI: Ooh, I needed that app?m3(" , e.a , ")!"
 				println "#CLI: We meet again, Doctor Jones!"
+				
 			end
 			transition -> ERROR
 			event e : diversified?m3
