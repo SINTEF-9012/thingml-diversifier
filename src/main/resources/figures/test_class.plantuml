@@ -1,0 +1,47 @@
+@startuml
+class Client <<(F,#BC74ED)Fragment>> {
+..Properties..
+-counter : Integer = 0
+-_a : Byte
+-_b : Byte
+-_c : Byte
+-_d : Byte
+-_e : Byte
+..Port app..
+>>m3
+<<m1
+<<m2
+}
+class Msgs <<(F,#BC74ED)Fragment>> {
+..Messages..
+-m1(a : Byte, b : Byte, c : Byte, d : Byte, e : Byte)
+-m2(a : Byte, b : Byte, c : Byte)
+-m3(a : Byte)
+..Functions..
+-rnd() : Byte
+}
+
+class RndJS <<(T,#F94918)PSM>> {
+..Functions..
+-rnd() : Byte
+}
+class ClientJS <<(T,#F94918)PSM>> {
+}
+class AppJS <<(T,#F94918)PSM>> {
+}
+
+class App <<(F,#BC74ED)Fragment>> {
+..Properties..
+-id : Byte
+..Port app..
+>>m1
+>>m2
+<<m3
+}
+Msgs <|-- Client
+Msgs <|-- App
+RndJS <|-- ClientJS
+RndJS <|-- AppJS
+Client <|-- ClientJS
+App <|-- AppJS
+@enduml

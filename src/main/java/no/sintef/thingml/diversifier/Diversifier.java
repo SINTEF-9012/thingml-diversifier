@@ -23,11 +23,10 @@ class Diversifier {
     //TODO: Introduce probabilities of doing changes and randomness so as Diversifying multiple time the same input configuration actually generates multiple diversified results
     //NOTE: Done to some extent
 
+    private final boolean debug = false;
     private byte code;
     private int param = 0;
     private Random rnd;
-
-    private final boolean debug = false;
 
     public Diversifier(int seed) {
         rnd = new Random(seed * System.currentTimeMillis() - seed);
@@ -86,8 +85,8 @@ class Diversifier {
         while (it6.hasNext()) {
             final EObject o = it6.next();
             if (o instanceof Message) {
-                final Message m = (Message)o;
-                if (m.getParameters().size()>maxSize)
+                final Message m = (Message) o;
+                if (m.getParameters().size() > maxSize)
                     maxSize = m.getParameters().size();
             }
         }
@@ -96,15 +95,13 @@ class Diversifier {
         while (it5.hasNext()) {
             final EObject o = it5.next();
             if (o instanceof Message) {
-                final Message m = (Message)o;
+                final Message m = (Message) o;
                 final int size = m.getParameters().size();
-                for (int i = size; i<maxSize; i++) {
+                for (int i = size; i < maxSize; i++) {
                     addRandomParameter(m, model);
                 }
             }
         }
-
-
 
 
         for (int i = 0; i < iterations; i++) {
@@ -114,19 +111,13 @@ class Diversifier {
                 }
             }
             final TreeIterator<EObject> it = model.eAllContents();
-            int index = 0;
             while (it.hasNext()) {
                 final EObject o = it.next();
                 if (o instanceof Message) {
                     final Thing t = ThingMLHelpers.findContainingThing(o);
                     if (!AnnotatedElementHelper.isDefined(t, "diversify", "not")) {
                         final Message m = (Message) o;
-                        //addRandomParameter(m, model);
-                        //upSizeParameter(m);
-                        //changeOrderOfParameter(m);
-                        //if (index%2 == 0)
-                            duplicateMessage(m, model);
-                        index++;
+                        duplicateMessage(m, model);
                     }
                 }
             }
@@ -135,37 +126,13 @@ class Diversifier {
         rnd.setSeed(model.hashCode() * System.currentTimeMillis() - model.hashCode());
 
         for (int i = 0; i < iterations; i++) {
-            int index = 0;
             List<Message> msgs = new ArrayList<>();
             final TreeIterator<EObject> it2 = model.eAllContents();
             while (it2.hasNext()) {
                 final EObject o = it2.next();
-                if (o instanceof Thing) {
-                    final Thing t = (Thing) o;
-                    if (!AnnotatedElementHelper.isDefined(t, "diversify", "not")) {
-                        for(Port p : t.getPorts()) {
-                            if (!(p instanceof InternalPort)) {
-                                final List<Message> sent = new ArrayList<>();
-                                sent.addAll(p.getSends());
-                                for(Message m : sent) {
-                                    if (!msgs.contains(m)/* && index%2==0*/) {
-                                        msgs.add(m);
-                                        splitMessage(model, m);
-                                        index++;
-                                    }
-                                }
-                                final List<Message> received = new ArrayList<>();
-                                sent.addAll(p.getReceives());
-                                for(Message m : received) {
-                                    if (!msgs.contains(m)/* && index%2==0*/) {
-                                        msgs.add(m);
-                                        splitMessage(model, m);
-                                        index++;
-                                    }
-                                }
-                            }
-                        }
-                    }
+                if (o instanceof Message) {
+                    final Message m = (Message) o;
+                    splitMessage(model, m);
                 }
             }
         }
@@ -194,39 +161,17 @@ class Diversifier {
             }
         }
 
-
-
-        /*rnd.setSeed(model.hashCode() * System.currentTimeMillis() - model.hashCode());
-        for (int i = 0; i < iterations; i++) {
-            int index = 0;
-            final TreeIterator<EObject> it3 = model.eAllContents();
-            while (it3.hasNext()) {
-                final EObject o = it3.next();
-                if (o instanceof Message) {
-                    final Thing t = ThingMLHelpers.findContainingThing(o);
-                    if (!AnnotatedElementHelper.isDefined(t, "diversify", "not")) {
-                        final Message m = (Message) o;
-                        //addRandomParameter(m, model);
-                        //changeOrderOfParameter(m);
-                        //if (index%2 == 0)
-                            duplicateMessage(m, model);
-                        index++;
-                    }
+        final TreeIterator<EObject> it3 = model.eAllContents();
+        while (it3.hasNext()) {
+            final EObject o = it3.next();
+            if (o instanceof Message) {
+                final Thing t = ThingMLHelpers.findContainingThing(o);
+                if (!AnnotatedElementHelper.isDefined(t, "diversify", "not")) {
+                    final Message m = (Message) o;
+                    generateCodeForMessage(m);
                 }
             }
-        }*/
-
-            final TreeIterator<EObject> it3 = model.eAllContents();
-            while (it3.hasNext()) {
-                final EObject o = it3.next();
-                if (o instanceof Message) {
-                    final Thing t = ThingMLHelpers.findContainingThing(o);
-                    if (!AnnotatedElementHelper.isDefined(t, "diversify", "not")) {
-                        final Message m = (Message) o;
-                        generateCodeForMessage(m);
-                    }
-                }
-            }
+        }
 
         addLogs(model);
         //splitConfiguration(cfg, amount);
@@ -240,10 +185,10 @@ class Diversifier {
             if (!EcoreUtil.equals(ip, send.getPort())) {
                 final PrintAction print = ThingMLFactory.eINSTANCE.createPrintAction();
                 print.setLine(true);
-                final byte code = (byte)Short.parseShort(AnnotatedElementHelper.annotationOrElse(send.getMessage(), "code", "0x00").substring(2), 16);
+                final byte code = (byte) Short.parseShort(AnnotatedElementHelper.annotationOrElse(send.getMessage(), "code", "0x00").substring(2), 16);
                 final StringLiteral codeliteral = ThingMLFactory.eINSTANCE.createStringLiteral();
                 final StringLiteral comma = ThingMLFactory.eINSTANCE.createStringLiteral();
-                codeliteral.setStringValue(""+code);
+                codeliteral.setStringValue("" + code);
                 comma.setStringValue(", ");
                 print.getMsg().add(codeliteral);
                 print.getMsg().add(EcoreUtil.copy(comma));
@@ -254,7 +199,7 @@ class Diversifier {
                 final ActionBlock block = ThingMLFactory.eINSTANCE.createActionBlock();
                 block.getActions().add(print);
                 if (send.eContainingFeature().getUpperBound() == -1) {//Collection
-                    final EList list = (EList)send.eContainer().eGet(send.eContainingFeature());
+                    final EList list = (EList) send.eContainer().eGet(send.eContainingFeature());
                     final int index = list.indexOf(send);
                     block.getActions().add(send);
                     list.add(index, block);
@@ -280,7 +225,7 @@ class Diversifier {
 
     private void duplicateMessage(Message m, ThingMLModel model) {
         final Thing t = ThingMLHelpers.findContainingThing(m);
-        for(Message msg : t.getMessages()) {
+        for (Message msg : t.getMessages()) {
             if (msg.getName().equals(m.getName() + "bis"))
                 return;
         }
@@ -374,7 +319,7 @@ class Diversifier {
                         send.getParameters().add(insertAt, call);
                     } else {
                         final ByteLiteral b = ThingMLFactory.eINSTANCE.createByteLiteral();
-                        b.setByteValue((byte)this.rnd.nextInt(256));
+                        b.setByteValue((byte) this.rnd.nextInt(256));
                         send.getParameters().add(insertAt, b);
                     }
                 }
@@ -391,7 +336,7 @@ class Diversifier {
         if (m.getParameters().size() == 0) return;
         int upsizeAt = rnd.nextInt(m.getParameters().size());
         final Parameter p = m.getParameters().get(upsizeAt);
-        if (AnnotatedElementHelper.isDefined(p,"upsize", "not")) return;
+        if (AnnotatedElementHelper.isDefined(p, "upsize", "not")) return;
         System.out.println("Upsizing parameter " + p.getName());
         final Type actual = TyperHelper.getBroadType(p.getTypeRef().getType());
         final ThingMLModel model = ThingMLHelpers.findContainingModel(p);
@@ -470,17 +415,13 @@ class Diversifier {
     private Message createMessage(Thing t, Message m, List<Parameter> params) {
         final Message msg = ThingMLFactory.eINSTANCE.createMessage();
         String name = m.getName();
+        if (params.size() == 0)
+            name = name + "_";
         for (Parameter p : params) {
             name = name + p.getName();
             msg.getParameters().add(EcoreUtil.copy(p));
         }
         msg.setName(name);
-
-        for (Message message : t.getMessages()) {
-            if (message.getName().equals(msg.getName()))
-                return null;
-        }
-
         System.out.println("Creating new message " + msg.getName());
         t.getMessages().add(msg);
         return msg;
@@ -489,27 +430,22 @@ class Diversifier {
     private void splitSendAction(Thing thing, Port p, Message m, Message first, Message second, int splitAt) {
         for (SendAction send : ActionHelper.getAllActions(thing, SendAction.class)) {
             EObject eo = send.eContainer();
-            while(eo != null) {
+            while (eo != null) {
                 if (eo instanceof AnnotatedElement) {
-                    final AnnotatedElement a = (AnnotatedElement)eo;
+                    final AnnotatedElement a = (AnnotatedElement) eo;
                     if (AnnotatedElementHelper.isDefined(a, "diversify", "not")) {
                         return;
                     }
                 }
                 eo = eo.eContainer();
             }
-
-
             if (EcoreUtil.equals(send.getMessage(), m) && EcoreUtil.equals(send.getPort(), p)) {
-                final ActionBlock block = ThingMLFactory.eINSTANCE.createActionBlock();
-
                 final SendAction send1 = ThingMLFactory.eINSTANCE.createSendAction();
                 send1.setMessage(first);
                 send1.setPort(send.getPort());
                 for (Expression e : send.getParameters().subList(0, splitAt)) {
                     send1.getParameters().add(EcoreUtil.copy(e));
                 }
-                block.getActions().add(send1);
 
                 final SendAction send2 = ThingMLFactory.eINSTANCE.createSendAction();
                 send2.setMessage(second);
@@ -517,18 +453,39 @@ class Diversifier {
                 for (Expression e : send.getParameters().subList(splitAt, m.getParameters().size())) {
                     send2.getParameters().add(EcoreUtil.copy(e));
                 }
-                block.getActions().add(send2);
 
-                final Object parent = send.eContainer().eGet(send.eContainingFeature());
-                if (parent instanceof EList) {
-                    EList list = (EList) parent;
-                    final int index = list.indexOf(send);
-                    list.add(index, block);
-                    list.remove(send);
-                } else {
-                    final EObject o = send.eContainer();
-                    o.eSet(send.eContainingFeature(), block);
-                }
+                final Function rnd = findRandom(thing);
+                if (rnd == null) return;
+
+                    final ConditionalAction ca = ThingMLFactory.eINSTANCE.createConditionalAction();
+                    final LowerExpression lower = ThingMLFactory.eINSTANCE.createLowerExpression();
+                    final FunctionCallExpression call = ThingMLFactory.eINSTANCE.createFunctionCallExpression();
+                    call.setFunction(rnd);
+                    final IntegerLiteral threshold = ThingMLFactory.eINSTANCE.createIntegerLiteral();
+                    threshold.setIntValue(this.rnd.nextInt(256));
+                    lower.setLhs(call);
+                    lower.setRhs(threshold);
+                    ca.setCondition(lower);
+
+                    final ActionBlock b1 = ThingMLFactory.eINSTANCE.createActionBlock();
+                    b1.getActions().add(send1);
+                    b1.getActions().add(send2);
+                    ca.setAction(b1);
+                    final ActionBlock b2 = ThingMLFactory.eINSTANCE.createActionBlock();
+                    b2.getActions().add(EcoreUtil.copy(send2));
+                    b2.getActions().add(EcoreUtil.copy(send1));
+                    ca.setElseAction(b2);
+
+                    final Object parent = send.eContainer().eGet(send.eContainingFeature());
+                    if (parent instanceof EList) {
+                        EList list = (EList) parent;
+                        final int index = list.indexOf(send);
+                        list.add(index, ca);
+                        list.remove(send);
+                    } else {
+                        final EObject o = send.eContainer();
+                        o.eSet(send.eContainingFeature(), ca);
+                    }
             }
         }
     }
@@ -545,23 +502,9 @@ class Diversifier {
         //if (m.getParameters().size() < 2) return;
         int splitAt = rnd.nextInt(m.getParameters().size());
         //if (splitAt == 0 || splitAt == m.getParameters().size()) return;
-
         System.out.println("Splitting message " + m.getName() + " at index " + splitAt + "...");
-
         final Message first = createMessage((Thing) m.eContainer(), m, m.getParameters().subList(0, splitAt));
         final Message second = createMessage((Thing) m.eContainer(), m, m.getParameters().subList(splitAt, m.getParameters().size()));
-        if (first == null || second == null) {
-            final Thing t = (Thing) m.eContainer();
-            if (first != null) {
-                t.getMessages().remove(first);
-            }
-            if (second != null) {
-                t.getMessages().remove(second);
-            }
-            return;
-        }
-
-        System.out.println("Splitting message " + m.getName() + " at index " + splitAt + ": OK!");
 
         final Map<Thing, Map<Message, Port>> mappings = new HashMap<>();
 
@@ -742,12 +685,11 @@ class Diversifier {
                         Handler h2 = null;
                         if (h instanceof Transition) {
                             h2 = ThingMLFactory.eINSTANCE.createTransition();
-                            ((State)h.eContainer()).getOutgoing().add((Transition) h2);
+                            ((State) h.eContainer()).getOutgoing().add((Transition) h2);
                             ((Transition) h2).setTarget(((Transition) h).getTarget());
-                        }
-                        else {
+                        } else {
                             h2 = ThingMLFactory.eINSTANCE.createInternalTransition();
-                            ((State)h.eContainer()).getInternal().add((InternalTransition) h2);
+                            ((State) h.eContainer()).getInternal().add((InternalTransition) h2);
                         }
                         if (h.getName() != null)
                             h2.setName(h.getName() + "bis");
@@ -759,7 +701,7 @@ class Diversifier {
 
                         if (h.getGuard() != null) {
                             h2.setGuard(EcoreUtil.copy(h.getGuard()));
-                            for(EventReference ref : ThingMLHelpers.getAllExpressions(h2.getGuard(), EventReference.class)) {
+                            for (EventReference ref : ThingMLHelpers.getAllExpressions(h2.getGuard(), EventReference.class)) {
                                 System.out.println("Fixing event ref on parameter " + ref.getParameter().getName() + " of message " + m2.getName());
                                 ref.setReceiveMsg(rm2);
                                 ref.setParameter(m2.getParameters().get(m.getParameters().indexOf(ref.getParameter())));
@@ -768,7 +710,7 @@ class Diversifier {
 
                         if (h.getAction() != null) {
                             h2.setAction(EcoreUtil.copy(h.getAction()));
-                            for(EventReference ref : ThingMLHelpers.getAllExpressions(h2.getAction(), EventReference.class)) {
+                            for (EventReference ref : ThingMLHelpers.getAllExpressions(h2.getAction(), EventReference.class)) {
                                 System.out.println("Fixing event ref on parameter " + ref.getParameter().getName() + " of message " + m2.getName());
                                 ref.setReceiveMsg(rm2);
                                 ref.setParameter(m2.getParameters().get(m.getParameters().indexOf(ref.getParameter())));

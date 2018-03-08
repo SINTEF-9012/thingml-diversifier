@@ -78,9 +78,9 @@ thing Client includes Msgs {
 		
 		state RUN {
 			on entry do
-				_c = rnd()
-				_d = rnd()
-				_e = rnd()
+				_c = rnd() % 100
+				_d = rnd() % 50
+				_e = rnd() % 25
 				println "#CLI: Come get some app!m1(", _a, ", ", _b, ", ", _c, ", ", _d, ", ", _e, ")!"
 				app!m1(_a, _b, _c, _d, _e)
 				println "#CLI: Come get some app!m2(", _a, ", ", _b, ", ", _c, ")!"
