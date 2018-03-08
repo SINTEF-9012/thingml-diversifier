@@ -325,6 +325,7 @@ thing Client includes Msgs {
 		sends m3 sends m3bis_ sends m3bisr4r5r2r3a sends m3bis receives m3 receives m3bis_ receives m3bisr4r5r2r3a receives m3bis
 	}
 	property counter : Integer = 0
+	property start : Integer
 	property _a : Byte
 	property _b : Byte
 	property _c : Byte
@@ -334,6 +335,7 @@ thing Client includes Msgs {
 		on entry do
 			_a = rnd()
 			_b = rnd()
+			start = `millis()`
 		end
 		state RUN {
 			on entry do
@@ -463,7 +465,11 @@ thing Client includes Msgs {
 			end
 		}
 		final state STOP {
-			on entry println "#CLI: What are you waitin for? Christmas?"
+			on entry do
+				println "#CLI: What are you waitin for? Christmas?"
+				var duration : Integer = `millis()` - start
+				println "#CLI: took ", duration, "ms."
+			end
 		}
 		final state ERROR {
 			on entry println "#CLI: Heh, heh, heh... what a mess!"

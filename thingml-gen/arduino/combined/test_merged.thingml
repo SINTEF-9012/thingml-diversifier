@@ -1,48 +1,48 @@
 datatype Byte<1>
 	@type_checker "Byte"
-	@java_type "byte"
+	@c_type "uint8_t"
 datatype Integer<2>
 	@type_checker "Integer"
-	@java_type "short"
+	@c_type "uint16_t"
 thing fragment Msgs {
 	message m2(r0 : Byte, r1 : Byte, a : Byte @upsize "not", b : Byte @upsize "not", c : Byte)
-	@code "0x00"
+	@code "0"
 	message m3(r4 : Byte, r5 : Byte, r2 : Byte, r3 : Byte, a : Byte)
-	@code "0x01"
+	@code "1"
 	message m1(a : Byte @upsize "not", b : Byte @upsize "not", c : Byte, d : Byte, e : Byte)
-	@code "0x02"
+	@code "2"
 	message m2bis(r0 : Byte, r1 : Byte, a : Byte @upsize "not", b : Byte @upsize "not", c : Byte)
-	@code "0x03"
+	@code "3"
 	message m3bis(r4 : Byte, r5 : Byte, r2 : Byte, r3 : Byte, a : Byte)
-	@code "0x04"
+	@code "4"
 	message m1bis(a : Byte @upsize "not", b : Byte @upsize "not", c : Byte, d : Byte, e : Byte)
-	@code "0x05"
+	@code "5"
 	message m2r0r1(r6 : Byte, r0 : Byte, r7 : Byte, r8 : Byte, r1 : Byte)
-	@code "0x06"
+	@code "6"
 	message m2abc(a : Byte @upsize "not", r10 : Byte, b : Byte @upsize "not", r9 : Byte, c : Byte)
-	@code "0x07"
+	@code "7"
 	message m3_(r13 : Byte, r15 : Byte, r12 : Byte, r14 : Byte, r11 : Byte)
-	@code "0x08"
+	@code "8"
 	message m3r4r5r2r3a(r4 : Byte, r5 : Byte, r2 : Byte, r3 : Byte, a : Byte)
-	@code "0x09"
+	@code "9"
 	message m1abcd(a : Byte @upsize "not", b : Byte @upsize "not", c : Byte, r16 : Byte, d : Byte)
-	@code "0x0A"
+	@code "10"
 	message m1e(r18 : Byte, r19 : Byte, r20 : Byte, r17 : Byte, e : Byte)
-	@code "0x0B"
+	@code "11"
 	message m2bisr0r1ab(r21 : Byte, r0 : Byte, r1 : Byte, a : Byte @upsize "not", b : Byte @upsize "not")
-	@code "0x0C"
+	@code "12"
 	message m2bisc(r24 : Byte, r22 : Byte, r23 : Byte, r25 : Byte, c : Byte)
-	@code "0x0D"
+	@code "13"
 	message m3bis_(r29 : Byte, r28 : Byte, r30 : Byte, r27 : Byte, r26 : Byte)
-	@code "0x0E"
+	@code "14"
 	message m3bisr4r5r2r3a(r4 : Byte, r5 : Byte, r2 : Byte, r3 : Byte, a : Byte)
-	@code "0x0F"
+	@code "15"
 	message m1bisabcd(a : Byte @upsize "not", r31 : Byte, b : Byte @upsize "not", c : Byte, d : Byte)
-	@code "0x10"
+	@code "16"
 	message m1bise(r32 : Byte, r35 : Byte, r33 : Byte, r34 : Byte, e : Byte)
-	@code "0x11"
+	@code "17"
 	function rnd() : Byte do
-		return `Math.floor(Math.random() * Math.floor(256))`
+		return `random(256)`
 	end
 }
 thing App includes Msgs {
@@ -334,7 +334,7 @@ thing Client includes Msgs {
 		on entry do
 			_a = rnd()
 			_b = rnd()
-			start = `new Date()`
+			start = `millis()`
 		end
 		state RUN {
 			on entry do
@@ -466,8 +466,8 @@ thing Client includes Msgs {
 		final state STOP {
 			on entry do
 				println "#CLI: What are you waitin for? Christmas?"
-				var duration : Integer = `new Date()` - start
-				println "#CLI: took ", duration, "ms."
+				var duration : Integer = `millis()` - start
+				println "#CLI: took " , duration , "ms."
 			end
 		}
 		final state ERROR {
@@ -571,7 +571,7 @@ thing Client includes Msgs {
 }
 protocol Default ;
 
-configuration test {
+configuration test @arduino_stdout "Serial" {
 	instance app : App
 	instance client1 : Client
 	connector client1.app => app . app

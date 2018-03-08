@@ -1,0 +1,168 @@
+datatype Byte<1>
+	@type_checker "Byte"
+	@java_type "byte"
+datatype Integer<2>
+	@type_checker "Integer"
+	@java_type "short"
+thing fragment Msgs {
+	message m2(a : Byte @upsize "not", b : Byte @upsize "not", c : Byte)
+	@code "0x00"
+	message m1(a : Byte @upsize "not", b : Byte @upsize "not", c : Byte, d : Byte, e : Byte)
+	@code "0x01"
+	message m3(a : Byte)
+	@code "0x02"
+	message m2bis(a : Byte @upsize "not", b : Byte @upsize "not", c : Byte)
+	@code "0x03"
+	message m1bis(a : Byte @upsize "not", b : Byte @upsize "not", c : Byte, d : Byte, e : Byte)
+	@code "0x04"
+	message m3bis(a : Byte)
+	@code "0x05"
+	function rnd() : Byte do
+		return `Math.floor(Math.random() * Math.floor(256))`
+	end
+}
+thing App includes Msgs {
+	provided port app {
+		sends m3 sends m3bis receives m1 receives m2 receives m2bis receives m1bis
+	}
+	internal port diversified {
+	}
+	property id : Byte
+	statechart init WaitForM1 {
+		state WaitForM1 {
+			transition -> WaitForM2
+			event e : app?m1
+			action do
+				id = e.a
+				println "#APP: Ooh, I needed that app?m1(" , e.a , ", " , e.b , ", " , e.c , ", " , e.d , ", " , e.e , ")!"
+			end
+			transition -> WaitForM2
+			event e : app?m1bis
+			action do
+				id = e.a
+				println "#APP: Ooh, I needed that app?m1(" , e.a , ", " , e.b , ", " , e.c , ", " , e.d , ", " , e.e , ")!"
+			end
+		}
+		state WaitForM2 {
+			transition -> SendAck
+			event e : app?m2
+			action println "#APP: Ooh, I needed that app?m2(" , e.a , ", " , e.b , ", " , e.c , ")!"
+			transition -> SendAck
+			event e : app?m2bis
+			action println "#APP: Ooh, I needed that app?m2(" , e.a , ", " , e.b , ", " , e.c , ")!"
+		}
+		state SendAck {
+			on entry do
+				println "#APP: Come get some app!m3(" , id , ")!"
+				if (rnd()< 129) do
+					do
+						println "2" , ", " , id , ", "
+						app!m3(id)
+					end
+				end
+				else do
+					do
+						println "5" , ", " , id , ", "
+						app!m3bis(id)
+					end
+				end
+			end
+			transition -> WaitForM1
+		}
+	}
+}
+thing Client includes Msgs {
+	required port app {
+		sends m1 sends m2 sends m2bis sends m1bis receives m3 receives m3bis
+	}
+	internal port diversified {
+	}
+	property counter : Integer = 0
+	property _a : Byte
+	property _b : Byte
+	property _c : Byte
+	property _d : Byte
+	property _e : Byte
+	statechart init RUN {
+		on entry do
+			_a = rnd()
+			_b = rnd()
+		end
+		state RUN {
+			on entry do
+				_c = rnd()% 100
+				_d = rnd()% 50
+				_e = rnd()% 25
+				println "#CLI: Come get some app!m1(" , _a , ", " , _b , ", " , _c , ", " , _d , ", " , _e , ")!"
+				if (rnd()< 16) do
+					do
+						println "1" , ", " , _a , ", " , _b , ", " , _c , ", " , _d , ", " , _e , ", "
+						app!m1(_a, _b, _c, _d, _e)
+					end
+				end
+				else do
+					do
+						println "4" , ", " , _a , ", " , _b , ", " , _c , ", " , _d , ", " , _e , ", "
+						app!m1bis(_a, _b, _c, _d, _e)
+					end
+				end
+				println "#CLI: Come get some app!m2(" , _a , ", " , _b , ", " , _c , ")!"
+				if (rnd()< 2) do
+					do
+						println "0" , ", " , _a , ", " , _b , ", " , _c , ", "
+						app!m2(_a, _b, _c)
+					end
+				end
+				else do
+					do
+						println "3" , ", " , _a , ", " , _b , ", " , _c , ", "
+						app!m2bis(_a, _b, _c)
+					end
+				end
+				counter ++
+			end
+			transition -> STOP guard counter == 100
+			transition -> RUN
+			event e : app?m3
+			guard e.a == _a
+			action do
+				println "#CLI: Ooh, I needed that app?m3(" , e.a , ")!"
+				println "#CLI: We meet again, Doctor Jones!"
+			end
+			transition -> ERROR
+			event e : app?m3
+			guard e.a != _a
+			action do
+				println "#CLI: Ooh, I needed that app?m3(" , e.a , ")!"
+				println "#CLI: Damn, you re ugly."
+			end
+			transition -> RUN
+			event e : app?m3bis
+			guard e.a == _a
+			action do
+				println "#CLI: Ooh, I needed that app?m3(" , e.a , ")!"
+				println "#CLI: We meet again, Doctor Jones!"
+			end
+			transition -> ERROR
+			event e : app?m3bis
+			guard e.a != _a
+			action do
+				println "#CLI: Ooh, I needed that app?m3(" , e.a , ")!"
+				println "#CLI: Damn, you re ugly."
+			end
+		}
+		final state STOP {
+			on entry println "#CLI: What are you waitin for? Christmas?"
+		}
+		final state ERROR {
+			on entry println "#CLI: Heh, heh, heh... what a mess!"
+		}
+	}
+}
+protocol Default ;
+
+configuration test {
+	instance app : App
+	instance client1 : Client
+	connector client1.app => app . app
+}

@@ -3,7 +3,8 @@ datatype Byte<1>
 	@java_type "byte"
 datatype Integer<2>
 	@type_checker "Integer"
-	@java_type "short"
+	@java_type "long"
+object Random @java_type "java.util.Random"
 thing fragment Msgs {
 	message m2(r0 : Byte, r1 : Byte, a : Byte @upsize "not", b : Byte @upsize "not", c : Byte)
 	@code "0x00"
@@ -41,11 +42,12 @@ thing fragment Msgs {
 	@code "0x10"
 	message m1bise(r32 : Byte, r35 : Byte, r33 : Byte, r34 : Byte, e : Byte)
 	@code "0x11"
+	readonly property rnd : Random = `new java.util.Random()`
 	function rnd() : Byte do
-		return `Math.floor(Math.random() * Math.floor(256))`
+		return `(byte) ` & rnd & `.nextInt(256)`
 	end
 }
-thing App includes Msgs {
+thing App includes Msgs @stdout_sync "true" {
 	provided port app {
 		sends m3_ sends m3r4r5r2r3a sends m3bis_ sends m3bisr4r5r2r3a receives m2r0r1 receives m2abc receives m1abcd receives m1e receives m2bisr0r1ab receives m2bisc receives m1bisabcd receives m1bise
 	}
@@ -316,7 +318,7 @@ thing App includes Msgs {
 		}
 	}
 }
-thing Client includes Msgs {
+thing Client includes Msgs @stdout_sync "true" {
 	required port app {
 		sends m2r0r1 sends m2abc sends m1abcd sends m1e sends m2bisr0r1ab sends m2bisc sends m1bisabcd sends m1bise receives m3_ receives m3r4r5r2r3a receives m3bis_ receives m3bisr4r5r2r3a
 	}
@@ -324,7 +326,7 @@ thing Client includes Msgs {
 		sends m3 sends m3bis_ sends m3bisr4r5r2r3a sends m3bis receives m3 receives m3bis_ receives m3bisr4r5r2r3a receives m3bis
 	}
 	property counter : Integer = 0
-	property start : Integer
+	property start : Integer = `System.currentTimeMillis()`
 	property _a : Byte
 	property _b : Byte
 	property _c : Byte
@@ -334,7 +336,6 @@ thing Client includes Msgs {
 		on entry do
 			_a = rnd()
 			_b = rnd()
-			start = `new Date()`
 		end
 		state RUN {
 			on entry do
@@ -466,8 +467,8 @@ thing Client includes Msgs {
 		final state STOP {
 			on entry do
 				println "#CLI: What are you waitin for? Christmas?"
-				var duration : Integer = `new Date()` - start
-				println "#CLI: took ", duration, "ms."
+				var stop : Integer = `System.currentTimeMillis()`
+				println "#CLI: took " , stop - start , "ms."
 			end
 		}
 		final state ERROR {

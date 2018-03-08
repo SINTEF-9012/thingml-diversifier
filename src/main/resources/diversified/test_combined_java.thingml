@@ -333,6 +333,7 @@ thing Client includes Msgs
 		sends m3 sends m3bis_ sends m3bisr4r5r2r3a sends m3bis receives m3 receives m3bis_ receives m3bisr4r5r2r3a receives m3bis
 	}
 	property counter : Integer = 0
+	property start : Integer = `System.currentTimeMillis()`
 	property _a : Byte
 	property _b : Byte
 	property _c : Byte
@@ -471,7 +472,11 @@ thing Client includes Msgs
 			end
 		}
 		final state STOP {
-			on entry println "#CLI: What are you waitin for? Christmas?"
+			on entry do
+				println "#CLI: What are you waitin for? Christmas?"
+				var stop : Integer = `System.currentTimeMillis()`
+				println "#CLI: took ", stop-start, "ms."
+			end
 		}
 		final state ERROR {
 			on entry println "#CLI: Heh, heh, heh... what a mess!"

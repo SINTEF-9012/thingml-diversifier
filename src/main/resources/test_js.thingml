@@ -58,6 +58,7 @@ thing App includes Msgs {
 thing Client includes Msgs {
 	
 	property counter : Integer = 0
+	property start : Integer
 	
 	property _a : Byte
 	property _b : Byte
@@ -74,6 +75,7 @@ thing Client includes Msgs {
 		on entry do
 			_a = rnd()
 			_b = rnd()
+			start = `new Date()`
 		end
 		
 		state RUN {
@@ -109,7 +111,11 @@ thing Client includes Msgs {
 		}
 		
 		final state STOP {
-			on entry println "#CLI: What are you waitin for? Christmas?"
+			on entry do
+				println "#CLI: What are you waitin for? Christmas?"
+				var duration : Integer = `new Date()` - start
+				println "#CLI: took ", duration, "ms."
+			end
 		}
 		
 		final state ERROR {

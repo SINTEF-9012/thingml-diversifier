@@ -467,7 +467,7 @@ thing Client includes Msgs {
 			on entry do
 				println "#CLI: What are you waitin for? Christmas?"
 				var duration : Integer = `new Date()` - start
-				println "#CLI: took ", duration, "ms."
+				println "#CLI: took " , duration , "ms."
 			end
 		}
 		final state ERROR {
