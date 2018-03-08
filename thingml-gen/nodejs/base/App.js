@@ -36,6 +36,11 @@ App.prototype.build = function(session) {
 		process.stdout.write(''+this.App_id_var);
 		process.stdout.write(''+')!');
 		process.stderr.write('\n');
+		process.stdout.write(''+'2');
+		process.stdout.write(''+', ');
+		process.stdout.write(''+this.App_id_var);
+		process.stdout.write(''+', ');
+		process.stderr.write('\n');
 		setImmediate(() => this.bus.emit('app?m3', this.App_id_var));
 	});
 	_initial_App.to(App_null_WaitForM1);

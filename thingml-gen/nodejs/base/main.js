@@ -8,15 +8,15 @@ const Client = require('./Client');
 var app_id = null;
 /*$CONFIGURATION app$*/
 const app = new App('app', null, app_id, false);
-var client1__a = null;
-var client1__b = null;
-var client1__e = null;
-var client1_start = null;
-var client1__d = null;
-var client1_counter = 0;
 var client1__c = null;
+var client1__a = null;
+var client1__d = null;
+var client1__e = null;
+var client1_counter = 0;
+var client1_start = null;
+var client1__b = null;
 /*$CONFIGURATION client1$*/
-const client1 = new Client('client1', null, client1__a, client1__b, client1__e, client1_start, client1__d, client1_counter, client1__c, false);
+const client1 = new Client('client1', null, client1__c, client1__a, client1__d, client1__e, client1_counter, client1_start, client1__b, false);
 /*$PLUGINS$*/
 /*Connecting internal ports...*/
 /*Connecting ports...*/

@@ -80,7 +80,7 @@ class Diversifier {
          * Add random parameters so that they all have the same sizes.
          * (This also gives some more flexibility for the split transformation).
          */
-        int maxSize = 0;
+      /*  int maxSize = 0;
         final TreeIterator<EObject> it6 = model.eAllContents();
         while (it6.hasNext()) {
             final EObject o = it6.next();
@@ -121,7 +121,7 @@ class Diversifier {
                     }
                 }
             }
-        }
+        }*/
 
         rnd.setSeed(model.hashCode() * System.currentTimeMillis() - model.hashCode());
 
@@ -138,7 +138,7 @@ class Diversifier {
         }
 
 
-        maxSize = 0;
+        /*maxSize = 0;
         final TreeIterator<EObject> it10 = model.eAllContents();
         while (it10.hasNext()) {
             final EObject o = it10.next();
@@ -159,7 +159,7 @@ class Diversifier {
                     addRandomParameter(m, model);
                 }
             }
-        }
+        }*/
 
         final TreeIterator<EObject> it3 = model.eAllContents();
         while (it3.hasNext()) {

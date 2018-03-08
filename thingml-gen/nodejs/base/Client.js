@@ -10,7 +10,7 @@ StateJS.internalTransitionsTriggerCompletion = true;
  * Definition for type : Client
  */
 
-function Client(name, root, Client__a_var, Client__b_var, Client__e_var, Client_start_var, Client__d_var, Client_counter_var, Client__c_var, debug) {
+function Client(name, root, Client__c_var, Client__a_var, Client__d_var, Client__e_var, Client_counter_var, Client_start_var, Client__b_var, debug) {
 	this.name = name;
 	this.root = (root === null)? this : root;
 	this.debug = debug;
@@ -18,20 +18,20 @@ function Client(name, root, Client__a_var, Client__b_var, Client__e_var, Client_
 	this.bus = (root === null)? new EventEmitter() : this.root.bus;
 	
 	/*Attributes*/
-	this.Client__a_var = Client__a_var;
-	this.debug_Client__a_var = Client__a_var;
-	this.Client__b_var = Client__b_var;
-	this.debug_Client__b_var = Client__b_var;
-	this.Client__e_var = Client__e_var;
-	this.debug_Client__e_var = Client__e_var;
-	this.Client_start_var = Client_start_var;
-	this.debug_Client_start_var = Client_start_var;
-	this.Client__d_var = Client__d_var;
-	this.debug_Client__d_var = Client__d_var;
-	this.Client_counter_var = Client_counter_var;
-	this.debug_Client_counter_var = Client_counter_var;
 	this.Client__c_var = Client__c_var;
 	this.debug_Client__c_var = Client__c_var;
+	this.Client__a_var = Client__a_var;
+	this.debug_Client__a_var = Client__a_var;
+	this.Client__d_var = Client__d_var;
+	this.debug_Client__d_var = Client__d_var;
+	this.Client__e_var = Client__e_var;
+	this.debug_Client__e_var = Client__e_var;
+	this.Client_counter_var = Client_counter_var;
+	this.debug_Client_counter_var = Client_counter_var;
+	this.Client_start_var = Client_start_var;
+	this.debug_Client_start_var = Client_start_var;
+	this.Client__b_var = Client__b_var;
+	this.debug_Client__b_var = Client__b_var;
 	
 	this.build(name);
 }
@@ -67,6 +67,19 @@ Client.prototype.build = function(session) {
 		process.stdout.write(''+this.Client__e_var);
 		process.stdout.write(''+')!');
 		process.stderr.write('\n');
+		process.stdout.write(''+'0');
+		process.stdout.write(''+', ');
+		process.stdout.write(''+this.Client__a_var);
+		process.stdout.write(''+', ');
+		process.stdout.write(''+this.Client__b_var);
+		process.stdout.write(''+', ');
+		process.stdout.write(''+this.Client__c_var);
+		process.stdout.write(''+', ');
+		process.stdout.write(''+this.Client__d_var);
+		process.stdout.write(''+', ');
+		process.stdout.write(''+this.Client__e_var);
+		process.stdout.write(''+', ');
+		process.stderr.write('\n');
 		setImmediate(() => this.bus.emit('app?m1', this.Client__a_var, this.Client__b_var, this.Client__c_var, this.Client__d_var, this.Client__e_var));
 		process.stdout.write(''+'#CLI: Come get some app!m2(');
 		process.stdout.write(''+this.Client__a_var);
@@ -75,6 +88,15 @@ Client.prototype.build = function(session) {
 		process.stdout.write(''+', ');
 		process.stdout.write(''+this.Client__c_var);
 		process.stdout.write(''+')!');
+		process.stderr.write('\n');
+		process.stdout.write(''+'1');
+		process.stdout.write(''+', ');
+		process.stdout.write(''+this.Client__a_var);
+		process.stdout.write(''+', ');
+		process.stdout.write(''+this.Client__b_var);
+		process.stdout.write(''+', ');
+		process.stdout.write(''+this.Client__c_var);
+		process.stdout.write(''+', ');
 		process.stderr.write('\n');
 		setImmediate(() => this.bus.emit('app?m2', this.Client__a_var, this.Client__b_var, this.Client__c_var));
 		this.Client_counter_var++;
@@ -155,13 +177,13 @@ Client.prototype.receivem3Onapp = function(a) {
 
 Client.prototype.toString = function() {
 	let result = 'instance ' + this.name + ':' + this.constructor.name + '\n';
-	result += '\n\t_a = ' + this.Client__a_var;
-	result += '\n\t_b = ' + this.Client__b_var;
-	result += '\n\t_e = ' + this.Client__e_var;
-	result += '\n\tstart = ' + this.Client_start_var;
-	result += '\n\t_d = ' + this.Client__d_var;
-	result += '\n\tcounter = ' + this.Client_counter_var;
 	result += '\n\t_c = ' + this.Client__c_var;
+	result += '\n\t_a = ' + this.Client__a_var;
+	result += '\n\t_d = ' + this.Client__d_var;
+	result += '\n\t_e = ' + this.Client__e_var;
+	result += '\n\tcounter = ' + this.Client_counter_var;
+	result += '\n\tstart = ' + this.Client_start_var;
+	result += '\n\t_b = ' + this.Client__b_var;
 	result += '';
 	return result;
 }
