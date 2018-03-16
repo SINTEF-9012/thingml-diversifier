@@ -1,0 +1,316 @@
+datatype Byte<1>
+	@type_checker "Byte"
+	@java_type "byte"
+datatype Integer<2>
+	@type_checker "Integer"
+	@java_type "short"
+datatype Long<4>
+	@type_checker "Integer"
+	@java_type "int"
+datatype LongLong<8>
+	@type_checker "Integer"
+	@java_type "long"
+thing fragment Msgs {
+	message m2(c : LongLong, b : Byte @upsize "not", a : Byte @upsize "not")
+	@code "0x12"
+	message m1(e : Long, c : LongLong, d : Integer @weakparam "true", a : Byte @upsize "not", b : Byte @upsize "not")
+	@code "0x13"
+	message m3(a : Byte)
+	@code "0x14"
+	message m2c(c : LongLong)
+	@code "0x15"
+	message m2ba(b : Byte @upsize "not", a : Byte @upsize "not")
+	@code "0x16"
+	message m1ecd(e : Long, c : LongLong, d : Integer @weakparam "true")
+	@code "0x17"
+	message m1ab(a : Byte @upsize "not", b : Byte @upsize "not")
+	@code "0x18"
+	message m3_()
+	@code "0x19"
+	message m3a(a : Byte)
+	@code "0x1A"
+	function rnd() : Byte do
+		return `Math.floor(Math.random() * Math.floor(256))`
+	end
+}
+thing App includes Msgs {
+	provided port app {
+		sends m3_ sends m3a receives m2c receives m2ba receives m1ecd receives m1ab
+	}
+	internal port diversified {
+		sends m2 sends m1ecd sends m1ab sends m1 receives m2 receives m1ecd receives m1ab receives m1
+	}
+	property id : Byte
+	statechart init WaitForM1 {
+		on entry `
+			var fs = require('fs');
+			process.writeable = fs.createWriteStream('out.log');
+			process.stdout.write = process.stderr.write = process.writeable.write.bind(process.writeable);
+		`
+		state WaitForM1 {
+			transition -> WaitForM2
+			event e : diversified?m1
+			action do
+				id = e.a
+				println "#APP: Ooh, I needed that app?m1(" , e.a , ", " , e.b , ", " , e.c , ", " , e.d , ", " , e.e , ")!"
+			end
+		}
+		state WaitForM2 {
+			transition -> SendAck
+			event e : diversified?m2
+			action println "#APP: Ooh, I needed that app?m2(" , e.a , ", " , e.b , ", " , e.c , ")!"
+		}
+		state SendAck {
+			on entry do
+				println "#APP: Come get some app!m3(" , id , ")!"
+				do
+					do
+						println "!" , "25" , ','
+						println ":" , "Byte" , ','
+						println "?" , "0" , ','
+						app!m3_()
+					end
+					do
+						var m3aArg0 : Byte = id
+						println "!" , "26" , ',' , `((` & m3aArg0 & ` >> 0) & 0xFF)` , ','
+						println ":" , "Byte" , ',' , "Byte" , ','
+						println "?" , "0" , ',' , "0" , ','
+						app!m3a(m3aArg0)
+					end
+				end
+			end
+			transition -> WaitForM1
+		}
+		region generate_m2_from_m2c_and_m2ba init INIT {
+			composite state INIT init S1 {
+				property c : LongLong
+				property b : Byte
+				property a : Byte
+				state S1 @diversify "not" {
+					transition -> S2
+					event ev : app?m2c
+					action do
+						c = ev.c
+					end
+					transition -> S3
+					event ev : app?m2ba
+					action do
+						b = ev.b
+						a = ev.a
+					end
+				}
+				state S2 @diversify "not" {
+					transition -> S4
+					event ev : app?m2ba
+					action do
+						b = ev.b
+						a = ev.a
+					end
+				}
+				state S3 @diversify "not" {
+					transition -> S4
+					event ev : app?m2c
+					action do
+						c = ev.c
+					end
+				}
+				state S4 @diversify "not" {
+					on entry do
+						diversified!m2(c, b, a)
+					end
+					transition -> S1
+				}
+			}
+		}
+		region generate_m1_from_m1ecd_and_m1ab init INIT {
+			composite state INIT init S1 {
+				property e : Long
+				property c : LongLong
+				property d : Integer
+				property a : Byte
+				property b : Byte
+				state S1 @diversify "not" {
+					transition -> S2
+					event ev : app?m1ecd
+					action do
+						e = ev.e
+						c = ev.c
+						d = ev.d
+					end
+					transition -> S3
+					event ev : app?m1ab
+					action do
+						a = ev.a
+						b = ev.b
+					end
+				}
+				state S2 @diversify "not" {
+					transition -> S4
+					event ev : app?m1ab
+					action do
+						a = ev.a
+						b = ev.b
+					end
+				}
+				state S3 @diversify "not" {
+					transition -> S4
+					event ev : app?m1ecd
+					action do
+						e = ev.e
+						c = ev.c
+						d = ev.d
+					end
+				}
+				state S4 @diversify "not" {
+					on entry do
+						diversified!m1(e, c, d, a, b)
+					end
+					transition -> S1
+				}
+			}
+		}
+	}
+}
+thing Client includes Msgs {
+	required port app {
+		sends m2c sends m2ba sends m1ecd sends m1ab receives m3_ receives m3a
+	}
+	internal port diversified {
+		sends m3 receives m3
+	}
+	property counter : Integer = 0
+	property start : Integer
+	property _a : Byte
+	property _b : Byte
+	property _c : Byte
+	property _d : Byte
+	property _e : Byte
+	statechart init RUN {
+		on entry do
+			_a = rnd()
+			_b = 0x02
+			start = `new Date()`
+		end
+		state RUN {
+			on entry do
+				_c = rnd()% 20
+				_d = rnd()% 10 + 20
+				_e = rnd()% 5 + 10
+				println "#CLI: Come get some app!m1(" , _a , ", " , _b , ", " , _c , ", " , _d , ", " , _e , ")!"
+				do
+					do
+						var m1ecdArg0 : Long = _e
+						var m1ecdArg1 : LongLong = _c
+						var m1ecdArg2 : Integer = _d
+						println "!" , "23" , ',' , `((` & m1ecdArg0 & ` >> 24) & 0xFF)` , ',' , `((` & m1ecdArg0 & ` >> 16) & 0xFF)` , ',' , `((` & m1ecdArg0 & ` >> 8) & 0xFF)` , ',' , `((` & m1ecdArg0 & ` >> 0) & 0xFF)` , ',' , `((` & m1ecdArg1 & ` >> 56) & 0xFF)` , ',' , `((` & m1ecdArg1 & ` >> 48) & 0xFF)` , ',' , `((` & m1ecdArg1 & ` >> 40) & 0xFF)` , ',' , `((` & m1ecdArg1 & ` >> 32) & 0xFF)` , ',' , `((` & m1ecdArg1 & ` >> 24) & 0xFF)` , ',' , `((` & m1ecdArg1 & ` >> 16) & 0xFF)` , ',' , `((` & m1ecdArg1 & ` >> 8) & 0xFF)` , ',' , `((` & m1ecdArg1 & ` >> 0) & 0xFF)` , ',' , `((` & m1ecdArg2 & ` >> 8) & 0xFF)` , ',' , `((` & m1ecdArg2 & ` >> 0) & 0xFF)` , ','
+						println ":" , "Byte" , ',' , "Long" , ',' , "Long" , ',' , "Long" , ',' , "Long" , ',' , "LongLong" , ',' , "LongLong" , ',' , "LongLong" , ',' , "LongLong" , ',' , "LongLong" , ',' , "LongLong" , ',' , "LongLong" , ',' , "LongLong" , ',' , "Integer" , ',' , "Integer" , ','
+						println "?" , "0" , ',' , "0" , ',' , "0" , ',' , "0" , ',' , "0" , ',' , "0" , ',' , "0" , ',' , "0" , ',' , "0" , ',' , "0" , ',' , "0" , ',' , "0" , ',' , "0" , ',' , "1" , ',' , "1" , ','
+						app!m1ecd(m1ecdArg0, m1ecdArg1, m1ecdArg2)
+					end
+					do
+						var m1abArg0 : Byte = _a
+						var m1abArg1 : Byte = _b
+						println "!" , "24" , ',' , `((` & m1abArg0 & ` >> 0) & 0xFF)` , ',' , `((` & m1abArg1 & ` >> 0) & 0xFF)` , ','
+						println ":" , "Byte" , ',' , "Byte" , ',' , "Byte" , ','
+						println "?" , "0" , ',' , "0" , ',' , "0" , ','
+						app!m1ab(m1abArg0, m1abArg1)
+					end
+				end
+				println "#CLI: Come get some app!m2(" , _a , ", " , _b , ", " , _c , ")!"
+				do
+					do
+						var m2baArg0 : Byte = _b
+						var m2baArg1 : Byte = _a
+						println "!" , "22" , ',' , `((` & m2baArg0 & ` >> 0) & 0xFF)` , ',' , `((` & m2baArg1 & ` >> 0) & 0xFF)` , ','
+						println ":" , "Byte" , ',' , "Byte" , ',' , "Byte" , ','
+						println "?" , "0" , ',' , "0" , ',' , "0" , ','
+						app!m2ba(m2baArg0, m2baArg1)
+					end
+					do
+						var m2cArg0 : LongLong = _c
+						println "!" , "21" , ',' , `((` & m2cArg0 & ` >> 56) & 0xFF)` , ',' , `((` & m2cArg0 & ` >> 48) & 0xFF)` , ',' , `((` & m2cArg0 & ` >> 40) & 0xFF)` , ',' , `((` & m2cArg0 & ` >> 32) & 0xFF)` , ',' , `((` & m2cArg0 & ` >> 24) & 0xFF)` , ',' , `((` & m2cArg0 & ` >> 16) & 0xFF)` , ',' , `((` & m2cArg0 & ` >> 8) & 0xFF)` , ',' , `((` & m2cArg0 & ` >> 0) & 0xFF)` , ','
+						println ":" , "Byte" , ',' , "LongLong" , ',' , "LongLong" , ',' , "LongLong" , ',' , "LongLong" , ',' , "LongLong" , ',' , "LongLong" , ',' , "LongLong" , ',' , "LongLong" , ','
+						println "?" , "0" , ',' , "0" , ',' , "0" , ',' , "0" , ',' , "0" , ',' , "0" , ',' , "0" , ',' , "0" , ',' , "0" , ','
+						app!m2c(m2cArg0)
+					end
+				end
+				counter ++
+			end
+			transition -> STOP
+			event e : diversified?m3
+			guard counter >= 5
+			transition -> RUN
+			event e : diversified?m3
+			guard e.a == _a and counter < 5
+			action do
+				println "#CLI: Ooh, I needed that app?m3(" , e.a , ")!"
+				println "#CLI: We meet again, Doctor Jones!"
+			end
+			transition -> ERROR
+			event e : diversified?m3
+			guard e.a != _a
+			action do
+				println "#CLI: Ooh, I needed that app?m3(" , e.a , ")!"
+				println "#CLI: Damn, you re ugly."
+			end
+		}
+		final state STOP {
+			on entry do
+				println "#CLI: What are you waitin for? Christmas?"
+				var duration : Integer = `new Date()` - start
+				println "#CLI: took " , duration , "ms."
+			`process.writeable.end(() => {
+					process.exit(0);
+				})`
+			end
+		}
+		final state ERROR {
+			on entry do
+				println "#CLI: Heh, heh, heh... what a mess!"
+			`process.exit(1);`
+			end
+		}
+		region generate_m3_from_m3__and_m3a init INIT {
+			composite state INIT init S1 {
+				property a : Byte
+				state S1 @diversify "not" {
+					transition -> S2
+					event ev : app?m3_
+					action do
+					end
+					transition -> S3
+					event ev : app?m3a
+					action do
+						a = ev.a
+					end
+				}
+				state S2 @diversify "not" {
+					transition -> S4
+					event ev : app?m3a
+					action do
+						a = ev.a
+					end
+				}
+				state S3 @diversify "not" {
+					transition -> S4
+					event ev : app?m3_
+					action do
+					end
+				}
+				state S4 @diversify "not" {
+					on entry do
+						diversified!m3(a)
+					end
+					transition -> S1
+				}
+			}
+		}
+	}
+}
+protocol Default ;
+
+configuration test {
+	instance app : App
+	instance client1 : Client
+	connector client1.app => app . app
+}

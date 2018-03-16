@@ -6,10 +6,18 @@ datatype Integer<2>
 @type_checker "Integer"
 @java_type "short";
 
+datatype Long<4>
+@type_checker "Integer"
+@java_type "int";
+
+datatype LongLong<8>
+@type_checker "Integer"
+@java_type "long";
+
 protocol Default;
 
 thing fragment Msgs {
-	message m1(a : Byte@upsize "not", b : Byte@upsize "not", c : Byte, d : Byte, e : Byte)
+	message m1(a : Byte@upsize "not", b : Byte@upsize "not", c : Integer, d : Byte@weakparam "true", e : Byte)
 	message m2(a : Byte@upsize "not", b : Byte@upsize "not", c : Byte)
 	message m3(a : Byte)
 	
@@ -28,6 +36,12 @@ thing App includes Msgs {
 	}
 
 	statechart init WaitForM1 {
+		on entry `
+			var fs = require('fs');
+			process.writeable = fs.createWriteStream('out.log');
+			process.stdout.write = process.stderr.write = process.writeable.write.bind(process.writeable);
+		`
+		
 		state WaitForM1 {
 			transition -> WaitForM2
 			event e : app?m1
@@ -74,15 +88,15 @@ thing Client includes Msgs {
 	statechart init RUN {
 		on entry do
 			_a = rnd()
-			_b = rnd()
+			_b = 0x02 //rnd()
 			start = `new Date()`
 		end
 		
 		state RUN {
 			on entry do
-				_c = rnd() % 100
-				_d = rnd() % 50
-				_e = rnd() % 25
+				_c = rnd() % 20
+				_d = rnd() % 10 + 20
+				_e = rnd() % 5 + 10
 				println "#CLI: Come get some app!m1(", _a, ", ", _b, ", ", _c, ", ", _d, ", ", _e, ")!"
 				app!m1(_a, _b, _c, _d, _e)
 				println "#CLI: Come get some app!m2(", _a, ", ", _b, ", ", _c, ")!"
@@ -91,11 +105,12 @@ thing Client includes Msgs {
 			end
 			
 			transition -> STOP
-			guard counter == 100
+			event e : app?m3
+			guard counter >= 5
 			
 			transition -> RUN
 			event e : app?m3
-			guard e.a == _a
+			guard e.a == _a and counter < 5
 			action do
 				println "#CLI: Ooh, I needed that app?m3(", e.a, ")!"
 				println "#CLI: We meet again, Doctor Jones!"
@@ -115,11 +130,17 @@ thing Client includes Msgs {
 				println "#CLI: What are you waitin for? Christmas?"
 				var duration : Integer = `new Date()` - start
 				println "#CLI: took ", duration, "ms."
+				`process.writeable.end(() => {
+					process.exit(0);
+				})`
 			end
 		}
 		
 		final state ERROR {
-			on entry println "#CLI: Heh, heh, heh... what a mess!"
+			on entry do
+				println "#CLI: Heh, heh, heh... what a mess!"
+				`process.exit(1);`
+			end
 		}
 	}
 

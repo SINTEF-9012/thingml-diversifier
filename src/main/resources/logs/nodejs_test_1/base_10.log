@@ -1,0 +1,80 @@
+#CLI: Come get some app!m1(30, 2, 12, 26, 14)!
+!0,30,2,0,12,26,14,
+:Byte,Byte,Byte,Integer,Integer,Byte,Byte,
+?0,0,0,0,0,1,0,
+#CLI: Come get some app!m2(30, 2, 12)!
+!0,30,2,12,
+:Byte,Byte,Byte,Byte,
+?0,0,0,0,
+#APP: Ooh, I needed that app?m1(30, 2, 12, 26, 14)!
+#APP: Ooh, I needed that app?m2(30, 2, 12)!
+#APP: Come get some app!m3(30)!
+!0,30,
+:Byte,Byte,
+?0,0,
+#CLI: Ooh, I needed that app?m3(30)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(30, 2, 14, 22, 11)!
+!0,30,2,0,14,22,11,
+:Byte,Byte,Byte,Integer,Integer,Byte,Byte,
+?0,0,0,0,0,1,0,
+#CLI: Come get some app!m2(30, 2, 14)!
+!0,30,2,14,
+:Byte,Byte,Byte,Byte,
+?0,0,0,0,
+#APP: Ooh, I needed that app?m1(30, 2, 14, 22, 11)!
+#APP: Ooh, I needed that app?m2(30, 2, 14)!
+#APP: Come get some app!m3(30)!
+!0,30,
+:Byte,Byte,
+?0,0,
+#CLI: Ooh, I needed that app?m3(30)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(30, 2, 16, 21, 11)!
+!0,30,2,0,16,21,11,
+:Byte,Byte,Byte,Integer,Integer,Byte,Byte,
+?0,0,0,0,0,1,0,
+#CLI: Come get some app!m2(30, 2, 16)!
+!0,30,2,16,
+:Byte,Byte,Byte,Byte,
+?0,0,0,0,
+#APP: Ooh, I needed that app?m1(30, 2, 16, 21, 11)!
+#APP: Ooh, I needed that app?m2(30, 2, 16)!
+#APP: Come get some app!m3(30)!
+!0,30,
+:Byte,Byte,
+?0,0,
+#CLI: Ooh, I needed that app?m3(30)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(30, 2, 15, 28, 12)!
+!0,30,2,0,15,28,12,
+:Byte,Byte,Byte,Integer,Integer,Byte,Byte,
+?0,0,0,0,0,1,0,
+#CLI: Come get some app!m2(30, 2, 15)!
+!0,30,2,15,
+:Byte,Byte,Byte,Byte,
+?0,0,0,0,
+#APP: Ooh, I needed that app?m1(30, 2, 15, 28, 12)!
+#APP: Ooh, I needed that app?m2(30, 2, 15)!
+#APP: Come get some app!m3(30)!
+!0,30,
+:Byte,Byte,
+?0,0,
+#CLI: Ooh, I needed that app?m3(30)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(30, 2, 7, 25, 10)!
+!0,30,2,0,7,25,10,
+:Byte,Byte,Byte,Integer,Integer,Byte,Byte,
+?0,0,0,0,0,1,0,
+#CLI: Come get some app!m2(30, 2, 7)!
+!0,30,2,7,
+:Byte,Byte,Byte,Byte,
+?0,0,0,0,
+#APP: Ooh, I needed that app?m1(30, 2, 7, 25, 10)!
+#APP: Ooh, I needed that app?m2(30, 2, 7)!
+#APP: Come get some app!m3(30)!
+!0,30,
+:Byte,Byte,
+?0,0,
+#CLI: What are you waitin for? Christmas?
+#CLI: took 15ms.

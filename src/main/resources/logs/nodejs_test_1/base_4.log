@@ -1,0 +1,80 @@
+#CLI: Come get some app!m1(212, 2, 2, 24, 10)!
+!0,212,2,0,2,24,10,
+:Byte,Byte,Byte,Integer,Integer,Byte,Byte,
+?0,0,0,0,0,1,0,
+#CLI: Come get some app!m2(212, 2, 2)!
+!0,212,2,2,
+:Byte,Byte,Byte,Byte,
+?0,0,0,0,
+#APP: Ooh, I needed that app?m1(212, 2, 2, 24, 10)!
+#APP: Ooh, I needed that app?m2(212, 2, 2)!
+#APP: Come get some app!m3(212)!
+!0,212,
+:Byte,Byte,
+?0,0,
+#CLI: Ooh, I needed that app?m3(212)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(212, 2, 14, 21, 14)!
+!0,212,2,0,14,21,14,
+:Byte,Byte,Byte,Integer,Integer,Byte,Byte,
+?0,0,0,0,0,1,0,
+#CLI: Come get some app!m2(212, 2, 14)!
+!0,212,2,14,
+:Byte,Byte,Byte,Byte,
+?0,0,0,0,
+#APP: Ooh, I needed that app?m1(212, 2, 14, 21, 14)!
+#APP: Ooh, I needed that app?m2(212, 2, 14)!
+#APP: Come get some app!m3(212)!
+!0,212,
+:Byte,Byte,
+?0,0,
+#CLI: Ooh, I needed that app?m3(212)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(212, 2, 11, 22, 14)!
+!0,212,2,0,11,22,14,
+:Byte,Byte,Byte,Integer,Integer,Byte,Byte,
+?0,0,0,0,0,1,0,
+#CLI: Come get some app!m2(212, 2, 11)!
+!0,212,2,11,
+:Byte,Byte,Byte,Byte,
+?0,0,0,0,
+#APP: Ooh, I needed that app?m1(212, 2, 11, 22, 14)!
+#APP: Ooh, I needed that app?m2(212, 2, 11)!
+#APP: Come get some app!m3(212)!
+!0,212,
+:Byte,Byte,
+?0,0,
+#CLI: Ooh, I needed that app?m3(212)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(212, 2, 4, 29, 11)!
+!0,212,2,0,4,29,11,
+:Byte,Byte,Byte,Integer,Integer,Byte,Byte,
+?0,0,0,0,0,1,0,
+#CLI: Come get some app!m2(212, 2, 4)!
+!0,212,2,4,
+:Byte,Byte,Byte,Byte,
+?0,0,0,0,
+#APP: Ooh, I needed that app?m1(212, 2, 4, 29, 11)!
+#APP: Ooh, I needed that app?m2(212, 2, 4)!
+#APP: Come get some app!m3(212)!
+!0,212,
+:Byte,Byte,
+?0,0,
+#CLI: Ooh, I needed that app?m3(212)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(212, 2, 9, 20, 12)!
+!0,212,2,0,9,20,12,
+:Byte,Byte,Byte,Integer,Integer,Byte,Byte,
+?0,0,0,0,0,1,0,
+#CLI: Come get some app!m2(212, 2, 9)!
+!0,212,2,9,
+:Byte,Byte,Byte,Byte,
+?0,0,0,0,
+#APP: Ooh, I needed that app?m1(212, 2, 9, 20, 12)!
+#APP: Ooh, I needed that app?m2(212, 2, 9)!
+#APP: Come get some app!m3(212)!
+!0,212,
+:Byte,Byte,
+?0,0,
+#CLI: What are you waitin for? Christmas?
+#CLI: took 14ms.
