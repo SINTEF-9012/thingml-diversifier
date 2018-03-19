@@ -106,11 +106,11 @@ thing Client includes Msgs {
 			
 			transition -> STOP
 			event e : app?m3
-			guard counter >= 5
+			guard counter >= 100
 			
 			transition -> RUN
 			event e : app?m3
-			guard e.a == _a and counter < 5
+			guard e.a == _a and counter < 100
 			action do
 				println "#CLI: Ooh, I needed that app?m3(", e.a, ")!"
 				println "#CLI: We meet again, Doctor Jones!"

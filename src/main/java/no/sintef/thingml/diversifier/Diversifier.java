@@ -79,6 +79,10 @@ class Diversifier {
         	case "onlylogs":
         		diversifier.onlyLogs = true;
         		break;
+        	case "runtime":
+        		diversifier.doRuntimeRandomness = true;
+        		diversifier.duplicateMessages = true;
+        		break;
         	case "default":
         	default:
         	}

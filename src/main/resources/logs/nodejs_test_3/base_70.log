@@ -1,0 +1,1600 @@
+#CLI: Come get some app!m1(12, 2, 6, 23, 11)!
+!0,12,2,0,6,23,11,
+:Byte,Byte,Byte,Integer,Integer,Byte,Byte,
+?0,0,0,0,0,1,0,
+#CLI: Come get some app!m2(12, 2, 6)!
+!0,12,2,6,
+:Byte,Byte,Byte,Byte,
+?0,0,0,0,
+#APP: Ooh, I needed that app?m1(12, 2, 6, 23, 11)!
+#APP: Ooh, I needed that app?m2(12, 2, 6)!
+#APP: Come get some app!m3(12)!
+!0,12,
+:Byte,Byte,
+?0,0,
+#CLI: Ooh, I needed that app?m3(12)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(12, 2, 16, 24, 14)!
+!0,12,2,0,16,24,14,
+:Byte,Byte,Byte,Integer,Integer,Byte,Byte,
+?0,0,0,0,0,1,0,
+#CLI: Come get some app!m2(12, 2, 16)!
+!0,12,2,16,
+:Byte,Byte,Byte,Byte,
+?0,0,0,0,
+#APP: Ooh, I needed that app?m1(12, 2, 16, 24, 14)!
+#APP: Ooh, I needed that app?m2(12, 2, 16)!
+#APP: Come get some app!m3(12)!
+!0,12,
+:Byte,Byte,
+?0,0,
+#CLI: Ooh, I needed that app?m3(12)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(12, 2, 4, 22, 11)!
+!0,12,2,0,4,22,11,
+:Byte,Byte,Byte,Integer,Integer,Byte,Byte,
+?0,0,0,0,0,1,0,
+#CLI: Come get some app!m2(12, 2, 4)!
+!0,12,2,4,
+:Byte,Byte,Byte,Byte,
+?0,0,0,0,
+#APP: Ooh, I needed that app?m1(12, 2, 4, 22, 11)!
+#APP: Ooh, I needed that app?m2(12, 2, 4)!
+#APP: Come get some app!m3(12)!
+!0,12,
+:Byte,Byte,
+?0,0,
+#CLI: Ooh, I needed that app?m3(12)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(12, 2, 19, 24, 14)!
+!0,12,2,0,19,24,14,
+:Byte,Byte,Byte,Integer,Integer,Byte,Byte,
+?0,0,0,0,0,1,0,
+#CLI: Come get some app!m2(12, 2, 19)!
+!0,12,2,19,
+:Byte,Byte,Byte,Byte,
+?0,0,0,0,
+#APP: Ooh, I needed that app?m1(12, 2, 19, 24, 14)!
+#APP: Ooh, I needed that app?m2(12, 2, 19)!
+#APP: Come get some app!m3(12)!
+!0,12,
+:Byte,Byte,
+?0,0,
+#CLI: Ooh, I needed that app?m3(12)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(12, 2, 4, 20, 12)!
+!0,12,2,0,4,20,12,
+:Byte,Byte,Byte,Integer,Integer,Byte,Byte,
+?0,0,0,0,0,1,0,
+#CLI: Come get some app!m2(12, 2, 4)!
+!0,12,2,4,
+:Byte,Byte,Byte,Byte,
+?0,0,0,0,
+#APP: Ooh, I needed that app?m1(12, 2, 4, 20, 12)!
+#APP: Ooh, I needed that app?m2(12, 2, 4)!
+#APP: Come get some app!m3(12)!
+!0,12,
+:Byte,Byte,
+?0,0,
+#CLI: Ooh, I needed that app?m3(12)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(12, 2, 10, 26, 11)!
+!0,12,2,0,10,26,11,
+:Byte,Byte,Byte,Integer,Integer,Byte,Byte,
+?0,0,0,0,0,1,0,
+#CLI: Come get some app!m2(12, 2, 10)!
+!0,12,2,10,
+:Byte,Byte,Byte,Byte,
+?0,0,0,0,
+#APP: Ooh, I needed that app?m1(12, 2, 10, 26, 11)!
+#APP: Ooh, I needed that app?m2(12, 2, 10)!
+#APP: Come get some app!m3(12)!
+!0,12,
+:Byte,Byte,
+?0,0,
+#CLI: Ooh, I needed that app?m3(12)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(12, 2, 2, 27, 13)!
+!0,12,2,0,2,27,13,
+:Byte,Byte,Byte,Integer,Integer,Byte,Byte,
+?0,0,0,0,0,1,0,
+#CLI: Come get some app!m2(12, 2, 2)!
+!0,12,2,2,
+:Byte,Byte,Byte,Byte,
+?0,0,0,0,
+#APP: Ooh, I needed that app?m1(12, 2, 2, 27, 13)!
+#APP: Ooh, I needed that app?m2(12, 2, 2)!
+#APP: Come get some app!m3(12)!
+!0,12,
+:Byte,Byte,
+?0,0,
+#CLI: Ooh, I needed that app?m3(12)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(12, 2, 13, 26, 10)!
+!0,12,2,0,13,26,10,
+:Byte,Byte,Byte,Integer,Integer,Byte,Byte,
+?0,0,0,0,0,1,0,
+#CLI: Come get some app!m2(12, 2, 13)!
+!0,12,2,13,
+:Byte,Byte,Byte,Byte,
+?0,0,0,0,
+#APP: Ooh, I needed that app?m1(12, 2, 13, 26, 10)!
+#APP: Ooh, I needed that app?m2(12, 2, 13)!
+#APP: Come get some app!m3(12)!
+!0,12,
+:Byte,Byte,
+?0,0,
+#CLI: Ooh, I needed that app?m3(12)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(12, 2, 15, 24, 10)!
+!0,12,2,0,15,24,10,
+:Byte,Byte,Byte,Integer,Integer,Byte,Byte,
+?0,0,0,0,0,1,0,
+#CLI: Come get some app!m2(12, 2, 15)!
+!0,12,2,15,
+:Byte,Byte,Byte,Byte,
+?0,0,0,0,
+#APP: Ooh, I needed that app?m1(12, 2, 15, 24, 10)!
+#APP: Ooh, I needed that app?m2(12, 2, 15)!
+#APP: Come get some app!m3(12)!
+!0,12,
+:Byte,Byte,
+?0,0,
+#CLI: Ooh, I needed that app?m3(12)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(12, 2, 12, 29, 14)!
+!0,12,2,0,12,29,14,
+:Byte,Byte,Byte,Integer,Integer,Byte,Byte,
+?0,0,0,0,0,1,0,
+#CLI: Come get some app!m2(12, 2, 12)!
+!0,12,2,12,
+:Byte,Byte,Byte,Byte,
+?0,0,0,0,
+#APP: Ooh, I needed that app?m1(12, 2, 12, 29, 14)!
+#APP: Ooh, I needed that app?m2(12, 2, 12)!
+#APP: Come get some app!m3(12)!
+!0,12,
+:Byte,Byte,
+?0,0,
+#CLI: Ooh, I needed that app?m3(12)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(12, 2, 10, 25, 10)!
+!0,12,2,0,10,25,10,
+:Byte,Byte,Byte,Integer,Integer,Byte,Byte,
+?0,0,0,0,0,1,0,
+#CLI: Come get some app!m2(12, 2, 10)!
+!0,12,2,10,
+:Byte,Byte,Byte,Byte,
+?0,0,0,0,
+#APP: Ooh, I needed that app?m1(12, 2, 10, 25, 10)!
+#APP: Ooh, I needed that app?m2(12, 2, 10)!
+#APP: Come get some app!m3(12)!
+!0,12,
+:Byte,Byte,
+?0,0,
+#CLI: Ooh, I needed that app?m3(12)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(12, 2, 7, 25, 10)!
+!0,12,2,0,7,25,10,
+:Byte,Byte,Byte,Integer,Integer,Byte,Byte,
+?0,0,0,0,0,1,0,
+#CLI: Come get some app!m2(12, 2, 7)!
+!0,12,2,7,
+:Byte,Byte,Byte,Byte,
+?0,0,0,0,
+#APP: Ooh, I needed that app?m1(12, 2, 7, 25, 10)!
+#APP: Ooh, I needed that app?m2(12, 2, 7)!
+#APP: Come get some app!m3(12)!
+!0,12,
+:Byte,Byte,
+?0,0,
+#CLI: Ooh, I needed that app?m3(12)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(12, 2, 14, 23, 10)!
+!0,12,2,0,14,23,10,
+:Byte,Byte,Byte,Integer,Integer,Byte,Byte,
+?0,0,0,0,0,1,0,
+#CLI: Come get some app!m2(12, 2, 14)!
+!0,12,2,14,
+:Byte,Byte,Byte,Byte,
+?0,0,0,0,
+#APP: Ooh, I needed that app?m1(12, 2, 14, 23, 10)!
+#APP: Ooh, I needed that app?m2(12, 2, 14)!
+#APP: Come get some app!m3(12)!
+!0,12,
+:Byte,Byte,
+?0,0,
+#CLI: Ooh, I needed that app?m3(12)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(12, 2, 19, 27, 13)!
+!0,12,2,0,19,27,13,
+:Byte,Byte,Byte,Integer,Integer,Byte,Byte,
+?0,0,0,0,0,1,0,
+#CLI: Come get some app!m2(12, 2, 19)!
+!0,12,2,19,
+:Byte,Byte,Byte,Byte,
+?0,0,0,0,
+#APP: Ooh, I needed that app?m1(12, 2, 19, 27, 13)!
+#APP: Ooh, I needed that app?m2(12, 2, 19)!
+#APP: Come get some app!m3(12)!
+!0,12,
+:Byte,Byte,
+?0,0,
+#CLI: Ooh, I needed that app?m3(12)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(12, 2, 5, 25, 12)!
+!0,12,2,0,5,25,12,
+:Byte,Byte,Byte,Integer,Integer,Byte,Byte,
+?0,0,0,0,0,1,0,
+#CLI: Come get some app!m2(12, 2, 5)!
+!0,12,2,5,
+:Byte,Byte,Byte,Byte,
+?0,0,0,0,
+#APP: Ooh, I needed that app?m1(12, 2, 5, 25, 12)!
+#APP: Ooh, I needed that app?m2(12, 2, 5)!
+#APP: Come get some app!m3(12)!
+!0,12,
+:Byte,Byte,
+?0,0,
+#CLI: Ooh, I needed that app?m3(12)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(12, 2, 18, 21, 10)!
+!0,12,2,0,18,21,10,
+:Byte,Byte,Byte,Integer,Integer,Byte,Byte,
+?0,0,0,0,0,1,0,
+#CLI: Come get some app!m2(12, 2, 18)!
+!0,12,2,18,
+:Byte,Byte,Byte,Byte,
+?0,0,0,0,
+#APP: Ooh, I needed that app?m1(12, 2, 18, 21, 10)!
+#APP: Ooh, I needed that app?m2(12, 2, 18)!
+#APP: Come get some app!m3(12)!
+!0,12,
+:Byte,Byte,
+?0,0,
+#CLI: Ooh, I needed that app?m3(12)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(12, 2, 19, 21, 13)!
+!0,12,2,0,19,21,13,
+:Byte,Byte,Byte,Integer,Integer,Byte,Byte,
+?0,0,0,0,0,1,0,
+#CLI: Come get some app!m2(12, 2, 19)!
+!0,12,2,19,
+:Byte,Byte,Byte,Byte,
+?0,0,0,0,
+#APP: Ooh, I needed that app?m1(12, 2, 19, 21, 13)!
+#APP: Ooh, I needed that app?m2(12, 2, 19)!
+#APP: Come get some app!m3(12)!
+!0,12,
+:Byte,Byte,
+?0,0,
+#CLI: Ooh, I needed that app?m3(12)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(12, 2, 19, 24, 12)!
+!0,12,2,0,19,24,12,
+:Byte,Byte,Byte,Integer,Integer,Byte,Byte,
+?0,0,0,0,0,1,0,
+#CLI: Come get some app!m2(12, 2, 19)!
+!0,12,2,19,
+:Byte,Byte,Byte,Byte,
+?0,0,0,0,
+#APP: Ooh, I needed that app?m1(12, 2, 19, 24, 12)!
+#APP: Ooh, I needed that app?m2(12, 2, 19)!
+#APP: Come get some app!m3(12)!
+!0,12,
+:Byte,Byte,
+?0,0,
+#CLI: Ooh, I needed that app?m3(12)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(12, 2, 5, 27, 12)!
+!0,12,2,0,5,27,12,
+:Byte,Byte,Byte,Integer,Integer,Byte,Byte,
+?0,0,0,0,0,1,0,
+#CLI: Come get some app!m2(12, 2, 5)!
+!0,12,2,5,
+:Byte,Byte,Byte,Byte,
+?0,0,0,0,
+#APP: Ooh, I needed that app?m1(12, 2, 5, 27, 12)!
+#APP: Ooh, I needed that app?m2(12, 2, 5)!
+#APP: Come get some app!m3(12)!
+!0,12,
+:Byte,Byte,
+?0,0,
+#CLI: Ooh, I needed that app?m3(12)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(12, 2, 17, 22, 10)!
+!0,12,2,0,17,22,10,
+:Byte,Byte,Byte,Integer,Integer,Byte,Byte,
+?0,0,0,0,0,1,0,
+#CLI: Come get some app!m2(12, 2, 17)!
+!0,12,2,17,
+:Byte,Byte,Byte,Byte,
+?0,0,0,0,
+#APP: Ooh, I needed that app?m1(12, 2, 17, 22, 10)!
+#APP: Ooh, I needed that app?m2(12, 2, 17)!
+#APP: Come get some app!m3(12)!
+!0,12,
+:Byte,Byte,
+?0,0,
+#CLI: Ooh, I needed that app?m3(12)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(12, 2, 14, 29, 12)!
+!0,12,2,0,14,29,12,
+:Byte,Byte,Byte,Integer,Integer,Byte,Byte,
+?0,0,0,0,0,1,0,
+#CLI: Come get some app!m2(12, 2, 14)!
+!0,12,2,14,
+:Byte,Byte,Byte,Byte,
+?0,0,0,0,
+#APP: Ooh, I needed that app?m1(12, 2, 14, 29, 12)!
+#APP: Ooh, I needed that app?m2(12, 2, 14)!
+#APP: Come get some app!m3(12)!
+!0,12,
+:Byte,Byte,
+?0,0,
+#CLI: Ooh, I needed that app?m3(12)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(12, 2, 18, 25, 12)!
+!0,12,2,0,18,25,12,
+:Byte,Byte,Byte,Integer,Integer,Byte,Byte,
+?0,0,0,0,0,1,0,
+#CLI: Come get some app!m2(12, 2, 18)!
+!0,12,2,18,
+:Byte,Byte,Byte,Byte,
+?0,0,0,0,
+#APP: Ooh, I needed that app?m1(12, 2, 18, 25, 12)!
+#APP: Ooh, I needed that app?m2(12, 2, 18)!
+#APP: Come get some app!m3(12)!
+!0,12,
+:Byte,Byte,
+?0,0,
+#CLI: Ooh, I needed that app?m3(12)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(12, 2, 11, 28, 13)!
+!0,12,2,0,11,28,13,
+:Byte,Byte,Byte,Integer,Integer,Byte,Byte,
+?0,0,0,0,0,1,0,
+#CLI: Come get some app!m2(12, 2, 11)!
+!0,12,2,11,
+:Byte,Byte,Byte,Byte,
+?0,0,0,0,
+#APP: Ooh, I needed that app?m1(12, 2, 11, 28, 13)!
+#APP: Ooh, I needed that app?m2(12, 2, 11)!
+#APP: Come get some app!m3(12)!
+!0,12,
+:Byte,Byte,
+?0,0,
+#CLI: Ooh, I needed that app?m3(12)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(12, 2, 19, 25, 10)!
+!0,12,2,0,19,25,10,
+:Byte,Byte,Byte,Integer,Integer,Byte,Byte,
+?0,0,0,0,0,1,0,
+#CLI: Come get some app!m2(12, 2, 19)!
+!0,12,2,19,
+:Byte,Byte,Byte,Byte,
+?0,0,0,0,
+#APP: Ooh, I needed that app?m1(12, 2, 19, 25, 10)!
+#APP: Ooh, I needed that app?m2(12, 2, 19)!
+#APP: Come get some app!m3(12)!
+!0,12,
+:Byte,Byte,
+?0,0,
+#CLI: Ooh, I needed that app?m3(12)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(12, 2, 6, 28, 12)!
+!0,12,2,0,6,28,12,
+:Byte,Byte,Byte,Integer,Integer,Byte,Byte,
+?0,0,0,0,0,1,0,
+#CLI: Come get some app!m2(12, 2, 6)!
+!0,12,2,6,
+:Byte,Byte,Byte,Byte,
+?0,0,0,0,
+#APP: Ooh, I needed that app?m1(12, 2, 6, 28, 12)!
+#APP: Ooh, I needed that app?m2(12, 2, 6)!
+#APP: Come get some app!m3(12)!
+!0,12,
+:Byte,Byte,
+?0,0,
+#CLI: Ooh, I needed that app?m3(12)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(12, 2, 12, 29, 13)!
+!0,12,2,0,12,29,13,
+:Byte,Byte,Byte,Integer,Integer,Byte,Byte,
+?0,0,0,0,0,1,0,
+#CLI: Come get some app!m2(12, 2, 12)!
+!0,12,2,12,
+:Byte,Byte,Byte,Byte,
+?0,0,0,0,
+#APP: Ooh, I needed that app?m1(12, 2, 12, 29, 13)!
+#APP: Ooh, I needed that app?m2(12, 2, 12)!
+#APP: Come get some app!m3(12)!
+!0,12,
+:Byte,Byte,
+?0,0,
+#CLI: Ooh, I needed that app?m3(12)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(12, 2, 10, 21, 11)!
+!0,12,2,0,10,21,11,
+:Byte,Byte,Byte,Integer,Integer,Byte,Byte,
+?0,0,0,0,0,1,0,
+#CLI: Come get some app!m2(12, 2, 10)!
+!0,12,2,10,
+:Byte,Byte,Byte,Byte,
+?0,0,0,0,
+#APP: Ooh, I needed that app?m1(12, 2, 10, 21, 11)!
+#APP: Ooh, I needed that app?m2(12, 2, 10)!
+#APP: Come get some app!m3(12)!
+!0,12,
+:Byte,Byte,
+?0,0,
+#CLI: Ooh, I needed that app?m3(12)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(12, 2, 14, 23, 13)!
+!0,12,2,0,14,23,13,
+:Byte,Byte,Byte,Integer,Integer,Byte,Byte,
+?0,0,0,0,0,1,0,
+#CLI: Come get some app!m2(12, 2, 14)!
+!0,12,2,14,
+:Byte,Byte,Byte,Byte,
+?0,0,0,0,
+#APP: Ooh, I needed that app?m1(12, 2, 14, 23, 13)!
+#APP: Ooh, I needed that app?m2(12, 2, 14)!
+#APP: Come get some app!m3(12)!
+!0,12,
+:Byte,Byte,
+?0,0,
+#CLI: Ooh, I needed that app?m3(12)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(12, 2, 0, 24, 12)!
+!0,12,2,0,0,24,12,
+:Byte,Byte,Byte,Integer,Integer,Byte,Byte,
+?0,0,0,0,0,1,0,
+#CLI: Come get some app!m2(12, 2, 0)!
+!0,12,2,0,
+:Byte,Byte,Byte,Byte,
+?0,0,0,0,
+#APP: Ooh, I needed that app?m1(12, 2, 0, 24, 12)!
+#APP: Ooh, I needed that app?m2(12, 2, 0)!
+#APP: Come get some app!m3(12)!
+!0,12,
+:Byte,Byte,
+?0,0,
+#CLI: Ooh, I needed that app?m3(12)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(12, 2, 10, 27, 13)!
+!0,12,2,0,10,27,13,
+:Byte,Byte,Byte,Integer,Integer,Byte,Byte,
+?0,0,0,0,0,1,0,
+#CLI: Come get some app!m2(12, 2, 10)!
+!0,12,2,10,
+:Byte,Byte,Byte,Byte,
+?0,0,0,0,
+#APP: Ooh, I needed that app?m1(12, 2, 10, 27, 13)!
+#APP: Ooh, I needed that app?m2(12, 2, 10)!
+#APP: Come get some app!m3(12)!
+!0,12,
+:Byte,Byte,
+?0,0,
+#CLI: Ooh, I needed that app?m3(12)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(12, 2, 19, 29, 12)!
+!0,12,2,0,19,29,12,
+:Byte,Byte,Byte,Integer,Integer,Byte,Byte,
+?0,0,0,0,0,1,0,
+#CLI: Come get some app!m2(12, 2, 19)!
+!0,12,2,19,
+:Byte,Byte,Byte,Byte,
+?0,0,0,0,
+#APP: Ooh, I needed that app?m1(12, 2, 19, 29, 12)!
+#APP: Ooh, I needed that app?m2(12, 2, 19)!
+#APP: Come get some app!m3(12)!
+!0,12,
+:Byte,Byte,
+?0,0,
+#CLI: Ooh, I needed that app?m3(12)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(12, 2, 0, 22, 11)!
+!0,12,2,0,0,22,11,
+:Byte,Byte,Byte,Integer,Integer,Byte,Byte,
+?0,0,0,0,0,1,0,
+#CLI: Come get some app!m2(12, 2, 0)!
+!0,12,2,0,
+:Byte,Byte,Byte,Byte,
+?0,0,0,0,
+#APP: Ooh, I needed that app?m1(12, 2, 0, 22, 11)!
+#APP: Ooh, I needed that app?m2(12, 2, 0)!
+#APP: Come get some app!m3(12)!
+!0,12,
+:Byte,Byte,
+?0,0,
+#CLI: Ooh, I needed that app?m3(12)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(12, 2, 5, 26, 13)!
+!0,12,2,0,5,26,13,
+:Byte,Byte,Byte,Integer,Integer,Byte,Byte,
+?0,0,0,0,0,1,0,
+#CLI: Come get some app!m2(12, 2, 5)!
+!0,12,2,5,
+:Byte,Byte,Byte,Byte,
+?0,0,0,0,
+#APP: Ooh, I needed that app?m1(12, 2, 5, 26, 13)!
+#APP: Ooh, I needed that app?m2(12, 2, 5)!
+#APP: Come get some app!m3(12)!
+!0,12,
+:Byte,Byte,
+?0,0,
+#CLI: Ooh, I needed that app?m3(12)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(12, 2, 15, 24, 13)!
+!0,12,2,0,15,24,13,
+:Byte,Byte,Byte,Integer,Integer,Byte,Byte,
+?0,0,0,0,0,1,0,
+#CLI: Come get some app!m2(12, 2, 15)!
+!0,12,2,15,
+:Byte,Byte,Byte,Byte,
+?0,0,0,0,
+#APP: Ooh, I needed that app?m1(12, 2, 15, 24, 13)!
+#APP: Ooh, I needed that app?m2(12, 2, 15)!
+#APP: Come get some app!m3(12)!
+!0,12,
+:Byte,Byte,
+?0,0,
+#CLI: Ooh, I needed that app?m3(12)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(12, 2, 8, 25, 10)!
+!0,12,2,0,8,25,10,
+:Byte,Byte,Byte,Integer,Integer,Byte,Byte,
+?0,0,0,0,0,1,0,
+#CLI: Come get some app!m2(12, 2, 8)!
+!0,12,2,8,
+:Byte,Byte,Byte,Byte,
+?0,0,0,0,
+#APP: Ooh, I needed that app?m1(12, 2, 8, 25, 10)!
+#APP: Ooh, I needed that app?m2(12, 2, 8)!
+#APP: Come get some app!m3(12)!
+!0,12,
+:Byte,Byte,
+?0,0,
+#CLI: Ooh, I needed that app?m3(12)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(12, 2, 10, 26, 10)!
+!0,12,2,0,10,26,10,
+:Byte,Byte,Byte,Integer,Integer,Byte,Byte,
+?0,0,0,0,0,1,0,
+#CLI: Come get some app!m2(12, 2, 10)!
+!0,12,2,10,
+:Byte,Byte,Byte,Byte,
+?0,0,0,0,
+#APP: Ooh, I needed that app?m1(12, 2, 10, 26, 10)!
+#APP: Ooh, I needed that app?m2(12, 2, 10)!
+#APP: Come get some app!m3(12)!
+!0,12,
+:Byte,Byte,
+?0,0,
+#CLI: Ooh, I needed that app?m3(12)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(12, 2, 11, 20, 10)!
+!0,12,2,0,11,20,10,
+:Byte,Byte,Byte,Integer,Integer,Byte,Byte,
+?0,0,0,0,0,1,0,
+#CLI: Come get some app!m2(12, 2, 11)!
+!0,12,2,11,
+:Byte,Byte,Byte,Byte,
+?0,0,0,0,
+#APP: Ooh, I needed that app?m1(12, 2, 11, 20, 10)!
+#APP: Ooh, I needed that app?m2(12, 2, 11)!
+#APP: Come get some app!m3(12)!
+!0,12,
+:Byte,Byte,
+?0,0,
+#CLI: Ooh, I needed that app?m3(12)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(12, 2, 1, 25, 13)!
+!0,12,2,0,1,25,13,
+:Byte,Byte,Byte,Integer,Integer,Byte,Byte,
+?0,0,0,0,0,1,0,
+#CLI: Come get some app!m2(12, 2, 1)!
+!0,12,2,1,
+:Byte,Byte,Byte,Byte,
+?0,0,0,0,
+#APP: Ooh, I needed that app?m1(12, 2, 1, 25, 13)!
+#APP: Ooh, I needed that app?m2(12, 2, 1)!
+#APP: Come get some app!m3(12)!
+!0,12,
+:Byte,Byte,
+?0,0,
+#CLI: Ooh, I needed that app?m3(12)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(12, 2, 6, 22, 10)!
+!0,12,2,0,6,22,10,
+:Byte,Byte,Byte,Integer,Integer,Byte,Byte,
+?0,0,0,0,0,1,0,
+#CLI: Come get some app!m2(12, 2, 6)!
+!0,12,2,6,
+:Byte,Byte,Byte,Byte,
+?0,0,0,0,
+#APP: Ooh, I needed that app?m1(12, 2, 6, 22, 10)!
+#APP: Ooh, I needed that app?m2(12, 2, 6)!
+#APP: Come get some app!m3(12)!
+!0,12,
+:Byte,Byte,
+?0,0,
+#CLI: Ooh, I needed that app?m3(12)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(12, 2, 17, 24, 13)!
+!0,12,2,0,17,24,13,
+:Byte,Byte,Byte,Integer,Integer,Byte,Byte,
+?0,0,0,0,0,1,0,
+#CLI: Come get some app!m2(12, 2, 17)!
+!0,12,2,17,
+:Byte,Byte,Byte,Byte,
+?0,0,0,0,
+#APP: Ooh, I needed that app?m1(12, 2, 17, 24, 13)!
+#APP: Ooh, I needed that app?m2(12, 2, 17)!
+#APP: Come get some app!m3(12)!
+!0,12,
+:Byte,Byte,
+?0,0,
+#CLI: Ooh, I needed that app?m3(12)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(12, 2, 10, 28, 13)!
+!0,12,2,0,10,28,13,
+:Byte,Byte,Byte,Integer,Integer,Byte,Byte,
+?0,0,0,0,0,1,0,
+#CLI: Come get some app!m2(12, 2, 10)!
+!0,12,2,10,
+:Byte,Byte,Byte,Byte,
+?0,0,0,0,
+#APP: Ooh, I needed that app?m1(12, 2, 10, 28, 13)!
+#APP: Ooh, I needed that app?m2(12, 2, 10)!
+#APP: Come get some app!m3(12)!
+!0,12,
+:Byte,Byte,
+?0,0,
+#CLI: Ooh, I needed that app?m3(12)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(12, 2, 16, 22, 13)!
+!0,12,2,0,16,22,13,
+:Byte,Byte,Byte,Integer,Integer,Byte,Byte,
+?0,0,0,0,0,1,0,
+#CLI: Come get some app!m2(12, 2, 16)!
+!0,12,2,16,
+:Byte,Byte,Byte,Byte,
+?0,0,0,0,
+#APP: Ooh, I needed that app?m1(12, 2, 16, 22, 13)!
+#APP: Ooh, I needed that app?m2(12, 2, 16)!
+#APP: Come get some app!m3(12)!
+!0,12,
+:Byte,Byte,
+?0,0,
+#CLI: Ooh, I needed that app?m3(12)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(12, 2, 14, 27, 12)!
+!0,12,2,0,14,27,12,
+:Byte,Byte,Byte,Integer,Integer,Byte,Byte,
+?0,0,0,0,0,1,0,
+#CLI: Come get some app!m2(12, 2, 14)!
+!0,12,2,14,
+:Byte,Byte,Byte,Byte,
+?0,0,0,0,
+#APP: Ooh, I needed that app?m1(12, 2, 14, 27, 12)!
+#APP: Ooh, I needed that app?m2(12, 2, 14)!
+#APP: Come get some app!m3(12)!
+!0,12,
+:Byte,Byte,
+?0,0,
+#CLI: Ooh, I needed that app?m3(12)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(12, 2, 15, 23, 12)!
+!0,12,2,0,15,23,12,
+:Byte,Byte,Byte,Integer,Integer,Byte,Byte,
+?0,0,0,0,0,1,0,
+#CLI: Come get some app!m2(12, 2, 15)!
+!0,12,2,15,
+:Byte,Byte,Byte,Byte,
+?0,0,0,0,
+#APP: Ooh, I needed that app?m1(12, 2, 15, 23, 12)!
+#APP: Ooh, I needed that app?m2(12, 2, 15)!
+#APP: Come get some app!m3(12)!
+!0,12,
+:Byte,Byte,
+?0,0,
+#CLI: Ooh, I needed that app?m3(12)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(12, 2, 10, 20, 11)!
+!0,12,2,0,10,20,11,
+:Byte,Byte,Byte,Integer,Integer,Byte,Byte,
+?0,0,0,0,0,1,0,
+#CLI: Come get some app!m2(12, 2, 10)!
+!0,12,2,10,
+:Byte,Byte,Byte,Byte,
+?0,0,0,0,
+#APP: Ooh, I needed that app?m1(12, 2, 10, 20, 11)!
+#APP: Ooh, I needed that app?m2(12, 2, 10)!
+#APP: Come get some app!m3(12)!
+!0,12,
+:Byte,Byte,
+?0,0,
+#CLI: Ooh, I needed that app?m3(12)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(12, 2, 9, 24, 10)!
+!0,12,2,0,9,24,10,
+:Byte,Byte,Byte,Integer,Integer,Byte,Byte,
+?0,0,0,0,0,1,0,
+#CLI: Come get some app!m2(12, 2, 9)!
+!0,12,2,9,
+:Byte,Byte,Byte,Byte,
+?0,0,0,0,
+#APP: Ooh, I needed that app?m1(12, 2, 9, 24, 10)!
+#APP: Ooh, I needed that app?m2(12, 2, 9)!
+#APP: Come get some app!m3(12)!
+!0,12,
+:Byte,Byte,
+?0,0,
+#CLI: Ooh, I needed that app?m3(12)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(12, 2, 11, 22, 11)!
+!0,12,2,0,11,22,11,
+:Byte,Byte,Byte,Integer,Integer,Byte,Byte,
+?0,0,0,0,0,1,0,
+#CLI: Come get some app!m2(12, 2, 11)!
+!0,12,2,11,
+:Byte,Byte,Byte,Byte,
+?0,0,0,0,
+#APP: Ooh, I needed that app?m1(12, 2, 11, 22, 11)!
+#APP: Ooh, I needed that app?m2(12, 2, 11)!
+#APP: Come get some app!m3(12)!
+!0,12,
+:Byte,Byte,
+?0,0,
+#CLI: Ooh, I needed that app?m3(12)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(12, 2, 16, 24, 12)!
+!0,12,2,0,16,24,12,
+:Byte,Byte,Byte,Integer,Integer,Byte,Byte,
+?0,0,0,0,0,1,0,
+#CLI: Come get some app!m2(12, 2, 16)!
+!0,12,2,16,
+:Byte,Byte,Byte,Byte,
+?0,0,0,0,
+#APP: Ooh, I needed that app?m1(12, 2, 16, 24, 12)!
+#APP: Ooh, I needed that app?m2(12, 2, 16)!
+#APP: Come get some app!m3(12)!
+!0,12,
+:Byte,Byte,
+?0,0,
+#CLI: Ooh, I needed that app?m3(12)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(12, 2, 15, 20, 12)!
+!0,12,2,0,15,20,12,
+:Byte,Byte,Byte,Integer,Integer,Byte,Byte,
+?0,0,0,0,0,1,0,
+#CLI: Come get some app!m2(12, 2, 15)!
+!0,12,2,15,
+:Byte,Byte,Byte,Byte,
+?0,0,0,0,
+#APP: Ooh, I needed that app?m1(12, 2, 15, 20, 12)!
+#APP: Ooh, I needed that app?m2(12, 2, 15)!
+#APP: Come get some app!m3(12)!
+!0,12,
+:Byte,Byte,
+?0,0,
+#CLI: Ooh, I needed that app?m3(12)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(12, 2, 19, 29, 13)!
+!0,12,2,0,19,29,13,
+:Byte,Byte,Byte,Integer,Integer,Byte,Byte,
+?0,0,0,0,0,1,0,
+#CLI: Come get some app!m2(12, 2, 19)!
+!0,12,2,19,
+:Byte,Byte,Byte,Byte,
+?0,0,0,0,
+#APP: Ooh, I needed that app?m1(12, 2, 19, 29, 13)!
+#APP: Ooh, I needed that app?m2(12, 2, 19)!
+#APP: Come get some app!m3(12)!
+!0,12,
+:Byte,Byte,
+?0,0,
+#CLI: Ooh, I needed that app?m3(12)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(12, 2, 11, 20, 11)!
+!0,12,2,0,11,20,11,
+:Byte,Byte,Byte,Integer,Integer,Byte,Byte,
+?0,0,0,0,0,1,0,
+#CLI: Come get some app!m2(12, 2, 11)!
+!0,12,2,11,
+:Byte,Byte,Byte,Byte,
+?0,0,0,0,
+#APP: Ooh, I needed that app?m1(12, 2, 11, 20, 11)!
+#APP: Ooh, I needed that app?m2(12, 2, 11)!
+#APP: Come get some app!m3(12)!
+!0,12,
+:Byte,Byte,
+?0,0,
+#CLI: Ooh, I needed that app?m3(12)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(12, 2, 16, 26, 10)!
+!0,12,2,0,16,26,10,
+:Byte,Byte,Byte,Integer,Integer,Byte,Byte,
+?0,0,0,0,0,1,0,
+#CLI: Come get some app!m2(12, 2, 16)!
+!0,12,2,16,
+:Byte,Byte,Byte,Byte,
+?0,0,0,0,
+#APP: Ooh, I needed that app?m1(12, 2, 16, 26, 10)!
+#APP: Ooh, I needed that app?m2(12, 2, 16)!
+#APP: Come get some app!m3(12)!
+!0,12,
+:Byte,Byte,
+?0,0,
+#CLI: Ooh, I needed that app?m3(12)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(12, 2, 18, 26, 12)!
+!0,12,2,0,18,26,12,
+:Byte,Byte,Byte,Integer,Integer,Byte,Byte,
+?0,0,0,0,0,1,0,
+#CLI: Come get some app!m2(12, 2, 18)!
+!0,12,2,18,
+:Byte,Byte,Byte,Byte,
+?0,0,0,0,
+#APP: Ooh, I needed that app?m1(12, 2, 18, 26, 12)!
+#APP: Ooh, I needed that app?m2(12, 2, 18)!
+#APP: Come get some app!m3(12)!
+!0,12,
+:Byte,Byte,
+?0,0,
+#CLI: Ooh, I needed that app?m3(12)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(12, 2, 8, 23, 10)!
+!0,12,2,0,8,23,10,
+:Byte,Byte,Byte,Integer,Integer,Byte,Byte,
+?0,0,0,0,0,1,0,
+#CLI: Come get some app!m2(12, 2, 8)!
+!0,12,2,8,
+:Byte,Byte,Byte,Byte,
+?0,0,0,0,
+#APP: Ooh, I needed that app?m1(12, 2, 8, 23, 10)!
+#APP: Ooh, I needed that app?m2(12, 2, 8)!
+#APP: Come get some app!m3(12)!
+!0,12,
+:Byte,Byte,
+?0,0,
+#CLI: Ooh, I needed that app?m3(12)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(12, 2, 4, 28, 13)!
+!0,12,2,0,4,28,13,
+:Byte,Byte,Byte,Integer,Integer,Byte,Byte,
+?0,0,0,0,0,1,0,
+#CLI: Come get some app!m2(12, 2, 4)!
+!0,12,2,4,
+:Byte,Byte,Byte,Byte,
+?0,0,0,0,
+#APP: Ooh, I needed that app?m1(12, 2, 4, 28, 13)!
+#APP: Ooh, I needed that app?m2(12, 2, 4)!
+#APP: Come get some app!m3(12)!
+!0,12,
+:Byte,Byte,
+?0,0,
+#CLI: Ooh, I needed that app?m3(12)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(12, 2, 10, 28, 13)!
+!0,12,2,0,10,28,13,
+:Byte,Byte,Byte,Integer,Integer,Byte,Byte,
+?0,0,0,0,0,1,0,
+#CLI: Come get some app!m2(12, 2, 10)!
+!0,12,2,10,
+:Byte,Byte,Byte,Byte,
+?0,0,0,0,
+#APP: Ooh, I needed that app?m1(12, 2, 10, 28, 13)!
+#APP: Ooh, I needed that app?m2(12, 2, 10)!
+#APP: Come get some app!m3(12)!
+!0,12,
+:Byte,Byte,
+?0,0,
+#CLI: Ooh, I needed that app?m3(12)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(12, 2, 13, 22, 13)!
+!0,12,2,0,13,22,13,
+:Byte,Byte,Byte,Integer,Integer,Byte,Byte,
+?0,0,0,0,0,1,0,
+#CLI: Come get some app!m2(12, 2, 13)!
+!0,12,2,13,
+:Byte,Byte,Byte,Byte,
+?0,0,0,0,
+#APP: Ooh, I needed that app?m1(12, 2, 13, 22, 13)!
+#APP: Ooh, I needed that app?m2(12, 2, 13)!
+#APP: Come get some app!m3(12)!
+!0,12,
+:Byte,Byte,
+?0,0,
+#CLI: Ooh, I needed that app?m3(12)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(12, 2, 7, 24, 10)!
+!0,12,2,0,7,24,10,
+:Byte,Byte,Byte,Integer,Integer,Byte,Byte,
+?0,0,0,0,0,1,0,
+#CLI: Come get some app!m2(12, 2, 7)!
+!0,12,2,7,
+:Byte,Byte,Byte,Byte,
+?0,0,0,0,
+#APP: Ooh, I needed that app?m1(12, 2, 7, 24, 10)!
+#APP: Ooh, I needed that app?m2(12, 2, 7)!
+#APP: Come get some app!m3(12)!
+!0,12,
+:Byte,Byte,
+?0,0,
+#CLI: Ooh, I needed that app?m3(12)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(12, 2, 4, 27, 10)!
+!0,12,2,0,4,27,10,
+:Byte,Byte,Byte,Integer,Integer,Byte,Byte,
+?0,0,0,0,0,1,0,
+#CLI: Come get some app!m2(12, 2, 4)!
+!0,12,2,4,
+:Byte,Byte,Byte,Byte,
+?0,0,0,0,
+#APP: Ooh, I needed that app?m1(12, 2, 4, 27, 10)!
+#APP: Ooh, I needed that app?m2(12, 2, 4)!
+#APP: Come get some app!m3(12)!
+!0,12,
+:Byte,Byte,
+?0,0,
+#CLI: Ooh, I needed that app?m3(12)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(12, 2, 17, 28, 10)!
+!0,12,2,0,17,28,10,
+:Byte,Byte,Byte,Integer,Integer,Byte,Byte,
+?0,0,0,0,0,1,0,
+#CLI: Come get some app!m2(12, 2, 17)!
+!0,12,2,17,
+:Byte,Byte,Byte,Byte,
+?0,0,0,0,
+#APP: Ooh, I needed that app?m1(12, 2, 17, 28, 10)!
+#APP: Ooh, I needed that app?m2(12, 2, 17)!
+#APP: Come get some app!m3(12)!
+!0,12,
+:Byte,Byte,
+?0,0,
+#CLI: Ooh, I needed that app?m3(12)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(12, 2, 6, 28, 13)!
+!0,12,2,0,6,28,13,
+:Byte,Byte,Byte,Integer,Integer,Byte,Byte,
+?0,0,0,0,0,1,0,
+#CLI: Come get some app!m2(12, 2, 6)!
+!0,12,2,6,
+:Byte,Byte,Byte,Byte,
+?0,0,0,0,
+#APP: Ooh, I needed that app?m1(12, 2, 6, 28, 13)!
+#APP: Ooh, I needed that app?m2(12, 2, 6)!
+#APP: Come get some app!m3(12)!
+!0,12,
+:Byte,Byte,
+?0,0,
+#CLI: Ooh, I needed that app?m3(12)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(12, 2, 2, 21, 10)!
+!0,12,2,0,2,21,10,
+:Byte,Byte,Byte,Integer,Integer,Byte,Byte,
+?0,0,0,0,0,1,0,
+#CLI: Come get some app!m2(12, 2, 2)!
+!0,12,2,2,
+:Byte,Byte,Byte,Byte,
+?0,0,0,0,
+#APP: Ooh, I needed that app?m1(12, 2, 2, 21, 10)!
+#APP: Ooh, I needed that app?m2(12, 2, 2)!
+#APP: Come get some app!m3(12)!
+!0,12,
+:Byte,Byte,
+?0,0,
+#CLI: Ooh, I needed that app?m3(12)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(12, 2, 11, 23, 13)!
+!0,12,2,0,11,23,13,
+:Byte,Byte,Byte,Integer,Integer,Byte,Byte,
+?0,0,0,0,0,1,0,
+#CLI: Come get some app!m2(12, 2, 11)!
+!0,12,2,11,
+:Byte,Byte,Byte,Byte,
+?0,0,0,0,
+#APP: Ooh, I needed that app?m1(12, 2, 11, 23, 13)!
+#APP: Ooh, I needed that app?m2(12, 2, 11)!
+#APP: Come get some app!m3(12)!
+!0,12,
+:Byte,Byte,
+?0,0,
+#CLI: Ooh, I needed that app?m3(12)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(12, 2, 13, 21, 10)!
+!0,12,2,0,13,21,10,
+:Byte,Byte,Byte,Integer,Integer,Byte,Byte,
+?0,0,0,0,0,1,0,
+#CLI: Come get some app!m2(12, 2, 13)!
+!0,12,2,13,
+:Byte,Byte,Byte,Byte,
+?0,0,0,0,
+#APP: Ooh, I needed that app?m1(12, 2, 13, 21, 10)!
+#APP: Ooh, I needed that app?m2(12, 2, 13)!
+#APP: Come get some app!m3(12)!
+!0,12,
+:Byte,Byte,
+?0,0,
+#CLI: Ooh, I needed that app?m3(12)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(12, 2, 3, 21, 14)!
+!0,12,2,0,3,21,14,
+:Byte,Byte,Byte,Integer,Integer,Byte,Byte,
+?0,0,0,0,0,1,0,
+#CLI: Come get some app!m2(12, 2, 3)!
+!0,12,2,3,
+:Byte,Byte,Byte,Byte,
+?0,0,0,0,
+#APP: Ooh, I needed that app?m1(12, 2, 3, 21, 14)!
+#APP: Ooh, I needed that app?m2(12, 2, 3)!
+#APP: Come get some app!m3(12)!
+!0,12,
+:Byte,Byte,
+?0,0,
+#CLI: Ooh, I needed that app?m3(12)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(12, 2, 13, 25, 14)!
+!0,12,2,0,13,25,14,
+:Byte,Byte,Byte,Integer,Integer,Byte,Byte,
+?0,0,0,0,0,1,0,
+#CLI: Come get some app!m2(12, 2, 13)!
+!0,12,2,13,
+:Byte,Byte,Byte,Byte,
+?0,0,0,0,
+#APP: Ooh, I needed that app?m1(12, 2, 13, 25, 14)!
+#APP: Ooh, I needed that app?m2(12, 2, 13)!
+#APP: Come get some app!m3(12)!
+!0,12,
+:Byte,Byte,
+?0,0,
+#CLI: Ooh, I needed that app?m3(12)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(12, 2, 17, 20, 14)!
+!0,12,2,0,17,20,14,
+:Byte,Byte,Byte,Integer,Integer,Byte,Byte,
+?0,0,0,0,0,1,0,
+#CLI: Come get some app!m2(12, 2, 17)!
+!0,12,2,17,
+:Byte,Byte,Byte,Byte,
+?0,0,0,0,
+#APP: Ooh, I needed that app?m1(12, 2, 17, 20, 14)!
+#APP: Ooh, I needed that app?m2(12, 2, 17)!
+#APP: Come get some app!m3(12)!
+!0,12,
+:Byte,Byte,
+?0,0,
+#CLI: Ooh, I needed that app?m3(12)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(12, 2, 7, 25, 10)!
+!0,12,2,0,7,25,10,
+:Byte,Byte,Byte,Integer,Integer,Byte,Byte,
+?0,0,0,0,0,1,0,
+#CLI: Come get some app!m2(12, 2, 7)!
+!0,12,2,7,
+:Byte,Byte,Byte,Byte,
+?0,0,0,0,
+#APP: Ooh, I needed that app?m1(12, 2, 7, 25, 10)!
+#APP: Ooh, I needed that app?m2(12, 2, 7)!
+#APP: Come get some app!m3(12)!
+!0,12,
+:Byte,Byte,
+?0,0,
+#CLI: Ooh, I needed that app?m3(12)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(12, 2, 19, 28, 11)!
+!0,12,2,0,19,28,11,
+:Byte,Byte,Byte,Integer,Integer,Byte,Byte,
+?0,0,0,0,0,1,0,
+#CLI: Come get some app!m2(12, 2, 19)!
+!0,12,2,19,
+:Byte,Byte,Byte,Byte,
+?0,0,0,0,
+#APP: Ooh, I needed that app?m1(12, 2, 19, 28, 11)!
+#APP: Ooh, I needed that app?m2(12, 2, 19)!
+#APP: Come get some app!m3(12)!
+!0,12,
+:Byte,Byte,
+?0,0,
+#CLI: Ooh, I needed that app?m3(12)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(12, 2, 7, 24, 14)!
+!0,12,2,0,7,24,14,
+:Byte,Byte,Byte,Integer,Integer,Byte,Byte,
+?0,0,0,0,0,1,0,
+#CLI: Come get some app!m2(12, 2, 7)!
+!0,12,2,7,
+:Byte,Byte,Byte,Byte,
+?0,0,0,0,
+#APP: Ooh, I needed that app?m1(12, 2, 7, 24, 14)!
+#APP: Ooh, I needed that app?m2(12, 2, 7)!
+#APP: Come get some app!m3(12)!
+!0,12,
+:Byte,Byte,
+?0,0,
+#CLI: Ooh, I needed that app?m3(12)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(12, 2, 11, 20, 10)!
+!0,12,2,0,11,20,10,
+:Byte,Byte,Byte,Integer,Integer,Byte,Byte,
+?0,0,0,0,0,1,0,
+#CLI: Come get some app!m2(12, 2, 11)!
+!0,12,2,11,
+:Byte,Byte,Byte,Byte,
+?0,0,0,0,
+#APP: Ooh, I needed that app?m1(12, 2, 11, 20, 10)!
+#APP: Ooh, I needed that app?m2(12, 2, 11)!
+#APP: Come get some app!m3(12)!
+!0,12,
+:Byte,Byte,
+?0,0,
+#CLI: Ooh, I needed that app?m3(12)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(12, 2, 8, 28, 12)!
+!0,12,2,0,8,28,12,
+:Byte,Byte,Byte,Integer,Integer,Byte,Byte,
+?0,0,0,0,0,1,0,
+#CLI: Come get some app!m2(12, 2, 8)!
+!0,12,2,8,
+:Byte,Byte,Byte,Byte,
+?0,0,0,0,
+#APP: Ooh, I needed that app?m1(12, 2, 8, 28, 12)!
+#APP: Ooh, I needed that app?m2(12, 2, 8)!
+#APP: Come get some app!m3(12)!
+!0,12,
+:Byte,Byte,
+?0,0,
+#CLI: Ooh, I needed that app?m3(12)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(12, 2, 2, 29, 12)!
+!0,12,2,0,2,29,12,
+:Byte,Byte,Byte,Integer,Integer,Byte,Byte,
+?0,0,0,0,0,1,0,
+#CLI: Come get some app!m2(12, 2, 2)!
+!0,12,2,2,
+:Byte,Byte,Byte,Byte,
+?0,0,0,0,
+#APP: Ooh, I needed that app?m1(12, 2, 2, 29, 12)!
+#APP: Ooh, I needed that app?m2(12, 2, 2)!
+#APP: Come get some app!m3(12)!
+!0,12,
+:Byte,Byte,
+?0,0,
+#CLI: Ooh, I needed that app?m3(12)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(12, 2, 6, 24, 12)!
+!0,12,2,0,6,24,12,
+:Byte,Byte,Byte,Integer,Integer,Byte,Byte,
+?0,0,0,0,0,1,0,
+#CLI: Come get some app!m2(12, 2, 6)!
+!0,12,2,6,
+:Byte,Byte,Byte,Byte,
+?0,0,0,0,
+#APP: Ooh, I needed that app?m1(12, 2, 6, 24, 12)!
+#APP: Ooh, I needed that app?m2(12, 2, 6)!
+#APP: Come get some app!m3(12)!
+!0,12,
+:Byte,Byte,
+?0,0,
+#CLI: Ooh, I needed that app?m3(12)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(12, 2, 6, 22, 10)!
+!0,12,2,0,6,22,10,
+:Byte,Byte,Byte,Integer,Integer,Byte,Byte,
+?0,0,0,0,0,1,0,
+#CLI: Come get some app!m2(12, 2, 6)!
+!0,12,2,6,
+:Byte,Byte,Byte,Byte,
+?0,0,0,0,
+#APP: Ooh, I needed that app?m1(12, 2, 6, 22, 10)!
+#APP: Ooh, I needed that app?m2(12, 2, 6)!
+#APP: Come get some app!m3(12)!
+!0,12,
+:Byte,Byte,
+?0,0,
+#CLI: Ooh, I needed that app?m3(12)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(12, 2, 4, 26, 12)!
+!0,12,2,0,4,26,12,
+:Byte,Byte,Byte,Integer,Integer,Byte,Byte,
+?0,0,0,0,0,1,0,
+#CLI: Come get some app!m2(12, 2, 4)!
+!0,12,2,4,
+:Byte,Byte,Byte,Byte,
+?0,0,0,0,
+#APP: Ooh, I needed that app?m1(12, 2, 4, 26, 12)!
+#APP: Ooh, I needed that app?m2(12, 2, 4)!
+#APP: Come get some app!m3(12)!
+!0,12,
+:Byte,Byte,
+?0,0,
+#CLI: Ooh, I needed that app?m3(12)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(12, 2, 8, 28, 14)!
+!0,12,2,0,8,28,14,
+:Byte,Byte,Byte,Integer,Integer,Byte,Byte,
+?0,0,0,0,0,1,0,
+#CLI: Come get some app!m2(12, 2, 8)!
+!0,12,2,8,
+:Byte,Byte,Byte,Byte,
+?0,0,0,0,
+#APP: Ooh, I needed that app?m1(12, 2, 8, 28, 14)!
+#APP: Ooh, I needed that app?m2(12, 2, 8)!
+#APP: Come get some app!m3(12)!
+!0,12,
+:Byte,Byte,
+?0,0,
+#CLI: Ooh, I needed that app?m3(12)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(12, 2, 8, 21, 14)!
+!0,12,2,0,8,21,14,
+:Byte,Byte,Byte,Integer,Integer,Byte,Byte,
+?0,0,0,0,0,1,0,
+#CLI: Come get some app!m2(12, 2, 8)!
+!0,12,2,8,
+:Byte,Byte,Byte,Byte,
+?0,0,0,0,
+#APP: Ooh, I needed that app?m1(12, 2, 8, 21, 14)!
+#APP: Ooh, I needed that app?m2(12, 2, 8)!
+#APP: Come get some app!m3(12)!
+!0,12,
+:Byte,Byte,
+?0,0,
+#CLI: Ooh, I needed that app?m3(12)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(12, 2, 7, 22, 12)!
+!0,12,2,0,7,22,12,
+:Byte,Byte,Byte,Integer,Integer,Byte,Byte,
+?0,0,0,0,0,1,0,
+#CLI: Come get some app!m2(12, 2, 7)!
+!0,12,2,7,
+:Byte,Byte,Byte,Byte,
+?0,0,0,0,
+#APP: Ooh, I needed that app?m1(12, 2, 7, 22, 12)!
+#APP: Ooh, I needed that app?m2(12, 2, 7)!
+#APP: Come get some app!m3(12)!
+!0,12,
+:Byte,Byte,
+?0,0,
+#CLI: Ooh, I needed that app?m3(12)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(12, 2, 16, 23, 10)!
+!0,12,2,0,16,23,10,
+:Byte,Byte,Byte,Integer,Integer,Byte,Byte,
+?0,0,0,0,0,1,0,
+#CLI: Come get some app!m2(12, 2, 16)!
+!0,12,2,16,
+:Byte,Byte,Byte,Byte,
+?0,0,0,0,
+#APP: Ooh, I needed that app?m1(12, 2, 16, 23, 10)!
+#APP: Ooh, I needed that app?m2(12, 2, 16)!
+#APP: Come get some app!m3(12)!
+!0,12,
+:Byte,Byte,
+?0,0,
+#CLI: Ooh, I needed that app?m3(12)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(12, 2, 2, 28, 11)!
+!0,12,2,0,2,28,11,
+:Byte,Byte,Byte,Integer,Integer,Byte,Byte,
+?0,0,0,0,0,1,0,
+#CLI: Come get some app!m2(12, 2, 2)!
+!0,12,2,2,
+:Byte,Byte,Byte,Byte,
+?0,0,0,0,
+#APP: Ooh, I needed that app?m1(12, 2, 2, 28, 11)!
+#APP: Ooh, I needed that app?m2(12, 2, 2)!
+#APP: Come get some app!m3(12)!
+!0,12,
+:Byte,Byte,
+?0,0,
+#CLI: Ooh, I needed that app?m3(12)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(12, 2, 16, 22, 10)!
+!0,12,2,0,16,22,10,
+:Byte,Byte,Byte,Integer,Integer,Byte,Byte,
+?0,0,0,0,0,1,0,
+#CLI: Come get some app!m2(12, 2, 16)!
+!0,12,2,16,
+:Byte,Byte,Byte,Byte,
+?0,0,0,0,
+#APP: Ooh, I needed that app?m1(12, 2, 16, 22, 10)!
+#APP: Ooh, I needed that app?m2(12, 2, 16)!
+#APP: Come get some app!m3(12)!
+!0,12,
+:Byte,Byte,
+?0,0,
+#CLI: Ooh, I needed that app?m3(12)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(12, 2, 11, 23, 12)!
+!0,12,2,0,11,23,12,
+:Byte,Byte,Byte,Integer,Integer,Byte,Byte,
+?0,0,0,0,0,1,0,
+#CLI: Come get some app!m2(12, 2, 11)!
+!0,12,2,11,
+:Byte,Byte,Byte,Byte,
+?0,0,0,0,
+#APP: Ooh, I needed that app?m1(12, 2, 11, 23, 12)!
+#APP: Ooh, I needed that app?m2(12, 2, 11)!
+#APP: Come get some app!m3(12)!
+!0,12,
+:Byte,Byte,
+?0,0,
+#CLI: Ooh, I needed that app?m3(12)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(12, 2, 14, 20, 13)!
+!0,12,2,0,14,20,13,
+:Byte,Byte,Byte,Integer,Integer,Byte,Byte,
+?0,0,0,0,0,1,0,
+#CLI: Come get some app!m2(12, 2, 14)!
+!0,12,2,14,
+:Byte,Byte,Byte,Byte,
+?0,0,0,0,
+#APP: Ooh, I needed that app?m1(12, 2, 14, 20, 13)!
+#APP: Ooh, I needed that app?m2(12, 2, 14)!
+#APP: Come get some app!m3(12)!
+!0,12,
+:Byte,Byte,
+?0,0,
+#CLI: Ooh, I needed that app?m3(12)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(12, 2, 9, 20, 12)!
+!0,12,2,0,9,20,12,
+:Byte,Byte,Byte,Integer,Integer,Byte,Byte,
+?0,0,0,0,0,1,0,
+#CLI: Come get some app!m2(12, 2, 9)!
+!0,12,2,9,
+:Byte,Byte,Byte,Byte,
+?0,0,0,0,
+#APP: Ooh, I needed that app?m1(12, 2, 9, 20, 12)!
+#APP: Ooh, I needed that app?m2(12, 2, 9)!
+#APP: Come get some app!m3(12)!
+!0,12,
+:Byte,Byte,
+?0,0,
+#CLI: Ooh, I needed that app?m3(12)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(12, 2, 11, 25, 14)!
+!0,12,2,0,11,25,14,
+:Byte,Byte,Byte,Integer,Integer,Byte,Byte,
+?0,0,0,0,0,1,0,
+#CLI: Come get some app!m2(12, 2, 11)!
+!0,12,2,11,
+:Byte,Byte,Byte,Byte,
+?0,0,0,0,
+#APP: Ooh, I needed that app?m1(12, 2, 11, 25, 14)!
+#APP: Ooh, I needed that app?m2(12, 2, 11)!
+#APP: Come get some app!m3(12)!
+!0,12,
+:Byte,Byte,
+?0,0,
+#CLI: Ooh, I needed that app?m3(12)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(12, 2, 14, 20, 10)!
+!0,12,2,0,14,20,10,
+:Byte,Byte,Byte,Integer,Integer,Byte,Byte,
+?0,0,0,0,0,1,0,
+#CLI: Come get some app!m2(12, 2, 14)!
+!0,12,2,14,
+:Byte,Byte,Byte,Byte,
+?0,0,0,0,
+#APP: Ooh, I needed that app?m1(12, 2, 14, 20, 10)!
+#APP: Ooh, I needed that app?m2(12, 2, 14)!
+#APP: Come get some app!m3(12)!
+!0,12,
+:Byte,Byte,
+?0,0,
+#CLI: Ooh, I needed that app?m3(12)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(12, 2, 6, 22, 11)!
+!0,12,2,0,6,22,11,
+:Byte,Byte,Byte,Integer,Integer,Byte,Byte,
+?0,0,0,0,0,1,0,
+#CLI: Come get some app!m2(12, 2, 6)!
+!0,12,2,6,
+:Byte,Byte,Byte,Byte,
+?0,0,0,0,
+#APP: Ooh, I needed that app?m1(12, 2, 6, 22, 11)!
+#APP: Ooh, I needed that app?m2(12, 2, 6)!
+#APP: Come get some app!m3(12)!
+!0,12,
+:Byte,Byte,
+?0,0,
+#CLI: Ooh, I needed that app?m3(12)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(12, 2, 11, 24, 13)!
+!0,12,2,0,11,24,13,
+:Byte,Byte,Byte,Integer,Integer,Byte,Byte,
+?0,0,0,0,0,1,0,
+#CLI: Come get some app!m2(12, 2, 11)!
+!0,12,2,11,
+:Byte,Byte,Byte,Byte,
+?0,0,0,0,
+#APP: Ooh, I needed that app?m1(12, 2, 11, 24, 13)!
+#APP: Ooh, I needed that app?m2(12, 2, 11)!
+#APP: Come get some app!m3(12)!
+!0,12,
+:Byte,Byte,
+?0,0,
+#CLI: Ooh, I needed that app?m3(12)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(12, 2, 5, 21, 10)!
+!0,12,2,0,5,21,10,
+:Byte,Byte,Byte,Integer,Integer,Byte,Byte,
+?0,0,0,0,0,1,0,
+#CLI: Come get some app!m2(12, 2, 5)!
+!0,12,2,5,
+:Byte,Byte,Byte,Byte,
+?0,0,0,0,
+#APP: Ooh, I needed that app?m1(12, 2, 5, 21, 10)!
+#APP: Ooh, I needed that app?m2(12, 2, 5)!
+#APP: Come get some app!m3(12)!
+!0,12,
+:Byte,Byte,
+?0,0,
+#CLI: Ooh, I needed that app?m3(12)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(12, 2, 6, 28, 11)!
+!0,12,2,0,6,28,11,
+:Byte,Byte,Byte,Integer,Integer,Byte,Byte,
+?0,0,0,0,0,1,0,
+#CLI: Come get some app!m2(12, 2, 6)!
+!0,12,2,6,
+:Byte,Byte,Byte,Byte,
+?0,0,0,0,
+#APP: Ooh, I needed that app?m1(12, 2, 6, 28, 11)!
+#APP: Ooh, I needed that app?m2(12, 2, 6)!
+#APP: Come get some app!m3(12)!
+!0,12,
+:Byte,Byte,
+?0,0,
+#CLI: Ooh, I needed that app?m3(12)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(12, 2, 13, 20, 12)!
+!0,12,2,0,13,20,12,
+:Byte,Byte,Byte,Integer,Integer,Byte,Byte,
+?0,0,0,0,0,1,0,
+#CLI: Come get some app!m2(12, 2, 13)!
+!0,12,2,13,
+:Byte,Byte,Byte,Byte,
+?0,0,0,0,
+#APP: Ooh, I needed that app?m1(12, 2, 13, 20, 12)!
+#APP: Ooh, I needed that app?m2(12, 2, 13)!
+#APP: Come get some app!m3(12)!
+!0,12,
+:Byte,Byte,
+?0,0,
+#CLI: Ooh, I needed that app?m3(12)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(12, 2, 1, 27, 14)!
+!0,12,2,0,1,27,14,
+:Byte,Byte,Byte,Integer,Integer,Byte,Byte,
+?0,0,0,0,0,1,0,
+#CLI: Come get some app!m2(12, 2, 1)!
+!0,12,2,1,
+:Byte,Byte,Byte,Byte,
+?0,0,0,0,
+#APP: Ooh, I needed that app?m1(12, 2, 1, 27, 14)!
+#APP: Ooh, I needed that app?m2(12, 2, 1)!
+#APP: Come get some app!m3(12)!
+!0,12,
+:Byte,Byte,
+?0,0,
+#CLI: Ooh, I needed that app?m3(12)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(12, 2, 7, 20, 12)!
+!0,12,2,0,7,20,12,
+:Byte,Byte,Byte,Integer,Integer,Byte,Byte,
+?0,0,0,0,0,1,0,
+#CLI: Come get some app!m2(12, 2, 7)!
+!0,12,2,7,
+:Byte,Byte,Byte,Byte,
+?0,0,0,0,
+#APP: Ooh, I needed that app?m1(12, 2, 7, 20, 12)!
+#APP: Ooh, I needed that app?m2(12, 2, 7)!
+#APP: Come get some app!m3(12)!
+!0,12,
+:Byte,Byte,
+?0,0,
+#CLI: Ooh, I needed that app?m3(12)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(12, 2, 1, 26, 14)!
+!0,12,2,0,1,26,14,
+:Byte,Byte,Byte,Integer,Integer,Byte,Byte,
+?0,0,0,0,0,1,0,
+#CLI: Come get some app!m2(12, 2, 1)!
+!0,12,2,1,
+:Byte,Byte,Byte,Byte,
+?0,0,0,0,
+#APP: Ooh, I needed that app?m1(12, 2, 1, 26, 14)!
+#APP: Ooh, I needed that app?m2(12, 2, 1)!
+#APP: Come get some app!m3(12)!
+!0,12,
+:Byte,Byte,
+?0,0,
+#CLI: Ooh, I needed that app?m3(12)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(12, 2, 10, 28, 10)!
+!0,12,2,0,10,28,10,
+:Byte,Byte,Byte,Integer,Integer,Byte,Byte,
+?0,0,0,0,0,1,0,
+#CLI: Come get some app!m2(12, 2, 10)!
+!0,12,2,10,
+:Byte,Byte,Byte,Byte,
+?0,0,0,0,
+#APP: Ooh, I needed that app?m1(12, 2, 10, 28, 10)!
+#APP: Ooh, I needed that app?m2(12, 2, 10)!
+#APP: Come get some app!m3(12)!
+!0,12,
+:Byte,Byte,
+?0,0,
+#CLI: Ooh, I needed that app?m3(12)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(12, 2, 13, 21, 11)!
+!0,12,2,0,13,21,11,
+:Byte,Byte,Byte,Integer,Integer,Byte,Byte,
+?0,0,0,0,0,1,0,
+#CLI: Come get some app!m2(12, 2, 13)!
+!0,12,2,13,
+:Byte,Byte,Byte,Byte,
+?0,0,0,0,
+#APP: Ooh, I needed that app?m1(12, 2, 13, 21, 11)!
+#APP: Ooh, I needed that app?m2(12, 2, 13)!
+#APP: Come get some app!m3(12)!
+!0,12,
+:Byte,Byte,
+?0,0,
+#CLI: Ooh, I needed that app?m3(12)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(12, 2, 15, 27, 13)!
+!0,12,2,0,15,27,13,
+:Byte,Byte,Byte,Integer,Integer,Byte,Byte,
+?0,0,0,0,0,1,0,
+#CLI: Come get some app!m2(12, 2, 15)!
+!0,12,2,15,
+:Byte,Byte,Byte,Byte,
+?0,0,0,0,
+#APP: Ooh, I needed that app?m1(12, 2, 15, 27, 13)!
+#APP: Ooh, I needed that app?m2(12, 2, 15)!
+#APP: Come get some app!m3(12)!
+!0,12,
+:Byte,Byte,
+?0,0,
+#CLI: Ooh, I needed that app?m3(12)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(12, 2, 14, 22, 14)!
+!0,12,2,0,14,22,14,
+:Byte,Byte,Byte,Integer,Integer,Byte,Byte,
+?0,0,0,0,0,1,0,
+#CLI: Come get some app!m2(12, 2, 14)!
+!0,12,2,14,
+:Byte,Byte,Byte,Byte,
+?0,0,0,0,
+#APP: Ooh, I needed that app?m1(12, 2, 14, 22, 14)!
+#APP: Ooh, I needed that app?m2(12, 2, 14)!
+#APP: Come get some app!m3(12)!
+!0,12,
+:Byte,Byte,
+?0,0,
+#CLI: Ooh, I needed that app?m3(12)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(12, 2, 6, 27, 14)!
+!0,12,2,0,6,27,14,
+:Byte,Byte,Byte,Integer,Integer,Byte,Byte,
+?0,0,0,0,0,1,0,
+#CLI: Come get some app!m2(12, 2, 6)!
+!0,12,2,6,
+:Byte,Byte,Byte,Byte,
+?0,0,0,0,
+#APP: Ooh, I needed that app?m1(12, 2, 6, 27, 14)!
+#APP: Ooh, I needed that app?m2(12, 2, 6)!
+#APP: Come get some app!m3(12)!
+!0,12,
+:Byte,Byte,
+?0,0,
+#CLI: What are you waitin for? Christmas?
+#CLI: took 38ms.
