@@ -1,0 +1,13 @@
+# Add stackchecker function on top of file
+3i\int minFreeRam = 0x7FFF;
+3i\__attribute__((noinline)) void checkFreeRam() {
+3i\  extern int __heap_start, *__brkval;
+3i\  int v;
+3i\  int freeMem = (int) &v - (__brkval == 0 ? (int) &__heap_start : (int) __brkval);
+3i\  if (freeMem < minFreeRam) {
+3i\    minFreeRam = freeMem;
+3i\  }
+3i\}
+
+# Add calls to stackchecker at top of all functions
+/^\S+\s+(\S+)\(.*\)\s*\{$/a\  checkFreeRam()\;

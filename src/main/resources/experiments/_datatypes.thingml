@@ -1,0 +1,24 @@
+datatype Byte<1>
+	@type_checker "Byte"
+	@java_type "byte"
+	@go_type "byte"
+	@c_type "uint8_t";
+
+datatype Integer<2>
+	@type_checker "Integer"
+	@java_type "short"
+	@go_type "int16"
+	@c_type "int16_t";
+
+datatype Long<4>
+	@type_checker "Integer"
+	@java_type "int"
+	@go_type "int32"
+	@c_type "int32_t";
+
+/*
+datatype LongLong<8>
+	@type_checker "Integer"
+	@java_type "long"
+	@c_type "int64_t";
+*/

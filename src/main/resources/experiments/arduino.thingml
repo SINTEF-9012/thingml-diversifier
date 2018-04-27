@@ -1,0 +1,148 @@
+import "_datatypes.thingml"
+
+protocol Default;
+
+thing fragment Msgs {
+	message m1(a : Byte@upsize "not", b : Byte@upsize "not", c : Integer, d : Byte@weakparam "true", e : Byte)
+	message m2(a : Byte@upsize "not", b : Byte@upsize "not", c : Byte)
+	message m3(a : Byte)
+
+	function rnd() : Byte do
+		return `random(256)`
+	end
+
+	property counter : Integer = 0
+	property N : Integer = 100
+
+	property bytesSentCounter : Long = 0
+}
+
+thing App includes Msgs {
+
+	property id : Byte
+
+	provided port app {
+		receives m1, m2
+		sends m3
+	}
+
+	statechart init WaitForM1 {
+
+		state WaitForM1 {
+			transition -> WaitForM2
+			event e : app?m1
+			action do
+				id = e.a
+				//println "#APP: Ooh, I needed that app?m1(", e.a, ", ", e.b, ", ", e.c, ", ", e.d, ", ", e.e, ")!"
+			end
+		}
+
+		state WaitForM2 {
+			transition -> SendAck
+			event e : app?m2
+			//action println "#APP: Ooh, I needed that app?m2(", e.a, ", ", e.b, ", ", e.c, ")!"
+		}
+
+		state SendAck {
+			on entry do
+				//println "#APP: Come get some app!m3(", id, ")!"
+				app!m3(id)
+				counter++
+			end
+
+			transition -> WaitForM1 guard counter < N
+			transition -> DONE guard counter >= N
+		}
+
+		final state DONE {
+			on entry do
+				println "#APP: sent ", bytesSentCounter, " bts."
+			end
+		}
+	}
+
+}
+
+thing Client includes Msgs {
+
+	property start : Integer
+
+	property _a : Byte
+	property _b : Byte
+	property _c : Byte
+	property _d : Byte
+	property _e : Byte
+
+	required port app {
+		sends m1, m2
+		receives m3
+	}
+
+	statechart init RUN {
+		on entry do
+			_a = rnd()
+			_b = 0x02 //rnd()
+			start = `millis()`
+		end
+
+		state RUN {
+			on entry do
+				_c = rnd() % 20
+				_d = rnd() % 10 + 20
+				_e = rnd() % 5 + 10
+				//println "#CLI: Come get some app!m1(", _a, ", ", _b, ", ", _c, ", ", _d, ", ", _e, ")!"
+				app!m1(_a, _b, _c, _d, _e)
+				//println "#CLI: Come get some app!m2(", _a, ", ", _b, ", ", _c, ")!"
+				app!m2(_a, _b, _c)
+				counter++
+			end
+
+			transition -> STOP
+			event e : app?m3
+			guard counter >= N
+
+			transition -> RUN
+			event e : app?m3
+			guard e.a == _a and counter < N
+			action do
+				//println "#CLI: Ooh, I needed that app?m3(", e.a, ")!"
+				//println "#CLI: We meet again, Doctor Jones!"
+			end
+
+			transition -> ERROR
+			event e : app?m3
+			guard e.a != _a
+			action do
+				//println "#CLI: Ooh, I needed that app?m3(", e.a, ")!"
+				//println "#CLI: Damn, you re ugly."
+			end
+		}
+
+		final state STOP {
+			on entry do
+				println "#CLI: What are you waitin for? Christmas?"
+				var duration : Integer = `millis()` - start
+				println "#CLI: took ", duration, " ms."
+				println "#CLI: used ", `2048-minFreeRam`, " bts."
+				println "#CLI: sent ", bytesSentCounter, " bts."
+			end
+		}
+
+		final state ERROR {
+			on entry do
+				println "#CLI: Heh, heh, heh... what a mess!"
+			end
+		}
+	}
+
+}
+
+configuration test
+@arduino_stdout "Serial"
+@arduino_stdout_baudrate "115200"
+{
+	instance app : App
+	instance client1 : Client
+
+	connector client1.app => app.app
+}
