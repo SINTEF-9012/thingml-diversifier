@@ -6,6 +6,7 @@ import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.thingml.compilers.ThingMLCompiler;
+import org.thingml.compilers.utils.ThingMLInjector;
 import org.thingml.xtext.constraints.ThingMLHelpers;
 import org.thingml.xtext.constraints.Types;
 import org.thingml.xtext.helpers.ActionHelper;
@@ -30,6 +31,7 @@ class Diversifier {
     private Random rnd;
     
     /* -- Select which diversifications to do -- */
+    private boolean onlySummary = false;
     private boolean onlyLogs = false;
     private boolean addRandomParameters = false;
     private boolean duplicateMessages = false;
@@ -76,13 +78,19 @@ class Diversifier {
         // Specify profile to use
         if (args.length >= 3) {
         	switch (args[2]) {
+        	case "onlysummary":
+        		diversifier.onlySummary = true;
         	case "onlylogs":
         		diversifier.onlyLogs = true;
         		break;
+        	case "runtimesummary":
+        		diversifier.onlySummary = true;
         	case "runtime":
         		diversifier.doRuntimeRandomness = true;
         		diversifier.duplicateMessages = true;
         		break;
+        	case "defaultsummary":
+        		diversifier.onlySummary = true;
         	case "default":
         	default:
         	}
@@ -249,157 +257,145 @@ class Diversifier {
     }
 
     private void addLogs(ThingMLModel model) {
-        //pretty print messages on send
-        for (SendAction send : ActionHelper.getAllActions(model, SendAction.class)) {
-            final Thing t = ThingMLHelpers.findContainingThing(send);
-            final Port ip = createOrGetInternalPort(t);
-            if (!EcoreUtil.equals(ip, send.getPort())) {
-            	// Wrap the send action in a block
-            	final ActionBlock block = ThingMLFactory.eINSTANCE.createActionBlock();
-            	if (send.eContainingFeature().getUpperBound() == -1) {//Collection
-                    final EList list = (EList) send.eContainer().eGet(send.eContainingFeature());
-                    final int index = list.indexOf(send);
-                    list.add(index, block);
-                    list.remove(send);
-                } else {
-                    send.eContainer().eSet(send.eContainingFeature(), block);
+    	for (Thing thing : ThingMLHelpers.allThings(model)) {
+    		if (thing.isFragment()) continue;
+    		
+    		// Add counter and pretty print on all send actions
+    		for (SendAction send : ActionHelper.getAllActions(thing, SendAction.class)) {
+                final Port ip = createOrGetInternalPort(thing);
+                if (!EcoreUtil.equals(ip, send.getPort())) {
+                	// Wrap the send action in a block
+                	final ActionBlock block = ThingMLFactory.eINSTANCE.createActionBlock();
+                	if (send.eContainingFeature().getUpperBound() == -1) {//Collection
+                        final EList list = (EList) send.eContainer().eGet(send.eContainingFeature());
+                        final int index = list.indexOf(send);
+                        list.add(index, block);
+                        list.remove(send);
+                    } else {
+                        send.eContainer().eSet(send.eContainingFeature(), block);
+                    }
+                	
+                	// Calculate message size
+                	long messageBytes = 1; // Code
+                	for (Parameter p : send.getMessage().getParameters()) {
+                		final PrimitiveType type = (PrimitiveType)p.getTypeRef().getType();
+                		messageBytes += type.getByteSize();
+                	}
+                	// Increase byte counter
+                	Action increaseByteCounter = ThingMLInjector.parseString(ThingMLInjector.grammar().getActionRule(), "bytesSentCounter = bytesSentCounter + "+messageBytes);
+                	block.getActions().add(increaseByteCounter);
+                	ThingMLInjector.linkFrom(increaseByteCounter);
+                	
+                	if (!onlySummary) {
+	                	// Set parameters to variables
+	                	final List<LocalVariable> args = new ArrayList<LocalVariable>();
+	                	for (int i = 0; i < send.getMessage().getParameters().size(); i++) {
+	                		final Expression expr = send.getParameters().get(i);
+	                		final Parameter par = send.getMessage().getParameters().get(i);
+	    					
+	                		final LocalVariable argVar = ThingMLFactory.eINSTANCE.createLocalVariable();
+	                		argVar.setName(send.getMessage().getName()+"Arg"+i);
+	                		argVar.setTypeRef(EcoreUtil.copy(par.getTypeRef()));
+	                		argVar.setInit(EcoreUtil.copy(expr));
+	                		
+	                		block.getActions().add(argVar);
+	                		args.add(argVar);
+	    				}
+	                	
+	                	final CharLiteral comma = ThingMLFactory.eINSTANCE.createCharLiteral();
+	    				comma.setCharValue((byte) 44);
+	    				
+	    				final StringLiteral zeroStrLit = ThingMLFactory.eINSTANCE.createStringLiteral();
+	    				zeroStrLit.setStringValue("0");
+	    				final StringLiteral oneStrLit = ThingMLFactory.eINSTANCE.createStringLiteral();
+	    				oneStrLit.setStringValue("1");
+	                	
+	                	// Print all parameter values
+	                	final PrintAction printValues = ThingMLFactory.eINSTANCE.createPrintAction();
+	                	printValues.setLine(true);
+	                	block.getActions().add(printValues);
+	                	final StringLiteral valueprefix = ThingMLFactory.eINSTANCE.createStringLiteral();
+	                	valueprefix.setStringValue("!");
+	                	printValues.getMsg().add(valueprefix);
+	                	
+	                	// Print all parameter types
+	                	final PrintAction printTypes = ThingMLFactory.eINSTANCE.createPrintAction();
+	                	printTypes.setLine(true);
+	                	block.getActions().add(printTypes);
+	                	final StringLiteral typeprefix = ThingMLFactory.eINSTANCE.createStringLiteral();
+	                	typeprefix.setStringValue(":");
+	                	printTypes.getMsg().add(typeprefix);
+	                	
+	                	// Print all parameter weakness
+	                	final PrintAction printWeak = ThingMLFactory.eINSTANCE.createPrintAction();
+	                	printWeak.setLine(true);
+	                	block.getActions().add(printWeak);
+	                	final StringLiteral weakprefix = ThingMLFactory.eINSTANCE.createStringLiteral();
+	                	weakprefix.setStringValue("?");
+	                	printWeak.getMsg().add(weakprefix);
+	                	
+	                	// Add the msgID to the prints
+	                	//final byte code = (byte) Short.parseShort(AnnotatedElementHelper.annotationOrElse(send.getMessage(), "code", "0x00").substring(2), 16);
+	                	final byte code = (byte) Short.parseShort(AnnotatedElementHelper.annotationOrElse(send.getMessage(), "code", "0"));
+	                	final StringLiteral codeliteral = ThingMLFactory.eINSTANCE.createStringLiteral();
+	                	codeliteral.setStringValue("" + code);
+	                	printValues.getMsg().add(codeliteral);
+	    				printValues.getMsg().add(EcoreUtil.copy(comma));
+	    				
+	    				final StringLiteral codeTypeLiteral = ThingMLFactory.eINSTANCE.createStringLiteral();
+	    				codeTypeLiteral.setStringValue(Types.BYTE_TYPE.getName());
+	    				printTypes.getMsg().add(codeTypeLiteral);
+	    				printTypes.getMsg().add(EcoreUtil.copy(comma));
+	    				
+	    				printWeak.getMsg().add(EcoreUtil.copy(zeroStrLit));
+	    				printWeak.getMsg().add(EcoreUtil.copy(comma));
+	                	
+	                	for (int i = 0; i < send.getMessage().getParameters().size(); i++) {
+	                		final PrimitiveType type = (PrimitiveType)send.getMessage().getParameters().get(i).getTypeRef().getType();
+	                		final PropertyReference ref = ThingMLFactory.eINSTANCE.createPropertyReference();
+	                		ref.setProperty(args.get(i));
+	                		
+	                		for (int j = 0; j < type.getByteSize(); j++) {
+	                			
+	    						final ExternExpression expr = ThingMLFactory.eINSTANCE.createExternExpression();
+	    						expr.setExpression("((");
+	    						expr.getSegments().add(EcoreUtil.copy(ref));
+	    						
+	    						final ExternExpression bitshift = ThingMLFactory.eINSTANCE.createExternExpression();
+	    						bitshift.setExpression(" >> "+8*(type.getByteSize()-1-j)+") & 0xFF)");
+	    						expr.getSegments().add(bitshift);
+	    						
+	    						// Print value
+	    						printValues.getMsg().add(expr);
+	    						printValues.getMsg().add(EcoreUtil.copy(comma));
+	    						
+	    						// Print type
+	    						final StringLiteral paramTypeLiteral = ThingMLFactory.eINSTANCE.createStringLiteral();
+	    						paramTypeLiteral.setStringValue(type.getName());
+	    						printTypes.getMsg().add(paramTypeLiteral);
+	    						printTypes.getMsg().add(EcoreUtil.copy(comma));
+	    						
+	    						// Print weakness
+	    						if (AnnotatedElementHelper.hasAnnotation(send.getMessage().getParameters().get(i), "weakparam")) {
+	    							printWeak.getMsg().add(EcoreUtil.copy(oneStrLit));
+	    						} else {
+	    							printWeak.getMsg().add(EcoreUtil.copy(zeroStrLit));
+	    						}
+	    						printWeak.getMsg().add(EcoreUtil.copy(comma));
+	    					}
+	                	}
+	                	
+	                	// Send original message
+	                	for (int i = 0; i < send.getMessage().getParameters().size(); i++) {
+	                		final PropertyReference ref = ThingMLFactory.eINSTANCE.createPropertyReference();
+	                		ref.setProperty(args.get(i));
+	                		send.getParameters().set(i, ref);
+	                	}
+                	}
+                	block.getActions().add(send);
                 }
-            	
-            	// Set parameters to variables
-            	final List<LocalVariable> args = new ArrayList<LocalVariable>();
-            	for (int i = 0; i < send.getMessage().getParameters().size(); i++) {
-            		final Expression expr = send.getParameters().get(i);
-            		final Parameter par = send.getMessage().getParameters().get(i);
-					
-            		final LocalVariable argVar = ThingMLFactory.eINSTANCE.createLocalVariable();
-            		argVar.setName(send.getMessage().getName()+"Arg"+i);
-            		argVar.setTypeRef(EcoreUtil.copy(par.getTypeRef()));
-            		argVar.setInit(EcoreUtil.copy(expr));
-            		
-            		block.getActions().add(argVar);
-            		args.add(argVar);
-				}
-            	
-            	final CharLiteral comma = ThingMLFactory.eINSTANCE.createCharLiteral();
-				comma.setCharValue((byte) 44);
-				
-				final StringLiteral zeroStrLit = ThingMLFactory.eINSTANCE.createStringLiteral();
-				zeroStrLit.setStringValue("0");
-				final StringLiteral oneStrLit = ThingMLFactory.eINSTANCE.createStringLiteral();
-				oneStrLit.setStringValue("1");
-            	
-            	// Print all parameter values
-            	final PrintAction printValues = ThingMLFactory.eINSTANCE.createPrintAction();
-            	printValues.setLine(true);
-            	block.getActions().add(printValues);
-            	final StringLiteral valueprefix = ThingMLFactory.eINSTANCE.createStringLiteral();
-            	valueprefix.setStringValue("!");
-            	printValues.getMsg().add(valueprefix);
-            	
-            	// Print all parameter types
-            	final PrintAction printTypes = ThingMLFactory.eINSTANCE.createPrintAction();
-            	printTypes.setLine(true);
-            	block.getActions().add(printTypes);
-            	final StringLiteral typeprefix = ThingMLFactory.eINSTANCE.createStringLiteral();
-            	typeprefix.setStringValue(":");
-            	printTypes.getMsg().add(typeprefix);
-            	
-            	// Print all parameter weakness
-            	final PrintAction printWeak = ThingMLFactory.eINSTANCE.createPrintAction();
-            	printWeak.setLine(true);
-            	block.getActions().add(printWeak);
-            	final StringLiteral weakprefix = ThingMLFactory.eINSTANCE.createStringLiteral();
-            	weakprefix.setStringValue("?");
-            	printWeak.getMsg().add(weakprefix);
-            	
-            	// Add the msgID to the prints
-            	final byte code = (byte) Short.parseShort(AnnotatedElementHelper.annotationOrElse(send.getMessage(), "code", "0x00").substring(2), 16);
-            	final StringLiteral codeliteral = ThingMLFactory.eINSTANCE.createStringLiteral();
-            	codeliteral.setStringValue("" + code);
-            	printValues.getMsg().add(codeliteral);
-				printValues.getMsg().add(EcoreUtil.copy(comma));
-				
-				final StringLiteral codeTypeLiteral = ThingMLFactory.eINSTANCE.createStringLiteral();
-				codeTypeLiteral.setStringValue(Types.BYTE_TYPE.getName());
-				printTypes.getMsg().add(codeTypeLiteral);
-				printTypes.getMsg().add(EcoreUtil.copy(comma));
-				
-				printWeak.getMsg().add(EcoreUtil.copy(zeroStrLit));
-				printWeak.getMsg().add(EcoreUtil.copy(comma));
-            	
-            	for (int i = 0; i < send.getMessage().getParameters().size(); i++) {
-            		final PrimitiveType type = (PrimitiveType)send.getMessage().getParameters().get(i).getTypeRef().getType();
-            		final PropertyReference ref = ThingMLFactory.eINSTANCE.createPropertyReference();
-            		ref.setProperty(args.get(i));
-            		
-            		for (int j = 0; j < type.getByteSize(); j++) {
-            			
-						final ExternExpression expr = ThingMLFactory.eINSTANCE.createExternExpression();
-						expr.setExpression("((");
-						expr.getSegments().add(EcoreUtil.copy(ref));
-						
-						final ExternExpression bitshift = ThingMLFactory.eINSTANCE.createExternExpression();
-						bitshift.setExpression(" >> "+8*(type.getByteSize()-1-j)+") & 0xFF)");
-						expr.getSegments().add(bitshift);
-						
-						// Print value
-						printValues.getMsg().add(expr);
-						printValues.getMsg().add(EcoreUtil.copy(comma));
-						
-						// Print type
-						final StringLiteral paramTypeLiteral = ThingMLFactory.eINSTANCE.createStringLiteral();
-						paramTypeLiteral.setStringValue(type.getName());
-						printTypes.getMsg().add(paramTypeLiteral);
-						printTypes.getMsg().add(EcoreUtil.copy(comma));
-						
-						// Print weakness
-						if (AnnotatedElementHelper.hasAnnotation(send.getMessage().getParameters().get(i), "weakparam")) {
-							printWeak.getMsg().add(EcoreUtil.copy(oneStrLit));
-						} else {
-							printWeak.getMsg().add(EcoreUtil.copy(zeroStrLit));
-						}
-						printWeak.getMsg().add(EcoreUtil.copy(comma));
-					}
-            	}
-            	
-            	// Send original message
-            	for (int i = 0; i < send.getMessage().getParameters().size(); i++) {
-            		final PropertyReference ref = ThingMLFactory.eINSTANCE.createPropertyReference();
-            		ref.setProperty(args.get(i));
-            		send.getParameters().set(i, ref);
-            	}
-            	block.getActions().add(send);
-            	
-            	
-            	/*
-                final PrintAction print = ThingMLFactory.eINSTANCE.createPrintAction();
-                print.setLine(true);
-                final byte code = (byte) Short.parseShort(AnnotatedElementHelper.annotationOrElse(send.getMessage(), "code", "0x00").substring(2), 16);
-                final StringLiteral codeliteral = ThingMLFactory.eINSTANCE.createStringLiteral();
-                final StringLiteral comma = ThingMLFactory.eINSTANCE.createStringLiteral();
-                codeliteral.setStringValue("" + code);
-                comma.setStringValue(", ");
-                print.getMsg().add(codeliteral);
-                print.getMsg().add(EcoreUtil.copy(comma));
-                for (Expression e : send.getParameters()) {
-                    print.getMsg().add(EcoreUtil.copy(e));
-                    print.getMsg().add(EcoreUtil.copy(comma));
-                }
-                final ActionBlock block = ThingMLFactory.eINSTANCE.createActionBlock();
-                block.getActions().add(print);
-                if (send.eContainingFeature().getUpperBound() == -1) {//Collection
-                    final EList list = (EList) send.eContainer().eGet(send.eContainingFeature());
-                    final int index = list.indexOf(send);
-                    block.getActions().add(send);
-                    list.add(index, block);
-                    list.remove(send);
-                } else {
-                    send.eContainer().eSet(send.eContainingFeature(), block);
-                    block.getActions().add(send);
-                }
-                */
-            }
-        }
+    		}
+    	}
     }
 
     private Function findRandom(Thing thing) {
@@ -605,7 +601,8 @@ class Diversifier {
             m.getAnnotations().add(a);
         }
         a.setName("code");
-        a.setValue(String.format("0x%02X", code));
+        //a.setValue(String.format("0x%02X", code));
+        a.setValue(""+code);
         if (code < 127) code++;
         else code = -128;
     }
