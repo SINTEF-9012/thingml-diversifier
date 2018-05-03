@@ -6,6 +6,9 @@ A model-based tool to automatically diversify communications.
 
 We model communication protocols as a set of communicating state-machines, encapsulated into components. 
 We use [ThingML](https://github.com/TelluIoT/ThingML) to model those protocols. 
+
+> It is probably a good idea to read the ThingML README first.
+
 A protocol is typically composed of
 
 1. A structural view, defining the API to be used by the client and the server
@@ -30,7 +33,7 @@ thing fragment Msgs {
 
 ### Behavioral view 
 
-The behavior view is composed of two state machines. One for the client and one for the server.
+The behavior view is composed of two state machines. One for the client and one for the server. The example described below is also available [here](https://github.com/SINTEF-9012/thingml-diversifier/tree/master/docs/mymodel.thingml).
 
 A simple client:
 ```
@@ -44,8 +47,8 @@ thing Client includes Msgs {
     statechart init RUN {        
         state RUN {
             on entry do
-                app!m1(1, 2, 3, 4, 5)
-                app!m2(1, 2, 3)
+                app!m1(0x01, 0x02, 3, 0x04, 0x05)
+                app!m2(0x01, 0x02, 0x03)
             end
             
             transition -> STOP
@@ -114,8 +117,36 @@ thing Server includes Msgs {
 }
 ```
 
+Congratulations! You have implemented the following protocol:
+
+![simpleProtocol](docs/simpleProtocol.png)
+
 ## 2. Diversify protocols
 
+1. `cd thingml-diversifier`
+2. `mvn clean install`
+3. `cd target`
+4. `java -jar thingml.diversifier-1.0.0-SNAPSHOT-jar-with-dependencies.jar` with the following parameters:
+
+    - *input model* (a valid ThingML file). Mandatory.
+    - *number* of diversified model to generate. Optional. Default = 1
+    - *output directory* to store diversified models. Optional. Default = current directory
+    - *random seed* to generate repeatable outputs. Optional. Default = a magic random seed (likely to be different every time)
+    
+For example: 
+
+`java -jar thingml.diversifier-1.0.0-SNAPSHOT-jar-with-dependencies.jar mymodel.thingml 100 /tmp/thingml-diversifier 1`
+    
 ## 3. Compile
 
+Please have a look at the [ThingML README](https://github.com/TelluIoT/ThingML), explaining how to compiler models to different platforms: 
+
+- C (Arduino and Linux)
+- Java
+- JavaScript (Node.JS and Browser)
+- Go
+- UML (PlantUML diagrams)
+
 ## 4. Evaluate the results
+
+TODO: @jakhog
