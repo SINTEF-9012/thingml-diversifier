@@ -1,11 +1,33 @@
-import "datatypes.thingml" from stl
+datatype Byte<1>
+	@type_checker "Byte"
+	@c_type "uint8_t"
+	@c_byte_size "1"
+	@java_type "byte"
+	@java_primitive "true"
+	@go_type "byte";
+
+datatype Integer<2>
+	@type_checker "Integer"
+	@c_type "int"
+	@c_byte_size "2"
+	@java_type "short"
+	@java_primitive "true"
+	@go_type "int16";
+
+datatype Long<4>
+	@type_checker "Integer"
+	@c_type "long"
+	@c_byte_size "4"
+	@java_type "int"
+	@java_primitive "true"
+	@go_type "int32";
 
 //The messages to be exchanged by the client and the server
 thing fragment Msgs {
-   message m1(a:Byte,b:Byte,c:Integer,
+   message m1(a:Byte @upscale "NOT",b:Byte,c:Integer,
               d:Byte,e:Byte)
-   message m2(a:Byte,b:Byte,c:Byte)
-   message m3(a:Byte)
+   message m2(a:Byte @upscale "NOT",b:Byte,c:Byte)
+   message m3(a:Byte @upscale "NOT")
 }
 
 thing Client includes Msgs {

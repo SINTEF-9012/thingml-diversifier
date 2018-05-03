@@ -129,13 +129,14 @@ Congratulations! You have implemented the following protocol:
 4. `java -jar thingml.diversifier-1.0.0-SNAPSHOT-jar-with-dependencies.jar` with the following parameters:
 
     - *input model* (a valid ThingML file). Mandatory.
-    - *number* of diversified model to generate. Optional. Default = 1
+    - *number* of diversified model to generate. Mandatory.
+    - *mode*. Mandatory. *runtime* or *default*.
     - *output directory* to store diversified models. Optional. Default = current directory
     - *random seed* to generate repeatable outputs. Optional. Default = a magic random seed (likely to be different every time)
     
 For example: 
 
-`java -jar thingml.diversifier-1.0.0-SNAPSHOT-jar-with-dependencies.jar mymodel.thingml 100 /tmp/thingml-diversifier 1`
+`java -jar thingml.diversifier-1.0.0-SNAPSHOT-jar-with-dependencies.jar mymodel.thingml 100 runtime /tmp/thingml-diversifier 1`
     
 ## 3. Compile
 

@@ -112,6 +112,7 @@ class Diversifier {
         	if (!outDir.isEmpty()) saveTo = new File(outDir, saveName);
         	
         	try {
+        		System.out.println("saving to " + saveTo.getAbsolutePath());
 				ThingMLCompiler.saveAsThingML(clone, saveTo.getAbsolutePath());
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -259,6 +260,20 @@ class Diversifier {
     private void addLogs(ThingMLModel model) {
     	for (Thing thing : ThingMLHelpers.allThings(model)) {
     		if (thing.isFragment()) continue;
+
+			//Create byte counter if not already there
+			boolean hasByteCounter = false;
+			for(Property p : thing.getProperties()) {
+				if (p.getName().equals("bytesSentCounter")) {
+					hasByteCounter = true;
+					break;
+				}
+			}
+			if (!hasByteCounter) {
+				final Property p = ThingMLInjector.parseString(ThingMLInjector.grammar().getPropertyRule(), "property bytesSentCounter : Long");
+				thing.getProperties().add(p);
+				ThingMLInjector.linkFrom(p);
+			}
     		
     		// Add counter and pretty print on all send actions
     		for (SendAction send : ActionHelper.getAllActions(thing, SendAction.class)) {
@@ -281,6 +296,7 @@ class Diversifier {
                 		final PrimitiveType type = (PrimitiveType)p.getTypeRef().getType();
                 		messageBytes += type.getByteSize();
                 	}
+
                 	// Increase byte counter
                 	Action increaseByteCounter = ThingMLInjector.parseString(ThingMLInjector.grammar().getActionRule(), "bytesSentCounter = bytesSentCounter + "+messageBytes);
                 	block.getActions().add(increaseByteCounter);
