@@ -19,6 +19,9 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 class Diversifier {
 
@@ -95,30 +98,54 @@ class Diversifier {
         	default:
         	}
         }
-        
+
+
+        final long start = System.currentTimeMillis();
         // Run diversification multiple times
+		//ExecutorService executor = Executors.newWorkStealingPool(); //FIXME: some refactorings before multi-threading can really be useful
         for (int i = 0; i < number; i++) {
-        	final ThingMLModel clone = ThingMLCompiler.flattenModel(input);
-        	
-        	final List<Configuration> configs = new ArrayList<Configuration>(clone.getConfigs());
-        	
-        	for (Configuration cfg : configs) {
-                System.out.println("Diversifying configuration " + cfg.getName());
-                diversifier.diversify(cfg);
-            }
-        	
-        	String saveName = model.getName().substring(0, model.getName().lastIndexOf("."))+(number > 1 ? i+1 : "")+".thingml";
-        	File saveTo = new File(model.getParent(), "/diversified/"+saveName);
-        	if (!outDir.isEmpty()) saveTo = new File(outDir, saveName);
-        	
-        	try {
-        		System.out.println("saving to " + saveTo.getAbsolutePath());
+			String finalOutDir = outDir;
+			int finalNumber = number;
+			int finalI = i;
+			//executor.submit(() -> {
+			final ThingMLModel clone = ThingMLCompiler.flattenModel(input);
+
+			final List<Configuration> configs = new ArrayList<Configuration>(clone.getConfigs());
+
+			for (Configuration cfg : configs) {
+				System.out.println("Diversifying configuration " + cfg.getName());
+				diversifier.diversify(cfg);
+			}
+
+			String saveName = model.getName().substring(0, model.getName().lastIndexOf(".")) + (finalNumber > 1 ? finalI + 1 : "") + ".thingml";
+			File saveTo = new File(model.getParent(), "/diversified/" + saveName);
+			if (!finalOutDir.isEmpty()) saveTo = new File(finalOutDir, saveName);
+
+			try {
+				System.out.println("saving to " + saveTo.getAbsolutePath());
 				ThingMLCompiler.saveAsThingML(clone, saveTo.getAbsolutePath());
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			//});
 		}
+		/*try {
+			System.out.println("attempt to shutdown executor");
+			executor.shutdown();
+			executor.awaitTermination(250*number, TimeUnit.MILLISECONDS);
+		}
+		catch (InterruptedException e) {
+			System.err.println("tasks interrupted");
+		}
+		finally {
+			if (!executor.isTerminated()) {
+				System.err.println("cancel non-finished tasks");
+			}
+			executor.shutdownNow();
+			System.out.println("shutdown finished");
+		}*/
+		System.out.println("took " + (System.currentTimeMillis() - start) + "ms.");
     }
 
     public void diversify(Configuration cfg/*, int amount, int iterations*/) {
@@ -438,12 +465,12 @@ class Diversifier {
         for (Thing thing : ThingMLHelpers.allThings(model)) {
             for (Port port : thing.getPorts()) {
                 if (port.getSends().contains(m)) {
-                    System.out.println(" adding messages " + m2.getName() + " to sent messages of port " + port.getName() + " of thing " + thing.getName());
+                    //System.out.println(" adding messages " + m2.getName() + " to sent messages of port " + port.getName() + " of thing " + thing.getName());
                     port.getSends().add(m2);
                     duplicateSendAction(thing, port, m, m2);
                 }
                 if (port.getReceives().contains(m)) {
-                    System.out.println(" adding message " + m2.getName() + " to received messages of  port " + port.getName() + " of thing " + thing.getName());
+                    //System.out.println(" adding message " + m2.getName() + " to received messages of  port " + port.getName() + " of thing " + thing.getName());
                     port.getReceives().add(m2);
                     duplicateHandlers(thing, port, m, m2);
                 }
@@ -744,10 +771,10 @@ class Diversifier {
             ports.addAll(thing.getPorts());
             for (Port port : ports) {
                 if (port.getSends().contains(m)) {
-                    System.out.println(" adding messages " + first.getName() + " and " + second.getName() + " to sent messages of port " + port.getName() + " of thing " + thing.getName());
+                    //System.out.println(" adding messages " + first.getName() + " and " + second.getName() + " to sent messages of port " + port.getName() + " of thing " + thing.getName());
                     port.getSends().add(first);
                     port.getSends().add(second);
-                    System.out.println(" removing message " + m.getName() + " from sent messages of port " + port.getName() + " of thing " + thing.getName());
+                    //System.out.println(" removing message " + m.getName() + " from sent messages of port " + port.getName() + " of thing " + thing.getName());
                     port.getSends().remove(m);
                     splitSendAction(thing, port, m, first, second, splitAt);
                 }
@@ -756,12 +783,12 @@ class Diversifier {
                     final Map<Message, Port> msgMappings = mappings.get(thing);
                     msgMappings.put(m, port);
                     final Port ip = createOrGetInternalPort(thing);
-                    System.out.println(" removing message " + m.getName() + " from received messages of port " + port.getName() + " of thing " + thing.getName());
+                    //System.out.println(" removing message " + m.getName() + " from received messages of port " + port.getName() + " of thing " + thing.getName());
                     port.getReceives().remove(m);
-                    System.out.println(" adding message " + first.getName() + " and " + second.getName() + " to received messages of port " + port.getName() + " of thing " + thing.getName());
+                    //System.out.println(" adding message " + first.getName() + " and " + second.getName() + " to received messages of port " + port.getName() + " of thing " + thing.getName());
                     port.getReceives().add(first);
                     port.getReceives().add(second);
-                    System.out.println(" adding message " + m.getName() + " to internal port " + ip.getName() + " of thing " + thing.getName());
+                    //System.out.println(" adding message " + m.getName() + " to internal port " + ip.getName() + " of thing " + thing.getName());
                     ip.getReceives().add(m);
                     ip.getSends().add(m);
                     createRegion(thing, port, m, first, second);
@@ -933,7 +960,7 @@ class Diversifier {
                         if (h.getGuard() != null) {
                             h2.setGuard(EcoreUtil.copy(h.getGuard()));
                             for (EventReference ref : ThingMLHelpers.getAllExpressions(h2.getGuard(), EventReference.class)) {
-                                System.out.println("Fixing event ref on parameter " + ref.getParameter().getName() + " of message " + m2.getName());
+                                //System.out.println("Fixing event ref on parameter " + ref.getParameter().getName() + " of message " + m2.getName());
                                 ref.setReceiveMsg(rm2);
                                 ref.setParameter(m2.getParameters().get(m.getParameters().indexOf(ref.getParameter())));
                             }
@@ -942,7 +969,7 @@ class Diversifier {
                         if (h.getAction() != null) {
                             h2.setAction(EcoreUtil.copy(h.getAction()));
                             for (EventReference ref : ThingMLHelpers.getAllExpressions(h2.getAction(), EventReference.class)) {
-                                System.out.println("Fixing event ref on parameter " + ref.getParameter().getName() + " of message " + m2.getName());
+                                //System.out.println("Fixing event ref on parameter " + ref.getParameter().getName() + " of message " + m2.getName());
                                 ref.setReceiveMsg(rm2);
                                 ref.setParameter(m2.getParameters().get(m.getParameters().indexOf(ref.getParameter())));
                             }
