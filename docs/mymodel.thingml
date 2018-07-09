@@ -1,0 +1,92 @@
+import "datatypes.thingml" from stl
+
+//The messages to be exchanged by the client and the server
+thing fragment Msgs {
+   message m1(a:Byte @upscale "NOT",b:Byte,c:Integer,
+              d:Byte,e:Byte)
+   message m2(a:Byte @upscale "NOT",b:Byte,c:Byte)
+   message m3(a:Byte @upscale "NOT")
+}
+
+thing Client includes Msgs {
+
+    required port app {
+        sends m1, m2
+        receives m3
+    }
+
+    statechart init RUN {
+        state RUN {
+            on entry do
+                app!m1(0x01, 0x02, 3, 0x04, 0x05)
+                app!m2(0x01, 0x02, 0x03)
+            end
+
+            transition -> STOP
+            event e : app?m3
+            guard e.a == 1
+
+            transition -> ERROR
+            event e : app?m3
+            guard e.a != 1
+        }
+
+        final state STOP {
+            on entry println "Success!"
+        }
+
+        final state ERROR {
+            on entry println "Failure...!"
+        }
+    }
+}
+
+thing Server includes Msgs {
+
+    property id : Byte
+
+    provided port app {
+        receives m1, m2
+        sends m3
+    }
+
+    statechart init WaitForM1 {
+        state WaitForM1 {
+            transition -> WaitForM2
+            event e : app?m1
+            action id = e.a
+        }
+
+        state WaitForM2 {
+            transition -> SendAck
+            event e : app?m2
+            guard e.a == id
+
+            transition -> ERROR
+            event e : app?m2
+            guard e.a != id
+        }
+
+        state SendAck {
+            on entry do
+                println "Success!"
+                app!m3(id)
+            end
+
+            transition -> WaitForM1
+        }
+
+        state ERROR {
+            on entry println "Error...!"
+
+            transition -> WaitForM1
+        }
+    }
+}
+
+configuration cfg {
+	instance c : Client
+	instance s : Server
+
+	connector c.app => s.app
+}
