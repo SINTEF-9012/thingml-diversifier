@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 
 # Run both base and diversified ThingML models N times, and store output logs (NOT VALID)
-N=3
+N=100
 #LANGUAGES=(nodejs)
 #LANGUAGES=(arduino)
-LANGUAGES=(go)
-#LANGUAGES=(arduino nodejs go)
+#LANGUAGES=(go)
+LANGUAGES=(nodejs go arduino)
 
 # Please make sure you have set a THINGML_REGISTRY environment variable to point to the compiler.registry jar, e.g.
 # export THINGML_REGISTRY=/path/to/compilers.registry-2.0.0-SNAPSHOT-jar-with-dependencies.jar
@@ -17,6 +17,7 @@ DIVERSIFIER=$TARGETDIR/thingml.diversifier-1.0.0-SNAPSHOT-jar-with-dependencies.
 MODELSDIR=$TARGETDIR/thingml-models
 PLATFORMDIR=$TARGETDIR/thingml-platform
 LOGSDIR=$TARGETDIR/thingml-logs
+BINSDIR=$TARGETDIR/thingml-bins
 WORKDIR=$TARGETDIR/thingml-out
 
 ARDUINO_DIR=/c/usr/Arduino

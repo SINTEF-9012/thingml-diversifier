@@ -1,0 +1,147 @@
+thing fragment Msgs {
+	message m1(a : Byte @upsize "not", b : Byte @upsize "not", c : Integer, d : Byte @weakparam "true", e : Byte)
+	message m2(a : Byte @upsize "not", b : Byte @upsize "not", c : Byte)
+	message m3(a : Byte)
+	function rnd() : Byte do
+		return `random(256)`
+	end
+}
+thing App includes Msgs {
+	provided port app {
+		sends m3 receives m1 receives m2
+	}
+	internal port diversified {
+	}
+	property id : Byte
+	statechart init WaitForM1 {
+		state WaitForM1 {
+			transition -> WaitForM2
+			event e : app?m1
+			action do
+				id = e.a
+				println "#APP: Ooh, I needed that app?m1(" , e.a , ", " , e.b , ", " , e.c , ", " , e.d , ", " , e.e , ")!"
+			end
+		}
+		state WaitForM2 {
+			transition -> SendAck
+			event e : app?m2
+			action println "#APP: Ooh, I needed that app?m2(" , e.a , ", " , e.b , ", " , e.c , ")!"
+		}
+		state SendAck {
+			on entry do
+				println "#APP: Come get some app!m3(" , id , ")!"
+				do
+					var m3Arg0 : Byte = id
+					println "!" , "0" , ',' , `((` & m3Arg0 & ` >> 0) & 0xFF)` , ','
+					println ":" , "Byte" , ',' , "Byte" , ','
+					println "?" , "0" , ',' , "0" , ','
+					app!m3(m3Arg0)
+				end
+			end
+			transition -> WaitForM1
+		}
+	}
+}
+thing Client includes Msgs {
+	required port app {
+		sends m1 sends m2 receives m3
+	}
+	internal port diversified {
+	}
+	property counter : Integer = 0
+	property start : Integer
+	property _a : Byte
+	property _b : Byte
+	property _c : Byte
+	property _d : Byte
+	property _e : Byte
+	statechart init RUN {
+		on entry do
+			_a = rnd()
+			_b = 0x02
+			start = `millis()`
+		end
+		state RUN {
+			on entry do
+				_c = rnd()% 20
+				_d = rnd()% 10 + 20
+				_e = rnd()% 5 + 10
+				println "#CLI: Come get some app!m1(" , _a , ", " , _b , ", " , _c , ", " , _d , ", " , _e , ")!"
+				do
+					var m1Arg0 : Byte = _a
+					var m1Arg1 : Byte = _b
+					var m1Arg2 : Integer = _c
+					var m1Arg3 : Byte = _d
+					var m1Arg4 : Byte = _e
+					println "!" , "0" , ',' , `((` & m1Arg0 & ` >> 0) & 0xFF)` , ',' , `((` & m1Arg1 & ` >> 0) & 0xFF)` , ',' , `((` & m1Arg2 & ` >> 8) & 0xFF)` , ',' , `((` & m1Arg2 & ` >> 0) & 0xFF)` , ',' , `((` & m1Arg3 & ` >> 0) & 0xFF)` , ',' , `((` & m1Arg4 & ` >> 0) & 0xFF)` , ','
+					println ":" , "Byte" , ',' , "Byte" , ',' , "Byte" , ',' , "Integer" , ',' , "Integer" , ',' , "Byte" , ',' , "Byte" , ','
+					println "?" , "0" , ',' , "0" , ',' , "0" , ',' , "0" , ',' , "0" , ',' , "1" , ',' , "0" , ','
+					app!m1(m1Arg0, m1Arg1, m1Arg2, m1Arg3, m1Arg4)
+				end
+				println "#CLI: Come get some app!m2(" , _a , ", " , _b , ", " , _c , ")!"
+				do
+					var m2Arg0 : Byte = _a
+					var m2Arg1 : Byte = _b
+					var m2Arg2 : Byte = _c
+					println "!" , "0" , ',' , `((` & m2Arg0 & ` >> 0) & 0xFF)` , ',' , `((` & m2Arg1 & ` >> 0) & 0xFF)` , ',' , `((` & m2Arg2 & ` >> 0) & 0xFF)` , ','
+					println ":" , "Byte" , ',' , "Byte" , ',' , "Byte" , ',' , "Byte" , ','
+					println "?" , "0" , ',' , "0" , ',' , "0" , ',' , "0" , ','
+					app!m2(m2Arg0, m2Arg1, m2Arg2)
+				end
+				counter ++
+			end
+			transition -> STOP
+			event e : app?m3
+			guard counter >= 100
+			transition -> RUN
+			event e : app?m3
+			guard e.a == _a and counter < 100
+			action do
+				println "#CLI: Ooh, I needed that app?m3(" , e.a , ")!"
+				println "#CLI: We meet again, Doctor Jones!"
+			end
+			transition -> ERROR
+			event e : app?m3
+			guard e.a != _a
+			action do
+				println "#CLI: Ooh, I needed that app?m3(" , e.a , ")!"
+				println "#CLI: Damn, you re ugly."
+			end
+		}
+		final state STOP {
+			on entry do
+				println "#CLI: What are you waitin for? Christmas?"
+				var duration : Integer = `millis()` - start
+				println "#CLI: took " , duration , "ms."
+			end
+		}
+		final state ERROR {
+			on entry do
+				println "#CLI: Heh, heh, heh... what a mess!"
+			end
+		}
+	}
+}
+datatype Byte<1>
+	@type_checker "Byte"
+	@java_type "byte"
+	@c_type "uint8_t"
+datatype Integer<2>
+	@type_checker "Integer"
+	@java_type "short"
+	@c_type "int16_t"
+datatype Long<4>
+	@type_checker "Integer"
+	@java_type "int"
+	@c_type "int32_t"
+datatype LongLong<8>
+	@type_checker "Integer"
+	@java_type "long"
+	@c_type "int64_t"
+protocol Default ;
+
+configuration test @arduino_stdout "Serial" @arduino_stdout_baudrate "115200" {
+	instance app : App
+	instance client1 : Client
+	connector client1.app => app . app
+}

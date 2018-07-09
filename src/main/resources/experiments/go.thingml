@@ -56,6 +56,7 @@ thing App includes Msgs {
 			on entry do
 				//println "#APP: Come get some app!m3(", id, ")!"
 				app!m3(id)
+				counter++
 			end
 
 			transition -> WaitForM1 guard counter < N
@@ -141,7 +142,10 @@ thing Client includes Msgs
 				println "#CLI: took ", `duration.Nanoseconds()`, "ns."
 				println "#CLI: used ", `stats.HeapAlloc`, " bts."
 				println "#CLI: sent ", bytesSentCounter, " bts."
-				`os.Exit(0)`
+				`
+					time.Sleep(time.Duration(100)*time.Millisecond)
+					os.Exit(0)
+				`
 			end
 		}
 

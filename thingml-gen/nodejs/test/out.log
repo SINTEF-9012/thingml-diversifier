@@ -1,0 +1,35 @@
+#CLI: Come get some app!m1(230, 228, 89, 15, 10)!
+#CLI: Come get some app!m2(230, 228, 89)!
+#APP: Ooh, I needed that app?m1(230, 228, 89, 15, 10)!
+#APP: Ooh, I needed that app?m2(230, 228, 89)!
+#APP: Come get some app!m3(230)!
+#CLI: Ooh, I needed that app?m3(230)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(230, 228, 31, 46, 7)!
+#CLI: Come get some app!m2(230, 228, 31)!
+#APP: Ooh, I needed that app?m1(230, 228, 31, 46, 7)!
+#APP: Ooh, I needed that app?m2(230, 228, 31)!
+#APP: Come get some app!m3(230)!
+#CLI: Ooh, I needed that app?m3(230)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(230, 228, 96, 32, 10)!
+#CLI: Come get some app!m2(230, 228, 96)!
+#APP: Ooh, I needed that app?m1(230, 228, 96, 32, 10)!
+#APP: Ooh, I needed that app?m2(230, 228, 96)!
+#APP: Come get some app!m3(230)!
+#CLI: Ooh, I needed that app?m3(230)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(230, 228, 64, 49, 1)!
+#CLI: Come get some app!m2(230, 228, 64)!
+#APP: Ooh, I needed that app?m1(230, 228, 64, 49, 1)!
+#APP: Ooh, I needed that app?m2(230, 228, 64)!
+#APP: Come get some app!m3(230)!
+#CLI: Ooh, I needed that app?m3(230)!
+#CLI: We meet again, Doctor Jones!
+#CLI: Come get some app!m1(230, 228, 18, 25, 20)!
+#CLI: Come get some app!m2(230, 228, 18)!
+#APP: Ooh, I needed that app?m1(230, 228, 18, 25, 20)!
+#APP: Ooh, I needed that app?m2(230, 228, 18)!
+#APP: Come get some app!m3(230)!
+#CLI: What are you waitin for? Christmas?
+#CLI: took 8ms.

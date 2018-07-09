@@ -52,6 +52,7 @@ thing App includes Msgs {
 			on entry do
 				//println "#APP: Come get some app!m3(", id, ")!"
 				app!m3(id)
+				counter++
 			end
 
 			transition -> WaitForM1 guard counter < N
@@ -136,9 +137,9 @@ thing Client includes Msgs
 				`
 				println "#CLI: used ", `diff.after.size_bytes`, " bts."
 				println "#CLI: sent ", bytesSentCounter, " bts."
-				`process.writeable.end(() => {
+				`setTimeout(() => {
 					process.exit(0);
-				})`
+				}, 100);`
 			end
 		}
 
