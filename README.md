@@ -150,4 +150,45 @@ Please have a look at the [ThingML README](https://github.com/TelluIoT/ThingML),
 
 ## 4. Evaluate the results
 
-TODO: @jakhog
+This repository contain scripts for two experiments:
+1) To evaluate the diversification of the protocols, that log the actual data sent between components. [Here](src/main/bash/bytes)
+2) To evaluate the impact of diversifying protocols in terms of overhead in execution time, used memory, and bytes sent. [Here](src/main/bash/summary)
+
+> Note: The bash-scripts mentioned in this section has only been tested on a single machine with a specific setup (Git bash on Windows 10).
+> So if you can't get them to work on your machine, please contact @jakhog or post an issue in this repo so we can help you.
+
+### 4.1 Run diversification experiments
+> These scripts live in the `src/main/bash/bytes` directory
+
+First edit the `setup.sh` script to fit your needs, and make sure you have the proper environment variables set up, with a copy of the ThingML compiler, and that the Java part of this repository is built.
+
+Then run the scripts:
+1) `generate_models.sh`
+2) `generate_platform_code.sh`
+3) `run_generated_code.sh`
+
+This should produce ThingML models, plaform code, binary files, and logs in the `target` directory in the root of the repo. These will be used to produce the statistics table with Jupyter Notebook later.
+
+### 4.2 Run diversification overhead experiments
+> These scripts live in the `src/main/bash/bytes` directory
+
+First edit the `setup.sh` script to fit your needs, and make sure you have the proper environment variables set up, with a copy of the ThingML compiler, and that the Java part of this repository is built.
+
+Then run the scripts:
+1) `generate_models.sh`
+2) `generate_platform_code.sh`
+3) `run_generated_code.sh`
+
+This should produce ThingML models, plaform code, binary files, and logs in the `target` directory in the root of the repo. These will be used to produce the plots with Jupyter Notebook later.
+
+### 4.3 Run Jupyter Notebooks to produce results
+> The Jupyter notebooks live in the `src/main/python/` directory
+
+#### `images.ipynb`
+This script produces two images that 1) visualize the actual data that is sent between components by representing values as colors, 2) visualize the type and position of a simulated _weak_ parameter in the exchanged data. Uses the results from 4.1.
+
+#### `graphs.ipynb`
+This script produces two graphs that visualize the quantitative difference between datas sent between components. Uses the results from 4.1.
+
+#### `stastistics.ipynb`
+This script produces a table that shows the overhead of the diversification techniques, compared to no diversifications. Uses the results from 4.2.
