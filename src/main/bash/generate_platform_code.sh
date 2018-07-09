@@ -15,7 +15,7 @@ for LANGUAGE in ${LANGUAGES[@]}; do
   echo "-- GENERATING BASE MODEL CODE --"
   java -jar $THINGML_REGISTRY -c $LANGUAGE -s $MODELSDIR/$LANGUAGE/$LANGUAGE.thingml -o $PLATFORMDIR/$LANGUAGE/base
   if [ "$LANGUAGE" == "arduino" ]; then
-    sed -i -Ef addstackcheck $PLATFORMDIR/$LANGUAGE/base/test/test.ino
+    sed -i -Ef resouces/addstackcheck $PLATFORMDIR/$LANGUAGE/base/test/test.ino
   fi
 
   echo "-- GENERATING STATIC DIVERSIFICATED MODEL CODE --"
@@ -23,7 +23,7 @@ for LANGUAGE in ${LANGUAGES[@]}; do
     mkdir $PLATFORMDIR/$LANGUAGE/static/$LANGUAGE$i
     java -jar $THINGML_REGISTRY -c $LANGUAGE -s $MODELSDIR/$LANGUAGE/static/$LANGUAGE$i.thingml -o $PLATFORMDIR/$LANGUAGE/static/$LANGUAGE$i
     if [ "$LANGUAGE" == "arduino" ]; then
-      sed -i -Ef addstackcheck $PLATFORMDIR/$LANGUAGE/static/$LANGUAGE$i/test/test.ino
+      sed -i -Ef resouces/addstackcheck $PLATFORMDIR/$LANGUAGE/static/$LANGUAGE$i/test/test.ino
     fi
   done
 
@@ -32,7 +32,7 @@ for LANGUAGE in ${LANGUAGES[@]}; do
     mkdir $PLATFORMDIR/$LANGUAGE/dynamic/$LANGUAGE$i
     java -jar $THINGML_REGISTRY -c $LANGUAGE -s $MODELSDIR/$LANGUAGE/dynamic/$LANGUAGE$i.thingml -o $PLATFORMDIR/$LANGUAGE/dynamic/$LANGUAGE$i
     if [ "$LANGUAGE" == "arduino" ]; then
-      sed -i -Ef addstackcheck $PLATFORMDIR/$LANGUAGE/dynamic/$LANGUAGE$i/test/test.ino
+      sed -i -Ef resouces/addstackcheck $PLATFORMDIR/$LANGUAGE/dynamic/$LANGUAGE$i/test/test.ino
     fi
   done
 done
