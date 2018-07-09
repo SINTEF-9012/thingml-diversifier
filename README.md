@@ -170,7 +170,7 @@ Then run the scripts:
 This should produce ThingML models, plaform code, binary files, and logs in the `target` directory in the root of the repo. These will be used to produce the statistics table with Jupyter Notebook later.
 
 ### 4.2 Run diversification overhead experiments
-> These scripts live in the `src/main/bash/bytes` directory
+> These scripts live in the `src/main/bash/summary` directory
 
 First edit the `setup.sh` script to fit your needs, and make sure you have the proper environment variables set up, with a copy of the ThingML compiler, and that the Java part of this repository is built.
 
