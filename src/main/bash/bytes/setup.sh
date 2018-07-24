@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-N=10 # Number of diversified version to make
+N=100 # Number of diversified version to make
 LANGUAGES=(nodejs) # Languages to use
 
 # Please make sure you have the following list of environment variebles set up:
