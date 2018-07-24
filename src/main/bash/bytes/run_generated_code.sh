@@ -24,7 +24,7 @@ function run_arduino()
 function compile_nodejs()
 {
   cp $DIR/../resources/webpack.config.js $WORKDIR/webpack.config.js
-  (cd $WORKDIR; ./node_modules/webpack-cli/bin/webpack.js --mode production; cp build/packed.js binary )
+  (cd $WORKDIR; ./node_modules/webpack-cli/bin/cli.js --mode production; cp build/packed.js binary )
 }
 function run_nodejs()
 {

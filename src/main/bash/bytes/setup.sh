@@ -12,8 +12,11 @@ LANGUAGES=(nodejs) # Languages to use
 #     Path to arduino-builder folder
 
 DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+BASEDIR=$DIR/../../../../
+#We assume ThingML has been cloned (and compiled) besides thingml-diversifier
+THINGML_REGISTRY=$BASEDIR/../ThingML/compilers/registry/target/compilers.registry-2.0.0-SNAPSHOT-jar-with-dependencies.jar
 BASEMODELDIR=$DIR/../../resources/experiments
-TARGETDIR=$DIR/../../../../target
+TARGETDIR=$BASEDIR/target
 DIVERSIFIER=$TARGETDIR/thingml.diversifier-1.0.0-SNAPSHOT-jar-with-dependencies.jar
 MODELSDIR=$TARGETDIR/thingml-bytes-models
 PLATFORMDIR=$TARGETDIR/thingml-bytes-platform

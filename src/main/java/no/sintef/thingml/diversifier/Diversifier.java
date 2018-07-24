@@ -32,14 +32,14 @@ class Diversifier {
     private byte code;
     private int param = 0;
     private Random rnd;
-    
+
     /* -- Select which diversifications to do -- */
     private boolean onlySummary = false;
     private boolean onlyLogs = false;
     private boolean addRandomParameters = false;
     private boolean duplicateMessages = false;
     private boolean doRuntimeRandomness = false;
-    
+
 
     public Diversifier(long seed) {
         rnd = new Random(seed);
@@ -58,25 +58,25 @@ class Diversifier {
         }
 
         final ThingMLModel input = ThingMLCompiler.flattenModel(ThingMLCompiler.loadModel(model));
-        
+
         // Number of diversified models to generate
         int number = 1;
         if (args.length >= 2) {
         	number = Integer.parseInt(args[1]);
         }
-        
+
         // Specify output directory
         String outDir = "";
         if (args.length >= 4) {
         	outDir = args[3];
         }
-        
+
         // Specify random seed for reproducible model-generation
         long seed = input.hashCode()*System.currentTimeMillis(); // Special perfect seed algorithm
         if (args.length >= 5) {
         	seed = Long.parseLong(args[4]);
         }
-        
+
         final Diversifier diversifier = new Diversifier(seed);
         // Specify profile to use
         if (args.length >= 3) {
@@ -150,7 +150,7 @@ class Diversifier {
 
     public void diversify(Configuration cfg/*, int amount, int iterations*/) {
         final ThingMLModel model = (ThingMLModel) cfg.eContainer();
-        
+
         if (!this.onlyLogs) {
 	        /**
 	         * Add random parameters so that they all have the same sizes.
@@ -168,7 +168,7 @@ class Diversifier {
 		                    maxSize = m.getParameters().size();
 		            }
 		        }
-		
+
 		        final TreeIterator<EObject> it5 = model.eAllContents();
 		        while (it5.hasNext()) {
 		            final EObject o = it5.next();
@@ -181,18 +181,18 @@ class Diversifier {
 		            }
 		        }
 	        }
-	        
-	        
-	        
-	
-	
+
+
+
+
+
 	        // Swaps messages in metamodel (should make different codes)
 	        for (Thing t : ThingMLHelpers.allThings(model)) {
 	            if (!AnnotatedElementHelper.isDefined(t, "diversify", "not")) {
 	                changeOrderOfMessages(t);
 	            }
 	        }
-	        
+
 	        // Swap order of parameters in messages (and also re-order corresponding send actions)
 	        for (Thing t : ThingMLHelpers.allThings(model)) {
 	        	if (!AnnotatedElementHelper.isDefined(t, "diversify", "not")) {
@@ -201,7 +201,7 @@ class Diversifier {
 	        		}
 	        	}
 	        }
-	        
+
 	        // Upsize parameters
 	        for (Thing t : ThingMLHelpers.allThings(model)) {
 	        	if (!AnnotatedElementHelper.isDefined(t, "diversify", "not")) {
@@ -212,8 +212,8 @@ class Diversifier {
 	        		}
 	        	}
 	        }
-	        
-	        
+
+
 	        // Makes new options for messages
 	        if (this.duplicateMessages) {
 		        final TreeIterator<EObject> it = model.eAllContents();
@@ -228,7 +228,7 @@ class Diversifier {
 		            }
 		        }
 	        }
-	        
+
 	        // Split
 	        List<Message> msgs = new ArrayList<>();
 	        final TreeIterator<EObject> it2 = model.eAllContents();
@@ -239,7 +239,7 @@ class Diversifier {
 	                splitMessage(model, m);
 	            }
 	        }
-	
+
 	        // Re-make long messages
 	        if (this.addRandomParameters) {
 		        int maxSize = 0;
@@ -264,8 +264,8 @@ class Diversifier {
 		            }
 		        }
 	        }
-	
-	        
+
+
 	        // adds code annotation
 	        final TreeIterator<EObject> it3 = model.eAllContents();
 	        while (it3.hasNext()) {
@@ -288,20 +288,6 @@ class Diversifier {
     	for (Thing thing : ThingMLHelpers.allThings(model)) {
     		if (thing.isFragment()) continue;
 
-			//Create byte counter if not already there
-			boolean hasByteCounter = false;
-			for(Property p : thing.getProperties()) {
-				if (p.getName().equals("bytesSentCounter")) {
-					hasByteCounter = true;
-					break;
-				}
-			}
-			if (!hasByteCounter) {
-				final Property p = ThingMLInjector.parseString(ThingMLInjector.grammar().getPropertyRule(), "property bytesSentCounter : Long");
-				thing.getProperties().add(p);
-				ThingMLInjector.linkFrom(p);
-			}
-    		
     		// Add counter and pretty print on all send actions
     		for (SendAction send : ActionHelper.getAllActions(thing, SendAction.class)) {
                 final Port ip = createOrGetInternalPort(thing);
@@ -316,7 +302,7 @@ class Diversifier {
                     } else {
                         send.eContainer().eSet(send.eContainingFeature(), block);
                     }
-                	
+
                 	// Calculate message size
                 	long messageBytes = 1; // Code
                 	for (Parameter p : send.getMessage().getParameters()) {
@@ -328,31 +314,31 @@ class Diversifier {
                 	Action increaseByteCounter = ThingMLInjector.parseString(ThingMLInjector.grammar().getActionRule(), "bytesSentCounter = bytesSentCounter + "+messageBytes);
                 	block.getActions().add(increaseByteCounter);
                 	ThingMLInjector.linkFrom(increaseByteCounter);
-                	
+
                 	if (!onlySummary) {
 	                	// Set parameters to variables
 	                	final List<LocalVariable> args = new ArrayList<LocalVariable>();
 	                	for (int i = 0; i < send.getMessage().getParameters().size(); i++) {
 	                		final Expression expr = send.getParameters().get(i);
 	                		final Parameter par = send.getMessage().getParameters().get(i);
-	    					
+
 	                		final LocalVariable argVar = ThingMLFactory.eINSTANCE.createLocalVariable();
 	                		argVar.setName(send.getMessage().getName()+"Arg"+i);
 	                		argVar.setTypeRef(EcoreUtil.copy(par.getTypeRef()));
 	                		argVar.setInit(EcoreUtil.copy(expr));
-	                		
+
 	                		block.getActions().add(argVar);
 	                		args.add(argVar);
 	    				}
-	                	
+
 	                	final CharLiteral comma = ThingMLFactory.eINSTANCE.createCharLiteral();
 	    				comma.setCharValue((byte) 44);
-	    				
+
 	    				final StringLiteral zeroStrLit = ThingMLFactory.eINSTANCE.createStringLiteral();
 	    				zeroStrLit.setStringValue("0");
 	    				final StringLiteral oneStrLit = ThingMLFactory.eINSTANCE.createStringLiteral();
 	    				oneStrLit.setStringValue("1");
-	                	
+
 	                	// Print all parameter values
 	                	final PrintAction printValues = ThingMLFactory.eINSTANCE.createPrintAction();
 	                	printValues.setLine(true);
@@ -360,7 +346,7 @@ class Diversifier {
 	                	final StringLiteral valueprefix = ThingMLFactory.eINSTANCE.createStringLiteral();
 	                	valueprefix.setStringValue("!");
 	                	printValues.getMsg().add(valueprefix);
-	                	
+
 	                	// Print all parameter types
 	                	final PrintAction printTypes = ThingMLFactory.eINSTANCE.createPrintAction();
 	                	printTypes.setLine(true);
@@ -368,7 +354,7 @@ class Diversifier {
 	                	final StringLiteral typeprefix = ThingMLFactory.eINSTANCE.createStringLiteral();
 	                	typeprefix.setStringValue(":");
 	                	printTypes.getMsg().add(typeprefix);
-	                	
+
 	                	// Print all parameter weakness
 	                	final PrintAction printWeak = ThingMLFactory.eINSTANCE.createPrintAction();
 	                	printWeak.setLine(true);
@@ -376,7 +362,7 @@ class Diversifier {
 	                	final StringLiteral weakprefix = ThingMLFactory.eINSTANCE.createStringLiteral();
 	                	weakprefix.setStringValue("?");
 	                	printWeak.getMsg().add(weakprefix);
-	                	
+
 	                	// Add the msgID to the prints
 	                	//final byte code = (byte) Short.parseShort(AnnotatedElementHelper.annotationOrElse(send.getMessage(), "code", "0x00").substring(2), 16);
 	                	final byte code = (byte) Short.parseShort(AnnotatedElementHelper.annotationOrElse(send.getMessage(), "code", "0"));
@@ -384,40 +370,40 @@ class Diversifier {
 	                	codeliteral.setStringValue("" + code);
 	                	printValues.getMsg().add(codeliteral);
 	    				printValues.getMsg().add(EcoreUtil.copy(comma));
-	    				
+
 	    				final StringLiteral codeTypeLiteral = ThingMLFactory.eINSTANCE.createStringLiteral();
 	    				codeTypeLiteral.setStringValue(Types.BYTE_TYPE.getName());
 	    				printTypes.getMsg().add(codeTypeLiteral);
 	    				printTypes.getMsg().add(EcoreUtil.copy(comma));
-	    				
+
 	    				printWeak.getMsg().add(EcoreUtil.copy(zeroStrLit));
 	    				printWeak.getMsg().add(EcoreUtil.copy(comma));
-	                	
+
 	                	for (int i = 0; i < send.getMessage().getParameters().size(); i++) {
 	                		final PrimitiveType type = (PrimitiveType)send.getMessage().getParameters().get(i).getTypeRef().getType();
 	                		final PropertyReference ref = ThingMLFactory.eINSTANCE.createPropertyReference();
 	                		ref.setProperty(args.get(i));
-	                		
+
 	                		for (int j = 0; j < type.getByteSize(); j++) {
-	                			
+
 	    						final ExternExpression expr = ThingMLFactory.eINSTANCE.createExternExpression();
 	    						expr.setExpression("((");
 	    						expr.getSegments().add(EcoreUtil.copy(ref));
-	    						
+
 	    						final ExternExpression bitshift = ThingMLFactory.eINSTANCE.createExternExpression();
 	    						bitshift.setExpression(" >> "+8*(type.getByteSize()-1-j)+") & 0xFF)");
 	    						expr.getSegments().add(bitshift);
-	    						
+
 	    						// Print value
 	    						printValues.getMsg().add(expr);
 	    						printValues.getMsg().add(EcoreUtil.copy(comma));
-	    						
+
 	    						// Print type
 	    						final StringLiteral paramTypeLiteral = ThingMLFactory.eINSTANCE.createStringLiteral();
 	    						paramTypeLiteral.setStringValue(type.getName());
 	    						printTypes.getMsg().add(paramTypeLiteral);
 	    						printTypes.getMsg().add(EcoreUtil.copy(comma));
-	    						
+
 	    						// Print weakness
 	    						if (AnnotatedElementHelper.hasAnnotation(send.getMessage().getParameters().get(i), "weakparam")) {
 	    							printWeak.getMsg().add(EcoreUtil.copy(oneStrLit));
@@ -427,7 +413,7 @@ class Diversifier {
 	    						printWeak.getMsg().add(EcoreUtil.copy(comma));
 	    					}
 	                	}
-	                	
+
 	                	// Send original message
 	                	for (int i = 0; i < send.getMessage().getParameters().size(); i++) {
 	                		final PropertyReference ref = ThingMLFactory.eINSTANCE.createPropertyReference();
@@ -563,13 +549,13 @@ class Diversifier {
      */
     private void upSizeParameter(Parameter p) {
     	if (AnnotatedElementHelper.isDefined(p, "upsize", "not")) return;
-    	
+
     	final PrimitiveType original = (PrimitiveType)p.getTypeRef().getType();
     	final ThingMLModel model = ThingMLHelpers.findContainingModel(p);
-    	
+
     	// Find all compatible types
     	final List<PrimitiveType> options = new ArrayList<PrimitiveType>();
-    	
+
     	// Check all types in model, and find a different one, that is compatible, and same size or bigger
         for (Type t : ThingMLHelpers.allSimpleTypes(model)) {
         	if (t instanceof PrimitiveType) {
@@ -579,7 +565,7 @@ class Diversifier {
         		}
         	}
         }
-        
+
         // Select a new type (might be the same as the original)
         final PrimitiveType newtype = options.get(this.rnd.nextInt(options.size()));
         p.getTypeRef().setType(newtype);
@@ -702,7 +688,7 @@ class Diversifier {
                 		b1.getActions().add(send2);
                         b1.getActions().add(send1);
                 	}
-                    
+
                     final Object parent = send.eContainer().eGet(send.eContainingFeature());
                     if (parent instanceof EList) {
                         EList list = (EList) parent;
