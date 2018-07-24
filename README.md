@@ -2,6 +2,14 @@
 
 A model-based tool to automatically diversify communications.
 
+The science behind this artefact is decribed in:
+
+B. Morin, J. Høgenes, H. Song, N. Harrand and B. Baudry.<br/>
+*Engineering Software Diversity: a Model-Based Approach to Systematically Diversify Communications.*<br/>
+**MODELS'18**, Copenhagen, Danmark.<br/>
+
+Please cite this paper if you reuse or mention this tool or underlying approach in a scientific paper.
+
 ## 1. Specify protocols
 
 We model communication protocols as a set of communicating state-machines, encapsulated into components. 
