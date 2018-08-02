@@ -1,6 +1,15 @@
 package no.sintef.thingml.diversifier;
 
-import org.eclipse.emf.common.util.ECollections;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EObject;
@@ -13,15 +22,46 @@ import org.thingml.xtext.helpers.ActionHelper;
 import org.thingml.xtext.helpers.AnnotatedElementHelper;
 import org.thingml.xtext.helpers.StateContainerHelper;
 import org.thingml.xtext.helpers.TyperHelper;
-import org.thingml.xtext.thingML.*;
-
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.util.*;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
+import org.thingml.xtext.thingML.Action;
+import org.thingml.xtext.thingML.ActionBlock;
+import org.thingml.xtext.thingML.AnnotatedElement;
+import org.thingml.xtext.thingML.ByteLiteral;
+import org.thingml.xtext.thingML.CharLiteral;
+import org.thingml.xtext.thingML.CompositeState;
+import org.thingml.xtext.thingML.ConditionalAction;
+import org.thingml.xtext.thingML.Configuration;
+import org.thingml.xtext.thingML.EventReference;
+import org.thingml.xtext.thingML.Expression;
+import org.thingml.xtext.thingML.ExternExpression;
+import org.thingml.xtext.thingML.Function;
+import org.thingml.xtext.thingML.FunctionCallExpression;
+import org.thingml.xtext.thingML.Handler;
+import org.thingml.xtext.thingML.IntegerLiteral;
+import org.thingml.xtext.thingML.InternalPort;
+import org.thingml.xtext.thingML.InternalTransition;
+import org.thingml.xtext.thingML.LocalVariable;
+import org.thingml.xtext.thingML.LowerExpression;
+import org.thingml.xtext.thingML.Message;
+import org.thingml.xtext.thingML.Parameter;
+import org.thingml.xtext.thingML.PlatformAnnotation;
+import org.thingml.xtext.thingML.Port;
+import org.thingml.xtext.thingML.PrimitiveType;
+import org.thingml.xtext.thingML.PrintAction;
+import org.thingml.xtext.thingML.Property;
+import org.thingml.xtext.thingML.PropertyReference;
+import org.thingml.xtext.thingML.ReceiveMessage;
+import org.thingml.xtext.thingML.Region;
+import org.thingml.xtext.thingML.SendAction;
+import org.thingml.xtext.thingML.State;
+import org.thingml.xtext.thingML.StateContainer;
+import org.thingml.xtext.thingML.StringLiteral;
+import org.thingml.xtext.thingML.Thing;
+import org.thingml.xtext.thingML.ThingMLFactory;
+import org.thingml.xtext.thingML.ThingMLModel;
+import org.thingml.xtext.thingML.Transition;
+import org.thingml.xtext.thingML.Type;
+import org.thingml.xtext.thingML.TypeRef;
+import org.thingml.xtext.thingML.VariableAssignment;
 
 class Diversifier {
 
@@ -102,12 +142,10 @@ class Diversifier {
 
         final long start = System.currentTimeMillis();
         // Run diversification multiple times
-		//ExecutorService executor = Executors.newWorkStealingPool(); //FIXME: some refactorings before multi-threading can really be useful
         for (int i = 0; i < number; i++) {
 			String finalOutDir = outDir;
 			int finalNumber = number;
 			int finalI = i;
-			//executor.submit(() -> {
 			final ThingMLModel clone = ThingMLCompiler.flattenModel(input);
 
 			final List<Configuration> configs = new ArrayList<Configuration>(clone.getConfigs());
@@ -125,30 +163,14 @@ class Diversifier {
 				System.out.println("saving to " + saveTo.getAbsolutePath());
 				ThingMLCompiler.saveAsThingML(clone, saveTo.getAbsolutePath());
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
+				System.err.println("Cannot save ThingML model to " + saveTo.getAbsolutePath());
 				e.printStackTrace();
 			}
-			//});
 		}
-		/*try {
-			System.out.println("attempt to shutdown executor");
-			executor.shutdown();
-			executor.awaitTermination(250*number, TimeUnit.MILLISECONDS);
-		}
-		catch (InterruptedException e) {
-			System.err.println("tasks interrupted");
-		}
-		finally {
-			if (!executor.isTerminated()) {
-				System.err.println("cancel non-finished tasks");
-			}
-			executor.shutdownNow();
-			System.out.println("shutdown finished");
-		}*/
 		System.out.println("took " + (System.currentTimeMillis() - start) + "ms.");
     }
 
-    public void diversify(Configuration cfg/*, int amount, int iterations*/) {
+    public void diversify(Configuration cfg) {
         final ThingMLModel model = (ThingMLModel) cfg.eContainer();
 
         if (!this.onlyLogs) {
@@ -182,10 +204,6 @@ class Diversifier {
 		        }
 	        }
 
-
-
-
-
 	        // Swaps messages in metamodel (should make different codes)
 	        for (Thing t : ThingMLHelpers.allThings(model)) {
 	            if (!AnnotatedElementHelper.isDefined(t, "diversify", "not")) {
@@ -212,7 +230,6 @@ class Diversifier {
 	        		}
 	        	}
 	        }
-
 
 	        // Makes new options for messages
 	        if (this.duplicateMessages) {
@@ -265,7 +282,6 @@ class Diversifier {
 		        }
 	        }
 
-
 	        // adds code annotation
 	        final TreeIterator<EObject> it3 = model.eAllContents();
 	        while (it3.hasNext()) {
@@ -281,7 +297,6 @@ class Diversifier {
         }
 
         addLogs(model);
-        //splitConfiguration(cfg, amount);
     }
 
     private void addLogs(ThingMLModel model) {
@@ -309,11 +324,6 @@ class Diversifier {
                 		final PrimitiveType type = (PrimitiveType)p.getTypeRef().getType();
                 		messageBytes += type.getByteSize();
                 	}
-
-                	// Increase byte counter
-                	Action increaseByteCounter = ThingMLInjector.parseString(ThingMLInjector.grammar().getActionRule(), "bytesSentCounter = bytesSentCounter + "+messageBytes);
-                	block.getActions().add(increaseByteCounter);
-                	ThingMLInjector.linkFrom(increaseByteCounter);
 
                 	if (!onlySummary) {
 	                	// Set parameters to variables
@@ -354,6 +364,22 @@ class Diversifier {
 	                	final StringLiteral typeprefix = ThingMLFactory.eINSTANCE.createStringLiteral();
 	                	typeprefix.setStringValue(":");
 	                	printTypes.getMsg().add(typeprefix);
+	                	
+	                	// Print all parameter names
+	                	final PrintAction printNames = ThingMLFactory.eINSTANCE.createPrintAction();
+	                	printNames.setLine(true);
+	                	block.getActions().add(printNames);
+	                	final StringLiteral nameprefix = ThingMLFactory.eINSTANCE.createStringLiteral();
+	                	nameprefix.setStringValue("@" + thing.getName() + "@");
+	                	printNames.getMsg().add(nameprefix);
+	                	
+	                	// Print all parameter names
+	                	final PrintAction printPositions = ThingMLFactory.eINSTANCE.createPrintAction();
+	                	printPositions.setLine(true);
+	                	block.getActions().add(printPositions);
+	                	final StringLiteral positionprefix = ThingMLFactory.eINSTANCE.createStringLiteral();
+	                	positionprefix.setStringValue("#" + thing.getName( )+ "#");
+	                	printPositions.getMsg().add(positionprefix);
 
 	                	// Print all parameter weakness
 	                	final PrintAction printWeak = ThingMLFactory.eINSTANCE.createPrintAction();
@@ -375,12 +401,18 @@ class Diversifier {
 	    				codeTypeLiteral.setStringValue(Types.BYTE_TYPE.getName());
 	    				printTypes.getMsg().add(codeTypeLiteral);
 	    				printTypes.getMsg().add(EcoreUtil.copy(comma));
+	    				
+	    				final StringLiteral msgNameLiteral = ThingMLFactory.eINSTANCE.createStringLiteral();
+	    				msgNameLiteral.setStringValue(send.getMessage().getName());
+	    				printNames.getMsg().add(msgNameLiteral);
+	    				printNames.getMsg().add(EcoreUtil.copy(comma));
 
 	    				printWeak.getMsg().add(EcoreUtil.copy(zeroStrLit));
 	    				printWeak.getMsg().add(EcoreUtil.copy(comma));
 
 	                	for (int i = 0; i < send.getMessage().getParameters().size(); i++) {
-	                		final PrimitiveType type = (PrimitiveType)send.getMessage().getParameters().get(i).getTypeRef().getType();
+	                		final Parameter p = send.getMessage().getParameters().get(i);
+	                		final PrimitiveType type = (PrimitiveType)p.getTypeRef().getType();
 	                		final PropertyReference ref = ThingMLFactory.eINSTANCE.createPropertyReference();
 	                		ref.setProperty(args.get(i));
 
@@ -403,6 +435,15 @@ class Diversifier {
 	    						paramTypeLiteral.setStringValue(type.getName());
 	    						printTypes.getMsg().add(paramTypeLiteral);
 	    						printTypes.getMsg().add(EcoreUtil.copy(comma));
+	    						
+	    						// Print names
+	    						final StringLiteral paramNameLiteral = ThingMLFactory.eINSTANCE.createStringLiteral();
+	    						if (AnnotatedElementHelper.hasFlag(p, "noise"))
+	    							paramNameLiteral.setStringValue("_");
+	    						else
+	    							paramNameLiteral.setStringValue(p.getName());
+	    						printNames.getMsg().add(paramNameLiteral);
+	    						printNames.getMsg().add(EcoreUtil.copy(comma));
 
 	    						// Print weakness
 	    						if (AnnotatedElementHelper.hasAnnotation(send.getMessage().getParameters().get(i), "weakparam")) {
@@ -413,6 +454,41 @@ class Diversifier {
 	    						printWeak.getMsg().add(EcoreUtil.copy(comma));
 	    					}
 	                	}
+	                	
+	                	final List<Parameter> orderedParams = new ArrayList<>();
+	                	orderedParams.addAll(send.getMessage().getParameters());
+	                	Collections.sort(orderedParams, (p1, p2) -> p1.getName().compareTo(p2.getName()));
+	                	boolean isJustNoise = true;
+	                	for(Parameter p : orderedParams) {
+	                		if (!AnnotatedElementHelper.hasFlag(p, "noise")) {
+	                			isJustNoise = false;
+	                			break;
+	                		}
+	                	}
+	                	if (!isJustNoise) {
+	                		Expression start = ThingMLInjector.parseString(ThingMLInjector.grammar().getExpressionRule(), "bytesSentCounter");
+        					printPositions.getMsg().add(start);
+        					ThingMLInjector.linkFrom(start);
+        					printPositions.getMsg().add(EcoreUtil.copy(comma));
+	                		for(Parameter p : orderedParams) {
+		                		if (!AnnotatedElementHelper.hasFlag(p, "noise")) {
+		                			long offset = 1;//message code is offset 0
+		                			for(Parameter p2 : send.getMessage().getParameters()) {
+		                				if (p2!=p) {
+		                					offset += ((PrimitiveType)p2.getTypeRef().getType()).getByteSize();
+		                				} else{
+		                					// Compute the real position
+		                					Expression position = ThingMLInjector.parseString(ThingMLInjector.grammar().getExpressionRule(), "(bytesSentCounter + " + offset + ")");
+		                					printPositions.getMsg().add(position);
+		                					ThingMLInjector.linkFrom(position);
+		                					printPositions.getMsg().add(EcoreUtil.copy(comma));
+		                					break;
+		                				}
+		                			}
+		                		}
+		                	}
+	                	}	                		                	
+	                
 
 	                	// Send original message
 	                	for (int i = 0; i < send.getMessage().getParameters().size(); i++) {
@@ -422,6 +498,11 @@ class Diversifier {
 	                	}
                 	}
                 	block.getActions().add(send);
+
+                	// Increase byte counter
+                	Action increaseByteCounter = ThingMLInjector.parseString(ThingMLInjector.grammar().getActionRule(), "bytesSentCounter = bytesSentCounter + "+messageBytes);
+                	block.getActions().add(increaseByteCounter);
+                	ThingMLInjector.linkFrom(increaseByteCounter);
                 }
     		}
     	}
@@ -503,11 +584,15 @@ class Diversifier {
 
     private void addRandomParameter(Message m, ThingMLModel model) {
         System.out.println("Adding random parameter to message " + m.getName());
+        final PlatformAnnotation annot = ThingMLFactory.eINSTANCE.createPlatformAnnotation();
+        annot.setName("noise");
+                
         int insertAt = 0;
         if (m.getParameters().size() > 0)
             insertAt = rnd.nextInt(m.getParameters().size());
         final Parameter randomP = ThingMLFactory.eINSTANCE.createParameter();
         randomP.setName("r" + (param++));
+        randomP.getAnnotations().add(annot);
         final TypeRef typeref = ThingMLFactory.eINSTANCE.createTypeRef();
         Type bt = null;
         for (Type t : model.getTypes()) {
@@ -981,84 +1066,5 @@ class Diversifier {
             thing.getPorts().add(result);
         }
         return result;
-    }
-
-    /**
-     * Introduces a proxy, i.e. an instance between
-     * both sides of the connector c that simply receives
-     * and re-sends all messages normally going through connector
-     *
-     * @param c
-     */
-    private void introduceProxy(Connector c) {
-        //TODO: Use the ThingML injector to instantiate the Thing proxy from text (a bit too annoying to do it programmatically...)
-    }
-
-    /**
-     * Splits configuration into a random number of configurations,
-     * each configuration having at least one instance. Replace connectors
-     * by external connectors as needed
-     * NOTE: we should just use one protocol that works everywhere for now e.g. MQTT , but of course
-     * protocols could also be replaced, etc.
-     *
-     * @param cfg
-     */
-    private void splitConfiguration(Configuration cfg, int amount) {
-        if (cfg.getInstances().size() > amount) {
-            System.out.println("Splitting configuration " + cfg.getName() + " in " + amount);
-            final ThingMLModel model = (ThingMLModel) cfg.eContainer();
-            int offset = model.getConfigs().size();
-            for (int i = 0; i < amount; i++) {
-                final Configuration c = ThingMLFactory.eINSTANCE.createConfiguration();
-                c.setName(cfg.getName() + i);
-                model.getConfigs().add(c);
-            }
-            final List<Instance> shuffled = new ArrayList<Instance>();
-            shuffled.addAll(cfg.getInstances());
-            Collections.shuffle(shuffled);
-            cfg.getInstances().clear();
-            cfg.getInstances().addAll(shuffled);
-            List<Instance> instances = new ArrayList<>();
-            instances.addAll(cfg.getInstances());
-            int id = 0;
-            for (Instance i : instances) {
-                final Configuration c = model.getConfigs().get((id % amount) + offset);
-                System.out.println("Adding instance " + i.getName() + " to configuration " + c.getName());
-                c.getInstances().add(i);
-                id++;
-            }
-            final List<AbstractConnector> connectors = new ArrayList<>();
-            connectors.addAll(cfg.getConnectors());
-            for (AbstractConnector c : connectors) {
-                if (c instanceof Connector) {
-                    final Connector conn = (Connector) c;
-                    final Instance i1 = conn.getCli();
-                    final Instance i2 = conn.getSrv();
-                    if (i1.eContainer() == i2.eContainer()) {
-                        ((Configuration) i1.eContainer()).getConnectors().add(conn);
-                    } else {
-                        final Configuration cfg1 = (Configuration) i1.eContainer();
-                        final ExternalConnector ext1 = ThingMLFactory.eINSTANCE.createExternalConnector();
-                        ext1.setInst(i1);
-                        ext1.setPort(conn.getRequired());
-                        ext1.setProtocol(model.getProtocols().get(0));//FIXME
-                        cfg1.getConnectors().add(ext1);
-                        final Configuration cfg2 = (Configuration) i2.eContainer();
-                        final ExternalConnector ext2 = ThingMLFactory.eINSTANCE.createExternalConnector();
-                        ext2.setInst(i2);
-                        ext2.setPort(conn.getProvided());
-                        ext2.setProtocol(model.getProtocols().get(0));//FIXME
-                        cfg2.getConnectors().add(ext2);
-                    }
-                } else {//External connector
-                    final ExternalConnector ext = (ExternalConnector) c;
-                    final Configuration conf = (Configuration) ext.getInst().eContainer();
-                    conf.getConnectors().add(ext);
-                }
-            }
-            model.getConfigs().remove(cfg);
-        } else {
-            System.err.println("Cannot split configuration with " + cfg.getInstances().size() + " instances in " + amount);
-        }
     }
 }
