@@ -466,9 +466,9 @@ class Diversifier {
 	                		}
 	                	}
 	                	if (!isJustNoise) {
-	                		Expression start = ThingMLInjector.parseString(ThingMLInjector.grammar().getExpressionRule(), "bytesSentCounter");
+	                		final IntegerLiteral start = ThingMLFactory.eINSTANCE.createIntegerLiteral();//ThingMLInjector.parseString(ThingMLInjector.grammar().getExpressionRule(), "bytesSentCounter");
+	                		start.setIntValue(0);
         					printPositions.getMsg().add(start);
-        					ThingMLInjector.linkFrom(start);
         					printPositions.getMsg().add(EcoreUtil.copy(comma));
 	                		for(Parameter p : orderedParams) {
 		                		if (!AnnotatedElementHelper.hasFlag(p, "noise")) {
@@ -476,11 +476,10 @@ class Diversifier {
 		                			for(Parameter p2 : send.getMessage().getParameters()) {
 		                				if (p2!=p) {
 		                					offset += ((PrimitiveType)p2.getTypeRef().getType()).getByteSize();
-		                				} else{
-		                					// Compute the real position
-		                					Expression position = ThingMLInjector.parseString(ThingMLInjector.grammar().getExpressionRule(), "(bytesSentCounter + " + offset + ")");
+		                				} else{		                							                				
+		                					final IntegerLiteral position = ThingMLFactory.eINSTANCE.createIntegerLiteral();//ThingMLInjector.parseString(ThingMLInjector.grammar().getExpressionRule(), "(bytesSentCounter + " + offset + ")");
+		                					position.setIntValue(offset);
 		                					printPositions.getMsg().add(position);
-		                					ThingMLInjector.linkFrom(position);
 		                					printPositions.getMsg().add(EcoreUtil.copy(comma));
 		                					break;
 		                				}
