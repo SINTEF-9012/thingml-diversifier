@@ -303,6 +303,19 @@ class Diversifier {
     	for (Thing thing : ThingMLHelpers.allThings(model)) {
     		if (thing.isFragment()) continue;
 
+    		long maxInfo = 0;//We use this to pad the logs related to the positions of bytes containing information
+    		for (SendAction send : ActionHelper.getAllActions(thing, SendAction.class)) {
+    			long info = 0;
+    			for(Parameter p : send.getMessage().getParameters()) {
+            		if (!AnnotatedElementHelper.hasFlag(p, "noise")) {
+            			info++;
+            		}
+            	}
+    			if (info > maxInfo)
+    				maxInfo = info;
+    		}
+    		
+    		
     		// Add counter and pretty print on all send actions
     		for (SendAction send : ActionHelper.getAllActions(thing, SendAction.class)) {
                 final Port ip = createOrGetInternalPort(thing);
@@ -378,7 +391,7 @@ class Diversifier {
 	                	printPositions.setLine(true);
 	                	block.getActions().add(printPositions);
 	                	final StringLiteral positionprefix = ThingMLFactory.eINSTANCE.createStringLiteral();
-	                	positionprefix.setStringValue("#" + thing.getName( )+ "#");
+	                	positionprefix.setStringValue("#");
 	                	printPositions.getMsg().add(positionprefix);
 
 	                	// Print all parameter weakness
@@ -486,6 +499,13 @@ class Diversifier {
 		                			}
 		                		}
 		                	}
+	                		//Padding
+	                		for(int i = orderedParams.size(); i <= maxInfo; i++) {
+	                			final IntegerLiteral position = ThingMLFactory.eINSTANCE.createIntegerLiteral();
+            					position.setIntValue(0);
+            					printPositions.getMsg().add(position);
+            					printPositions.getMsg().add(EcoreUtil.copy(comma));
+	                		}
 	                	}	                		                	
 	                
 
