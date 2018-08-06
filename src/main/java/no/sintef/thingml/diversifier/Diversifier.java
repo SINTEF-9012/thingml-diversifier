@@ -300,10 +300,9 @@ class Diversifier {
     }
 
     private void addLogs(ThingMLModel model) {
+    	long maxInfo = 0;//We use this to pad the logs related to the positions of bytes containing information
     	for (Thing thing : ThingMLHelpers.allThings(model)) {
     		if (thing.isFragment()) continue;
-
-    		long maxInfo = 0;//We use this to pad the logs related to the positions of bytes containing information
     		for (SendAction send : ActionHelper.getAllActions(thing, SendAction.class)) {
     			long info = 0;
     			for(Parameter p : send.getMessage().getParameters()) {
@@ -314,8 +313,10 @@ class Diversifier {
     			if (info > maxInfo)
     				maxInfo = info;
     		}
-    		
-    		
+    	}
+    	
+    	for (Thing thing : ThingMLHelpers.allThings(model)) {
+    		if (thing.isFragment()) continue;    		    		    		    	
     		// Add counter and pretty print on all send actions
     		for (SendAction send : ActionHelper.getAllActions(thing, SendAction.class)) {
                 final Port ip = createOrGetInternalPort(thing);
@@ -500,7 +501,7 @@ class Diversifier {
 		                		}
 		                	}
 	                		//Padding
-	                		for(int i = orderedParams.size(); i <= maxInfo; i++) {
+	                		for(int i = orderedParams.size(); i < maxInfo; i++) {
 	                			final IntegerLiteral position = ThingMLFactory.eINSTANCE.createIntegerLiteral();
             					position.setIntValue(0);
             					printPositions.getMsg().add(position);

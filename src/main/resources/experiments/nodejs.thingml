@@ -137,16 +137,18 @@ thing Client includes Msgs
 				`
 				println "#CLI: used ", `diff.after.size_bytes`, " bts."
 				println "#CLI: sent ", bytesSentCounter, " bts."
-				`setTimeout(() => {
+				`process.stdout.write('SUCCESS!', () => {					
 					process.exit(0);
-				}, 100);`
+				});`
 			end
 		}
 
 		final state ERROR {
 			on entry do
 				println "#CLI: Heh, heh, heh... what a mess!"
-				`process.exit(1);`
+				`process.stdout.write('ERROR!', () => {
+					process.exit(1);
+				});`
 			end
 		}
 	}
