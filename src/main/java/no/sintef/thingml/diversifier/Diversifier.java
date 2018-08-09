@@ -392,7 +392,7 @@ class Diversifier {
 	                	printPositions.setLine(true);
 	                	block.getActions().add(printPositions);
 	                	final StringLiteral positionprefix = ThingMLFactory.eINSTANCE.createStringLiteral();
-	                	positionprefix.setStringValue("#");
+	                	positionprefix.setStringValue("%");
 	                	printPositions.getMsg().add(positionprefix);
 
 	                	// Print all parameter weakness
