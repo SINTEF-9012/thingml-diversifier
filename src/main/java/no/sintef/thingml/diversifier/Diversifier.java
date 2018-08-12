@@ -732,9 +732,9 @@ class Diversifier {
         }
         if (a == null) {
             a = ThingMLFactory.eINSTANCE.createPlatformAnnotation();
+            a.setName("code");
             m.getAnnotations().add(a);
         }
-        a.setName("code");
         //a.setValue(String.format("0x%02X", code));
         a.setValue(""+code);
         if (code < 127) code++;
