@@ -37,6 +37,13 @@
       	    <artifactId>compilers.framework</artifactId>
       	    <version>2.0.0-SNAPSHOT</version>
       	</dependency>
+      	
+      	<dependency>
+            <groupId>com.beust</groupId>
+            <artifactId>jcommander</artifactId>
+            <version>1.72</version>
+        </dependency>
+      	
     </dependencies>
 
     <build>
@@ -63,7 +70,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <mainClass>no.sintef.thingml.diversifier.Diversifier</mainClass>
+                    <mainClass>no.sintef.thingml.diversifier.CLI</mainClass>
                 </configuration>
             </plugin>
             <!-- PLUGIN -->
@@ -72,7 +79,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>no.sintef.thingml.diversifier.Diversifier</mainClass>
+                            <mainClass>no.sintef.thingml.diversifier.CLI</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>
