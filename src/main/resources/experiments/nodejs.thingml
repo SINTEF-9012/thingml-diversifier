@@ -1,4 +1,4 @@
-import "_datatypes.thingml"
+import "datatypes.thingml" from stl
 
 protocol Default;
 

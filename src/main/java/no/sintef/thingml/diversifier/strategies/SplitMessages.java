@@ -46,6 +46,7 @@ import org.thingml.xtext.thingML.VariableAssignment;
 import no.sintef.thingml.diversifier.Manager;
 import no.sintef.thingml.diversifier.Mode;
 
+@Deprecated
 public class SplitMessages extends Strategy {
 	
 	final Map<Thing, Map<Message, Port>> mappings = new HashMap<>();
