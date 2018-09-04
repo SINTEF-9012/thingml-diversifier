@@ -20,8 +20,12 @@ public class Helper {
                 return (InternalPort)p;
             }
         }
+        /*final PlatformAnnotation a = ThingMLFactory.eINSTANCE.createPlatformAnnotation();
+        a.setName("sync_send");
+        a.setValue("true");*/
         final InternalPort result = ThingMLFactory.eINSTANCE.createInternalPort(); 
         result.setName("diversified");
+        //result.getAnnotations().add(a);
         thing.getPorts().add(result);
         return result;
     }

@@ -21,11 +21,11 @@ import org.thingml.xtext.thingML.BooleanLiteral;
 import org.thingml.xtext.thingML.ConditionalAction;
 import org.thingml.xtext.thingML.EventReference;
 import org.thingml.xtext.thingML.Expression;
+import org.thingml.xtext.thingML.ExpressionGroup;
 import org.thingml.xtext.thingML.Function;
 import org.thingml.xtext.thingML.FunctionCallExpression;
 import org.thingml.xtext.thingML.Handler;
 import org.thingml.xtext.thingML.IntegerLiteral;
-import org.thingml.xtext.thingML.InternalPort;
 import org.thingml.xtext.thingML.InternalTransition;
 import org.thingml.xtext.thingML.LowerExpression;
 import org.thingml.xtext.thingML.Message;
@@ -42,18 +42,13 @@ import org.thingml.xtext.thingML.StringLiteral;
 import org.thingml.xtext.thingML.Thing;
 import org.thingml.xtext.thingML.ThingMLFactory;
 import org.thingml.xtext.thingML.ThingMLModel;
+import org.thingml.xtext.thingML.ThingMLPackage;
 import org.thingml.xtext.thingML.TypeRef;
 import org.thingml.xtext.thingML.VariableAssignment;
 
 import no.sintef.thingml.diversifier.Manager;
 import no.sintef.thingml.diversifier.Mode;
 
-/**
- * 
- * Will not work as long as a critical issue (#242) is not fixed
- * in ThingML. See https://github.com/TelluIoT/ThingML/issues/242 
- * 
- */
 public class SplitMessagesInline extends Strategy {
 
 	final Map<Message, List<Message>> duplicates = new HashMap<>();
@@ -97,8 +92,7 @@ public class SplitMessagesInline extends Strategy {
 				final List<Port> ports = new ArrayList<>();
 				ports.addAll(t.getPorts());
 				for (Port port : ports) {
-					final InternalPort ip = Helper.createOrGetInternalPort(t);
-					if (EcoreUtil.equals(port, ip)) continue;
+					if (!Manager.diversify(port)) continue;
 					
 					final List<Message> sent = new ArrayList<>();
 					sent.addAll(port.getSends());
@@ -127,10 +121,8 @@ public class SplitMessagesInline extends Strategy {
 						port.getReceives().remove(m);
 						port.getReceives().add(first);
 						port.getReceives().add(second);
-						ip.getReceives().add(m);
-						ip.getSends().add(m);
 
-						updateHandlers(t, port, m, ip);
+						updateHandlers(t, port, m);
 					}
 				}				
 			}
@@ -235,10 +227,12 @@ public class SplitMessagesInline extends Strategy {
 		}
 	}
 
-	private void updateHandlers(Thing thing, Port p, Message m, InternalPort ip) {
-		Set<String> log = new HashSet<>();
-				
-		TreeIterator<EObject> it = thing.eAllContents();
+	private void updateHandlers(Thing thing, Port p, Message m) {
+		final Set<String> log = new HashSet<>();
+		Map<String, Property> props = new HashMap<>();
+		Property prop1 = null, prop2 = null;
+		
+		final TreeIterator<EObject> it = thing.eAllContents();
 		while (it.hasNext()) {
 			final EObject o = it.next();
 			if (o instanceof Handler) {
@@ -249,29 +243,27 @@ public class SplitMessagesInline extends Strategy {
 						final State source = (State)t.eContainer();   
 						final Message m1 = duplicates.get(m).get(0);
 						final Message m2 = duplicates.get(m).get(1);
-
-						rm.setPort(ip);
-
+																	
 						if (!log.contains(source.getName() + "_" + p.getName() + "_" + m.getName())) {
 							PrimitiveType bool = Helper.getPrimitiveType(Types.BOOLEAN_TYPE, thing);
-							final Property prop1 = ThingMLFactory.eINSTANCE.createProperty();
+							prop1 = ThingMLFactory.eINSTANCE.createProperty();
 							prop1.setReadonly(false);
 							prop1.setName("received_" + p.getName() + "_" + m1.getName());
 							final TypeRef tr1 = ThingMLFactory.eINSTANCE.createTypeRef();
 							tr1.setType(bool);
 							prop1.setTypeRef(tr1);
 							source.getProperties().add(prop1);
+							props.put("received_" + p.getName() + "_" + m1.getName(), prop1);
 
-							final Property prop2 = ThingMLFactory.eINSTANCE.createProperty();
+							prop2 = ThingMLFactory.eINSTANCE.createProperty();
 							prop2.setReadonly(false);
 							prop2.setName("received_" + p.getName() + "_" + m2.getName());
 							final TypeRef tr2 = ThingMLFactory.eINSTANCE.createTypeRef();
 							tr2.setType(bool);
 							prop2.setTypeRef(tr2);
 							source.getProperties().add(prop2);
+							props.put("received_" + p.getName() + "_" + m2.getName(), prop2);
 
-							
-							Map<String, Property> props = new HashMap<>();
 							for (Parameter param : m.getParameters()) {
 								final Property prop = ThingMLFactory.eINSTANCE.createProperty();
 								prop.setReadonly(false);
@@ -280,59 +272,87 @@ public class SplitMessagesInline extends Strategy {
 								source.getProperties().add(prop);
 								props.put(p.getName() + "_" + m.getName() + "_" + param.getName(), prop);
 							}
-							
-							final InternalTransition i = ThingMLFactory.eINSTANCE.createInternalTransition();
-							source.getInternal().add(i);
-							final PropertyReference pr1 = ThingMLFactory.eINSTANCE.createPropertyReference();
-							pr1.setProperty(prop1);
-							final PropertyReference pr2 = ThingMLFactory.eINSTANCE.createPropertyReference();
-							pr2.setProperty(prop2);
-							final AndExpression and = ThingMLFactory.eINSTANCE.createAndExpression();
-							and.setLhs(pr1);
-							and.setRhs(pr2);
-							i.setGuard(and);
-							final ActionBlock b = ThingMLFactory.eINSTANCE.createActionBlock();
-							i.setAction(b);
-							final BooleanLiteral bool_false = ThingMLFactory.eINSTANCE.createBooleanLiteral();
-							bool_false.setBoolValue(false);
-							final VariableAssignment va1 = ThingMLFactory.eINSTANCE.createVariableAssignment();
-							va1.setProperty(prop1);
-							va1.setExpression(bool_false);
-							b.getActions().add(va1);
-							final VariableAssignment va2 = ThingMLFactory.eINSTANCE.createVariableAssignment();
-							va2.setProperty(prop2);
-							va2.setExpression(EcoreUtil.copy(bool_false));
-							b.getActions().add(va2);
-							final SendAction sa = ThingMLFactory.eINSTANCE.createSendAction();
-							sa.setPort(ip);
-							sa.setMessage(m);
-							for (Parameter param : m.getParameters()) {
-								final PropertyReference prop = ThingMLFactory.eINSTANCE.createPropertyReference();
-								prop.setProperty(props.get(p.getName() + "_" + m.getName() + "_" + param.getName()));
-								sa.getParameters().add(prop);
-							}
-							b.getActions().add(sa);
-							
-							//TODO: generate something like this (below) to aggregate both fragments and send original message on internal port
-							/*internal
-							guard received_app_m3a and received_app_m3_
-							action do
-								received_app_m3a = false
-								received_app_m3_ = false
-								diversified!m3(app_m3_a)
-							end*/
-							
+														
 							buildTransition(m1, p, source, m);
 							buildTransition(m2, p, source, m);    
 							
 							log.add(source.getName() + "_" + p.getName() + "_" + m.getName());
-						}						                    
+						}
+						
+						prop1 = props.get("received_" + p.getName() + "_" + m1.getName());
+						prop2 = props.get("received_" + p.getName() + "_" + m2.getName());
+						
+						final PropertyReference pr1 = ThingMLFactory.eINSTANCE.createPropertyReference();
+						pr1.setProperty(prop1);
+						final PropertyReference pr2 = ThingMLFactory.eINSTANCE.createPropertyReference();
+						pr2.setProperty(prop2);
+						final AndExpression and = ThingMLFactory.eINSTANCE.createAndExpression();
+						and.setLhs(pr1);
+						and.setRhs(pr2);
+						
+						if (t.getGuard() != null) {
+							final AndExpression andGuard = ThingMLFactory.eINSTANCE.createAndExpression();
+							final Expression guard = replaceEventRefByPropRef(t.getGuard(), props);
+							final ExpressionGroup group = ThingMLFactory.eINSTANCE.createExpressionGroup();
+							group.setTerm(guard);						
+							andGuard.setLhs(and);
+							andGuard.setRhs(group);
+							t.setGuard(andGuard);
+						} else {
+							t.setGuard(and);
+						}
+						
+						ActionBlock b = null;
+						if (t.getAction() == null) {
+							b = ThingMLFactory.eINSTANCE.createActionBlock();
+						} else if (t.getAction() instanceof ActionBlock) {
+							b = (ActionBlock)replaceEventRefByPropRef(t.getAction(), props);
+						} else {
+							b = ThingMLFactory.eINSTANCE.createActionBlock();
+							b.getActions().add(replaceEventRefByPropRef(t.getAction(), props));
+						}
+						
+						final BooleanLiteral bool_false = ThingMLFactory.eINSTANCE.createBooleanLiteral();
+						bool_false.setBoolValue(false);
+						final VariableAssignment va1 = ThingMLFactory.eINSTANCE.createVariableAssignment();
+						va1.setProperty(prop1);
+						va1.setExpression(bool_false);
+						b.getActions().add(va1);
+						final VariableAssignment va2 = ThingMLFactory.eINSTANCE.createVariableAssignment();
+						va2.setProperty(prop2);
+						va2.setExpression(EcoreUtil.copy(bool_false));
+						b.getActions().add(va2);						
+						
+						t.eUnset(ThingMLPackage.eINSTANCE.getHandler_Event());
 					}
 				}
 			} 
 		}
 	}    
 
+	private <T extends EObject> T replaceEventRefByPropRef(T e, Map<String, Property> props) {
+		final TreeIterator<EObject> it = e.eAllContents();
+		while (it.hasNext()) {
+			final EObject o = it.next();
+			if (o instanceof EventReference) {				
+				final EventReference er = (EventReference) o;
+				final PropertyReference pr = ThingMLFactory.eINSTANCE.createPropertyReference();
+				final ReceiveMessage rm = (ReceiveMessage)er.getReceiveMsg();				
+				final Property p = props.get(rm.getPort().getName() + "_" + rm.getMessage().getName() + "_" + er.getParameter().getName());
+				if (p == null) continue;
+				pr.setProperty(p);
+				final Object ref = er.eContainer().eGet(er.eContainingFeature());
+				if (ref instanceof EList) {
+					((EList)ref).add(((EList)ref).indexOf(er), pr);
+					((EList)ref).remove(er);
+				} else {
+					er.eContainer().eSet(er.eContainingFeature(), pr);
+				}
+			}
+		}
+		return e;
+	}
+	
 	private void buildTransition(Message m, Port p, State from, Message orig) {
 		System.out.println("Building new handler in " + from.getName() + " on event " + p.getName() + "?" + m.getName());
 		final ReceiveMessage rm = ThingMLFactory.eINSTANCE.createReceiveMessage();
