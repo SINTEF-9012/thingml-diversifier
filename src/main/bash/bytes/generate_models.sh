@@ -15,11 +15,11 @@ for LANGUAGE in ${LANGUAGES[@]}; do
     BASEMODEL=$BASEMODELDIR/$LANGUAGE.thingml
 
     echo "-- ADDING LOGGING TO BASE MODEL --"
-    java -jar $DIVERSIFIER $BASEMODEL 1 onlylogs $MODELSDIR/$LANGUAGE 1
+    java -jar $DIVERSIFIER -i $BASEMODEL -r 1 -n 1 -m static -o $MODELSDIR/$LANGUAGE -s code-msg -s log-msg
 
     echo "-- GENERATING STATIC DIVERSIFICATED MODELS --"
-    java -jar $DIVERSIFIER $BASEMODEL $N default $MODELSDIR/$LANGUAGE/static 1
+    java -jar $DIVERSIFIER -i $BASEMODEL -r 1 -n $N -m static -o $MODELSDIR/$LANGUAGE/static -s shuff-msg -s shuff-param -s up-param -s dup-msg -s split-msg -s code-msg -s log-msg
 
     echo "-- GENERATING DYNAMIC DIVERSIFICATED MODELS --"
-    java -jar $DIVERSIFIER $BASEMODEL $N runtime $MODELSDIR/$LANGUAGE/dynamic 1
+    java -jar $DIVERSIFIER -i $BASEMODEL -r 1 -n $N -m dynamic -o $MODELSDIR/$LANGUAGE/dynamic -s shuff-msg -s shuff-param -s up-param -s dup-msg -s split-msg -s code-msg -s log-msg
 done
