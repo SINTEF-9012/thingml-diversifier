@@ -17,7 +17,7 @@ thing fragment Msgs {
 	property bytesSentCounter : Long = 0
 }
 
-thing App includes Msgs 
+thing App includes Msgs
 @stdout_sync "true"
 {
 
@@ -157,7 +157,9 @@ thing Client includes Msgs
 
 }
 
-configuration test {
+configuration test
+@docker
+{
 	instance app : App
 	instance client1 : Client
 
