@@ -13,6 +13,7 @@ import org.thingml.xtext.helpers.AnnotatedElementHelper;
 import org.thingml.xtext.thingML.ActionBlock;
 import org.thingml.xtext.thingML.CastExpression;
 import org.thingml.xtext.thingML.Expression;
+import org.thingml.xtext.thingML.ExpressionGroup;
 import org.thingml.xtext.thingML.ExternExpression;
 import org.thingml.xtext.thingML.IntegerLiteral;
 import org.thingml.xtext.thingML.LocalVariable;
@@ -185,20 +186,18 @@ public class AddMessageLogs extends Strategy {
 	                		final PropertyReference ref = ThingMLFactory.eINSTANCE.createPropertyReference();
 	                		ref.setProperty(args.get(i));
 
-	                		for (int j = 0; j < type.getByteSize(); j++) {
-	                				                			
+	                		for (int j = 0; j < type.getByteSize(); j++) {	                				                			
 	                			final CastExpression cast = ThingMLFactory.eINSTANCE.createCastExpression();
 	                			cast.setType(byteType);
-
+	                			final ExpressionGroup group = ThingMLFactory.eINSTANCE.createExpressionGroup();	                			
 	    						final ExternExpression expr = ThingMLFactory.eINSTANCE.createExternExpression();
 	    						expr.setExpression("((");
 	    						expr.getSegments().add(EcoreUtil.copy(ref));
-
 	    						final ExternExpression bitshift = ThingMLFactory.eINSTANCE.createExternExpression();
 	    						bitshift.setExpression(" >> "+8*(type.getByteSize()-1-j)+") & 0xFF)");
 	    						expr.getSegments().add(bitshift);
-	    						
-	    						cast.setTerm(expr);
+	    						group.setTerm(expr);
+	    						cast.setTerm(group);
 
 	    						// Print value
 	    						printValues.getMsg().add(cast);
