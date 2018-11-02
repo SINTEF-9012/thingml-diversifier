@@ -11,6 +11,7 @@ import org.thingml.xtext.constraints.Types;
 import org.thingml.xtext.helpers.ActionHelper;
 import org.thingml.xtext.helpers.AnnotatedElementHelper;
 import org.thingml.xtext.thingML.ActionBlock;
+import org.thingml.xtext.thingML.CastExpression;
 import org.thingml.xtext.thingML.Expression;
 import org.thingml.xtext.thingML.ExternExpression;
 import org.thingml.xtext.thingML.IntegerLiteral;
@@ -27,6 +28,7 @@ import org.thingml.xtext.thingML.StringLiteral;
 import org.thingml.xtext.thingML.Thing;
 import org.thingml.xtext.thingML.ThingMLFactory;
 import org.thingml.xtext.thingML.ThingMLModel;
+import org.thingml.xtext.thingML.Type;
 import org.thingml.xtext.thingML.VariableAssignment;
 
 public class AddMessageLogs extends Strategy {
@@ -35,6 +37,16 @@ public class AddMessageLogs extends Strategy {
 
 	@Override
 	protected void doApply(ThingMLModel model) {
+		Type byteType = null;
+		for(Type t : ThingMLHelpers.allTypes(model)) {
+			if (!(t instanceof PrimitiveType)) continue;
+			PrimitiveType pt = (PrimitiveType)t;
+			if (AnnotatedElementHelper.isDefined(pt, "type_checker", "Byte")) {
+				byteType = pt;
+				break;
+			}
+		}
+		
     	long maxInfo = 0;//We use this to pad the logs related to the positions of bytes containing information
     	for (Thing thing : ThingMLHelpers.allThings(model)) {
     		if (thing.isFragment()) continue;
@@ -174,6 +186,9 @@ public class AddMessageLogs extends Strategy {
 	                		ref.setProperty(args.get(i));
 
 	                		for (int j = 0; j < type.getByteSize(); j++) {
+	                				                			
+	                			final CastExpression cast = ThingMLFactory.eINSTANCE.createCastExpression();
+	                			cast.setType(byteType);
 
 	    						final ExternExpression expr = ThingMLFactory.eINSTANCE.createExternExpression();
 	    						expr.setExpression("((");
@@ -182,9 +197,11 @@ public class AddMessageLogs extends Strategy {
 	    						final ExternExpression bitshift = ThingMLFactory.eINSTANCE.createExternExpression();
 	    						bitshift.setExpression(" >> "+8*(type.getByteSize()-1-j)+") & 0xFF)");
 	    						expr.getSegments().add(bitshift);
+	    						
+	    						cast.setTerm(expr);
 
 	    						// Print value
-	    						printValues.getMsg().add(expr);
+	    						printValues.getMsg().add(cast);
 	    						printValues.getMsg().add(EcoreUtil.copy(comma));
 
 	    						// Print type
