@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-N=25 # Number of diversified version to make
-LANGUAGES=(java) # Languages to use
+N=10 # Number of diversified version to make
+LANGUAGES=(java nodejs go) # Languages to use
 
 DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 BASEDIR=$DIR/../../../..

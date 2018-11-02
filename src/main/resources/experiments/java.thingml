@@ -12,7 +12,7 @@ thing fragment Msgs {
 	end
 
 	property counter : Integer = 0
-	property N : Integer = 250
+	property N : Integer = 1000
 
 	property bytesSentCounter : Long = 0
 }
