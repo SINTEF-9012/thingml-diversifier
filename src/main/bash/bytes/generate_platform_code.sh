@@ -5,8 +5,9 @@ source setup.sh
 mkdir -p $PLATFORMDIR
 rm -r $PLATFORMDIR/* 2> /dev/null
 
-### Generate platform code ###
-for LANGUAGE in ${LANGUAGES[@]}; do
+function generate
+{
+  LANGUAGE = $1
   echo "---- LANGUAGE $LANGUAGE ----"
   mkdir -p $PLATFORMDIR/$LANGUAGE/base
   mkdir -p $PLATFORMDIR/$LANGUAGE/static
@@ -35,4 +36,10 @@ for LANGUAGE in ${LANGUAGES[@]}; do
       sed -i -Ef ../resouces/addstackcheck $PLATFORMDIR/$LANGUAGE/dynamic/$LANGUAGE$i/test/test.ino
     fi
   done
+}
+
+### Generate platform code ###
+for LANGUAGE in ${LANGUAGES[@]}; do
+  generate $LANGUAGE &
 done
+wait
