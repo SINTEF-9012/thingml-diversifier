@@ -11,7 +11,6 @@ import org.thingml.xtext.constraints.Types;
 import org.thingml.xtext.helpers.ActionHelper;
 import org.thingml.xtext.helpers.AnnotatedElementHelper;
 import org.thingml.xtext.thingML.ActionBlock;
-import org.thingml.xtext.thingML.CharLiteral;
 import org.thingml.xtext.thingML.Expression;
 import org.thingml.xtext.thingML.ExternExpression;
 import org.thingml.xtext.thingML.IntegerLiteral;
@@ -31,9 +30,9 @@ import org.thingml.xtext.thingML.ThingMLModel;
 import org.thingml.xtext.thingML.VariableAssignment;
 
 public class AddMessageLogs extends Strategy {
-	
+
 	boolean onlySummary = false;
-		
+
 	@Override
 	protected void doApply(ThingMLModel model) {
     	long maxInfo = 0;//We use this to pad the logs related to the positions of bytes containing information
@@ -50,7 +49,7 @@ public class AddMessageLogs extends Strategy {
     				maxInfo = info;
     		}
     	}
-    	
+
     	for (Thing thing : ThingMLHelpers.allThings(model)) {
            	Property counter = null;
         	for (Property p : ThingMLHelpers.allProperties(thing)) {
@@ -59,8 +58,8 @@ public class AddMessageLogs extends Strategy {
         			break;
         		}
         	}
-        	
-    		if (thing.isFragment()) continue;    		    		    		    	
+
+    		if (thing.isFragment()) continue;
     		// Add counter and pretty print on all send actions
     		for (SendAction send : ActionHelper.getAllActions(thing, SendAction.class)) {
                 final Port ip = Helper.createOrGetInternalPort(thing);
@@ -99,8 +98,8 @@ public class AddMessageLogs extends Strategy {
 	                		args.add(argVar);
 	    				}
 
-	                	final CharLiteral comma = ThingMLFactory.eINSTANCE.createCharLiteral();
-	    				comma.setCharValue((byte) 44);
+	                	final StringLiteral comma = ThingMLFactory.eINSTANCE.createStringLiteral();
+	    				comma.setStringValue(",");
 
 	    				final StringLiteral zeroStrLit = ThingMLFactory.eINSTANCE.createStringLiteral();
 	    				zeroStrLit.setStringValue("0");
@@ -122,7 +121,7 @@ public class AddMessageLogs extends Strategy {
 	                	final StringLiteral typeprefix = ThingMLFactory.eINSTANCE.createStringLiteral();
 	                	typeprefix.setStringValue(":");
 	                	printTypes.getMsg().add(typeprefix);
-	                	
+
 	                	// Print all parameter names
 	                	final PrintAction printNames = ThingMLFactory.eINSTANCE.createPrintAction();
 	                	printNames.setLine(true);
@@ -130,7 +129,7 @@ public class AddMessageLogs extends Strategy {
 	                	final StringLiteral nameprefix = ThingMLFactory.eINSTANCE.createStringLiteral();
 	                	nameprefix.setStringValue("@" + thing.getName() + "@");
 	                	printNames.getMsg().add(nameprefix);
-	                	
+
 	                	// Print all parameter names
 	                	final PrintAction printPositions = ThingMLFactory.eINSTANCE.createPrintAction();
 	                	printPositions.setLine(true);
@@ -159,7 +158,7 @@ public class AddMessageLogs extends Strategy {
 	    				codeTypeLiteral.setStringValue(Types.BYTE_TYPE.getName());
 	    				printTypes.getMsg().add(codeTypeLiteral);
 	    				printTypes.getMsg().add(EcoreUtil.copy(comma));
-	    				
+
 	    				final StringLiteral msgNameLiteral = ThingMLFactory.eINSTANCE.createStringLiteral();
 	    				msgNameLiteral.setStringValue(send.getMessage().getName());
 	    				printNames.getMsg().add(msgNameLiteral);
@@ -193,7 +192,7 @@ public class AddMessageLogs extends Strategy {
 	    						paramTypeLiteral.setStringValue(type.getName());
 	    						printTypes.getMsg().add(paramTypeLiteral);
 	    						printTypes.getMsg().add(EcoreUtil.copy(comma));
-	    						
+
 	    						// Print names
 	    						final StringLiteral paramNameLiteral = ThingMLFactory.eINSTANCE.createStringLiteral();
 	    						if (AnnotatedElementHelper.hasFlag(p, "noise"))
@@ -212,7 +211,7 @@ public class AddMessageLogs extends Strategy {
 	    						printWeak.getMsg().add(EcoreUtil.copy(comma));
 	    					}
 	                	}
-	                	
+
 	                	final List<Parameter> orderedParams = new ArrayList<>();
 	                	orderedParams.addAll(send.getMessage().getParameters());
 	                	Collections.sort(orderedParams, (p1, p2) -> p1.getName().compareTo(p2.getName()));
@@ -234,7 +233,7 @@ public class AddMessageLogs extends Strategy {
 		                			for(Parameter p2 : send.getMessage().getParameters()) {
 		                				if (p2!=p) {
 		                					offset += ((PrimitiveType)p2.getTypeRef().getType()).getByteSize();
-		                				} else{		                							                				
+		                				} else{
 		                					final IntegerLiteral position = ThingMLFactory.eINSTANCE.createIntegerLiteral();//ThingMLInjector.parseString(ThingMLInjector.grammar().getExpressionRule(), "(bytesSentCounter + " + offset + ")");
 		                					position.setIntValue(offset);
 		                					printPositions.getMsg().add(position);
@@ -251,8 +250,8 @@ public class AddMessageLogs extends Strategy {
             					printPositions.getMsg().add(position);
             					printPositions.getMsg().add(EcoreUtil.copy(comma));
 	                		}
-	                	}	                		                	
-	                
+	                	}
+
 
 	                	// Send original message
 	                	for (int i = 0; i < send.getMessage().getParameters().size(); i++) {

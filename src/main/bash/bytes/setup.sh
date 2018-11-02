@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
-N=25 # Number of diversified version to make
-LANGUAGES=(nodejs) # Languages to use
+N=10 # Number of diversified version to make
+LANGUAGES=(java nodejs go) # Languages to use
 
 DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
-BASEDIR=$DIR/../../../../
+BASEDIR=$DIR/../../../..
 
 # We assume ThingML has been cloned (and compiled) besides thingml-diversifier
 THINGML_REGISTRY=$BASEDIR/../ThingML/compilers/registry/target/compilers.registry-2.0.0-SNAPSHOT-jar-with-dependencies.jar
