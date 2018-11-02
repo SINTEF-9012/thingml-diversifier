@@ -5,24 +5,50 @@ source setup.sh
 mkdir -p $LOGSDIR
 rm -r $LOGSDIR/* 2> /dev/null
 
+function monitor
+{
+  docker run \
+    --volume=/:/rootfs:ro \
+    --volume=/var/run:/var/run:ro \
+    --volume=/sys:/sys:ro \
+    --volume=/var/lib/docker/:/var/lib/docker:ro \
+    --volume=/dev/disk/:/dev/disk:ro \
+    --publish=8080:8080 \
+    --detach=true \
+    --name=cadvisor \
+    google/cadvisor:latest
+}
+
+#$1: language
+#$2: base, static or dynamic
+#$3: id
 function build
 {
-  docker build -t $1 .
+  docker build -t $1-$2-$3 .
 }
 
+#$1: language
+#$2: base, static or dynamic
+#$3: id
 function run
 {
-  docker run --name $1 $1:latest > output.log
+  docker run --name $1-$2-$3 $1-$2-$3:latest > $LOGSDIR/$1/$2/$1$3.log
 }
 
+#$1: language
+#$2: base, static or dynamic
+#$3: id
 function clean
 {
-  docker rm -f $1
+  docker rm -f $1-$2-$3
 }
 
+#$1: language
+#$2: base, static or dynamic
+#$3: id
 function clean2
 {
-  docker rmi $1
+  docker rmi $1-$2-$3
 }
 
 function clean3
@@ -30,9 +56,9 @@ function clean3
   docker rmi $(docker images -q --filter "dangling=true")
 }
 
-### Generate platform code ###
-echo "------ RUNNING ON DOCKER ------"
-for LANGUAGE in ${LANGUAGES[@]}; do
+function xp
+{
+  LANGUAGE = $1
   echo "---- LANGUAGE $LANGUAGE ----"
   mkdir $LOGSDIR/$LANGUAGE/
   mkdir $LOGSDIR/$LANGUAGE/base
@@ -41,34 +67,38 @@ for LANGUAGE in ${LANGUAGES[@]}; do
 
   echo "-- RUNNING BASE MODEL CODE --"
   cd $PLATFORMDIR/$LANGUAGE/base
-  build $LANGUAGE-base-0
   for i in `seq 0 $((N-1))`; do
-    run $LANGUAGE-base-0
-    mv output.log $LOGSDIR/$LANGUAGE/base/$LANGUAGE$i.log
-    clean $LANGUAGE-base-0
+    build $LANGUAGE base $i
+    run $LANGUAGE base $i
+    clean $LANGUAGE base $i
+    clean2 $LANGUAGE base $i
   done
-  clean2 $LANGUAGE-base-0
 
   echo "-- RUNNING STATIC DIVERSIFICATED MODEL CODE --"
   for i in `seq 0 $((N-1))`; do
     cd $PLATFORMDIR/$LANGUAGE/static/$LANGUAGE$i
-    build $LANGUAGE-static-$i
-    run $LANGUAGE-static-$i
-    mv output.log $LOGSDIR/$LANGUAGE/static/$LANGUAGE$i.log
-    clean $LANGUAGE-static-$i
-    clean2 $LANGUAGE-static-$i
+    build $LANGUAGE static $i
+    run $LANGUAGE static $i
+    clean $LANGUAGE static $i
+    clean2 $LANGUAGE static $i
   done
 
   echo "-- RUNNING DYNAMIC DIVERSIFICATED MODEL CODE --"
   for i in `seq 0 $((N-1))`; do
     cd $PLATFORMDIR/$LANGUAGE/dynamic/$LANGUAGE$i
-    build $LANGUAGE-dynamic-$i
-    run $LANGUAGE-dynamic-$i
-    mv output.log $LOGSDIR/$LANGUAGE/dynamic/$LANGUAGE$i.log
-    clean $LANGUAGE-dynamic-$i
-    clean2 $LANGUAGE-dynamic-$i
+    build $LANGUAGE dynamic $i
+    run $LANGUAGE dynamic $i
+    clean $LANGUAGE dynamic $i
+    clean2 $LANGUAGE dynamic $i
   done
+}
 
-  clean3
-
+### Generate platform code ###
+echo "------ RUNNING ON DOCKER ------"
+echo "---- LAUNCHING CADVISOR ----"
+monitor
+for LANGUAGE in ${LANGUAGES[@]}; do
+  xp $LANGUAGE &
 done
+wait
+clean3
