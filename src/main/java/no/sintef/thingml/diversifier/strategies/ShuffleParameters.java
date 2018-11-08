@@ -9,6 +9,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.thingml.xtext.constraints.ThingMLHelpers;
 import org.thingml.xtext.helpers.ActionHelper;
+import org.thingml.xtext.helpers.AnnotatedElementHelper;
 import org.thingml.xtext.thingML.Expression;
 import org.thingml.xtext.thingML.Message;
 import org.thingml.xtext.thingML.Parameter;
@@ -27,6 +28,7 @@ public class ShuffleParameters extends Strategy {
             final EObject o = it.next();
             if (o instanceof Message) {
                 final Message m = (Message) o;
+                if (AnnotatedElementHelper.hasFlag(ThingMLHelpers.findContainingThing(m), "stl")) continue;
         		if (m.getParameters().size() == 0 || !Manager.diversify(m)) continue;
                 System.out.println("Changing parameter order for message " + m.getName());
                 final List<Parameter> original = new ArrayList<>();
@@ -38,8 +40,8 @@ public class ShuffleParameters extends Strategy {
                 m.getParameters().addAll(shuffled);
 
                 //Re-ordering actual parameters in send actions
-                for (Thing thing : ThingMLHelpers.allThings(ThingMLHelpers.findContainingModel(m))) {
-                    for (SendAction send : ActionHelper.getAllActions(thing, SendAction.class)) {
+                //for (Thing thing : ThingMLHelpers.allThings(ThingMLHelpers.findContainingModel(m))) {
+                    for (SendAction send : ActionHelper.getAllActions(model, SendAction.class)) {
                         if (EcoreUtil.equals(send.getMessage(), m)) {
                             final List<Expression> params = new ArrayList<>();
                             for (Parameter p : send.getMessage().getParameters()) {
@@ -50,7 +52,7 @@ public class ShuffleParameters extends Strategy {
                             send.getParameters().addAll(params);
                         }
                     }
-                }                
+                //}                
             }
         }
 	}

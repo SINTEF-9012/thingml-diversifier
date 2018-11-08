@@ -11,9 +11,11 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.thingml.xtext.constraints.ThingMLHelpers;
 import org.thingml.xtext.constraints.Types;
 import org.thingml.xtext.helpers.ActionHelper;
 import org.thingml.xtext.helpers.AnnotatedElementHelper;
+import org.thingml.xtext.helpers.ThingHelper;
 import org.thingml.xtext.thingML.ActionBlock;
 import org.thingml.xtext.thingML.AndExpression;
 import org.thingml.xtext.thingML.AnnotatedElement;
@@ -43,6 +45,7 @@ import org.thingml.xtext.thingML.Thing;
 import org.thingml.xtext.thingML.ThingMLFactory;
 import org.thingml.xtext.thingML.ThingMLModel;
 import org.thingml.xtext.thingML.ThingMLPackage;
+import org.thingml.xtext.thingML.Transition;
 import org.thingml.xtext.thingML.TypeRef;
 import org.thingml.xtext.thingML.VariableAssignment;
 
@@ -63,11 +66,12 @@ public class SplitMessagesInline extends Strategy {
 			final EObject o = it.next();
 			if (o instanceof Thing) {
 				final Thing t = (Thing) o;
+				if (AnnotatedElementHelper.hasFlag(t, "stl")) continue;
 				//if (!Manager.diversify(t)) return;
 				final List<Message> msgs = new ArrayList<>();
 				msgs.addAll(t.getMessages());
 				for (Message msg : msgs) {				
-					if (!Manager.diversify(msg)) continue;	
+					if (!Manager.diversify(msg) || msg.getParameters().size() == 0) continue;	
 					int splitAt = Manager.rnd.nextInt(msg.getParameters().size());
 					System.out.println("Splitting message " + msg.getName() + " at index " + splitAt + "...");
 					final Message first = createMessage((Thing) msg.eContainer(), msg, msg.getParameters().subList(0, splitAt));
@@ -88,10 +92,10 @@ public class SplitMessagesInline extends Strategy {
 			final EObject o = it2.next();
 			if (o instanceof Thing) {
 				final Thing t = (Thing) o;
-				
-				final List<Port> ports = new ArrayList<>();
-				ports.addAll(t.getPorts());
-				for (Port port : ports) {
+				if (AnnotatedElementHelper.hasFlag(t, "stl")) continue;
+				//final List<Port> ports = new ArrayList<>();
+				//ports.addAll(t.getPorts());
+				for (Port port : ThingMLHelpers.allPorts(t)) {
 					if (!Manager.diversify(port)) continue;
 					
 					final List<Message> sent = new ArrayList<>();
@@ -105,7 +109,7 @@ public class SplitMessagesInline extends Strategy {
 						port.getSends().add(first);
 						port.getSends().add(second);
 						//System.out.println(" removing message " + m.getName() + " from sent messages of port " + port.getName() + " of thing " + thing.getName());
-						port.getSends().remove(m);
+						//port.getSends().remove(m);
 						splitSendAction(t, port, m, first, second, first.getParameters().size());
 					}
 
@@ -118,7 +122,7 @@ public class SplitMessagesInline extends Strategy {
 						final Message first = messages.get(0);
 						final Message second = messages.get(1);
 
-						port.getReceives().remove(m);
+						//port.getReceives().remove(m);
 						port.getReceives().add(first);
 						port.getReceives().add(second);
 
@@ -146,6 +150,7 @@ public class SplitMessagesInline extends Strategy {
 
 	private void splitSendAction(Thing thing, Port p, Message m, Message first, Message second, int splitAt) {
 		for (SendAction send : ActionHelper.getAllActions(thing, SendAction.class)) {
+			if (send.eContainer() == null) return; //FIXME: dirty hack
 			EObject eo = send.eContainer();
 			while (eo != null) {
 				if (eo instanceof AnnotatedElement) {
@@ -217,7 +222,7 @@ public class SplitMessagesInline extends Strategy {
 						EList list = (EList) parent;
 						final int index = list.indexOf(send);
 						list.add(index, ca);
-						list.remove(send);
+						//list.remove(send);
 					} else {
 						final EObject o = send.eContainer();
 						o.eSet(send.eContainingFeature(), ca);
@@ -237,6 +242,7 @@ public class SplitMessagesInline extends Strategy {
 			final EObject o = it.next();
 			if (o instanceof Handler) {
 				final Handler t = (Handler) o;
+				//if(!(t instanceof Transition)) continue;
 				if (t.getEvent() != null && t.getEvent() instanceof ReceiveMessage) {
 					final ReceiveMessage rm = (ReceiveMessage) t.getEvent();
 					if (EcoreUtil.equals(rm.getMessage(), m) && EcoreUtil.equals(rm.getPort(), p)) {
@@ -311,6 +317,8 @@ public class SplitMessagesInline extends Strategy {
 							b = ThingMLFactory.eINSTANCE.createActionBlock();
 							b.getActions().add(replaceEventRefByPropRef(t.getAction(), props));
 						}
+						t.setAction(b);
+						
 						
 						final BooleanLiteral bool_false = ThingMLFactory.eINSTANCE.createBooleanLiteral();
 						bool_false.setBoolValue(false);

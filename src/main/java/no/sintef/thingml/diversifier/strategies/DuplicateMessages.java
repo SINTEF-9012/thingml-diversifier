@@ -108,14 +108,21 @@ public class DuplicateMessages extends Strategy {
 	private void duplicateSendAction(SendAction sa) {
 		System.out.println("Duplicating send action " + sa.getPort().getName() + "!" + sa.getMessage().getName());
 		final Message copy = getCopy(sa.getMessage());
-		final Function rnd = Manager.findRandom(ThingMLHelpers.findContainingThing(sa));
 		final ConditionalAction ca = ThingMLFactory.eINSTANCE.createConditionalAction();
 		final LowerExpression lower = ThingMLFactory.eINSTANCE.createLowerExpression();
-		final FunctionCallExpression call = ThingMLFactory.eINSTANCE.createFunctionCallExpression();
-		call.setFunction(rnd);
+		
+		final Function rnd = Manager.findRandom(ThingMLHelpers.findContainingThing(sa));
+		if (rnd != null) {//fall back to static mode
+			final FunctionCallExpression call = ThingMLFactory.eINSTANCE.createFunctionCallExpression();
+			call.setFunction(rnd);
+			lower.setLhs(call);
+		} else {//FIXME: dirty workaround
+			final IntegerLiteral threshold = ThingMLFactory.eINSTANCE.createIntegerLiteral();
+			threshold.setIntValue(Manager.rnd.nextInt(256));
+			lower.setLhs(threshold);
+		}
 		final IntegerLiteral threshold = ThingMLFactory.eINSTANCE.createIntegerLiteral();
-		threshold.setIntValue(Manager.rnd.nextInt(256));
-		lower.setLhs(call);
+		threshold.setIntValue(Manager.rnd.nextInt(256));	
 		lower.setRhs(threshold);
 		ca.setCondition(lower);
 

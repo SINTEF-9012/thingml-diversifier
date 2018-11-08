@@ -30,6 +30,7 @@ import org.thingml.xtext.thingML.Thing;
 import org.thingml.xtext.thingML.ThingMLFactory;
 import org.thingml.xtext.thingML.ThingMLModel;
 import org.thingml.xtext.thingML.Type;
+import org.thingml.xtext.thingML.TypeRef;
 import org.thingml.xtext.thingML.VariableAssignment;
 
 public class AddMessageLogs extends Strategy {
@@ -39,14 +40,18 @@ public class AddMessageLogs extends Strategy {
 	@Override
 	protected void doApply(ThingMLModel model) {
 		Type byteType = null;
+		Type intType = null;
 		for(Type t : ThingMLHelpers.allTypes(model)) {
 			if (!(t instanceof PrimitiveType)) continue;
 			PrimitiveType pt = (PrimitiveType)t;
 			if (AnnotatedElementHelper.isDefined(pt, "type_checker", "Byte")) {
 				byteType = pt;
-				break;
+			} else if (AnnotatedElementHelper.isDefined(pt, "type_checker", "Integer") && pt.getByteSize()>=4) {
+				intType = pt;
 			}
 		}
+		
+		
 		
     	long maxInfo = 0;//We use this to pad the logs related to the positions of bytes containing information
     	for (Thing thing : ThingMLHelpers.allThings(model)) {
@@ -71,8 +76,17 @@ public class AddMessageLogs extends Strategy {
         			break;
         		}
         	}
+        	/*if (counter == null) {
+        		counter = ThingMLFactory.eINSTANCE.createProperty();
+        		counter.setName("bytesSentCounter" + thing.getName());
+        		TypeRef tr = ThingMLFactory.eINSTANCE.createTypeRef();
+        		tr.setType(intType);
+        		counter.setTypeRef(tr);
+        		thing.getProperties().add(counter);
+        	}*/
 
     		if (thing.isFragment()) continue;
+    		int var_counter = 0;
     		// Add counter and pretty print on all send actions
     		for (SendAction send : ActionHelper.getAllActions(thing, SendAction.class)) {
                 final Port ip = Helper.createOrGetInternalPort(thing);
@@ -102,13 +116,17 @@ public class AddMessageLogs extends Strategy {
 	                		final Expression expr = send.getParameters().get(i);
 	                		final Parameter par = send.getMessage().getParameters().get(i);
 
+	                		
+	                		
 	                		final LocalVariable argVar = ThingMLFactory.eINSTANCE.createLocalVariable();
-	                		argVar.setName(send.getMessage().getName()+"Arg"+i);
+	                		argVar.setName(send.getMessage().getName()+"Arg"+i + "_" + var_counter);
 	                		argVar.setTypeRef(EcoreUtil.copy(par.getTypeRef()));
 	                		argVar.setInit(EcoreUtil.copy(expr));
 
 	                		block.getActions().add(argVar);
 	                		args.add(argVar);
+	                		
+	                		var_counter++;
 	    				}
 
 	                	final StringLiteral comma = ThingMLFactory.eINSTANCE.createStringLiteral();
@@ -279,17 +297,19 @@ public class AddMessageLogs extends Strategy {
                 	block.getActions().add(send);
 
                 	// Increase byte counter
-                	final VariableAssignment va = ThingMLFactory.eINSTANCE.createVariableAssignment();
-                	va.setProperty(counter);
-                	final PlusExpression plus = ThingMLFactory.eINSTANCE.createPlusExpression();
-                	va.setExpression(plus);
-                	final PropertyReference counterRef = ThingMLFactory.eINSTANCE.createPropertyReference();
-                	counterRef.setProperty(counter);
-                	plus.setLhs(counterRef);
-                	final IntegerLiteral lit = ThingMLFactory.eINSTANCE.createIntegerLiteral();
-                	lit.setIntValue(messageBytes);
-                	plus.setRhs(lit);
-                	block.getActions().add(va);
+                	if (counter != null) {
+                		final VariableAssignment va = ThingMLFactory.eINSTANCE.createVariableAssignment();
+                		va.setProperty(counter);
+                		final PlusExpression plus = ThingMLFactory.eINSTANCE.createPlusExpression();
+                		va.setExpression(plus);
+                		final PropertyReference counterRef = ThingMLFactory.eINSTANCE.createPropertyReference();
+                		counterRef.setProperty(counter);
+                		plus.setLhs(counterRef);
+                		final IntegerLiteral lit = ThingMLFactory.eINSTANCE.createIntegerLiteral();
+                		lit.setIntValue(messageBytes);
+                		plus.setRhs(lit);
+                		block.getActions().add(va);
+                	}
                 }
     		}
     	}
