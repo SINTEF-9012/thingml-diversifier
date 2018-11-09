@@ -12,9 +12,7 @@ thing BasicIAControllerJava includes BasicIAController, RndJava {}
 
 thing BreakoutGameJava includes DefaultBreakoutGame, RndJava 
 @stdout_sync "true"
-{
-	property bytesSentCounter : UInt32 = 0
-	
+{	
 	function quit() do
 		println ">sent ", bytesSentCounter, " bytes."
 		println ">done in ", stopTime-startTime, "ms!"

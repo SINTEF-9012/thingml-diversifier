@@ -10,10 +10,7 @@ thing HeadlessDisplayJS includes HeadlessDisplay, RndJS {}
 
 thing BasicIAControllerJS includes BasicIAController, RndJS {}
 
-thing BreakoutGameNodeJS includes DefaultBreakoutGame, RndJS {
-	
-	property bytesSentCounter : UInt32 = 0
-	
+thing BreakoutGameNodeJS includes DefaultBreakoutGame, RndJS {	
 	function quit() do
 		println ">sent ", bytesSentCounter, " bytes."
 		println ">done in ", stopTime-startTime, "ms!"

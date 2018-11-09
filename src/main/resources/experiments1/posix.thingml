@@ -18,9 +18,7 @@ thing BreakoutGamePosix includes DefaultBreakoutGame, RndPosix
 typedef struct {
 	unsigned long size,resident,share,text,lib,data,dt;
 } statm_t;"
-{
-	property bytesSentCounter : UInt32 = 0
-	
+{	
 	function quit() do
 		println ">sent ", bytesSentCounter, " bytes."
 		println ">done in ", stopTime-startTime, "ms!"

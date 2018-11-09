@@ -10,9 +10,7 @@ thing HeadlessDisplayArduino includes HeadlessDisplay, RndArduino {}
 
 thing BasicIAControllerArduino includes BasicIAController, RndArduino {}
 
-thing BreakoutGameArduino includes DefaultBreakoutGame, RndArduino {
-	property bytesSentCounter : UInt32 = 0
-	
+thing BreakoutGameArduino includes DefaultBreakoutGame, RndArduino {	
 	function quit() do
 		println ">sent ", bytesSentCounter, " bytes."
 		println ">done in ", stopTime-startTime, "ms!"

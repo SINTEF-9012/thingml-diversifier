@@ -20,6 +20,9 @@ thing fragment DisplayMsgs {
 thing fragment HeadlessDisplay includes DisplayMsgs 
 @stdout_sync "true"
 {
+	property bytesSentCounter : UInt32 = 0
+	
+	
 	abstract function rnd() : Byte
 	function mock() do end
 	

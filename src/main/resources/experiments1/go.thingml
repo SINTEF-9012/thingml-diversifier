@@ -14,9 +14,7 @@ thing BreakoutGameGo includes BreakoutGame, RndGo
 @go_import `os`
 @go_import `time`
 @go_import `runtime`
-{
-	property bytesSentCounter : UInt32 = 0
-	
+{	
 	function quit() do
 		println ">sent ", bytesSentCounter, " bytes."
 		println ">done in ", stopTime-startTime, "ms!"

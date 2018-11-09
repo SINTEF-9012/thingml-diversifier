@@ -2,6 +2,8 @@ import "Display.thingml"
 import "Controller.thingml"
 
 thing fragment BreakoutGame includes TimerMsgs, DisplayMsgs, ControllerMsgs, IAControllerMsg {
+	property bytesSentCounter : UInt32 = 0
+	
 	message lostBall();
 	message nextLevel();
 

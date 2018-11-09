@@ -7,9 +7,10 @@ thing fragment ControllerMsgs {
 }
 
 thing fragment Controller includes ControllerMsgs {
+	property bytesSentCounter : UInt32 = 0
 	
 	abstract function rnd() : Byte
-
+	
 	provided port controls {
 		sends position
 	}

@@ -52,13 +52,15 @@ import no.sintef.thingml.diversifier.Mode;
 
 public class SplitMessagesInline extends Strategy {
 
-	final Map<Message, List<Message>> duplicates = new HashMap<>();
+	final Map<String, List<Message>> duplicates = new HashMap<>();
+	
+	//TODO: apply same strategy as for DuplicateMessage regarding how we browser the model and how we protect messages from STL
 
 	@Override
 	protected void doApply(ThingMLModel model) {
 		//We need two passes, as the messages may be defined in one thing and then included in other things using them in ports
 
-		//PASS 1: Copy all messages
+		//PASS 1: Split all messages
 		final TreeIterator<EObject> it = model.eAllContents();
 		while (it.hasNext()) {
 			final EObject o = it.next();
@@ -79,7 +81,7 @@ public class SplitMessagesInline extends Strategy {
 					final List<Message> messages = new ArrayList<>();
 					messages.add(first);
 					messages.add(second);
-					duplicates.put(msg, messages);
+					duplicates.put(t.getName()+msg.getName(), messages);
 				}
 			}
 		}
@@ -98,8 +100,11 @@ public class SplitMessagesInline extends Strategy {
 					
 					final List<Message> sent = new ArrayList<>();
 					sent.addAll(port.getSends());
-					for(Message m : sent) {
-						List<Message> messages = duplicates.get(m);
+					for(Message msg : sent) {
+						final Thing root = ThingMLHelpers.findContainingThing(msg);
+						if (AnnotatedElementHelper.hasFlag(root, "stl")) continue;				
+						if (!Manager.diversify(msg)) continue;
+						List<Message> messages = duplicates.get(root.getName()+msg.getName());
 						if (messages == null) continue;
 						//System.out.println(" adding messages " + first.getName() + " and " + second.getName() + " to sent messages of port " + port.getName() + " of thing " + thing.getName());
 						final Message first = messages.get(0);
@@ -108,26 +113,35 @@ public class SplitMessagesInline extends Strategy {
 						port.getSends().add(second);
 						//System.out.println(" removing message " + m.getName() + " from sent messages of port " + port.getName() + " of thing " + thing.getName());
 						//port.getSends().remove(m);
-						splitSendAction(t, port, m, first, second, first.getParameters().size());
 					}
 
 					final List<Message> received = new ArrayList<>();
 					received.addAll(port.getReceives());
-					for(Message m : received) {
-						List<Message> messages = duplicates.get(m);
+					for(Message msg : received) {
+						final Thing root = ThingMLHelpers.findContainingThing(msg);
+						if (AnnotatedElementHelper.hasFlag(root, "stl")) continue;				
+						if (!Manager.diversify(msg)) continue;
+						List<Message> messages = duplicates.get(root.getName()+msg.getName());
 						if (messages == null) continue;
 
 						final Message first = messages.get(0);
 						final Message second = messages.get(1);
 
-						//port.getReceives().remove(m);
 						port.getReceives().add(first);
 						port.getReceives().add(second);
 
-						updateHandlers(t, port, m);
+						updateHandlers(t, port, msg);
 					}
 				}				
 			}
+		}
+		
+		final TreeIterator<EObject> it3 = model.eAllContents();
+		while (it3.hasNext()) {
+			final EObject o = it3.next();
+			if (!(o instanceof SendAction)) continue;
+			final SendAction sa = (SendAction) o;
+			splitSendAction(sa);
 		}
 	}
 
@@ -146,91 +160,91 @@ public class SplitMessagesInline extends Strategy {
 		return msg;
 	}
 
-	private void splitSendAction(Thing thing, Port p, Message m, Message first, Message second, int splitAt) {
-		for (SendAction send : ActionHelper.getAllActions(thing, SendAction.class)) {
-			if (send.eContainer() == null) return; //FIXME: dirty hack
-			EObject eo = send.eContainer();
-			while (eo != null) {
-				if (eo instanceof AnnotatedElement) {
-					final AnnotatedElement a = (AnnotatedElement) eo;
-					if (AnnotatedElementHelper.isDefined(a, "diversify", "not")) {
-						return;
-					}
-				}
-				eo = eo.eContainer();
+	private void splitSendAction(SendAction sa) {
+		final Thing root = ThingMLHelpers.findContainingThing(sa.getMessage());
+		if (root==null) return;
+		final List<Message> splits = duplicates.get(root.getName()+sa.getMessage().getName());
+		if (splits == null || splits.size() != 2) return;
+		
+		final Message m1 = splits.get(0);
+		final Message m2 = splits.get(1);
+				
+		final SendAction send1 = ThingMLFactory.eINSTANCE.createSendAction();
+		send1.setMessage(m1);
+		send1.setPort(sa.getPort());
+		for (Expression e : sa.getParameters().subList(0, m1.getParameters().size())) {
+			send1.getParameters().add(EcoreUtil.copy(e));
+		}
+
+		final SendAction send2 = ThingMLFactory.eINSTANCE.createSendAction();
+		send2.setMessage(m2);
+		send2.setPort(sa.getPort());
+		for (Expression e : sa.getParameters().subList(m1.getParameters().size(), sa.getParameters().size())) {
+			send2.getParameters().add(EcoreUtil.copy(e));
+		}
+
+		final Function rnd = Manager.findRandom(ThingMLHelpers.findContainingThing(sa));			
+		if (rnd == null || Manager.mode==Mode.STATIC) {
+			final ActionBlock b1 = ThingMLFactory.eINSTANCE.createActionBlock();
+			if (Manager.rnd.nextBoolean()) {
+				b1.getActions().add(send1);
+				b1.getActions().add(send2);
+			} else {
+				b1.getActions().add(send2);
+				b1.getActions().add(send1);
 			}
-			if (EcoreUtil.equals(send.getMessage(), m) && EcoreUtil.equals(send.getPort(), p)) {
-				final SendAction send1 = ThingMLFactory.eINSTANCE.createSendAction();
-				send1.setMessage(first);
-				send1.setPort(send.getPort());
-				for (Expression e : send.getParameters().subList(0, splitAt)) {
-					send1.getParameters().add(EcoreUtil.copy(e));
-				}
 
-				final SendAction send2 = ThingMLFactory.eINSTANCE.createSendAction();
-				send2.setMessage(second);
-				send2.setPort(send.getPort());
-				for (Expression e : send.getParameters().subList(splitAt, m.getParameters().size())) {
-					send2.getParameters().add(EcoreUtil.copy(e));
-				}
+			final Object parent = sa.eContainer().eGet(sa.eContainingFeature());
+			if (parent instanceof EList) {
+				EList list = (EList) parent;
+				final int index = list.indexOf(sa);
+				list.add(index, b1);
+				list.remove(sa);
+			} else {
+				final EObject o = sa.eContainer();
+				o.eSet(sa.eContainingFeature(), b1);
+			}
+		} else {
+			final ConditionalAction ca = ThingMLFactory.eINSTANCE.createConditionalAction();
+			final LowerExpression lower = ThingMLFactory.eINSTANCE.createLowerExpression();
+			final FunctionCallExpression call = ThingMLFactory.eINSTANCE.createFunctionCallExpression();
+			call.setFunction(rnd);
+			final IntegerLiteral threshold = ThingMLFactory.eINSTANCE.createIntegerLiteral();
+			threshold.setIntValue(Manager.rnd.nextInt(256));
+			lower.setLhs(call);
+			lower.setRhs(threshold);
+			ca.setCondition(lower);
 
-				final Function rnd = Manager.findRandom(thing);
-				if (rnd == null || Manager.mode==Mode.STATIC) {
-					final ActionBlock b1 = ThingMLFactory.eINSTANCE.createActionBlock();
-					if (Manager.rnd.nextBoolean()) {
-						b1.getActions().add(send1);
-						b1.getActions().add(send2);
-					} else {
-						b1.getActions().add(send2);
-						b1.getActions().add(send1);
-					}
+			final ActionBlock b1 = ThingMLFactory.eINSTANCE.createActionBlock();
+			b1.getActions().add(send1);
+			b1.getActions().add(send2);
+			ca.setAction(b1);
+			final ActionBlock b2 = ThingMLFactory.eINSTANCE.createActionBlock();
+			b2.getActions().add(EcoreUtil.copy(send2));
+			b2.getActions().add(EcoreUtil.copy(send1));
+			ca.setElseAction(b2);
+			
+			/*sa.getPort().getSends().remove(sa.getMessage());
+			root.getMessages().remove(sa.getMessage());*/
 
-					final Object parent = send.eContainer().eGet(send.eContainingFeature());
-					if (parent instanceof EList) {
-						EList list = (EList) parent;
-						final int index = list.indexOf(send);
-						list.add(index, b1);
-						list.remove(send);
-					} else {
-						final EObject o = send.eContainer();
-						o.eSet(send.eContainingFeature(), b1);
-					}
-				} else {
-					final ConditionalAction ca = ThingMLFactory.eINSTANCE.createConditionalAction();
-					final LowerExpression lower = ThingMLFactory.eINSTANCE.createLowerExpression();
-					final FunctionCallExpression call = ThingMLFactory.eINSTANCE.createFunctionCallExpression();
-					call.setFunction(rnd);
-					final IntegerLiteral threshold = ThingMLFactory.eINSTANCE.createIntegerLiteral();
-					threshold.setIntValue(Manager.rnd.nextInt(256));
-					lower.setLhs(call);
-					lower.setRhs(threshold);
-					ca.setCondition(lower);
-
-					final ActionBlock b1 = ThingMLFactory.eINSTANCE.createActionBlock();
-					b1.getActions().add(send1);
-					b1.getActions().add(send2);
-					ca.setAction(b1);
-					final ActionBlock b2 = ThingMLFactory.eINSTANCE.createActionBlock();
-					b2.getActions().add(EcoreUtil.copy(send2));
-					b2.getActions().add(EcoreUtil.copy(send1));
-					ca.setElseAction(b2);
-
-					final Object parent = send.eContainer().eGet(send.eContainingFeature());
-					if (parent instanceof EList) {
-						EList list = (EList) parent;
-						final int index = list.indexOf(send);
-						list.add(index, ca);
-						//list.remove(send);
-					} else {
-						final EObject o = send.eContainer();
-						o.eSet(send.eContainingFeature(), ca);
-					}
-				}
+			final Object parent = sa.eContainer().eGet(sa.eContainingFeature());
+			if (parent instanceof EList) {
+				EList list = (EList) parent;
+				final int index = list.indexOf(sa);
+				list.add(index, ca);
+				list.remove(sa);
+			} else {
+				final EObject o = sa.eContainer();
+				o.eSet(sa.eContainingFeature(), ca);
 			}
 		}
 	}
 
 	private void updateHandlers(Thing thing, Port p, Message m) {
+		final Thing root = ThingMLHelpers.findContainingThing(m);
+		if (AnnotatedElementHelper.hasFlag(root, "stl")) return;
+		if (AnnotatedElementHelper.hasFlag(thing, "stl")) return;
+		
 		final Set<String> log = new HashSet<>();
 		Map<String, Property> props = new HashMap<>();
 		Property prop1 = null, prop2 = null;
@@ -245,8 +259,8 @@ public class SplitMessagesInline extends Strategy {
 					final ReceiveMessage rm = (ReceiveMessage) t.getEvent();
 					if (EcoreUtil.equals(rm.getMessage(), m) && EcoreUtil.equals(rm.getPort(), p)) {
 						final State source = (State)t.eContainer();   
-						final Message m1 = duplicates.get(m).get(0);
-						final Message m2 = duplicates.get(m).get(1);
+						final Message m1 = duplicates.get(root.getName()+m.getName()).get(0);
+						final Message m2 = duplicates.get(root.getName()+m.getName()).get(1);
 																	
 						if (!log.contains(source.getName() + "_" + p.getName() + "_" + m.getName())) {
 							PrimitiveType bool = Helper.getPrimitiveType(Types.BOOLEAN_TYPE, thing);
@@ -334,6 +348,7 @@ public class SplitMessagesInline extends Strategy {
 				}
 			} 
 		}
+		//p.getReceives().remove(m);
 	}    
 
 	private <T extends EObject> T replaceEventRefByPropRef(T e, Map<String, Property> props) {
