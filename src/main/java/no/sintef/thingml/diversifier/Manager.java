@@ -1,11 +1,11 @@
 package no.sintef.thingml.diversifier;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
 import org.eclipse.emf.ecore.EObject;
-import org.thingml.xtext.constraints.ThingMLHelpers;
 import org.thingml.xtext.helpers.AnnotatedElementHelper;
 import org.thingml.xtext.thingML.AnnotatedElement;
 import org.thingml.xtext.thingML.Function;
@@ -89,10 +89,22 @@ public class Manager {
 
 	public static Function findRandom(Thing thing) {
 		Function rnd = null;
-		for (Function f : ThingMLHelpers.allFunctions(thing)) {
-			if (f.getName().equals("rnd")) {
-				rnd = f;
-				break;
+		List<Thing> includes = new ArrayList<Thing>();
+		includes.add(thing);
+		outer: while(rnd == null && !includes.isEmpty()) {
+			for(Thing t : includes) {
+				for(Function f : t.getFunctions()) {
+					if (f.getName().equals("rnd")) {
+						rnd = f;
+						break outer;
+					}	
+				}
+			}
+			List<Thing> temp = new ArrayList<Thing>();
+			temp.addAll(includes);
+			includes.clear();
+			for(Thing t : temp) {
+				includes.addAll(t.getIncludes());
 			}
 		}
 		return rnd;

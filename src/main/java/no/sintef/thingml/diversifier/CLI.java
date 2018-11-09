@@ -2,12 +2,17 @@ package no.sintef.thingml.diversifier;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.io.FilenameUtils;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.thingml.compilers.ThingMLCompiler;
+import org.thingml.xtext.helpers.ConfigurationHelper;
+import org.thingml.xtext.thingML.Configuration;
+import org.thingml.xtext.thingML.Thing;
 import org.thingml.xtext.thingML.ThingMLModel;
+import org.thingml.xtext.thingML.Type;
 
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
@@ -60,6 +65,26 @@ public class CLI {
 		
 		final ThingMLModel model = ThingMLCompiler.flattenModel(ThingMLCompiler.loadModel(input));
 		
+		//Remove useless stuff in the flatten model (not point in diversifying what won't be instantiated
+		final List<Type> types = new ArrayList<>();
+		types.addAll(model.getTypes());
+		for(Type t : types) {
+			if (!(t instanceof Thing)) continue;
+			final Thing thing = (Thing)t;
+			boolean remove = true;
+			outer: for(Configuration cfg : model.getConfigs()) {
+				for(Thing thing2 : ConfigurationHelper.allUsedThings(cfg)) {
+					if (EcoreUtil.equals(thing, thing2)) {
+						remove = false;
+						break outer;
+					}
+				}
+			}
+			if (remove) {
+				model.getTypes().remove(t);
+			}
+		}
+		
 		Mode mode = Mode.STATIC;
 		if (cli.mode.equals(Mode.DYNAMIC.name().toLowerCase())) mode = Mode.DYNAMIC;
 		
@@ -78,7 +103,6 @@ public class CLI {
 			} else if (s.equals(Strategies.SHUFF_PARAM.name)) {
 				manager.add(new ShuffleParameters()); 
 			} else if (s.equals(Strategies.SPLIT_MSG.name)) {
-				//manager.add(new SplitMessages()); 
 				manager.add(new SplitMessagesInline());
 			} else if (s.equals(Strategies.UP_PARAM.name)) {
 				manager.add(new UpsizeParameters()); 
@@ -100,7 +124,7 @@ public class CLI {
 		
 		for(int i = 0; i < cli.number; i++) {//TODO: See if we can multi-thread this
 			final ThingMLModel copy = EcoreUtil.copy(model);
-			manager.run(copy);			
+			manager.run(copy);				
 			String saveName = FilenameUtils.getBaseName(cli.input) + i + ".thingml";
 			File saveTo = new File(outputDir, saveName);					
 			ThingMLCompiler.saveAsThingML(copy, saveTo.getAbsolutePath());

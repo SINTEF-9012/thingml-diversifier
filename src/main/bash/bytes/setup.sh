@@ -12,7 +12,8 @@ THINGML_REGISTRY=$BASEDIR/../ThingML/compilers/registry/target/compilers.registr
 ARDUINO_DIR=/c/Program\ Files\ \(x86\)/Arduino
 ARDUINO_PORT=COM3
 
-BASEMODELDIR=$DIR/../../resources/experiments
+#BASEMODELDIR=$DIR/../../resources/experiments
+BASEMODELDIR=$DIR/../../resources/experiments1
 TARGETDIR=$BASEDIR/target
 DIVERSIFIER=$TARGETDIR/thingml.diversifier-1.0.0-SNAPSHOT-jar-with-dependencies.jar
 MODELSDIR=$TARGETDIR/thingml-bytes-models

@@ -10,6 +10,7 @@ import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.thingml.xtext.constraints.ThingMLHelpers;
+import org.thingml.xtext.helpers.AnnotatedElementHelper;
 import org.thingml.xtext.thingML.ActionBlock;
 import org.thingml.xtext.thingML.ConditionalAction;
 import org.thingml.xtext.thingML.EventReference;
@@ -32,12 +33,11 @@ import org.thingml.xtext.thingML.Transition;
 import no.sintef.thingml.diversifier.Manager;
 import no.sintef.thingml.diversifier.Mode;
 
-//TODO: Static/dynamic mode
 public class DuplicateMessages extends Strategy {
 
 	private Map<Message, Message> copies = new HashMap<>();
 
-	private Message getCopy(Message m) {//TODO: give code to newly created messages
+	private Message getCopy(Message m) {
 		Message copy = copies.get(m);
 		if (copy != null)
 			return copy;
@@ -54,31 +54,37 @@ public class DuplicateMessages extends Strategy {
 	@Override
 	protected void doApply(ThingMLModel model) {
 		if (Manager.mode == Mode.STATIC) return; //this transformation has no real visible effect in static mode
-		//We need two passes, as the messages may be defined in one thing and then included in other things using them in ports
-
+		//FIXME: Probably do-able in 2 passes only...
+				
 		//PASS 1: Copy all messages
 		final TreeIterator<EObject> it = model.eAllContents();
 		while (it.hasNext()) {
 			final EObject o = it.next();
-			if (o instanceof Message) {
-				final Message msg = (Message) o;
-				if (!Manager.diversify(msg)) continue;	
-				final Thing t = (Thing) msg.eContainer();
-				//if (!Manager.diversify(t)) return;
+			if (!(o instanceof Thing)) continue;
+			final Thing thing = (Thing)o;
+			if (AnnotatedElementHelper.hasFlag(thing, "stl")) continue;
+			final List<Message> msgs = new ArrayList<Message>();
+			msgs.addAll(thing.getMessages());
+			for (Message msg : msgs) {
+				if (!Manager.diversify(msg)) continue;					
 				final Message copy = getCopy(msg);
-				t.getMessages().add(copy);
+				thing.getMessages().add(copy);
 			}
 		}
-
+		
 		//PASS 2: Update ports
 		final TreeIterator<EObject> it2 = model.eAllContents();
 		while (it2.hasNext()) {
 			final EObject o = it2.next();
-			if (o instanceof Port) {
-				final Port port = (Port) o;
+			if (!(o instanceof Thing)) continue;
+			final Thing thing = (Thing)o;
+			if (AnnotatedElementHelper.hasFlag(thing, "stl")) continue;
+			for(Port port : thing.getPorts()) {			
 				final List<Message> sent = new ArrayList<>();
 				sent.addAll(port.getSends());
 				for (Message msg : sent) {
+					if (AnnotatedElementHelper.hasFlag(ThingMLHelpers.findContainingThing(msg), "stl")) continue;				
+					if (!Manager.diversify(msg)) continue;					
 					final Message copy = getCopy(msg);
 					port.getSends().add(copy);
 				}
@@ -86,28 +92,38 @@ public class DuplicateMessages extends Strategy {
 				final List<Message> received = new ArrayList<>();
 				received.addAll(port.getReceives());
 				for (Message msg : received) {
+					if (AnnotatedElementHelper.hasFlag(ThingMLHelpers.findContainingThing(msg), "stl")) continue;				
+					if (!Manager.diversify(msg)) continue;					
 					final Message copy = getCopy(msg);
 					port.getReceives().add(copy);
-				}
+				}			
 			}
 		}
-
+		
+		//PASS 3: Update send actions
 		final TreeIterator<EObject> it3 = model.eAllContents();
 		while (it3.hasNext()) {
 			final EObject o = it3.next();
-			if (o instanceof SendAction) {
-				final SendAction sa = (SendAction) o;
-				duplicateSendAction(sa);
-			} else if (o instanceof Handler) {
-				final Handler h = (Handler) o;
-				duplicateHandler(h);
+			if (!(o instanceof SendAction)) continue;
+			final SendAction sa = (SendAction) o;
+			duplicateSendAction(sa);
+		}
+		
+		//PASS 4: Update handlers
+		final TreeIterator<EObject> it4 = model.eAllContents();
+		while (it4.hasNext()) {
+			final EObject o = it4.next();
+			if (o instanceof Handler) {
+				final Handler h = (Handler) o;				
+				duplicateHandler(h);				
 			}
 		}
 	}
 
 	private void duplicateSendAction(SendAction sa) {
+		final Message copy = copies.get(sa.getMessage());
+		if (copy == null) return; //Most likely sa.getMessage() is from the STL...
 		System.out.println("Duplicating send action " + sa.getPort().getName() + "!" + sa.getMessage().getName());
-		final Message copy = getCopy(sa.getMessage());
 		final ConditionalAction ca = ThingMLFactory.eINSTANCE.createConditionalAction();
 		final LowerExpression lower = ThingMLFactory.eINSTANCE.createLowerExpression();
 		
@@ -125,7 +141,7 @@ public class DuplicateMessages extends Strategy {
 		threshold.setIntValue(Manager.rnd.nextInt(256));	
 		lower.setRhs(threshold);
 		ca.setCondition(lower);
-
+	
 		final Object parent = sa.eContainer().eGet(sa.eContainingFeature());
 		if (parent instanceof EList) {
 			EList list = (EList) parent;
@@ -135,7 +151,7 @@ public class DuplicateMessages extends Strategy {
 			final EObject o = sa.eContainer();
 			o.eSet(sa.eContainingFeature(), ca);
 		}
-
+		
 		final ActionBlock b1 = ThingMLFactory.eINSTANCE.createActionBlock();
 		b1.getActions().add(sa);
 		ca.setAction(b1);
@@ -149,6 +165,8 @@ public class DuplicateMessages extends Strategy {
 	private void duplicateHandler(Handler h) {
 		if (h.getEvent() != null && h.getEvent() instanceof ReceiveMessage) {
 			final ReceiveMessage rm = (ReceiveMessage) h.getEvent();
+			final Thing root = ThingMLHelpers.findContainingThing(rm.getMessage());
+			if (AnnotatedElementHelper.hasFlag(root, "stl")) return;
 			final Message m = rm.getMessage();
 			final Message m2 = getCopy(m);
 			final Thing thing = ThingMLHelpers.findContainingThing(h);
@@ -173,7 +191,6 @@ public class DuplicateMessages extends Strategy {
 			if (h.getGuard() != null) {
 				h2.setGuard(EcoreUtil.copy(h.getGuard()));
 				for (EventReference ref : ThingMLHelpers.getAllExpressions(h2.getGuard(), EventReference.class)) {
-					//System.out.println("Fixing event ref on parameter " + ref.getParameter().getName() + " of message " + m2.getName());
 					ref.setReceiveMsg(rm2);
 					ref.setParameter(m2.getParameters().get(m.getParameters().indexOf(ref.getParameter())));
 				}
@@ -182,7 +199,6 @@ public class DuplicateMessages extends Strategy {
 			if (h.getAction() != null) {
 				h2.setAction(EcoreUtil.copy(h.getAction()));
 				for (EventReference ref : ThingMLHelpers.getAllExpressions(h2.getAction(), EventReference.class)) {
-					//System.out.println("Fixing event ref on parameter " + ref.getParameter().getName() + " of message " + m2.getName());
 					ref.setReceiveMsg(rm2);
 					ref.setParameter(m2.getParameters().get(m.getParameters().indexOf(ref.getParameter())));
 				}

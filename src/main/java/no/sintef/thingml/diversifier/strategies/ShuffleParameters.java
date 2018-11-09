@@ -14,7 +14,6 @@ import org.thingml.xtext.thingML.Expression;
 import org.thingml.xtext.thingML.Message;
 import org.thingml.xtext.thingML.Parameter;
 import org.thingml.xtext.thingML.SendAction;
-import org.thingml.xtext.thingML.Thing;
 import org.thingml.xtext.thingML.ThingMLModel;
 
 import no.sintef.thingml.diversifier.Manager;

@@ -69,7 +69,7 @@ function xp
   cd $PLATFORMDIR/$LANGUAGE/base
   for i in `seq 0 $((N-1))`; do
     build $LANGUAGE base $i
-    run $LANGUAGE base $i
+    timeout -k 15s 60s run $LANGUAGE base $i
     clean $LANGUAGE base $i
     clean2 $LANGUAGE base $i
   done
@@ -78,7 +78,7 @@ function xp
   for i in `seq 0 $((N-1))`; do
     cd $PLATFORMDIR/$LANGUAGE/static/$LANGUAGE$i
     build $LANGUAGE static $i
-    run $LANGUAGE static $i
+    timeout -k 15s 60s run $LANGUAGE static $i
     clean $LANGUAGE static $i
     clean2 $LANGUAGE static $i
   done
@@ -87,7 +87,7 @@ function xp
   for i in `seq 0 $((N-1))`; do
     cd $PLATFORMDIR/$LANGUAGE/dynamic/$LANGUAGE$i
     build $LANGUAGE dynamic $i
-    run $LANGUAGE dynamic $i
+    timeout -k 15s 60s run $LANGUAGE dynamic $i
     clean $LANGUAGE dynamic $i
     clean2 $LANGUAGE dynamic $i
   done
