@@ -1,6 +1,8 @@
 import "pim/DefaultBreakoutGame.thingml"
 
-thing fragment RndGo {
+thing fragment RndGo 
+@go_import "math/rand"
+{
 	function rnd() : Byte do
 		return `byte(rand.Intn(255))`  as Byte
 	end
