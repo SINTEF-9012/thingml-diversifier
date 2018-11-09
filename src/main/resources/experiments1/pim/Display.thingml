@@ -1,0 +1,54 @@
+import "datatypes.thingml" from stl
+
+thing fragment DisplayMsgs {
+
+	message clear()
+	message setColor(r : UInt8, g : UInt8, b : UInt8)
+	message setBGColor(r : UInt8, g : UInt8, b : UInt8)
+	message drawRect(x : UInt8, y : UInt8, width : UInt8, height : UInt8)
+	message fillRect(x : UInt8, y : UInt8, width : UInt8, height : UInt8)
+	message drawInteger(x : UInt8, y : UInt8, v : Int16, digits : UInt8, scale:UInt8)
+	message drawThingML(x : UInt8, y : UInt8)
+
+	message create(xsize : UInt8, ysize : UInt8);
+	message destroy();
+	message update();
+
+	message displayReady();
+}
+
+thing fragment HeadlessDisplay includes DisplayMsgs 
+@stdout_sync "true"
+{
+	abstract function rnd() : Byte
+	function mock() do end
+	
+	provided port display
+	{
+		receives create, destroy, update
+		receives clear, setColor, setBGColor, drawRect, fillRect, drawInteger, drawThingML
+		sends displayReady
+	}
+
+	statechart init INIT {
+		state INIT {
+			on entry display!displayReady()
+			
+			transition -> MOCK
+		}
+		
+		state MOCK {
+			internal event display?create action mock()
+			internal event display?destroy action mock()
+			internal event display?update action mock()
+			
+			internal event display?clear action mock()
+			internal event display?setColor action mock()
+			internal event display?setBGColor action mock()
+			internal event display?drawRect action mock()
+			internal event display?fillRect action mock()
+			internal event display?drawInteger action mock()
+			internal event display?drawThingML action mock()
+		}
+	}
+}

@@ -1,0 +1,42 @@
+import "pim/DefaultBreakoutGame.thingml"
+
+thing fragment RndArduino {
+	function rnd() : Byte do
+		return `random(256)`  as Byte
+	end
+}
+
+thing HeadlessDisplayArduino includes HeadlessDisplay, RndArduino {}
+
+thing BasicIAControllerArduino includes BasicIAController, RndArduino {}
+
+thing BreakoutGameArduino includes DefaultBreakoutGame, RndArduino {
+	property bytesSentCounter : UInt32 = 0
+	
+	function quit() do
+		println ">sent ", bytesSentCounter, " bytes."
+		println ">done in ", stopTime-startTime, "ms!"
+	end
+	function timestamp() : UInt32 return `millis()` as UInt32
+	function usedMemory() : UInt32 do
+		return -1
+	end
+}
+
+
+configuration BreakoutArduino 
+@arduino_stdout "Serial"
+@arduino_stdout_baudrate "115200"
+{
+	
+	instance game : BreakoutGameArduino
+	instance disp : HeadlessDisplayArduino
+	instance ctrl : BasicIAControllerArduino
+	instance timer : TimerArduino
+	
+	connector game.clock => timer.timer	
+	connector game.display => disp.display
+	connector game.controller => ctrl.controls
+	connector ctrl.game => game.ia 
+	
+}

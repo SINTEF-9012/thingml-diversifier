@@ -1,0 +1,5 @@
+import "BreakoutGame.thingml"
+
+thing fragment DefaultBreakoutGame includes BreakoutGame {
+	function unsetBit(variable : UInt8, bit : UInt8) : UInt8 return (``&variable&` & ~(1 << `& bit &`)`) as UInt8
+}

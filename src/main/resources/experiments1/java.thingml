@@ -1,0 +1,41 @@
+import "pim/DefaultBreakoutGame.thingml"
+
+thing fragment RndJava {
+	function rnd() : Byte do
+		return `Math.floor(Math.random() * Math.floor(256))` as Byte
+	end
+}
+
+thing HeadlessDisplayJava includes HeadlessDisplay, RndJava {}
+
+thing BasicIAControllerJava includes BasicIAController, RndJava {}
+
+thing BreakoutGameJava includes DefaultBreakoutGame, RndJava 
+@stdout_sync "true"
+{
+	property bytesSentCounter : UInt32 = 0
+	
+	function quit() do
+		println ">sent ", bytesSentCounter, " bytes."
+		println ">done in ", stopTime-startTime, "ms!"
+		`System.exit(0);`
+	end
+	
+	function timestamp() : UInt32 return `System.currentTimeMillis()` as UInt32
+	
+	function usedMemory() : UInt32 return `Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()` as UInt32
+}
+
+configuration BreakoutJava
+@docker
+{
+	instance game : BreakoutGameJava
+	instance disp : HeadlessDisplayJava
+	instance timer : TimerJava
+	instance ctrl : BasicIAControllerJava
+
+	connector game.clock => timer.timer
+	connector game.display => disp.display
+	connector game.controller => ctrl.controls
+	connector ctrl.game => game.ia
+}

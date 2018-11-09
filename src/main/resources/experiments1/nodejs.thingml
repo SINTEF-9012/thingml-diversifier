@@ -1,0 +1,40 @@
+import "pim/DefaultBreakoutGame.thingml"
+
+thing fragment RndJS {
+	function rnd() : Byte do
+		return `Math.floor(Math.random() * Math.floor(256))`  as Byte
+	end
+}
+
+thing HeadlessDisplayJS includes HeadlessDisplay, RndJS {}
+
+thing BasicIAControllerJS includes BasicIAController, RndJS {}
+
+thing BreakoutGameNodeJS includes DefaultBreakoutGame, RndJS {
+	
+	property bytesSentCounter : UInt32 = 0
+	
+	function quit() do
+		println ">sent ", bytesSentCounter, " bytes."
+		println ">done in ", stopTime-startTime, "ms!"
+		`process.exit(0);`
+	end
+	
+	function timestamp() : UInt32 return `process.hrtime.bigint()/1000000n` as UInt32
+	
+	function usedMemory() : UInt32 return `process.memoryUsage().heapUsed` as UInt32
+}
+
+configuration BreakoutNodeJS
+@docker
+{
+	instance game : BreakoutGameNodeJS
+	instance disp : HeadlessDisplayJS
+	instance timer : TimerNodeJS
+	instance ctrl : BasicIAControllerJS
+
+	connector game.clock => timer.timer
+	connector game.display => disp.display
+	connector game.controller => ctrl.controls
+	connector ctrl.game => game.ia
+}

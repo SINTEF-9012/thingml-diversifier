@@ -1,0 +1,49 @@
+import "pim/DefaultBreakoutGame.thingml"
+
+thing fragment RndGo {
+	function rnd() : Byte do
+		return `byte(rand.Intn(255))`  as Byte
+	end
+}
+
+thing HeadlessDisplayGo includes HeadlessDisplay, RndGo {}
+
+thing BasicIAControllerGo includes BasicIAController, RndGo {}
+
+thing BreakoutGameGo includes BreakoutGame, RndGo 
+@go_import `os`
+@go_import `time`
+@go_import `runtime`
+{
+	property bytesSentCounter : UInt32 = 0
+	
+	function quit() do
+		println ">sent ", bytesSentCounter, " bytes."
+		println ">done in ", stopTime-startTime, "ms!"
+		`os.Exit(0);`
+	end
+	
+	function timestamp() : UInt32 return `uint32(time.Now().UnixNano() / int64(time.Millisecond))` as UInt32
+	
+	function usedMemory() : UInt32 do
+		`var m runtime.MemStats
+		runtime.ReadMemStats(&m)`
+		return `m.HeapAlloc` as UInt32
+	end
+	
+	function unsetBit(variable : UInt8, bit : UInt8) : UInt8 return (``&variable&` & ^(1 << `& bit &`)`) as UInt8
+}
+
+configuration BreakoutGo
+@docker
+{
+	instance game : BreakoutGameGo
+	instance disp : HeadlessDisplayGo
+	instance timer : TimerGo
+	instance ctrl : BasicIAControllerGo
+
+	connector game.clock => timer.timer
+	connector game.display => disp.display
+	connector game.controller => ctrl.controls
+	connector ctrl.game => game.ia
+}
