@@ -13,8 +13,8 @@ thing BasicIAControllerJS includes BasicIAController, RndJS {}
 thing BreakoutGameNodeJS includes DefaultBreakoutGame, RndJS {	
 	function quit() do
 		println ">sent ", bytesSentCounter, " bytes."
-		println ">done in ", stopTime-startTime, "ms!"
-		`process.exit(0);`
+		println ">done in ", (`Number(` & stopTime & `)` - `Number(` & startTime & `)`), "ms!"
+		`process.exitCode = 1;`
 	end
 	
 	function timestamp() : UInt32 return `process.hrtime.bigint()/1000000n` as UInt32
