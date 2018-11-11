@@ -2,6 +2,7 @@
 
 N=10 # Number of diversified version to make
 LANGUAGES=(java nodejs go posix) # Languages to use
+#LANGUAGES=(java) # Languages to use
 
 DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 BASEDIR=$DIR/../../../..
