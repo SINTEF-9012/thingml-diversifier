@@ -2,10 +2,8 @@ package no.sintef.thingml.diversifier.strategies;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.TreeIterator;
@@ -15,12 +13,10 @@ import org.thingml.xtext.constraints.ThingMLHelpers;
 import org.thingml.xtext.constraints.Types;
 import org.thingml.xtext.helpers.AnnotatedElementHelper;
 import org.thingml.xtext.thingML.ActionBlock;
-import org.thingml.xtext.thingML.AndExpression;
 import org.thingml.xtext.thingML.BooleanLiteral;
 import org.thingml.xtext.thingML.ConditionalAction;
 import org.thingml.xtext.thingML.EventReference;
 import org.thingml.xtext.thingML.Expression;
-import org.thingml.xtext.thingML.ExpressionGroup;
 import org.thingml.xtext.thingML.Function;
 import org.thingml.xtext.thingML.FunctionCallExpression;
 import org.thingml.xtext.thingML.Handler;
@@ -31,31 +27,22 @@ import org.thingml.xtext.thingML.Message;
 import org.thingml.xtext.thingML.Parameter;
 import org.thingml.xtext.thingML.Port;
 import org.thingml.xtext.thingML.PrimitiveType;
-import org.thingml.xtext.thingML.PrintAction;
 import org.thingml.xtext.thingML.Property;
 import org.thingml.xtext.thingML.PropertyReference;
 import org.thingml.xtext.thingML.ReceiveMessage;
 import org.thingml.xtext.thingML.SendAction;
 import org.thingml.xtext.thingML.State;
-import org.thingml.xtext.thingML.StringLiteral;
 import org.thingml.xtext.thingML.Thing;
 import org.thingml.xtext.thingML.ThingMLFactory;
 import org.thingml.xtext.thingML.ThingMLModel;
-import org.thingml.xtext.thingML.ThingMLPackage;
+import org.thingml.xtext.thingML.Transition;
 import org.thingml.xtext.thingML.TypeRef;
 import org.thingml.xtext.thingML.VariableAssignment;
 
 import no.sintef.thingml.diversifier.Manager;
 import no.sintef.thingml.diversifier.Mode;
 
-/**
- * This strategy can produce "tricky" models 
- * that certain compilers cannot handler properly
- * (guarded empty internal transitions)
- * Prefer the new SplitMessagesInline2 instead
- * @deprecated
- */
-public class SplitMessagesInline extends Strategy {
+public class SplitMessagesInline2 extends Strategy {
 
 	final Map<String, List<Message>> duplicates = new HashMap<>();
 	
@@ -250,111 +237,122 @@ public class SplitMessagesInline extends Strategy {
 		if (AnnotatedElementHelper.hasFlag(root, "stl")) return;
 		if (AnnotatedElementHelper.hasFlag(thing, "stl")) return;
 		
-		final Set<String> log = new HashSet<>();
-		Map<String, Property> props = new HashMap<>();
-		Property prop1 = null, prop2 = null;
-		
 		final TreeIterator<EObject> it = thing.eAllContents();
 		while (it.hasNext()) {
 			final EObject o = it.next();
 			if (o instanceof Handler) {
-				final Handler t = (Handler) o;
-				//if(!(t instanceof Transition)) continue;
-				if (t.getEvent() != null && t.getEvent() instanceof ReceiveMessage) {
-					final ReceiveMessage rm = (ReceiveMessage) t.getEvent();
-					if (EcoreUtil.equals(rm.getMessage(), m) && EcoreUtil.equals(rm.getPort(), p)) {
-						final State source = (State)t.eContainer();   
-						final Message m1 = duplicates.get(root.getName()+m.getName()).get(0);
-						final Message m2 = duplicates.get(root.getName()+m.getName()).get(1);
-																	
-						if (!log.contains(source.getName() + "_" + p.getName() + "_" + m.getName())) {
-							PrimitiveType bool = Helper.getPrimitiveType(Types.BOOLEAN_TYPE, thing);
-							prop1 = ThingMLFactory.eINSTANCE.createProperty();
-							prop1.setReadonly(false);
-							prop1.setName("received_" + p.getName() + "_" + m1.getName());
-							final TypeRef tr1 = ThingMLFactory.eINSTANCE.createTypeRef();
-							tr1.setType(bool);
-							prop1.setTypeRef(tr1);
-							source.getProperties().add(prop1);
-							props.put("received_" + p.getName() + "_" + m1.getName(), prop1);
-
-							prop2 = ThingMLFactory.eINSTANCE.createProperty();
-							prop2.setReadonly(false);
-							prop2.setName("received_" + p.getName() + "_" + m2.getName());
-							final TypeRef tr2 = ThingMLFactory.eINSTANCE.createTypeRef();
-							tr2.setType(bool);
-							prop2.setTypeRef(tr2);
-							source.getProperties().add(prop2);
-							props.put("received_" + p.getName() + "_" + m2.getName(), prop2);
-
-							for (Parameter param : m.getParameters()) {
-								final Property prop = ThingMLFactory.eINSTANCE.createProperty();
-								prop.setReadonly(false);
-								prop.setName(p.getName() + "_" + m.getName() + "_" + param.getName());
-								prop.setTypeRef(EcoreUtil.copy(param.getTypeRef()));
-								source.getProperties().add(prop);
-								props.put(p.getName() + "_" + m.getName() + "_" + param.getName(), prop);
-							}
-														
-							buildTransition(m1, p, source, m);
-							buildTransition(m2, p, source, m);    
-							
-							log.add(source.getName() + "_" + p.getName() + "_" + m.getName());
-						}
-						
-						prop1 = props.get("received_" + p.getName() + "_" + m1.getName());
-						prop2 = props.get("received_" + p.getName() + "_" + m2.getName());
-						
-						final PropertyReference pr1 = ThingMLFactory.eINSTANCE.createPropertyReference();
-						pr1.setProperty(prop1);
-						final PropertyReference pr2 = ThingMLFactory.eINSTANCE.createPropertyReference();
-						pr2.setProperty(prop2);
-						final AndExpression and = ThingMLFactory.eINSTANCE.createAndExpression();
-						and.setLhs(pr1);
-						and.setRhs(pr2);
-						
-						if (t.getGuard() != null) {
-							final AndExpression andGuard = ThingMLFactory.eINSTANCE.createAndExpression();
-							final Expression guard = replaceEventRefByPropRef(t.getGuard(), props);
-							final ExpressionGroup group = ThingMLFactory.eINSTANCE.createExpressionGroup();
-							group.setTerm(guard);						
-							andGuard.setLhs(and);
-							andGuard.setRhs(group);
-							t.setGuard(andGuard);
-						} else {
-							t.setGuard(and);
-						}
-						
-						ActionBlock b = null;
-						if (t.getAction() == null) {
-							b = ThingMLFactory.eINSTANCE.createActionBlock();
-						} else if (t.getAction() instanceof ActionBlock) {
-							b = (ActionBlock)replaceEventRefByPropRef(t.getAction(), props);
-						} else {
-							b = ThingMLFactory.eINSTANCE.createActionBlock();
-							b.getActions().add(replaceEventRefByPropRef(t.getAction(), props));
-						}
-						t.setAction(b);
-						
-						
-						final BooleanLiteral bool_false = ThingMLFactory.eINSTANCE.createBooleanLiteral();
-						bool_false.setBoolValue(false);
-						final VariableAssignment va1 = ThingMLFactory.eINSTANCE.createVariableAssignment();
-						va1.setProperty(prop1);
-						va1.setExpression(bool_false);
-						b.getActions().add(va1);
-						final VariableAssignment va2 = ThingMLFactory.eINSTANCE.createVariableAssignment();
-						va2.setProperty(prop2);
-						va2.setExpression(EcoreUtil.copy(bool_false));
-						b.getActions().add(va2);						
-						
-						t.eUnset(ThingMLPackage.eINSTANCE.getHandler_Event());
-					}
+				final Handler h = (Handler) o;
+				if (h.getEvent() == null || !(h.getEvent() instanceof ReceiveMessage)) continue;
+				final ReceiveMessage rm = (ReceiveMessage) h.getEvent();
+				if (!EcoreUtil.equals(rm.getMessage(), m) || !EcoreUtil.equals(rm.getPort(), p)) continue;
+								
+				if (h instanceof InternalTransition) {
+					final InternalTransition t = (InternalTransition) h;
+					updateHandlers(root, t);
+				} else if (h instanceof Transition) {
+					final Transition t = (Transition) h;
+					updateHandlers(root, t);
 				}
-			} 
+				
+			}
 		}
-		//p.getReceives().remove(m);
-	}    
+	}   
+	
+	private Handler createHandler(Message m1, ReceiveMessage rm, InternalTransition t, State source, Property prop1, Property prop2, Map<String, Property> props) {
+		for (Parameter param : m1.getParameters()) {
+			final Property prop = ThingMLFactory.eINSTANCE.createProperty();
+			prop.setReadonly(false);
+			prop.setName(rm.getPort().getName() + "_" + rm.getMessage().getName() + "_" + param.getName());
+			prop.setTypeRef(EcoreUtil.copy(param.getTypeRef()));
+			source.getProperties().add(prop);
+			props.put(rm.getPort().getName() + "_" + rm.getMessage().getName() + "_" + param.getName(), prop);
+		}
+		
+		final InternalTransition t1 = ThingMLFactory.eINSTANCE.createInternalTransition();
+		final ReceiveMessage rm1 = ThingMLFactory.eINSTANCE.createReceiveMessage();
+		rm1.setMessage(m1);
+		rm1.setPort(rm.getPort());
+		rm1.setName("ev");
+		t1.setEvent(rm1);
+		if (t.getGuard()!=null) t1.setGuard(EcoreUtil.copy(t.getGuard()));
+		final ActionBlock b1 = ThingMLFactory.eINSTANCE.createActionBlock();
+		//Mark message has received
+		final BooleanLiteral true1 = ThingMLFactory.eINSTANCE.createBooleanLiteral();
+		true1.setBoolValue(true);
+		final VariableAssignment va1 = ThingMLFactory.eINSTANCE.createVariableAssignment();
+		va1.setProperty(prop1);
+		va1.setExpression(true1);
+		b1.getActions().add(va1);
+		//Save params
+		for (Parameter p : rm.getMessage().getParameters()) {			
+			Property prop = null;
+			for(Property pr : source.getProperties()) {
+				if (pr.getName().equals(rm.getPort().getName() + "_" + rm.getMessage().getName() + "_" + p.getName())) {
+					prop = pr;
+					break;
+				}
+			}
+			final VariableAssignment va = ThingMLFactory.eINSTANCE.createVariableAssignment();
+			va.setProperty(prop);
+			final EventReference ref = ThingMLFactory.eINSTANCE.createEventReference();
+			ref.setReceiveMsg(rm);
+			ref.setParameter(p);
+			va.setExpression(ref);
+			b1.getActions().add(va);
+		}
+		t1.setAction(b1);
+		source.getInternal().add(t1);
+		
+		return t1;
+	}
+	
+	private void updateHandlers(Thing root, InternalTransition t) {
+		final ReceiveMessage rm = (ReceiveMessage)t.getEvent();
+		final State source = (State)t.eContainer();
+		final Message m1 = duplicates.get(root.getName() + rm.getMessage().getName()).get(0);
+		final Message m2 = duplicates.get(root.getName() + rm.getMessage().getName()).get(1);
+		
+		PrimitiveType bool = Helper.getPrimitiveType(Types.BOOLEAN_TYPE, root);
+			
+		final Property prop1 = ThingMLFactory.eINSTANCE.createProperty();
+		prop1.setReadonly(false);
+		prop1.setName("received_" + rm.getPort().getName() + "_" + m1.getName());
+		final TypeRef tr1 = ThingMLFactory.eINSTANCE.createTypeRef();
+		tr1.setType(bool);
+		prop1.setTypeRef(tr1);
+		source.getProperties().add(prop1);
+		
+		final Property prop2 = ThingMLFactory.eINSTANCE.createProperty();
+		prop2.setReadonly(false);
+		prop2.setName("received_" + rm.getPort().getName() + "_" + m2.getName());
+		final TypeRef tr2 = ThingMLFactory.eINSTANCE.createTypeRef();
+		tr2.setType(bool);
+		prop2.setTypeRef(tr2);
+		source.getProperties().add(prop2);	
+		
+		Map<String, Property> props = new HashMap<>();
+		
+		final Handler t1 = createHandler(m1, rm, t, source, prop1, prop2, props);
+		final Handler t2 = createHandler(m2, rm, t, source, prop1, prop2, props);
+		
+		final PropertyReference pr2 = ThingMLFactory.eINSTANCE.createPropertyReference();
+		pr2.setProperty(prop2);
+		final ConditionalAction if1 = ThingMLFactory.eINSTANCE.createConditionalAction();
+		if1.setCondition(pr2);
+		if1.setAction(replaceEventRefByPropRef(EcoreUtil.copy(t.getAction()), props));
+		((ActionBlock)t1.getAction()).getActions().add(if1);
+
+		final PropertyReference pr1 = ThingMLFactory.eINSTANCE.createPropertyReference();
+		pr1.setProperty(prop1);
+		final ConditionalAction if2 = ThingMLFactory.eINSTANCE.createConditionalAction();
+		if2.setCondition(pr1);
+		if2.setAction(replaceEventRefByPropRef(EcoreUtil.copy(t.getAction()), props));
+		((ActionBlock)t2.getAction()).getActions().add(if2);
+		
+		source.getInternal().remove(t);
+	}
+	
+	private void updateHandlers(Thing root, Transition t) {}
 
 	private <T extends EObject> T replaceEventRefByPropRef(T e, Map<String, Property> props) {
 		final TreeIterator<EObject> it = e.eAllContents();
@@ -377,64 +375,6 @@ public class SplitMessagesInline extends Strategy {
 			}
 		}
 		return e;
-	}
-	
-	private void buildTransition(Message m, Port p, State from, Message orig) {
-		System.out.println("Building new handler in " + from.getName() + " on event " + p.getName() + "?" + m.getName());
-		final ReceiveMessage rm = ThingMLFactory.eINSTANCE.createReceiveMessage();
-		rm.setName("ev");
-		rm.setPort(p);
-		rm.setMessage(m);
-		final InternalTransition t = ThingMLFactory.eINSTANCE.createInternalTransition();
-		from.getInternal().add(t);
-		t.setEvent(rm);
-		final ActionBlock b1 = buildActionForTransition(from, rm, orig);
-        t.setAction(b1);
-	}    
-
-	private ActionBlock buildActionForTransition(State source, ReceiveMessage rm, Message orig) {
-		final ActionBlock b = ThingMLFactory.eINSTANCE.createActionBlock();
-		if (debug) {
-			final PrintAction print = ThingMLFactory.eINSTANCE.createPrintAction();
-			print.setLine(true);
-			final StringLiteral msg = ThingMLFactory.eINSTANCE.createStringLiteral();
-			msg.setStringValue(rm.getPort().getName() + "?" + rm.getMessage().getName());
-			print.getMsg().add(msg);
-			b.getActions().add(print);
-		}
-		for (Parameter p : rm.getMessage().getParameters()) {			
-			Property prop = null;
-			for(Property pr : source.getProperties()) {
-				if (pr.getName().equals(rm.getPort().getName() + "_" + orig.getName() + "_" + p.getName())) {
-					prop = pr;
-					break;
-				}
-			}
-			
-			final VariableAssignment va = ThingMLFactory.eINSTANCE.createVariableAssignment();
-			va.setProperty(prop);
-			final EventReference ref = ThingMLFactory.eINSTANCE.createEventReference();
-			ref.setReceiveMsg(rm);
-			ref.setParameter(p);
-			va.setExpression(ref);
-			b.getActions().add(va);
-		}
-		
-		final VariableAssignment va = ThingMLFactory.eINSTANCE.createVariableAssignment();		
-		Property prop = null;
-		for(Property pr : source.getProperties()) {
-			if (pr.getName().equals("received_" + rm.getPort().getName() + "_" + rm.getMessage().getName())) {
-				prop = pr;
-				break;
-			}			
-		}		
-		va.setProperty(prop);
-		final BooleanLiteral lit = ThingMLFactory.eINSTANCE.createBooleanLiteral();
-		lit.setBoolValue(true);
-		va.setExpression(lit);
-		b.getActions().add(va);
-		
-		return b;
 	}
 
 }
