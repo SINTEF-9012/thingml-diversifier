@@ -284,7 +284,7 @@ public class SplitMessagesInline2 extends Strategy {
 		va1.setExpression(true1);
 		b1.getActions().add(va1);
 		//Save params
-		for (Parameter p : rm.getMessage().getParameters()) {			
+		for (Parameter p : m1.getParameters()) {			
 			Property prop = null;
 			for(Property pr : source.getProperties()) {
 				if (pr.getName().equals(rm.getPort().getName() + "_" + rm.getMessage().getName() + "_" + p.getName())) {
@@ -295,7 +295,7 @@ public class SplitMessagesInline2 extends Strategy {
 			final VariableAssignment va = ThingMLFactory.eINSTANCE.createVariableAssignment();
 			va.setProperty(prop);
 			final EventReference ref = ThingMLFactory.eINSTANCE.createEventReference();
-			ref.setReceiveMsg(rm);
+			ref.setReceiveMsg(rm1);
 			ref.setParameter(p);
 			va.setExpression(ref);
 			b1.getActions().add(va);
@@ -306,14 +306,37 @@ public class SplitMessagesInline2 extends Strategy {
 		return t1;
 	}
 	
+	private void finalizeHandler(InternalTransition t1, InternalTransition t, Property prop1, Property prop2, PropertyReference pr, Map<String, Property> props) {		
+		
+		final BooleanLiteral _false = ThingMLFactory.eINSTANCE.createBooleanLiteral();
+		_false.setBoolValue(false);
+		
+		final ConditionalAction if1 = ThingMLFactory.eINSTANCE.createConditionalAction();
+		if1.setCondition(EcoreUtil.copy(pr));
+		final ActionBlock b1 = ThingMLFactory.eINSTANCE.createActionBlock();
+		final VariableAssignment reset1 = ThingMLFactory.eINSTANCE.createVariableAssignment();
+		reset1.setProperty(prop1);
+		reset1.setExpression(EcoreUtil.copy(_false));
+		final VariableAssignment reset2 = ThingMLFactory.eINSTANCE.createVariableAssignment();
+		reset2.setProperty(prop2);
+		reset2.setExpression(EcoreUtil.copy(_false));
+		b1.getActions().add(reset1);
+		b1.getActions().add(reset2);
+		final ActionBlock b2 = ThingMLFactory.eINSTANCE.createActionBlock();
+		b2.getActions().add(replaceEventRefByPropRef(EcoreUtil.copy(t.getAction()), props));
+		b2.getActions().add(b1);
+		if1.setAction(b2);		
+		((ActionBlock)t1.getAction()).getActions().add(if1);
+	}
+	
 	private void updateHandlers(Thing root, InternalTransition t) {
 		final ReceiveMessage rm = (ReceiveMessage)t.getEvent();
 		final State source = (State)t.eContainer();
 		final Message m1 = duplicates.get(root.getName() + rm.getMessage().getName()).get(0);
 		final Message m2 = duplicates.get(root.getName() + rm.getMessage().getName()).get(1);
 		
-		PrimitiveType bool = Helper.getPrimitiveType(Types.BOOLEAN_TYPE, root);
-			
+		final PrimitiveType bool = Helper.getPrimitiveType(Types.BOOLEAN_TYPE, root);
+					
 		final Property prop1 = ThingMLFactory.eINSTANCE.createProperty();
 		prop1.setReadonly(false);
 		prop1.setName("received_" + rm.getPort().getName() + "_" + m1.getName());
@@ -321,6 +344,8 @@ public class SplitMessagesInline2 extends Strategy {
 		tr1.setType(bool);
 		prop1.setTypeRef(tr1);
 		source.getProperties().add(prop1);
+		final PropertyReference pr1 = ThingMLFactory.eINSTANCE.createPropertyReference();
+		pr1.setProperty(prop1);
 		
 		final Property prop2 = ThingMLFactory.eINSTANCE.createProperty();
 		prop2.setReadonly(false);
@@ -328,26 +353,17 @@ public class SplitMessagesInline2 extends Strategy {
 		final TypeRef tr2 = ThingMLFactory.eINSTANCE.createTypeRef();
 		tr2.setType(bool);
 		prop2.setTypeRef(tr2);
-		source.getProperties().add(prop2);	
+		source.getProperties().add(prop2);
+		final PropertyReference pr2 = ThingMLFactory.eINSTANCE.createPropertyReference();
+		pr2.setProperty(prop2);
 		
 		Map<String, Property> props = new HashMap<>();
 		
-		final Handler t1 = createHandler(m1, rm, t, source, prop1, prop2, props);
-		final Handler t2 = createHandler(m2, rm, t, source, prop1, prop2, props);
+		final InternalTransition t1 = (InternalTransition) createHandler(m1, rm, t, source, prop1, prop2, props);
+		final InternalTransition t2 = (InternalTransition) createHandler(m2, rm, t, source, prop1, prop2, props);
 		
-		final PropertyReference pr2 = ThingMLFactory.eINSTANCE.createPropertyReference();
-		pr2.setProperty(prop2);
-		final ConditionalAction if1 = ThingMLFactory.eINSTANCE.createConditionalAction();
-		if1.setCondition(pr2);
-		if1.setAction(replaceEventRefByPropRef(EcoreUtil.copy(t.getAction()), props));
-		((ActionBlock)t1.getAction()).getActions().add(if1);
-
-		final PropertyReference pr1 = ThingMLFactory.eINSTANCE.createPropertyReference();
-		pr1.setProperty(prop1);
-		final ConditionalAction if2 = ThingMLFactory.eINSTANCE.createConditionalAction();
-		if2.setCondition(pr1);
-		if2.setAction(replaceEventRefByPropRef(EcoreUtil.copy(t.getAction()), props));
-		((ActionBlock)t2.getAction()).getActions().add(if2);
+		finalizeHandler(t1, t, prop1, prop2, pr2, props);
+		finalizeHandler(t2, t, prop1, prop2, pr1, props);
 		
 		source.getInternal().remove(t);
 	}

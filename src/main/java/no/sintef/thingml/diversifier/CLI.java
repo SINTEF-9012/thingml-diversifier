@@ -24,6 +24,7 @@ import no.sintef.thingml.diversifier.strategies.DuplicateMessages;
 import no.sintef.thingml.diversifier.strategies.ShuffleMessages;
 import no.sintef.thingml.diversifier.strategies.ShuffleParameters;
 import no.sintef.thingml.diversifier.strategies.SplitMessagesInline;
+import no.sintef.thingml.diversifier.strategies.SplitMessagesInline2;
 import no.sintef.thingml.diversifier.strategies.UpsizeParameters;
 
 public class CLI {
@@ -103,7 +104,7 @@ public class CLI {
 			} else if (s.equals(Strategies.SHUFF_PARAM.name)) {
 				manager.add(new ShuffleParameters()); 
 			} else if (s.equals(Strategies.SPLIT_MSG.name)) {
-				manager.add(new SplitMessagesInline());
+				manager.add(new SplitMessagesInline2());
 			} else if (s.equals(Strategies.UP_PARAM.name)) {
 				manager.add(new UpsizeParameters()); 
 			} else if (s.equals(Strategies.CODE_MSG.name)) {
