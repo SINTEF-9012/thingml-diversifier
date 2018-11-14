@@ -105,6 +105,7 @@ public class CLI {
 				manager.add(new ShuffleParameters()); 
 			} else if (s.equals(Strategies.SPLIT_MSG.name)) {
 				manager.add(new SplitMessagesInline2());
+				//manager.add(new SplitMessagesInline());
 			} else if (s.equals(Strategies.UP_PARAM.name)) {
 				manager.add(new UpsizeParameters()); 
 			} else if (s.equals(Strategies.CODE_MSG.name)) {
