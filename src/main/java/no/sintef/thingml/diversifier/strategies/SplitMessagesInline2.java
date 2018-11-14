@@ -339,21 +339,23 @@ public class SplitMessagesInline2 extends Strategy {
 		va1.setExpression(true1);
 		b1.getActions().add(va1);
 		//Save params
-		for (Parameter p : m1.getParameters()) {			
-			Property prop = null;
-			for(Property pr : source.getProperties()) {
-				if (pr.getName().equals(rm.getPort().getName() + "_" + rm.getMessage().getName() + "_" + p.getName())) {
-					prop = pr;
-					break;
+		if (rm.getName() != null) {
+			for (Parameter p : m1.getParameters()) {			
+				Property prop = null;
+				for(Property pr : source.getProperties()) {
+					if (pr.getName().equals(rm.getPort().getName() + "_" + rm.getMessage().getName() + "_" + p.getName())) {
+						prop = pr;
+						break;
+					}
 				}
+				final VariableAssignment va = ThingMLFactory.eINSTANCE.createVariableAssignment();
+				va.setProperty(prop);
+				final EventReference ref = ThingMLFactory.eINSTANCE.createEventReference();
+				ref.setReceiveMsg(rm1);
+				ref.setParameter(p);
+				va.setExpression(ref);
+				b1.getActions().add(va);
 			}
-			final VariableAssignment va = ThingMLFactory.eINSTANCE.createVariableAssignment();
-			va.setProperty(prop);
-			final EventReference ref = ThingMLFactory.eINSTANCE.createEventReference();
-			ref.setReceiveMsg(rm1);
-			ref.setParameter(p);
-			va.setExpression(ref);
-			b1.getActions().add(va);
 		}
 		t1.setAction(b1);
 		source.getInternal().add(t1);
@@ -516,21 +518,23 @@ public class SplitMessagesInline2 extends Strategy {
 		
 		final ActionBlock b1 = ThingMLFactory.eINSTANCE.createActionBlock();
 		//Save params
-		for (Parameter p : m1.getParameters()) {			
-			Property prop = null;
-			for(Property pro : source.getProperties()) {
-				if (pro.getName().equals(rm.getPort().getName() + "_" + rm.getMessage().getName() + "_" + p.getName())) {
-					prop = pro;
-					break;
+		if (rm.getName() != null) {
+			for (Parameter p : m1.getParameters()) {			
+				Property prop = null;
+				for(Property pro : source.getProperties()) {
+					if (pro.getName().equals(rm.getPort().getName() + "_" + rm.getMessage().getName() + "_" + p.getName())) {
+						prop = pro;
+						break;
+					}
 				}
+				final VariableAssignment va = ThingMLFactory.eINSTANCE.createVariableAssignment();
+				va.setProperty(prop);
+				final EventReference ref = ThingMLFactory.eINSTANCE.createEventReference();
+				ref.setReceiveMsg(rm1);
+				ref.setParameter(p);
+				va.setExpression(ref);
+				b1.getActions().add(va);
 			}
-			final VariableAssignment va = ThingMLFactory.eINSTANCE.createVariableAssignment();
-			va.setProperty(prop);
-			final EventReference ref = ThingMLFactory.eINSTANCE.createEventReference();
-			ref.setReceiveMsg(rm1);
-			ref.setParameter(p);
-			va.setExpression(ref);
-			b1.getActions().add(va);
 		}
 		
 		if (t.getAction() != null) {
