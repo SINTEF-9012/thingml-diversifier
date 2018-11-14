@@ -14,8 +14,10 @@ thing BreakoutGameJava includes DefaultBreakoutGame, RndJava
 @stdout_sync "true"
 {	
 	function quit() do
+		`System.gc();`
 		println ">sent ", bytesSentCounter, " bytes."
 		println ">done in ", stopTime-startTime, "ms!"
+		log(true)
 		`System.exit(0);`
 	end
 	

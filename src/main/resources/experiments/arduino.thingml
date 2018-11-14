@@ -3,7 +3,7 @@ import "datatypes.thingml" from stl
 protocol Default;
 
 thing fragment Msgs {
-	message m1(a : Byte@upsize "not", b : Byte@upsize "not", c : Integer, d : Byte@weakparam "true", e : Byte)
+	message m1(a : Byte@upsize "not", b : Byte@upsize "not", c : Int16, d : Byte@weakparam "true", e : Byte)
 	message m2(a : Byte@upsize "not", b : Byte@upsize "not", c : Byte)
 	message m3(a : Byte)
 
@@ -11,10 +11,10 @@ thing fragment Msgs {
 		return `random(256)`
 	end
 
-	property counter : Integer = 0
-	property N : Integer = 100
+	property counter : UInt32 = 0
+	property N : UInt32 = 100
 
-	property bytesSentCounter : Long = 0
+	property bytesSentCounter : UInt32 = 0
 }
 
 thing App includes Msgs {
@@ -65,7 +65,7 @@ thing App includes Msgs {
 
 thing Client includes Msgs {
 
-	property start : Integer
+	property start : UInt32
 
 	property _a : Byte
 	property _b : Byte
@@ -121,7 +121,7 @@ thing Client includes Msgs {
 		final state STOP {
 			on entry do
 				println "#CLI: What are you waitin for? Christmas?"
-				var duration : Integer = `millis()` - start
+				var duration : UInt32 = `millis()` - start
 				println "#CLI: took ", duration, " ms."
 				println "#CLI: used ", `2048-minFreeRam`, " bts."
 				println "#CLI: sent ", bytesSentCounter, " bts."

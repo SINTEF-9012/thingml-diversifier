@@ -12,8 +12,12 @@ thing BasicIAControllerJS includes BasicIAController, RndJS {}
 
 thing BreakoutGameNodeJS includes DefaultBreakoutGame, RndJS {	
 	function quit() do
+		`if (global.gc) {
+			global.gc();
+		}`
 		println ">sent ", bytesSentCounter, " bytes."
 		println ">done in ", (`Number(` & stopTime & `)` - `Number(` & startTime & `)`), "ms!"
+		log(true)
 		`process.exitCode = 1;`
 	end
 	

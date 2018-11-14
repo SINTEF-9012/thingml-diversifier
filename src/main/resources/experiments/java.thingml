@@ -3,7 +3,7 @@ import "datatypes.thingml" from stl
 protocol Default;
 
 thing fragment Msgs {
-	message m1(a : Byte@upsize "not", b : Byte@upsize "not", c : Integer, d : Byte@weakparam "true", e : Byte)@code "0"
+	message m1(a : Byte@upsize "not", b : Byte@upsize "not", c : Int16, d : Byte@weakparam "true", e : Byte)@code "0"
 	message m2(a : Byte@upsize "not", b : Byte@upsize "not", c : Byte)@code "1"
 	message m3(a : Byte)@code "2"
 
@@ -11,10 +11,10 @@ thing fragment Msgs {
 		return `Math.floor(Math.random() * Math.floor(256))`
 	end
 
-	property counter : Integer = 0
-	property N : Integer = 1000
+	property counter : UInt32 = 0
+	property N : UInt32 = 1000
 
-	property bytesSentCounter : Long = 0
+	property bytesSentCounter : UInt32 = 0
 }
 
 thing App includes Msgs
@@ -70,7 +70,7 @@ thing Client includes Msgs
 @stdout_sync "true"
 {
 
-	property start : Integer
+	property start : UInt32
 
 	property _a : Byte
 	property _b : Byte
@@ -126,7 +126,7 @@ thing Client includes Msgs
 		final state STOP {
 			on entry do
 				println "#CLI: What are you waitin for? Christmas?"
-				var duration : Integer = `System.currentTimeMillis()` - start
+				var duration : UInt32 = `System.currentTimeMillis()` - start
 				println "#CLI: took ", duration, "ms."
 				/*
 				`
