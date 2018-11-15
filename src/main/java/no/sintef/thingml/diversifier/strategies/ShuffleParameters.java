@@ -27,7 +27,7 @@ public class ShuffleParameters extends Strategy {
             final EObject o = it.next();
             if (o instanceof Message) {
                 final Message m = (Message) o;
-                if (AnnotatedElementHelper.hasFlag(ThingMLHelpers.findContainingThing(m), "stl")) continue;
+                //if (AnnotatedElementHelper.hasFlag(ThingMLHelpers.findContainingThing(m), "stl")) continue;
         		if (m.getParameters().size() == 0 || !Manager.diversify(m)) continue;
                 System.out.println("Changing parameter order for message " + m.getName());
                 final List<Parameter> original = new ArrayList<>();

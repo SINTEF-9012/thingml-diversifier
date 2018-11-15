@@ -62,7 +62,7 @@ public class DuplicateMessages extends Strategy {
 			final EObject o = it.next();
 			if (!(o instanceof Thing)) continue;
 			final Thing thing = (Thing)o;
-			if (AnnotatedElementHelper.hasFlag(thing, "stl")) continue;
+			//if (AnnotatedElementHelper.hasFlag(thing, "stl")) continue;
 			final List<Message> msgs = new ArrayList<Message>();
 			msgs.addAll(thing.getMessages());
 			for (Message msg : msgs) {
@@ -78,12 +78,12 @@ public class DuplicateMessages extends Strategy {
 			final EObject o = it2.next();
 			if (!(o instanceof Thing)) continue;
 			final Thing thing = (Thing)o;
-			if (AnnotatedElementHelper.hasFlag(thing, "stl")) continue;
+			//if (AnnotatedElementHelper.hasFlag(thing, "stl")) continue;
 			for(Port port : thing.getPorts()) {			
 				final List<Message> sent = new ArrayList<>();
 				sent.addAll(port.getSends());
 				for (Message msg : sent) {
-					if (AnnotatedElementHelper.hasFlag(ThingMLHelpers.findContainingThing(msg), "stl")) continue;				
+					//if (AnnotatedElementHelper.hasFlag(ThingMLHelpers.findContainingThing(msg), "stl")) continue;				
 					if (!Manager.diversify(msg)) continue;					
 					final Message copy = getCopy(msg);
 					port.getSends().add(copy);
@@ -92,7 +92,7 @@ public class DuplicateMessages extends Strategy {
 				final List<Message> received = new ArrayList<>();
 				received.addAll(port.getReceives());
 				for (Message msg : received) {
-					if (AnnotatedElementHelper.hasFlag(ThingMLHelpers.findContainingThing(msg), "stl")) continue;				
+					//if (AnnotatedElementHelper.hasFlag(ThingMLHelpers.findContainingThing(msg), "stl")) continue;				
 					if (!Manager.diversify(msg)) continue;					
 					final Message copy = getCopy(msg);
 					port.getReceives().add(copy);
@@ -166,7 +166,7 @@ public class DuplicateMessages extends Strategy {
 		if (h.getEvent() != null && h.getEvent() instanceof ReceiveMessage) {
 			final ReceiveMessage rm = (ReceiveMessage) h.getEvent();
 			final Thing root = ThingMLHelpers.findContainingThing(rm.getMessage());
-			if (AnnotatedElementHelper.hasFlag(root, "stl")) return;
+			//if (AnnotatedElementHelper.hasFlag(root, "stl")) return;
 			final Message m = rm.getMessage();
 			final Message m2 = getCopy(m);
 			final Thing thing = ThingMLHelpers.findContainingThing(h);

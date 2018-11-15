@@ -71,7 +71,7 @@ public class SplitMessagesInline extends Strategy {
 			final EObject o = it.next();
 			if (o instanceof Thing) {
 				final Thing t = (Thing) o;
-				if (AnnotatedElementHelper.hasFlag(t, "stl")) continue;
+				//if (AnnotatedElementHelper.hasFlag(t, "stl")) continue;
 				//if (!Manager.diversify(t)) return;
 				final List<Message> msgs = new ArrayList<>();
 				msgs.addAll(t.getMessages());
@@ -97,7 +97,7 @@ public class SplitMessagesInline extends Strategy {
 			final EObject o = it2.next();
 			if (o instanceof Thing) {
 				final Thing t = (Thing) o;
-				if (AnnotatedElementHelper.hasFlag(t, "stl")) continue;
+				//if (AnnotatedElementHelper.hasFlag(t, "stl")) continue;
 				//final List<Port> ports = new ArrayList<>();
 				//ports.addAll(t.getPorts());
 				for (Port port : ThingMLHelpers.allPorts(t)) {
@@ -107,7 +107,7 @@ public class SplitMessagesInline extends Strategy {
 					sent.addAll(port.getSends());
 					for(Message msg : sent) {
 						final Thing root = ThingMLHelpers.findContainingThing(msg);
-						if (AnnotatedElementHelper.hasFlag(root, "stl")) continue;				
+						//if (AnnotatedElementHelper.hasFlag(root, "stl")) continue;				
 						if (!Manager.diversify(msg)) continue;
 						List<Message> messages = duplicates.get(root.getName()+msg.getName());
 						if (messages == null) continue;
@@ -124,7 +124,7 @@ public class SplitMessagesInline extends Strategy {
 					received.addAll(port.getReceives());
 					for(Message msg : received) {
 						final Thing root = ThingMLHelpers.findContainingThing(msg);
-						if (AnnotatedElementHelper.hasFlag(root, "stl")) continue;				
+						//if (AnnotatedElementHelper.hasFlag(root, "stl")) continue;				
 						if (!Manager.diversify(msg)) continue;
 						List<Message> messages = duplicates.get(root.getName()+msg.getName());
 						if (messages == null) continue;
@@ -247,8 +247,8 @@ public class SplitMessagesInline extends Strategy {
 
 	private void updateHandlers(Thing thing, Port p, Message m) {
 		final Thing root = ThingMLHelpers.findContainingThing(m);
-		if (AnnotatedElementHelper.hasFlag(root, "stl")) return;
-		if (AnnotatedElementHelper.hasFlag(thing, "stl")) return;
+		//if (AnnotatedElementHelper.hasFlag(root, "stl")) return;
+		//if (AnnotatedElementHelper.hasFlag(thing, "stl")) return;
 		
 		final Set<String> log = new HashSet<>();
 		Map<String, Property> props = new HashMap<>();
