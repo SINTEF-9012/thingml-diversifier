@@ -1,4 +1,4 @@
-import "pim/DefaultBreakoutGame.thingml"
+import "pim/BreakoutGame.thingml"
 
 thing fragment RndJS {
 	function rnd() : Byte do
@@ -10,7 +10,7 @@ thing HeadlessDisplayJS includes HeadlessDisplay, RndJS {}
 
 thing BasicIAControllerJS includes BasicIAController, RndJS {}
 
-thing BreakoutGameNodeJS includes DefaultBreakoutGame, RndJS {	
+thing BreakoutGameNodeJS includes BreakoutGame, RndJS {	
 	function quit() do
 		`if (global.gc) {
 			global.gc();
@@ -24,9 +24,11 @@ thing BreakoutGameNodeJS includes DefaultBreakoutGame, RndJS {
 	function timestamp() : UInt32 return `process.hrtime.bigint()/1000000n` as UInt32
 	
 	function usedMemory() : UInt32 return `process.memoryUsage().heapUsed` as UInt32
+	
+	function unsetBit(variable : UInt8, bit : UInt8) : UInt8 return (``&variable&` & ~(1 << `& bit &`)`) as UInt8
 }
 
-configuration BreakoutNodeJS
+configuration test
 @docker
 {
 	instance game : BreakoutGameNodeJS

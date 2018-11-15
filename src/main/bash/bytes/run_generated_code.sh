@@ -40,8 +40,42 @@ function run_go()
   (cd $WORKDIR; ./test.exe > output.log)
 }
 
-### Generate platform code ###
-for LANGUAGE in ${LANGUAGES[@]}; do
+function compile_posix()
+{
+  cd $WORKDIR
+  timeout -k 10s 60s make 
+  cp test binary
+}
+function run_posix()
+{
+  cd $WORKDIR
+  timeout -k 15s 90s ./test > output.log
+}
+
+function perform
+{
+  LANGUAGE=$1
+  MODE=$2
+  i=$3
+  NOLOG=$4
+
+  echo "!!! $LANGUAGE $MODE $i !!!"
+  if [ "$LANGUAGE" == "nodejs" ]; then
+    find $WORKDIR/* -maxdepth 0 -not -name 'node_modules' -exec rm -r {} +
+  else
+    rm -r $WORKDIR/*
+  fi
+  cp -r $PLATFORMDIR/$LANGUAGE/$NOLOG/$MODE/$LANGUAGE$i/* $WORKDIR/
+
+  compile_$LANGUAGE
+  mv $WORKDIR/binary $BINSDIR/$LANGUAGE/$MODE/$LANGUAGE$i.bin
+  run_$LANGUAGE
+  mv $WORKDIR/output.log $LOGSDIR/$LANGUAGE/$MODE/$LANGUAGE$NOLOG$i.log
+}
+
+function xp
+{
+  LANGUAGE=$1
   echo "---- LANGUAGE $LANGUAGE ----"
   mkdir $LOGSDIR/$LANGUAGE/
   mkdir $LOGSDIR/$LANGUAGE/base
@@ -53,51 +87,30 @@ for LANGUAGE in ${LANGUAGES[@]}; do
   mkdir $BINSDIR/$LANGUAGE/dynamic
 
   echo "-- RUNNING BASE MODEL CODE --"
-  rm -r $WORKDIR/*
-  cp -r $PLATFORMDIR/$LANGUAGE/base/* $WORKDIR/
-  if [ "$LANGUAGE" == "nodejs" ]; then
-    # Run npm install only once. It's slow...
-    (cd $WORKDIR; npm install; npm install webpack; npm install webpack-cli)
-  fi
-  # Compile base only once, it's the same every time
-  compile_$LANGUAGE
-  mv $WORKDIR/binary $BINSDIR/$LANGUAGE/base/$LANGUAGE.bin
   for i in `seq 0 $((N-1))`; do
-    echo "!!! $LANGUAGE base $i !!!"
-    run_$LANGUAGE
-    mv $WORKDIR/output.log $LOGSDIR/$LANGUAGE/base/$LANGUAGE$i.log
+	perform $LANGUAGE base 0 ""
+	perform $LANGUAGE base 0 nolog
   done
 
   echo "-- RUNNING STATIC DIVERSIFICATED MODEL CODE --"
   for i in `seq 0 $((N-1))`; do
-    echo "!!! $LANGUAGE static $i !!!"
-    if [ "$LANGUAGE" == "nodejs" ]; then
-      find $WORKDIR/* -maxdepth 0 -not -name 'node_modules' -exec rm -r {} +
-    else
-      rm -r $WORKDIR/*
-    fi
-    cp -r $PLATFORMDIR/$LANGUAGE/static/$LANGUAGE$i/* $WORKDIR/
-
-    compile_$LANGUAGE
-    mv $WORKDIR/binary $BINSDIR/$LANGUAGE/static/$LANGUAGE$i.bin
-    run_$LANGUAGE
-    mv $WORKDIR/output.log $LOGSDIR/$LANGUAGE/static/$LANGUAGE$i.log
+	perform $LANGUAGE static $i ""
+	perform $LANGUAGE static $i nolog
   done
 
   echo "-- RUNNING DYNAMIC DIVERSIFICATED MODEL CODE --"
   for i in `seq 0 $((N-1))`; do
-    echo "!!! $LANGUAGE dynamic $i !!!"
-    if [ "$LANGUAGE" == "nodejs" ]; then
-      find $WORKDIR/* -maxdepth 0 -not -name 'node_modules' -exec rm -r {} +
-    else
-      rm -r $WORKDIR/*
-    fi
-    cp -r $PLATFORMDIR/$LANGUAGE/dynamic/$LANGUAGE$i/* $WORKDIR/
-
-    compile_$LANGUAGE
-    mv $WORKDIR/binary $BINSDIR/$LANGUAGE/dynamic/$LANGUAGE$i.bin
-    run_$LANGUAGE
-    mv $WORKDIR/output.log $LOGSDIR/$LANGUAGE/dynamic/$LANGUAGE$i.log
+  	perform $LANGUAGE dynamic $i ""
+  	perform $LANGUAGE dynamic $i nolog
   done
+}
 
+logo
+echo "------ RUNNING LOCALLY ------"
+echo "---- RUNNING XP ----"
+for LANGUAGE in ${LANGUAGES[@]}; do
+  xp $LANGUAGE &
 done
+wait
+echo "------ DONE ------"
+logo

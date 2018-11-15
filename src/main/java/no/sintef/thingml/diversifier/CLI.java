@@ -135,8 +135,24 @@ public class CLI {
 
 	}
 
+	private static void logo() {
+		System.out.println("  _____ _     _             __  __ _           ");
+		System.out.println(" |_   _| |__ (_)_ __   __ _|  \\/  | |          ");
+		System.out.println("   | | | '_ \\| | '_ \\ / _\\` | |\\/| | |          ");
+		System.out.println("   | | | | | | | | | | (_| | |  | | |___       ");
+		System.out.println("   |_| |_| |_|_|_| |_|\\__, |_|  |_|_____|      ");
+		System.out.println("  ____  _             |___/  _  __ _           ");
+		System.out.println(" |  _ \\(_)_   _____ _ __ ___(_)/ _(_) ___ _ __ ");
+		System.out.println(" | | | | \\ \\ / / _ \\ '__/ __| | |_| |/ _ \\ '__|");
+		System.out.println(" | |_| | |\\ V /  __/ |  \\__ \\ |  _| |  __/ |   ");
+		System.out.println(" |____/|_| \\_/ \\___|_|  |___/_|_| |_|\\___|_|   ");
+		System.out.println("                                               ");
+	}
+	
 	private static void printUsage(JCommander jcom) {
 		System.out.println(" --- thingml-diversifier help ---");
+		
+		logo();
 
 		System.out.println("Typical usages: ");        
 		System.out.println("  java -jar <thingml-diversifivier-XXX.jar>\\ ");

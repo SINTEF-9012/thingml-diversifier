@@ -1,4 +1,4 @@
-import "pim/DefaultBreakoutGame.thingml"
+import "pim/BreakoutGame.thingml"
 
 thing fragment RndJava {
 	function rnd() : Byte do
@@ -10,7 +10,7 @@ thing HeadlessDisplayJava includes HeadlessDisplay, RndJava {}
 
 thing BasicIAControllerJava includes BasicIAController, RndJava {}
 
-thing BreakoutGameJava includes DefaultBreakoutGame, RndJava 
+thing BreakoutGameJava includes BreakoutGame, RndJava 
 @stdout_sync "true"
 {	
 	function quit() do
@@ -24,9 +24,11 @@ thing BreakoutGameJava includes DefaultBreakoutGame, RndJava
 	function timestamp() : UInt32 return `System.currentTimeMillis()` as UInt32
 	
 	function usedMemory() : UInt32 return `Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()` as UInt32
+	
+	function unsetBit(variable : UInt8, bit : UInt8) : UInt8 return (``&variable&` & ~(1 << `& bit &`)`) as UInt8
 }
 
-configuration BreakoutJava
+configuration test
 @docker
 {
 	instance game : BreakoutGameJava

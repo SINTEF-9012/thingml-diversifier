@@ -22,7 +22,7 @@ thing BreakoutGameArduino includes DefaultBreakoutGame, RndArduino {
 }
 
 
-configuration BreakoutArduino 
+configuration test 
 @arduino_stdout "Serial"
 @arduino_stdout_baudrate "115200"
 {

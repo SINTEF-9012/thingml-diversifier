@@ -42,7 +42,9 @@ function generate
 }
 
 ### Generate platform code ###
+logo
 for LANGUAGE in ${LANGUAGES[@]}; do
   generate $LANGUAGE &
 done
 wait
+logo

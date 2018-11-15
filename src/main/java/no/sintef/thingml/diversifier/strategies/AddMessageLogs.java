@@ -119,6 +119,7 @@ public class AddMessageLogs extends Strategy {
 	                		
 	                		final LocalVariable argVar = ThingMLFactory.eINSTANCE.createLocalVariable();
 	                		argVar.setName(send.getMessage().getName()+"Arg"+i + "_" + var_counter);
+	                		argVar.setReadonly(true);
 	                		argVar.setTypeRef(EcoreUtil.copy(par.getTypeRef()));
 	                		argVar.setInit(EcoreUtil.copy(expr));
 

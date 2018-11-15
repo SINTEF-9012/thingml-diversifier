@@ -29,7 +29,9 @@ function generate
 }
 
 ### Generate models ###
+logo
 for LANGUAGE in ${LANGUAGES[@]}; do
   generate $LANGUAGE &
 done
 wait
+logo

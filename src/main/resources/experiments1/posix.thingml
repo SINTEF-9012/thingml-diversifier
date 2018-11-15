@@ -1,4 +1,4 @@
-import "pim/DefaultBreakoutGame.thingml"
+import "pim/BreakoutGame.thingml"
 
 thing fragment RndPosix {
 	function rnd() : Byte do
@@ -10,7 +10,7 @@ thing HeadlessDisplayPosix includes HeadlessDisplay, RndPosix {}
 
 thing BasicIAControllerPosix includes BasicIAController, RndPosix {}
 
-thing BreakoutGamePosix includes DefaultBreakoutGame, RndPosix 
+thing BreakoutGamePosix includes BreakoutGame, RndPosix 
 @c_header "#include <time.h>
 #include <stdlib.h>"
 @c_global "struct timespec t;
@@ -42,10 +42,12 @@ typedef struct {
 		`}`
 		return `result.size` as UInt32
 	end
+	
+	function unsetBit(variable : UInt8, bit : UInt8) : UInt8 return (``&variable&` & ~(1 << `& bit &`)`) as UInt8
 }
 
 
-configuration BreakoutPosix
+configuration test
 @c_static_linking "true"
 @docker
 {

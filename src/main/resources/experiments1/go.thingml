@@ -1,4 +1,4 @@
-import "pim/DefaultBreakoutGame.thingml"
+import "pim/BreakoutGame.thingml"
 
 thing fragment RndGo 
 @go_import "math/rand"
@@ -18,8 +18,10 @@ thing BreakoutGameGo includes BreakoutGame, RndGo
 @go_import `runtime`
 {	
 	function quit() do
+		`runtime.GC();`
 		println ">sent ", bytesSentCounter, " bytes."
 		println ">done in ", stopTime-startTime, "ms!"
+		log(true)
 		`os.Exit(0);`
 	end
 	
@@ -34,7 +36,7 @@ thing BreakoutGameGo includes BreakoutGame, RndGo
 	function unsetBit(variable : UInt8, bit : UInt8) : UInt8 return (``&variable&` & ^(1 << `& bit &`)`) as UInt8
 }
 
-configuration BreakoutGo
+configuration test
 @docker
 {
 	instance game : BreakoutGameGo

@@ -100,6 +100,7 @@ function xp
 }
 
 ### Generate platform code ###
+logo
 echo "------ RUNNING ON DOCKER ------"
 echo "---- LAUNCHING CADVISOR ----"
 monitor
@@ -110,3 +111,5 @@ done
 wait
 echo "---- CLEANING ----"
 clean3
+echo "------ DONE ------"
+logo
