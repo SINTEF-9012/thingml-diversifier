@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-N=1 # Number of diversified version to make
+N=100 # Number of diversified version to make
 LANGUAGES=(java nodejs go) # Languages to use
 #LANGUAGES=(posix) # Languages to use
 
