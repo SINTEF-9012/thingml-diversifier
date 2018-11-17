@@ -23,7 +23,6 @@ import no.sintef.thingml.diversifier.strategies.AddRandomParameters;
 import no.sintef.thingml.diversifier.strategies.DuplicateMessages;
 import no.sintef.thingml.diversifier.strategies.ShuffleMessages;
 import no.sintef.thingml.diversifier.strategies.ShuffleParameters;
-import no.sintef.thingml.diversifier.strategies.SplitMessagesInline;
 import no.sintef.thingml.diversifier.strategies.SplitMessagesInline2;
 import no.sintef.thingml.diversifier.strategies.UpsizeParameters;
 

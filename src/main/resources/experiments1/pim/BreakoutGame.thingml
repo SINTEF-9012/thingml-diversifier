@@ -4,8 +4,8 @@ import "Controller.thingml"
 thing fragment BreakoutGame includes TimerMsgs, DisplayMsgs, ControllerMsgs, IAControllerMsg {
 	property bytesSentCounter : UInt32 = 0
 	
-	message lostBall();
-	message nextLevel();
+	message lostBall()@diversify "not"
+	message nextLevel()@diversify "not"
 
 	property startTime : UInt32
 	property stopTime : UInt32
@@ -18,20 +18,21 @@ thing fragment BreakoutGame includes TimerMsgs, DisplayMsgs, ControllerMsgs, IAC
 	abstract function usedMemory() : UInt32
 
 	function log(logMem : Boolean) do
-		var ts : UInt32
-		if (lastTimestamp == 0) do
-			ts = 0
-			lastTimestamp = timestamp()
-		end else do
-			var t : UInt32 = timestamp()
-			ts = t - lastTimestamp
-			lastTimestamp = t
+		if (counter == 0 or logMem) do
+			var ts : UInt32
+			if (lastTimestamp == 0) do
+				ts = 0
+				lastTimestamp = timestamp()
+			end else do
+				var t : UInt32 = timestamp()
+				ts = t - lastTimestamp
+				lastTimestamp = t
+			end
+			println "ts:", ts, ",lives:", lives, ",score:", score, ",level:", level, ",bx:", bx, ",by:", by, ",padx:", padx
+			println "#usedMem:", usedMemory()
 		end
-		println "ts:", ts, ",lives:", lives, ",score:", score, ",level:", level, ",bx:", bx, ",by:", by, ",padx:", padx
-		
-		if (counter == 0 or logMem) println "#usedMem:", usedMemory()
 		counter++
-		if (counter == 10) counter = 0
+		if (counter == 33) counter = 0
 	end
 
 	required port clock {

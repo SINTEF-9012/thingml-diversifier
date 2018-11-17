@@ -34,8 +34,9 @@ public class AddRandomParameters extends Strategy {
 		final TreeIterator<EObject> it = model.eAllContents();
         while (it.hasNext()) {
             final EObject o = it.next();
-            if (o instanceof Message) {
+            if (o instanceof Message) {            	
             	final Message m = (Message) o;
+            	if (!Manager.diversify(m)) continue;
                 System.out.println("Adding random parameter to message " + m.getName());
                 final PlatformAnnotation annot = ThingMLFactory.eINSTANCE.createPlatformAnnotation();
                 annot.setName("noise");
@@ -66,6 +67,7 @@ public class AddRandomParameters extends Strategy {
             final EObject o = it2.next();
             if (o instanceof SendAction) {
             	final SendAction sa = (SendAction) o;
+            	if (!Manager.diversify(sa.getMessage())) continue;
                 final Function rnd = Manager.findRandom(ThingMLHelpers.findContainingThing(sa));
                 if (rnd != null) {
                     final FunctionCallExpression call = ThingMLFactory.eINSTANCE.createFunctionCallExpression();

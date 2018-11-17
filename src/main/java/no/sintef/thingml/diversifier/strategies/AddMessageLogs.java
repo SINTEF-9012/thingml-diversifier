@@ -32,6 +32,8 @@ import org.thingml.xtext.thingML.ThingMLModel;
 import org.thingml.xtext.thingML.Type;
 import org.thingml.xtext.thingML.VariableAssignment;
 
+import no.sintef.thingml.diversifier.Manager;
+
 public class AddMessageLogs extends Strategy {
 
 	boolean onlySummary = false;
@@ -54,7 +56,9 @@ public class AddMessageLogs extends Strategy {
 		
     	long maxInfo = 0;//We use this to pad the logs related to the positions of bytes containing information
     	for (Thing thing : ThingMLHelpers.allThings(model)) {
+    		if (!Manager.diversify(thing)) continue;
     		if (thing.isFragment()) continue;
+    		
     		for (SendAction send : ActionHelper.getAllActions(thing, SendAction.class)) {
     			long info = 0;
     			for(Parameter p : send.getMessage().getParameters()) {
@@ -68,6 +72,7 @@ public class AddMessageLogs extends Strategy {
     	}
 
     	for (Thing thing : ThingMLHelpers.allThings(model)) {
+    		if (!Manager.diversify(thing)) continue;
            	Property counter = null;
         	for (Property p : ThingMLHelpers.allProperties(thing)) {
         		if (p.getName().equals("bytesSentCounter")) {
