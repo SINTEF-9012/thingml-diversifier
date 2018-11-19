@@ -150,17 +150,12 @@ public class SplitMessagesInline2 extends Strategy {
 			if (o instanceof Handler) {
 				final Handler h = (Handler) o;
 				if (h.getEvent() == null || !(h.getEvent() instanceof ReceiveMessage)) continue;
-				System.out.println("Updating handler " + ((ReceiveMessage)h.getEvent()).getPort().getName() + "?" + ((ReceiveMessage)h.getEvent()).getMessage().getName());
-				if (AnnotatedElementHelper.hasFlag(ThingMLHelpers.findContainingThing(h), "stl")) continue;
+				if (AnnotatedElementHelper.hasFlag(ThingMLHelpers.findContainingThing(h), "stl")) continue;				
 				final ReceiveMessage rm = (ReceiveMessage) h.getEvent();
 				final Thing root = ThingMLHelpers.findContainingThing(rm.getMessage());
-				List<Message> messages = duplicates.get(root.getName()+rm.getMessage().getName());
-				if (messages == null) {
-					System.out.println("messages==null"); 
-					continue;
-				}
-				if (AnnotatedElementHelper.hasFlag(root, "stl")) continue;	
 				if (!Manager.diversify(rm.getMessage())) continue;	
+				if (AnnotatedElementHelper.hasFlag(root, "stl")) continue;
+				System.out.println("Updating handler " + ((ReceiveMessage)h.getEvent()).getPort().getName() + "?" + ((ReceiveMessage)h.getEvent()).getMessage().getName());
 				if (h instanceof InternalTransition) {
 					final InternalTransition t = (InternalTransition) h;
 					updateHandlers(root, t);
@@ -176,6 +171,7 @@ public class SplitMessagesInline2 extends Strategy {
 			final EObject o = it3.next();
 			if (!(o instanceof SendAction)) continue;
 			final SendAction sa = (SendAction) o;
+			if (!Manager.diversify(sa.getMessage())) continue;
 			splitSendAction(sa);			
 		}
 		

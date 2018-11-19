@@ -1,4 +1,4 @@
-import "timer.thingml" from stl
+import "timer.thingml"
 
 thing fragment ControllerMsgs {
 

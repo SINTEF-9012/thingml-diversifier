@@ -28,6 +28,7 @@ thing BreakoutGameGo includes BreakoutGame, RndGo
 	function timestamp() : UInt32 return `uint32(time.Now().UnixNano() / int64(time.Millisecond))` as UInt32
 	
 	function usedMemory() : UInt32 do
+		`runtime.GC();`
 		`var m runtime.MemStats
 		runtime.ReadMemStats(&m)`
 		return `m.HeapAlloc` as UInt32

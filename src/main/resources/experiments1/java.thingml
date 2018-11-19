@@ -23,7 +23,10 @@ thing BreakoutGameJava includes BreakoutGame, RndJava
 	
 	function timestamp() : UInt32 return `System.currentTimeMillis()` as UInt32
 	
-	function usedMemory() : UInt32 return `Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()` as UInt32
+	function usedMemory() : UInt32 do
+		`System.gc();`
+		return `Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()` as UInt32
+	end
 	
 	function unsetBit(variable : UInt8, bit : UInt8) : UInt8 return (``&variable&` & ~(1 << `& bit &`)`) as UInt8
 }

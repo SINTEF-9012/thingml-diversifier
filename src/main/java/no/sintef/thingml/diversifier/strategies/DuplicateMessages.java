@@ -106,6 +106,7 @@ public class DuplicateMessages extends Strategy {
 			final EObject o = it3.next();
 			if (!(o instanceof SendAction)) continue;
 			final SendAction sa = (SendAction) o;
+			if (!Manager.diversify(sa.getMessage())) continue;
 			duplicateSendAction(sa);
 		}
 		
@@ -114,7 +115,10 @@ public class DuplicateMessages extends Strategy {
 		while (it4.hasNext()) {
 			final EObject o = it4.next();
 			if (o instanceof Handler) {
-				final Handler h = (Handler) o;				
+				final Handler h = (Handler) o;
+				if (h.getEvent() == null || !(h.getEvent() instanceof ReceiveMessage)) continue;
+				final ReceiveMessage rm = (ReceiveMessage)h.getEvent();
+				if (!Manager.diversify(rm.getMessage())) continue;
 				duplicateHandler(h);				
 			}
 		}

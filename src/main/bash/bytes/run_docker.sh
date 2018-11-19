@@ -80,30 +80,26 @@ function xp
   mkdir $LOGSDIR/$LANGUAGE/static
   mkdir $LOGSDIR/$LANGUAGE/dynamic
 
-  echo "-- RUNNING BASE MODEL CODE --"
   for i in `seq 0 $((N-1))`; do
-    perform $PLATFORMDIR/$LANGUAGE/base $LANGUAGE base $i ""
+  	echo "-- RUNNING MODEL $i [$LANGUAGE] --"
     perform $PLATFORMDIR/$LANGUAGE/nolog/base $LANGUAGE base $i nolog
-  done
-
-  echo "-- RUNNING STATIC DIVERSIFICATED MODEL CODE --"
-  for i in `seq 0 $((N-1))`; do
-    perform $PLATFORMDIR/$LANGUAGE/static/$LANGUAGE$i $LANGUAGE static $i ""
     perform $PLATFORMDIR/$LANGUAGE/nolog/static/$LANGUAGE$i $LANGUAGE static $i nolog
-  done
-
-  echo "-- RUNNING DYNAMIC DIVERSIFICATED MODEL CODE --"
-  for i in `seq 0 $((N-1))`; do
-    perform $PLATFORMDIR/$LANGUAGE/dynamic/$LANGUAGE$i $LANGUAGE dynamic $i ""
     perform $PLATFORMDIR/$LANGUAGE/nolog/dynamic/$LANGUAGE$i $LANGUAGE dynamic $i nolog
+    
+    if [ "$LANGUAGE" == "nodejs" ]; then
+      echo "-- RUNNING MODEL $i [$LANGUAGE] WITH INSTRUMENTATION --"
+      perform $PLATFORMDIR/$LANGUAGE/base $LANGUAGE base $i ""
+      perform $PLATFORMDIR/$LANGUAGE/static/$LANGUAGE$i $LANGUAGE static $i ""
+      perform $PLATFORMDIR/$LANGUAGE/dynamic/$LANGUAGE$i $LANGUAGE dynamic $i ""
+    fi
   done
 }
 
 ### Generate platform code ###
 logo
 echo "------ RUNNING ON DOCKER ------"
-echo "---- LAUNCHING CADVISOR ----"
-monitor
+#echo "---- LAUNCHING CADVISOR ----"
+#monitor
 echo "---- RUNNING XP ----"
 for LANGUAGE in ${LANGUAGES[@]}; do
   xp $LANGUAGE &
