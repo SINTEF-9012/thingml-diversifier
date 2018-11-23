@@ -130,14 +130,6 @@ public class AddMessageLogs extends Strategy {
 	    				final StringLiteral oneStrLit = ThingMLFactory.eINSTANCE.createStringLiteral();
 	    				oneStrLit.setStringValue("1");
 
-	                	// Print all parameter values
-	                	final PrintAction printValues = ThingMLFactory.eINSTANCE.createPrintAction();
-	                	printValues.setLine(true);
-	                	block.getActions().add(printValues);
-	                	final StringLiteral valueprefix = ThingMLFactory.eINSTANCE.createStringLiteral();
-	                	valueprefix.setStringValue("!");
-	                	printValues.getMsg().add(valueprefix);
-
 	                	// Print all parameter names
 	                	final PrintAction printNames = ThingMLFactory.eINSTANCE.createPrintAction();
 	                	printNames.setLine(true);
@@ -145,6 +137,14 @@ public class AddMessageLogs extends Strategy {
 	                	final StringLiteral nameprefix = ThingMLFactory.eINSTANCE.createStringLiteral();
 	                	nameprefix.setStringValue("@" + thing.getName() + "@");
 	                	printNames.getMsg().add(nameprefix);
+	                	
+	                	// Print all parameter values
+	                	final PrintAction printValues = ThingMLFactory.eINSTANCE.createPrintAction();
+	                	printValues.setLine(true);
+	                	block.getActions().add(printValues);
+	                	final StringLiteral valueprefix = ThingMLFactory.eINSTANCE.createStringLiteral();
+	                	valueprefix.setStringValue("!");
+	                	printValues.getMsg().add(valueprefix);
 
 	                	// Add the msgID to the prints
 	                	final byte code = (byte) Short.parseShort(AnnotatedElementHelper.annotationOrElse(send.getMessage(), "code", "0"));
