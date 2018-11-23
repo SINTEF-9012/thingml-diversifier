@@ -32,21 +32,18 @@ import org.thingml.xtext.thingML.VariableAssignment;
 
 import no.sintef.thingml.diversifier.Manager;
 
-public class AddMessageLogs extends Strategy {
+public class AddMessageLogsPost extends Strategy {
 
 	boolean onlySummary = false;
 
 	@Override
 	protected void doApply(ThingMLModel model) {
 		Type byteType = null;
-		Type intType = null;
 		for(Type t : ThingMLHelpers.allTypes(model)) {
 			if (!(t instanceof PrimitiveType)) continue;
 			PrimitiveType pt = (PrimitiveType)t;
 			if (AnnotatedElementHelper.isDefined(pt, "type_checker", "Byte")) {
 				byteType = pt;
-			} else if (AnnotatedElementHelper.isDefined(pt, "type_checker", "Integer") && pt.getByteSize()>=4) {
-				intType = pt;
 			}
 		}
 		
@@ -138,25 +135,12 @@ public class AddMessageLogs extends Strategy {
 	                	valueprefix.setStringValue("!");
 	                	printValues.getMsg().add(valueprefix);
 
-	                	// Print all parameter names
-	                	final PrintAction printNames = ThingMLFactory.eINSTANCE.createPrintAction();
-	                	printNames.setLine(true);
-	                	block.getActions().add(printNames);
-	                	final StringLiteral nameprefix = ThingMLFactory.eINSTANCE.createStringLiteral();
-	                	nameprefix.setStringValue("@" + thing.getName() + "@");
-	                	printNames.getMsg().add(nameprefix);
-
 	                	// Add the msgID to the prints
 	                	final byte code = (byte) Short.parseShort(AnnotatedElementHelper.annotationOrElse(send.getMessage(), "code", "0"));
 	                	final StringLiteral codeliteral = ThingMLFactory.eINSTANCE.createStringLiteral();
 	                	codeliteral.setStringValue("" + code);
 	                	printValues.getMsg().add(codeliteral);
 	    				printValues.getMsg().add(EcoreUtil.copy(comma));
-
-	    				final StringLiteral msgNameLiteral = ThingMLFactory.eINSTANCE.createStringLiteral();
-	    				msgNameLiteral.setStringValue(send.getMessage().getName());
-	    				printNames.getMsg().add(msgNameLiteral);
-	    				printNames.getMsg().add(EcoreUtil.copy(comma));
 
 	                	for (int i = 0; i < send.getMessage().getParameters().size(); i++) {
 	                		final Parameter p = send.getMessage().getParameters().get(i);
@@ -180,15 +164,6 @@ public class AddMessageLogs extends Strategy {
 	    						// Print value
 	    						printValues.getMsg().add(cast);
 	    						printValues.getMsg().add(EcoreUtil.copy(comma));
-
-	    						// Print names
-	    						final StringLiteral paramNameLiteral = ThingMLFactory.eINSTANCE.createStringLiteral();
-	    						if (AnnotatedElementHelper.hasFlag(p, "noise"))
-	    							paramNameLiteral.setStringValue("_");
-	    						else
-	    							paramNameLiteral.setStringValue(p.getName());
-	    						printNames.getMsg().add(paramNameLiteral);
-	    						printNames.getMsg().add(EcoreUtil.copy(comma));
 	    					}
 	                	}
 

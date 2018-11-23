@@ -9,7 +9,9 @@ public enum Strategies {
 	SPLIT_MSG ("split-msg", "Split messages, so that two messages should be sent (in random order) to reconstruct the orinal messages"),
 	UP_PARAM ("up-param", "Upsize the type of parameters within messages"),
 	CODE_MSG ("code-msg", "Add code to message"),
-	LOG_MSG ("log-msg", "Logs messages");
+	LOG_MSG ("log-msg", "Logs messages"),
+	PRELOG_MSG ("pre-log-msg", "Logs messages"),
+	POSTLOG_MSG ("post-log-msg", "Logs messages");
 	
 	public final String name;
 	public final String description;

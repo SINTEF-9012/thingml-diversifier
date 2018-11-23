@@ -13,10 +13,8 @@ import org.thingml.xtext.thingML.CastExpression;
 import org.thingml.xtext.thingML.Expression;
 import org.thingml.xtext.thingML.ExpressionGroup;
 import org.thingml.xtext.thingML.ExternExpression;
-import org.thingml.xtext.thingML.IntegerLiteral;
 import org.thingml.xtext.thingML.LocalVariable;
 import org.thingml.xtext.thingML.Parameter;
-import org.thingml.xtext.thingML.PlusExpression;
 import org.thingml.xtext.thingML.Port;
 import org.thingml.xtext.thingML.PrimitiveType;
 import org.thingml.xtext.thingML.PrintAction;
@@ -28,25 +26,21 @@ import org.thingml.xtext.thingML.Thing;
 import org.thingml.xtext.thingML.ThingMLFactory;
 import org.thingml.xtext.thingML.ThingMLModel;
 import org.thingml.xtext.thingML.Type;
-import org.thingml.xtext.thingML.VariableAssignment;
 
 import no.sintef.thingml.diversifier.Manager;
 
-public class AddMessageLogs extends Strategy {
+public class AddMessageLogsPre extends Strategy {
 
 	boolean onlySummary = false;
 
 	@Override
 	protected void doApply(ThingMLModel model) {
 		Type byteType = null;
-		Type intType = null;
 		for(Type t : ThingMLHelpers.allTypes(model)) {
 			if (!(t instanceof PrimitiveType)) continue;
 			PrimitiveType pt = (PrimitiveType)t;
 			if (AnnotatedElementHelper.isDefined(pt, "type_checker", "Byte")) {
 				byteType = pt;
-			} else if (AnnotatedElementHelper.isDefined(pt, "type_checker", "Integer") && pt.getByteSize()>=4) {
-				intType = pt;
 			}
 		}
 		
@@ -110,6 +104,8 @@ public class AddMessageLogs extends Strategy {
 	                		final Expression expr = send.getParameters().get(i);
 	                		final Parameter par = send.getMessage().getParameters().get(i);
 
+	                		
+	                		
 	                		final LocalVariable argVar = ThingMLFactory.eINSTANCE.createLocalVariable();
 	                		argVar.setName(send.getMessage().getName()+"Arg"+i + "_" + var_counter);
 	                		argVar.setReadonly(true);
@@ -130,14 +126,6 @@ public class AddMessageLogs extends Strategy {
 	    				final StringLiteral oneStrLit = ThingMLFactory.eINSTANCE.createStringLiteral();
 	    				oneStrLit.setStringValue("1");
 
-	                	// Print all parameter values
-	                	final PrintAction printValues = ThingMLFactory.eINSTANCE.createPrintAction();
-	                	printValues.setLine(true);
-	                	block.getActions().add(printValues);
-	                	final StringLiteral valueprefix = ThingMLFactory.eINSTANCE.createStringLiteral();
-	                	valueprefix.setStringValue("!");
-	                	printValues.getMsg().add(valueprefix);
-
 	                	// Print all parameter names
 	                	final PrintAction printNames = ThingMLFactory.eINSTANCE.createPrintAction();
 	                	printNames.setLine(true);
@@ -145,13 +133,6 @@ public class AddMessageLogs extends Strategy {
 	                	final StringLiteral nameprefix = ThingMLFactory.eINSTANCE.createStringLiteral();
 	                	nameprefix.setStringValue("@" + thing.getName() + "@");
 	                	printNames.getMsg().add(nameprefix);
-
-	                	// Add the msgID to the prints
-	                	final byte code = (byte) Short.parseShort(AnnotatedElementHelper.annotationOrElse(send.getMessage(), "code", "0"));
-	                	final StringLiteral codeliteral = ThingMLFactory.eINSTANCE.createStringLiteral();
-	                	codeliteral.setStringValue("" + code);
-	                	printValues.getMsg().add(codeliteral);
-	    				printValues.getMsg().add(EcoreUtil.copy(comma));
 
 	    				final StringLiteral msgNameLiteral = ThingMLFactory.eINSTANCE.createStringLiteral();
 	    				msgNameLiteral.setStringValue(send.getMessage().getName());
@@ -177,16 +158,9 @@ public class AddMessageLogs extends Strategy {
 	    						group.setTerm(expr);
 	    						cast.setTerm(group);
 
-	    						// Print value
-	    						printValues.getMsg().add(cast);
-	    						printValues.getMsg().add(EcoreUtil.copy(comma));
-
 	    						// Print names
 	    						final StringLiteral paramNameLiteral = ThingMLFactory.eINSTANCE.createStringLiteral();
-	    						if (AnnotatedElementHelper.hasFlag(p, "noise"))
-	    							paramNameLiteral.setStringValue("_");
-	    						else
-	    							paramNameLiteral.setStringValue(p.getName());
+	    						paramNameLiteral.setStringValue(p.getName());
 	    						printNames.getMsg().add(paramNameLiteral);
 	    						printNames.getMsg().add(EcoreUtil.copy(comma));
 	    					}
@@ -200,24 +174,8 @@ public class AddMessageLogs extends Strategy {
 	                	}
                 	}
                 	block.getActions().add(send);
-
-                	// Increase byte counter
-                	if (counter != null) {
-                		final VariableAssignment va = ThingMLFactory.eINSTANCE.createVariableAssignment();
-                		va.setProperty(counter);
-                		final PlusExpression plus = ThingMLFactory.eINSTANCE.createPlusExpression();
-                		va.setExpression(plus);
-                		final PropertyReference counterRef = ThingMLFactory.eINSTANCE.createPropertyReference();
-                		counterRef.setProperty(counter);
-                		plus.setLhs(counterRef);
-                		final IntegerLiteral lit = ThingMLFactory.eINSTANCE.createIntegerLiteral();
-                		lit.setIntValue(messageBytes);
-                		plus.setRhs(lit);
-                		block.getActions().add(va);
-                	}
                 }
     		}
     	}
 	}
-
 }

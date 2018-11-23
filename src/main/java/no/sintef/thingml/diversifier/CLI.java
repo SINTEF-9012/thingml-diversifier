@@ -19,11 +19,13 @@ import com.beust.jcommander.Parameter;
 
 import no.sintef.thingml.diversifier.strategies.AddMessageCode;
 import no.sintef.thingml.diversifier.strategies.AddMessageLogs;
+import no.sintef.thingml.diversifier.strategies.AddMessageLogsPost;
+import no.sintef.thingml.diversifier.strategies.AddMessageLogsPre;
 import no.sintef.thingml.diversifier.strategies.AddRandomParameters;
 import no.sintef.thingml.diversifier.strategies.DuplicateMessages;
 import no.sintef.thingml.diversifier.strategies.ShuffleMessages;
 import no.sintef.thingml.diversifier.strategies.ShuffleParameters;
-import no.sintef.thingml.diversifier.strategies.SplitMessagesInline2;
+import no.sintef.thingml.diversifier.strategies.SplitMessagesInline;
 import no.sintef.thingml.diversifier.strategies.UpsizeParameters;
 
 public class CLI {
@@ -103,14 +105,17 @@ public class CLI {
 			} else if (s.equals(Strategies.SHUFF_PARAM.name)) {
 				manager.add(new ShuffleParameters()); 
 			} else if (s.equals(Strategies.SPLIT_MSG.name)) {
-				manager.add(new SplitMessagesInline2());
-				//manager.add(new SplitMessagesInline());
+				manager.add(new SplitMessagesInline());
 			} else if (s.equals(Strategies.UP_PARAM.name)) {
 				manager.add(new UpsizeParameters()); 
 			} else if (s.equals(Strategies.CODE_MSG.name)) {
 				manager.add(new AddMessageCode()); 
 			} else if (s.equals(Strategies.LOG_MSG.name)) {
 				manager.add(new AddMessageLogs()); 
+			} else if (s.equals(Strategies.PRELOG_MSG.name)) {
+				manager.add(new AddMessageLogsPre()); 
+			} else if (s.equals(Strategies.POSTLOG_MSG.name)) {
+				manager.add(new AddMessageLogsPost()); 
 			} else {
 				printUsage(jcom);
 				throw new UnsupportedOperationException("Diversification strategy " + s + " is not supported.");
@@ -148,9 +153,7 @@ public class CLI {
 		System.out.println("                                               ");
 	}
 	
-	private static void printUsage(JCommander jcom) {
-		System.out.println(" --- thingml-diversifier help ---");
-		
+	private static void printUsage(JCommander jcom) {		
 		logo();
 
 		System.out.println("Typical usages: ");        

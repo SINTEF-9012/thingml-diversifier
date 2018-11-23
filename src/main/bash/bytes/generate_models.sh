@@ -21,11 +21,11 @@ function generate
 
   echo "-- GENERATING STATIC DIVERSIFICATED MODELS --"
   java -jar $DIVERSIFIER -i $BASEMODEL -r 1 -n $N -m static -o $MODELSDIR/$LANGUAGE/nolog/static -s shuff-msg -s shuff-param -s add-param -s dup-msg -s split-msg -s code-msg
-  java -jar $DIVERSIFIER -i $BASEMODEL -r 1 -n $N -m static -o $MODELSDIR/$LANGUAGE/static -s shuff-msg -s shuff-param -s add-param -s dup-msg -s split-msg -s code-msg -s log-msg
+  java -jar $DIVERSIFIER -i $BASEMODEL -r 1 -n $N -m static -o $MODELSDIR/$LANGUAGE/static -s pre-log-msg -s shuff-msg -s shuff-param -s add-param -s dup-msg -s split-msg -s code-msg -s post-log-msg
 
   echo "-- GENERATING DYNAMIC DIVERSIFICATED MODELS --"
   java -jar $DIVERSIFIER -i $BASEMODEL -r 1 -n $N -m dynamic -o $MODELSDIR/$LANGUAGE/nolog/dynamic -s shuff-msg -s shuff-param -s add-param -s dup-msg -s split-msg -s code-msg
-  java -jar $DIVERSIFIER -i $BASEMODEL -r 1 -n $N -m dynamic -o $MODELSDIR/$LANGUAGE/dynamic -s shuff-msg -s shuff-param -s add-param -s dup-msg -s split-msg -s code-msg -s log-msg
+  java -jar $DIVERSIFIER -i $BASEMODEL -r 1 -n $N -m dynamic -o $MODELSDIR/$LANGUAGE/dynamic -s pre-log-msg -s shuff-msg -s shuff-param -s add-param -s dup-msg -s split-msg -s code-msg -s post-log-msg
 }
 
 ### Generate models ###

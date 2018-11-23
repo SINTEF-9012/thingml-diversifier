@@ -23,6 +23,7 @@ import org.thingml.xtext.thingML.Type;
 import org.thingml.xtext.thingML.TypeRef;
 
 import no.sintef.thingml.diversifier.Manager;
+import no.sintef.thingml.diversifier.Mode;
 
 public class AddRandomParameters extends Strategy {
 	
@@ -69,7 +70,7 @@ public class AddRandomParameters extends Strategy {
             	final SendAction sa = (SendAction) o;
             	if (!Manager.diversify(sa.getMessage())) continue;
                 final Function rnd = Manager.findRandom(ThingMLHelpers.findContainingThing(sa));
-                if (rnd != null) {
+                if (rnd != null && Manager.mode == Mode.DYNAMIC) {
                     final FunctionCallExpression call = ThingMLFactory.eINSTANCE.createFunctionCallExpression();
                     call.setFunction(rnd);
                     sa.getParameters().add(params.get(((Thing)sa.getMessage().eContainer()).getName() + "_" + sa.getMessage().getName()), call);
