@@ -20,7 +20,7 @@ thing fragment DisplayMsgs {
 thing fragment HeadlessDisplay includes DisplayMsgs 
 @stdout_sync "true"
 {
-	property bytesSentCounter : UInt32 = 0
+	property bytesSentCounter : UInt32 = 0 @ignore "not-used"
 	
 	
 	abstract function rnd() : Byte

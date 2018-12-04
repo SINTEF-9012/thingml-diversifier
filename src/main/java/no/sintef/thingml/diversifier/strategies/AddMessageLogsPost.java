@@ -42,7 +42,7 @@ public class AddMessageLogsPost extends Strategy {
 		for(Type t : ThingMLHelpers.allTypes(model)) {
 			if (!(t instanceof PrimitiveType)) continue;
 			PrimitiveType pt = (PrimitiveType)t;
-			if (AnnotatedElementHelper.isDefined(pt, "type_checker", "Byte")) {
+			if (AnnotatedElementHelper.isDefined(pt, "type_checker", "Integer") && pt.getByteSize()==1) {
 				byteType = pt;
 			}
 		}

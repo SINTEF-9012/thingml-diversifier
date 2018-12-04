@@ -39,15 +39,15 @@ public class AddMessageLogs extends Strategy {
 	@Override
 	protected void doApply(ThingMLModel model) {
 		Type byteType = null;
-		Type intType = null;
+		//Type intType = null;
 		for(Type t : ThingMLHelpers.allTypes(model)) {
 			if (!(t instanceof PrimitiveType)) continue;
 			PrimitiveType pt = (PrimitiveType)t;
-			if (AnnotatedElementHelper.isDefined(pt, "type_checker", "Byte")) {
+			if (AnnotatedElementHelper.isDefined(pt, "type_checker", "Integer") && pt.getByteSize()==1) {
 				byteType = pt;
-			} else if (AnnotatedElementHelper.isDefined(pt, "type_checker", "Integer") && pt.getByteSize()>=4) {
+			}/* else if (AnnotatedElementHelper.isDefined(pt, "type_checker", "Integer") && pt.getByteSize()>=4) {
 				intType = pt;
-			}
+			}*/
 		}
 		
 		

@@ -7,7 +7,7 @@ thing fragment ControllerMsgs {
 }
 
 thing fragment Controller includes ControllerMsgs {
-	property bytesSentCounter : UInt32 = 0
+	property bytesSentCounter : UInt32 = 0 @ignore "not-used"
 	
 	abstract function rnd() : Byte
 	
