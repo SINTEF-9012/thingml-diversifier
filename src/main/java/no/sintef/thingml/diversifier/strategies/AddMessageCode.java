@@ -29,11 +29,11 @@ public class AddMessageCode extends Strategy {
                     a = ThingMLFactory.eINSTANCE.createPlatformAnnotation();
                     a.setName("code");
                     m.getAnnotations().add(a);
+                    //a.setValue(String.format("0x%02X", code));
+                    a.setValue(""+code);
+                    if (code < 127) code++;
+                    else code = -128;
                 }
-                //a.setValue(String.format("0x%02X", code));
-                a.setValue(""+code);
-                if (code < 127) code++;
-                else code = -128;
             }
         }
 	}
