@@ -25,6 +25,11 @@ import org.thingml.xtext.thingML.TypeRef;
 import no.sintef.thingml.diversifier.Manager;
 import no.sintef.thingml.diversifier.Mode;
 
+/**
+ * 
+ * FIXME: Generate better names, especially to avoid conflicts when we apply this strategy multiple time. As of now, it should work if applied once in static mode and once in dynamic mode
+ *
+ */
 public class AddRandomParameters extends Strategy {
 	
 	private int param = 0;
@@ -44,7 +49,11 @@ public class AddRandomParameters extends Strategy {
                         
                 int insertAt = (m.getParameters().size() == 0) ? 0 : Manager.rnd.nextInt(m.getParameters().size());
                 final Parameter randomP = ThingMLFactory.eINSTANCE.createParameter();
-                randomP.setName("r" + (param++));
+                if (Manager.mode == Mode.DYNAMIC) {
+                	randomP.setName("var" + (param++));
+                } else {
+                	randomP.setName("val" + (param++));
+                }
                 randomP.getAnnotations().add(annot);
                 final TypeRef typeref = ThingMLFactory.eINSTANCE.createTypeRef();
                 Type bt = null;
