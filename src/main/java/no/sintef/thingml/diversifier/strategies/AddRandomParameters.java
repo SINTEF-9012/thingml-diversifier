@@ -60,7 +60,7 @@ public class AddRandomParameters extends Strategy {
                 for (Type t : model.getTypes()) {
                     if (t instanceof PrimitiveType) {
                         final PrimitiveType pt = (PrimitiveType) t;
-                        if (TyperHelper.getBroadType(pt) == Types.BYTE_TYPE) {
+                        if (TyperHelper.getBroadType(pt) == Types.INTEGER_TYPE && pt.getByteSize()==1) {
                             bt = pt;
                             break;
                         }
