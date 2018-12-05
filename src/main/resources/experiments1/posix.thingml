@@ -2,7 +2,7 @@ import "pim/BreakoutGame.thingml"
 
 thing fragment RndPosix {
 	function rnd() : Byte do
-		return `rand() % 256`  as Byte
+		return `(rand() % 246) + 5`  as Byte
 	end
 }
 

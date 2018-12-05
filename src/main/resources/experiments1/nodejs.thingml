@@ -2,7 +2,7 @@ import "pim/BreakoutGame.thingml"
 
 thing fragment RndJS {
 	function rnd() : Byte do
-		return `Math.floor(Math.random() * Math.floor(256))`  as Byte
+		return `Math.floor(Math.random() * Math.floor(246)) + 5`  as Byte
 	end
 }
 

@@ -142,7 +142,7 @@ public class CLI {
 	private static void logo() {
 		System.out.println("  _____ _     _             __  __ _           ");
 		System.out.println(" |_   _| |__ (_)_ __   __ _|  \\/  | |          ");
-		System.out.println("   | | | '_ \\| | '_ \\ / _\\` | |\\/| | |          ");
+		System.out.println("   | | | '_ \\| | '_ \\ / _\\`| |\\/| | |          ");
 		System.out.println("   | | | | | | | | | | (_| | |  | | |___       ");
 		System.out.println("   |_| |_| |_|_|_| |_|\\__, |_|  |_|_____|      ");
 		System.out.println("  ____  _             |___/  _  __ _           ");

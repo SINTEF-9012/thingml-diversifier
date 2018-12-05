@@ -4,7 +4,7 @@ thing fragment RndGo
 @go_import "math/rand"
 {
 	function rnd() : Byte do
-		return `byte(rand.Intn(255))`  as Byte
+		return `byte(rand.Intn(245) + 5)`  as Byte
 	end
 }
 

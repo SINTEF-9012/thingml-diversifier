@@ -1,6 +1,7 @@
 package no.sintef.thingml.diversifier.strategies;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -113,7 +114,7 @@ public class SplitMessagesInline extends Strategy {
 					for(Message msg : sent) {
 						final Thing root = ThingMLHelpers.findContainingThing(msg);
 						if (AnnotatedElementHelper.hasFlag(root, "stl")) continue;				
-						if (!Manager.diversify(msg)) continue;
+						if (!Manager.diversify(msg) || msg.getParameters().size() == 0) continue;
 						List<Message> messages = duplicates.get(root.getName()+msg.getName());
 						if (messages == null) continue;
 						final Message first = messages.get(0);
@@ -129,7 +130,7 @@ public class SplitMessagesInline extends Strategy {
 					for(Message msg : received) {
 						final Thing root = ThingMLHelpers.findContainingThing(msg);
 						if (AnnotatedElementHelper.hasFlag(root, "stl")) continue;				
-						if (!Manager.diversify(msg)) continue;
+						if (!Manager.diversify(msg) || msg.getParameters().size() == 0) continue;
 						List<Message> messages = duplicates.get(root.getName()+msg.getName());
 						if (messages == null) continue;
 
@@ -153,7 +154,7 @@ public class SplitMessagesInline extends Strategy {
 				if (AnnotatedElementHelper.hasFlag(ThingMLHelpers.findContainingThing(h), "stl")) continue;				
 				final ReceiveMessage rm = (ReceiveMessage) h.getEvent();
 				final Thing root = ThingMLHelpers.findContainingThing(rm.getMessage());
-				if (!Manager.diversify(rm.getMessage())) continue;	
+				if (!Manager.diversify(rm.getMessage()) || rm.getMessage().getParameters().size() == 0) continue;
 				if (AnnotatedElementHelper.hasFlag(root, "stl")) continue;
 				System.out.println("Updating handler " + ((ReceiveMessage)h.getEvent()).getPort().getName() + "?" + ((ReceiveMessage)h.getEvent()).getMessage().getName());
 				if (h instanceof InternalTransition) {
@@ -171,7 +172,7 @@ public class SplitMessagesInline extends Strategy {
 			final EObject o = it3.next();
 			if (!(o instanceof SendAction)) continue;
 			final SendAction sa = (SendAction) o;
-			if (!Manager.diversify(sa.getMessage())) continue;
+			if (!Manager.diversify(sa.getMessage()) || sa.getMessage().getParameters().size() == 0) continue;
 			splitSendAction(sa);			
 		}
 		
@@ -448,6 +449,7 @@ public class SplitMessagesInline extends Strategy {
 		System.out.println("Splitting transition " + ((State)t.eContainer()).getName() + " --" + ((ReceiveMessage)t.getEvent()).getPort().getName() + "?" + ((ReceiveMessage)t.getEvent()).getMessage().getName() + "--> " + t.getTarget().getName());
 		final ReceiveMessage rm = (ReceiveMessage)t.getEvent();
 		final State source = (State)t.eContainer();		
+		
 		final Message m1 = duplicates.get(root.getName() + rm.getMessage().getName()).get(0);
 		final Message m2 = duplicates.get(root.getName() + rm.getMessage().getName()).get(1);
 		
