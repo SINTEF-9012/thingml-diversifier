@@ -32,7 +32,7 @@ import no.sintef.thingml.diversifier.Mode;
  */
 public class AddRandomParameters extends Strategy {
 	
-	private int param = 0;
+	private static int param = 0;
 	private Map<String, Integer> params = new HashMap<>();
 
 	@Override
