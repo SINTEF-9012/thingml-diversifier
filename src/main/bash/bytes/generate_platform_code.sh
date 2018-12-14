@@ -13,14 +13,14 @@ function generate
   mkdir -p $PLATFORMDIR/$LANGUAGE/static
   mkdir -p $PLATFORMDIR/$LANGUAGE/dynamic
 
-  echo "-- GENERATING BASE MODEL CODE --"
+  echo "-- GENERATING BASE CODE --"
   java -jar $THINGML_REGISTRY -c $LANGUAGE -s $MODELSDIR/$LANGUAGE/${LANGUAGE}0.thingml -o $PLATFORMDIR/$LANGUAGE/base
   java -jar $THINGML_REGISTRY -c $LANGUAGE -s $MODELSDIR/$LANGUAGE/nolog/${LANGUAGE}0.thingml -o $PLATFORMDIR/$LANGUAGE/nolog/base
   if [ "$LANGUAGE" == "arduino" ]; then
     sed -i -Ef ../resouces/addstackcheck $PLATFORMDIR/$LANGUAGE/base/test/test.ino
   fi
 
-  echo "-- GENERATING STATIC DIVERSIFICATED MODEL CODE --"
+  echo "-- GENERATING STATIC DIVERSIFIED CODE --"
   for i in `seq 0 $((N-1))`; do
     mkdir $PLATFORMDIR/$LANGUAGE/static/$LANGUAGE$i
     java -jar $THINGML_REGISTRY -c $LANGUAGE -s $MODELSDIR/$LANGUAGE/static/$LANGUAGE$i.thingml -o $PLATFORMDIR/$LANGUAGE/static/$LANGUAGE$i
@@ -30,7 +30,7 @@ function generate
     fi
   done
 
-  echo "-- GENERATING DYNAMIC DIVERSIFICATED MODEL CODE --"
+  echo "-- GENERATING DYNAMIC DIVERSIFIED CODE --"
   for i in `seq 0 $((N-1))`; do
     mkdir $PLATFORMDIR/$LANGUAGE/dynamic/$LANGUAGE$i
     java -jar $THINGML_REGISTRY -c $LANGUAGE -s $MODELSDIR/$LANGUAGE/dynamic/$LANGUAGE$i.thingml -o $PLATFORMDIR/$LANGUAGE/dynamic/$LANGUAGE$i

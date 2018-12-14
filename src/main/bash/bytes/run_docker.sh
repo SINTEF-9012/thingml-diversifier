@@ -20,7 +20,7 @@ function monitor
 }
 
 #$1: language
-#$2: base, static or dynamic
+#$2: base, static, dynamic or both
 #$3: id
 function build
 {
@@ -28,7 +28,7 @@ function build
 }
 
 #$1: language
-#$2: base, static or dynamic
+#$2: base, static, dynamic or both
 #$3: id
 #$4: nolog (optional)
 function run
@@ -37,7 +37,7 @@ function run
 }
 
 #$1: language
-#$2: base, static or dynamic
+#$2: base, static, dynamic or both
 #$3: id
 function clean
 {
@@ -45,7 +45,7 @@ function clean
 }
 
 #$1: language
-#$2: base, static or dynamic
+#$2: base, static, dynamic or both
 #$3: id
 function clean2
 {

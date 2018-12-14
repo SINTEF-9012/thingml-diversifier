@@ -12,6 +12,7 @@ function generate
   mkdir -p $MODELSDIR/$LANGUAGE
   mkdir -p $MODELSDIR/$LANGUAGE/static
   mkdir -p $MODELSDIR/$LANGUAGE/dynamic
+  mkdir -p $MODELSDIR/$LANGUAGE/both
 
   BASEMODEL=$BASEMODELDIR/$LANGUAGE.thingml
 
@@ -19,13 +20,13 @@ function generate
   java -jar $DIVERSIFIER -i $BASEMODEL -r 1 -n 1 -m static -o $MODELSDIR/$LANGUAGE/nolog -s code-msg
   java -jar $DIVERSIFIER -i $BASEMODEL -r 1 -n 1 -m static -o $MODELSDIR/$LANGUAGE -s code-msg -s log-msg
 
-  echo "-- GENERATING STATIC DIVERSIFICATED MODELS --"
-  java -jar $DIVERSIFIER -i $BASEMODEL -r 1 -n $N -m static -o $MODELSDIR/$LANGUAGE/nolog/static -s shuff-msg -s shuff-param -s add-param -s dup-msg -s split-msg -s code-msg
-  java -jar $DIVERSIFIER -i $BASEMODEL -r 1 -n $N -m static -o $MODELSDIR/$LANGUAGE/static -s pre-log-msg -s shuff-msg -s shuff-param -s add-param -s dup-msg -s split-msg -s code-msg -s post-log-msg
+  echo "-- GENERATING STATIC DIVERSIFIED MODELS --"
+  java -jar $DIVERSIFIER -i $BASEMODEL -r 1 -n $N -m static -o $MODELSDIR/$LANGUAGE/nolog/static -s shuff-msg -s shuff-param -s add-param -s dup-msg -s split-msg -s shuff-msg -s shuff-param -s add-param -s code-msg
+  java -jar $DIVERSIFIER -i $BASEMODEL -r 1 -n $N -m static -o $MODELSDIR/$LANGUAGE/static -s code-msg -s pre-log-msg -s shuff-msg -s shuff-param -s add-param -s dup-msg -s split-msg -s shuff-msg -s shuff-param -s add-param -s code-msg -s post-log-msg
 
-  echo "-- GENERATING DYNAMIC DIVERSIFICATED MODELS --"
-  java -jar $DIVERSIFIER -i $BASEMODEL -r 1 -n $N -m dynamic -o $MODELSDIR/$LANGUAGE/nolog/dynamic -s shuff-msg -s shuff-param -s add-param -s dup-msg -s split-msg -s code-msg
-  java -jar $DIVERSIFIER -i $BASEMODEL -r 1 -n $N -m dynamic -o $MODELSDIR/$LANGUAGE/dynamic -s pre-log-msg -s shuff-msg -s shuff-param -s add-param -s dup-msg -s split-msg -s code-msg -s post-log-msg
+  echo "-- GENERATING DYNAMIC DIVERSIFIED MODELS --"
+  java -jar $DIVERSIFIER -i $BASEMODEL -r 1 -n $N -m dynamic -o $MODELSDIR/$LANGUAGE/nolog/dynamic -s shuff-msg -s shuff-param -s add-param -s dup-msg -s split-msg -s shuff-msg -s shuff-param -s add-param -s code-msg
+  java -jar $DIVERSIFIER -i $BASEMODEL -r 1 -n $N -m dynamic -o $MODELSDIR/$LANGUAGE/dynamic -s code-msg -s pre-log-msg -s shuff-msg -s shuff-param -s add-param -s dup-msg -s split-msg -s shuff-msg -s shuff-param -s add-param -s code-msg -s post-log-msg
 }
 
 ### Generate models ###
