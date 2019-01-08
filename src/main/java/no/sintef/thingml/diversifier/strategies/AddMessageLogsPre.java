@@ -145,7 +145,7 @@ public class AddMessageLogsPre extends Strategy {
 	                		final PropertyReference ref = ThingMLFactory.eINSTANCE.createPropertyReference();
 	                		ref.setProperty(args.get(i));
 
-	                		for (int j = 0; j <= type.getByteSize(); j++) {	                				                			
+	                		for (int j = 0; j < type.getByteSize(); j++) {	                				                			
 	                			final CastExpression cast = ThingMLFactory.eINSTANCE.createCastExpression();
 	                			cast.setType(byteType);
 	                			final ExpressionGroup group = ThingMLFactory.eINSTANCE.createExpressionGroup();	                			
