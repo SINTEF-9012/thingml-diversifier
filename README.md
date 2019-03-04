@@ -2,11 +2,13 @@
 
 A model-based tool to automatically diversify communications.
 
+[![DOI](https://zenodo.org/badge/118929049.svg)](https://zenodo.org/badge/latestdoi/118929049)
+
 The science behind this artefact is decribed in:
 
 > B. Morin, J. Høgenes, H. Song, N. Harrand and B. Baudry.<br/>*Engineering Software Diversity: a Model-Based Approach to Systematically Diversify Communications.*<br/>**ACM/IEEE MODELS'18 Conference**, Copenhagen, Danmark.<br/>
 
-Please cite this paper if you reuse or mention this tool or underlying approach in a scientific paper.
+Please cite this paper if you reuse or mention the underlying approach in a scientific paper. Please use the DOI if you reuse or mention the tool itself in a scientific paper.
 
 ## 1. Specify protocols
 
