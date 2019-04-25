@@ -1,14 +1,14 @@
 @startuml
+note over BreakoutGame, HeadlessDisplay: INIT.on_entry
 BreakoutGame -> HeadlessDisplay: <b>create(160, 128)</b>\n[<font color="red"><i>0x03</i></font>, 0xA0, 0x80]
-note left : INIT.on_entry
 HeadlessDisplay -> BreakoutGame: <b>           displayReady()</b>\n             [<font color="red"><i>0x04</i></font>]
 activate BreakoutGame
+note over BreakoutGame, HeadlessDisplay: transition -> LAUNCH
 BreakoutGame -> HeadlessDisplay: <b>clear()</b>\n[<font color="red"><i>0x00</i></font>]
-note left : transition -> LAUNCH
 BreakoutGame -> HeadlessDisplay: <b>setBGColor(53, 40, 120)</b>\n[<font color="red"><i>0x01</i></font>, 0x35, 0x28, 0x78]
 activate BreakoutGame
+note over BreakoutGame, HeadlessDisplay: initColors()
 BreakoutGame -> HeadlessDisplay: <b>  setColor(107, 94, 174)</b>\n  [<font color="red"><i>0x02</i></font>, 0x6B, 0x5E, 0xAE]
-note left : initColors()
 deactivate BreakoutGame
 ...
 @enduml
