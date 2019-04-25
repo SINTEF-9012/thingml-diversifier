@@ -1,0 +1,19 @@
+@startuml
+BreakoutGame -> HeadlessDisplay: <b>createxsize(8, <font color="blue"><i>160</i></font>)</b>\n[<font color="red"><i>0x03</i></font>, 0x08, <font color="blue"><i>0xA0</i></font>]
+BreakoutGame -> HeadlessDisplay: <b>createysizeval9(133, 115, <font color="blue"><i>128</i></font>)</b>\n[<font color="red"><i>0x0A</i></font>, 0x85, 0x73, <font color="blue"><i>0x80</i></font>]
+note left : INIT.on_entry
+HeadlessDisplay -> BreakoutGame: <b>           displayReady_(16)</b>\n             [<font color="red"><i>0x01</i></font>, 0x10]
+HeadlessDisplay -> BreakoutGame: <b>           displayReadyval8(204, 74)</b>\n           [<font color="red"><i>0x09</i></font>, 0xCC, 0x4A]
+activate BreakoutGame
+note left : transition -> LAUNCH
+BreakoutGame -> HeadlessDisplay: <b>clear_()</b>\n[<font color="red"><i>0x0C</i></font>, 0x71]
+BreakoutGame -> HeadlessDisplay: <b>clearval1()</b>\n[<font color="red"><i>0x0D</i></font>, 0x44, 0xE3]
+activate BreakoutGame
+note left : initColors()
+BreakoutGame -> HeadlessDisplay: <b>setBGColorrb(6, <font color="blue"><i>53</i></font>, <font color="blue"><i>120</i></font>)</b>\n[<font color="red"><i>0x11</i></font>, 0x06, <font color="blue"><i>0x35</i></font>, <font color="blue"><i>0x78</i></font>]
+BreakoutGame -> HeadlessDisplay: <b>setBGColorval5g(<font color="blue"><i>40</i></font>, 213, 218)</b>\n[<font color="red"><i>0x0F</i></font>, <font color="blue"><i>0x28</i></font>, 0xD5, 0xDA]
+BreakoutGame -> HeadlessDisplay: <b>  setColorg(115, <font color="blue"><i>94</i></font>)</b>\n  [<font color="red"><i>0x12</i></font>, 0x73, <font color="blue"><i>0x5E</i></font>]
+BreakoutGame -> HeadlessDisplay: <b>  setColorrbval7(<font color="blue"><i>174</i></font>, 67, 133, <font color="blue"><i>107</i></font>)</b>\n  [<font color="red"><i>0x00</i></font>, <font color="blue"><i>0xAE</i></font>, 0x43, 0x85, <font color="blue"><i>0x6B</i></font>]
+deactivate BreakoutGame
+...
+@enduml

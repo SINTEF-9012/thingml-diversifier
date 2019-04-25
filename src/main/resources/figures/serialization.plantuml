@@ -10,7 +10,5 @@ activate BreakoutGame
 BreakoutGame -> HeadlessDisplay: <b>  setColor(107, 94, 174)</b>\n  [<font color="red"><i>0x02</i></font>, 0x6B, 0x5E, 0xAE]
 note left : initColors()
 deactivate BreakoutGame
-BreakoutGame -> HeadlessDisplay: ...\n
-deactivate BreakoutGame
 ...
 @enduml

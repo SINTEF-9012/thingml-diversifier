@@ -1,0 +1,2803 @@
+thing fragment RndJava {
+	function rnd() : Byte do
+		return `Math.floor(Math.random() * Math.floor(246)) + 5` as Byte
+	end
+}
+thing HeadlessDisplayJava includes HeadlessDisplay , RndJava {
+	internal port diversified {
+	}
+}
+thing BasicIAControllerJava includes BasicIAController , RndJava {
+	internal port diversified {
+	}
+}
+thing BreakoutGameJava includes BreakoutGame , RndJava @stdout_sync "true" {
+	internal port diversified {
+	}
+	function quit() do
+	`System.gc();`
+		println ">sent " , bytesSentCounter , " bytes."
+		println ">done in " , stopTime - startTime , "ms!"
+		log(true)
+	`System.exit(0);`
+	end
+	function timestamp() : UInt32 return `System.currentTimeMillis()` as UInt32
+	function usedMemory() : UInt32 do
+	`System.gc();`
+		return `Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()` as UInt32
+	end
+	function unsetBit(variable : UInt8, bit : UInt8) : UInt8 return (`` & variable & ` & ~(1 << ` & bit & `)`) as UInt8
+}
+thing fragment BreakoutGame includes TimerMsgs , DisplayMsgs , ControllerMsgs , IAControllerMsg {
+	message nextLevel()
+	@diversify "not" @code "1"
+	message lostBall()
+	@diversify "not" @code "0"
+	required port clock {
+		sends timer_start sends timer_cancel receives timer_timeout
+	}
+	optional required port display @sync_send "true" {
+		sends createysizeval9 sends createxsize sends fillRectyval2 sends fillRectxwidthheight sends drawRectwidthx sends drawRectval3yheight sends clear_ sends clearval1 sends setColorrbval7 sends setColorg sends setBGColorval5g sends setBGColorrb sends drawIntegerval0xy sends drawIntegerdigitsscalev sends update_ sends updateval4 sends drawThingMLval10x sends drawThingMLy receives displayReady_ receives displayReadyval8
+	}
+	required port controller {
+		receives positionx receives positionval11y
+	}
+	provided port ia {
+		sends updateIAval13padyballx sends updateIAballypadx
+	}
+	internal port game {
+		sends lostBall sends nextLevel receives lostBall receives nextLevel
+	}
+	optional required port req_game {
+		sends lostBall sends nextLevel
+	}
+	provided port pro_game {
+		receives lostBall receives nextLevel
+	}
+	property bytesSentCounter : UInt32 = 0 @ignore "not-used"
+	property startTime : UInt32
+	property stopTime : UInt32
+	property lastTimestamp : UInt32 = 0
+	property counter : UInt8 = 0
+	readonly property XDISPSIZE : UInt8 = 160
+	readonly property YDISPSIZE : UInt8 = 128
+	readonly property SCALE : Int16 = 64
+	readonly property XMAX : Int16 = XDISPSIZE as Int16 * SCALE
+	readonly property YMAX : Int16 = YDISPSIZE as Int16 * SCALE
+	readonly property TOP : Int16 = 14 * SCALE
+	readonly property BOTTOM : Int16 = YMAX + 8 * SCALE
+	readonly property LEFT : Int16 = 1 * SCALE
+	readonly property RIGHT : Int16 = XMAX - 1 * SCALE
+	readonly property br : Int16 = 3 * SCALE
+	property bx : Int16 = XMAX / 2
+	property by : Int16 = YMAX
+	property dx : Int16 = XMAX / 98
+	property dy : Int16 = -XMAX / 65
+	property padx : Int16 = YMAX / 2
+	property pady : Int16 = YMAX - 6 * SCALE
+	property padlen : Int16 = 25 * SCALE
+	property prevBX : Int16 = -1
+	property prevBY : Int16 = -1
+	property bgcolor : UInt8 [ 3 ]
+	property fgcolor : UInt8 [ 3 ]
+	readonly property period : UInt16 = 3
+	property prevPX : Int16 = -1
+	property prevPY : Int16 = -1
+	readonly property BRICK_ROWS : UInt8 = 5
+	readonly property BRICK_HEIGHT : UInt8 = 9
+	property bricks : UInt8 [ BRICK_ROWS ]
+	property score : Int16 = 0
+	property lives : UInt8 = 3
+	property level : UInt8 = 1
+	abstract function rnd() : Byte
+
+	abstract function quit()
+
+	abstract function timestamp() : UInt32
+
+	abstract function usedMemory() : UInt32
+
+	function log(logMem : Boolean) do
+		if (counter == 0 or logMem) do
+			var ts : UInt32
+			if (lastTimestamp == 0) do
+				ts = 0
+				lastTimestamp = timestamp()
+			end
+			else do
+				var t : UInt32 = timestamp()
+				ts = t - lastTimestamp
+				lastTimestamp = t
+			end
+			println "ts:" , ts , ",lives:" , lives , ",score:" , score , ",level:" , level , ",bx:" , bx , ",by:" , by , ",padx:" , padx
+			println "#usedMem:" , usedMemory()
+		end
+		counter ++
+		if (counter == 33) counter = 0
+	end
+	function initColors() do
+		bgcolor[0] = 53
+		bgcolor[1] = 40
+		bgcolor[2] = 120
+		fgcolor[0] = 107
+		fgcolor[1] = 94
+		fgcolor[2] = 174
+		do
+			readonly var setBGColorArg0_0 : UInt8 = bgcolor [0]
+			readonly var setBGColorArg1_1 : UInt8 = bgcolor [1]
+			readonly var setBGColorArg2_2 : UInt8 = bgcolor [2]
+			println "@BreakoutGameJava@" , "setBGColor" , "," , "r" , "," , "g" , "," , "b" , ","
+			do
+				do
+					readonly var setBGColorrbArg0_0 : Byte = 0x06
+					readonly var setBGColorrbArg1_1 : UInt8 = setBGColorArg0_0
+					readonly var setBGColorrbArg2_2 : UInt8 = setBGColorArg2_2
+					println "!" , "17" , "," , (`((` & setBGColorrbArg0_0 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setBGColorrbArg1_1 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setBGColorrbArg2_2 & ` >> 0) & 0xFF)`) as Int8 , ","
+					display!setBGColorrb(setBGColorrbArg0_0, setBGColorrbArg1_1, setBGColorrbArg2_2)
+					bytesSentCounter = bytesSentCounter + 4
+				end
+				do
+					readonly var setBGColorval5gArg0_3 : UInt8 = setBGColorArg1_1
+					readonly var setBGColorval5gArg1_4 : Byte = 0xD5
+					readonly var setBGColorval5gArg2_5 : Byte = 0xDA
+					println "!" , "15" , "," , (`((` & setBGColorval5gArg0_3 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setBGColorval5gArg1_4 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setBGColorval5gArg2_5 & ` >> 0) & 0xFF)`) as Int8 , ","
+					display!setBGColorval5g(setBGColorval5gArg0_3, setBGColorval5gArg1_4, setBGColorval5gArg2_5)
+					bytesSentCounter = bytesSentCounter + 4
+				end
+			end
+		end
+		do
+			readonly var setColorArg0_3 : UInt8 = fgcolor [0]
+			readonly var setColorArg1_4 : UInt8 = fgcolor [1]
+			readonly var setColorArg2_5 : UInt8 = fgcolor [2]
+			println "@BreakoutGameJava@" , "setColor" , "," , "r" , "," , "g" , "," , "b" , ","
+			do
+				do
+					readonly var setColorgArg0_6 : Byte = 0x73
+					readonly var setColorgArg1_7 : UInt8 = setColorArg1_4
+					println "!" , "18" , "," , (`((` & setColorgArg0_6 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setColorgArg1_7 & ` >> 0) & 0xFF)`) as Int8 , ","
+					display!setColorg(setColorgArg0_6, setColorgArg1_7)
+					bytesSentCounter = bytesSentCounter + 3
+				end
+				do
+					readonly var setColorrbval7Arg0_8 : UInt8 = setColorArg2_5
+					readonly var setColorrbval7Arg1_9 : Byte = 0x43
+					readonly var setColorrbval7Arg2_10 : Byte = 0x85
+					readonly var setColorrbval7Arg3_11 : UInt8 = setColorArg0_3
+					println "!" , "0" , "," , (`((` & setColorrbval7Arg0_8 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setColorrbval7Arg1_9 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setColorrbval7Arg2_10 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setColorrbval7Arg3_11 & ` >> 0) & 0xFF)`) as Int8 , ","
+					display!setColorrbval7(setColorrbval7Arg0_8, setColorrbval7Arg1_9, setColorrbval7Arg2_10, setColorrbval7Arg3_11)
+					bytesSentCounter = bytesSentCounter + 5
+				end
+			end
+		end
+	end
+	function resetBall() do
+		bx = padx - br / SCALE
+		by = pady - br / SCALE
+		dx = (padx + prevBX + prevBY) % 300 - 150
+		if (dy > 0) dy = -dy
+		prevBX = -1
+		prevBY = -1
+	end
+	function eraseBall() do
+		var bs : Int16 = (br * 2) / SCALE
+		if (prevBX > 0) do
+			do
+				readonly var setColorArg0_6 : UInt8 = bgcolor [0]
+				readonly var setColorArg1_7 : UInt8 = bgcolor [1]
+				readonly var setColorArg2_8 : UInt8 = bgcolor [2]
+				println "@BreakoutGameJava@" , "setColor" , "," , "r" , "," , "g" , "," , "b" , ","
+				do
+					do
+						readonly var setColorrbval7Arg0_12 : UInt8 = setColorArg2_8
+						readonly var setColorrbval7Arg1_13 : Byte = 0x5E
+						readonly var setColorrbval7Arg2_14 : Byte = 0x05
+						readonly var setColorrbval7Arg3_15 : UInt8 = setColorArg0_6
+						println "!" , "0" , "," , (`((` & setColorrbval7Arg0_12 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setColorrbval7Arg1_13 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setColorrbval7Arg2_14 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setColorrbval7Arg3_15 & ` >> 0) & 0xFF)`) as Int8 , ","
+						display!setColorrbval7(setColorrbval7Arg0_12, setColorrbval7Arg1_13, setColorrbval7Arg2_14, setColorrbval7Arg3_15)
+						bytesSentCounter = bytesSentCounter + 5
+					end
+					do
+						readonly var setColorgArg0_16 : Byte = 0x93
+						readonly var setColorgArg1_17 : UInt8 = setColorArg1_7
+						println "!" , "18" , "," , (`((` & setColorgArg0_16 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setColorgArg1_17 & ` >> 0) & 0xFF)`) as Int8 , ","
+						display!setColorg(setColorgArg0_16, setColorgArg1_17)
+						bytesSentCounter = bytesSentCounter + 3
+					end
+				end
+			end
+			do
+				readonly var fillRectArg0_9 : UInt8 = prevBX as UInt8
+				readonly var fillRectArg1_10 : UInt8 = prevBY as UInt8
+				readonly var fillRectArg2_11 : UInt8 = bs as UInt8
+				readonly var fillRectArg3_12 : UInt8 = bs as UInt8
+				println "@BreakoutGameJava@" , "fillRect" , "," , "x" , "," , "y" , "," , "width" , "," , "height" , ","
+				do
+					do
+						readonly var fillRectyval2Arg0_18 : UInt8 = fillRectArg1_10
+						readonly var fillRectyval2Arg1_19 : Byte = 0x76
+						readonly var fillRectyval2Arg2_20 : Byte = 0xBE
+						println "!" , "5" , "," , (`((` & fillRectyval2Arg0_18 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & fillRectyval2Arg1_19 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & fillRectyval2Arg2_20 & ` >> 0) & 0xFF)`) as Int8 , ","
+						display!fillRectyval2(fillRectyval2Arg0_18, fillRectyval2Arg1_19, fillRectyval2Arg2_20)
+						bytesSentCounter = bytesSentCounter + 4
+					end
+					do
+						readonly var fillRectxwidthheightArg0_21 : UInt8 = fillRectArg3_12
+						readonly var fillRectxwidthheightArg1_22 : Byte = 0x21
+						readonly var fillRectxwidthheightArg2_23 : UInt8 = fillRectArg2_11
+						readonly var fillRectxwidthheightArg3_24 : UInt8 = fillRectArg0_9
+						println "!" , "3" , "," , (`((` & fillRectxwidthheightArg0_21 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & fillRectxwidthheightArg1_22 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & fillRectxwidthheightArg2_23 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & fillRectxwidthheightArg3_24 & ` >> 0) & 0xFF)`) as Int8 , ","
+						display!fillRectxwidthheight(fillRectxwidthheightArg0_21, fillRectxwidthheightArg1_22, fillRectxwidthheightArg2_23, fillRectxwidthheightArg3_24)
+						bytesSentCounter = bytesSentCounter + 5
+					end
+				end
+			end
+		end
+		prevBX = -1
+		prevBY = -1
+	end
+	function drawBall() do
+		var bs : Int16 = (br * 2) / SCALE
+		eraseBall()
+		prevBX = (bx - br) / SCALE
+		prevBY = (by - br) / SCALE
+		do
+			readonly var setColorArg0_13 : UInt8 = 183
+			readonly var setColorArg1_14 : UInt8 = 199
+			readonly var setColorArg2_15 : UInt8 = 111
+			println "@BreakoutGameJava@" , "setColor" , "," , "r" , "," , "g" , "," , "b" , ","
+			do
+				do
+					readonly var setColorgArg0_25 : Byte = 0x2D
+					readonly var setColorgArg1_26 : UInt8 = setColorArg1_14
+					println "!" , "18" , "," , (`((` & setColorgArg0_25 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setColorgArg1_26 & ` >> 0) & 0xFF)`) as Int8 , ","
+					display!setColorg(setColorgArg0_25, setColorgArg1_26)
+					bytesSentCounter = bytesSentCounter + 3
+				end
+				do
+					readonly var setColorrbval7Arg0_27 : UInt8 = setColorArg2_15
+					readonly var setColorrbval7Arg1_28 : Byte = 0x0A
+					readonly var setColorrbval7Arg2_29 : Byte = 0xB4
+					readonly var setColorrbval7Arg3_30 : UInt8 = setColorArg0_13
+					println "!" , "0" , "," , (`((` & setColorrbval7Arg0_27 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setColorrbval7Arg1_28 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setColorrbval7Arg2_29 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setColorrbval7Arg3_30 & ` >> 0) & 0xFF)`) as Int8 , ","
+					display!setColorrbval7(setColorrbval7Arg0_27, setColorrbval7Arg1_28, setColorrbval7Arg2_29, setColorrbval7Arg3_30)
+					bytesSentCounter = bytesSentCounter + 5
+				end
+			end
+		end
+		do
+			readonly var fillRectArg0_16 : UInt8 = prevBX as UInt8
+			readonly var fillRectArg1_17 : UInt8 = prevBY as UInt8
+			readonly var fillRectArg2_18 : UInt8 = bs as UInt8
+			readonly var fillRectArg3_19 : UInt8 = bs as UInt8
+			println "@BreakoutGameJava@" , "fillRect" , "," , "x" , "," , "y" , "," , "width" , "," , "height" , ","
+			do
+				do
+					readonly var fillRectyval2Arg0_31 : UInt8 = fillRectArg1_17
+					readonly var fillRectyval2Arg1_32 : Byte = 0xAD
+					readonly var fillRectyval2Arg2_33 : Byte = 0x24
+					println "!" , "5" , "," , (`((` & fillRectyval2Arg0_31 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & fillRectyval2Arg1_32 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & fillRectyval2Arg2_33 & ` >> 0) & 0xFF)`) as Int8 , ","
+					display!fillRectyval2(fillRectyval2Arg0_31, fillRectyval2Arg1_32, fillRectyval2Arg2_33)
+					bytesSentCounter = bytesSentCounter + 4
+				end
+				do
+					readonly var fillRectxwidthheightArg0_34 : UInt8 = fillRectArg3_19
+					readonly var fillRectxwidthheightArg1_35 : Byte = 0xD3
+					readonly var fillRectxwidthheightArg2_36 : UInt8 = fillRectArg2_18
+					readonly var fillRectxwidthheightArg3_37 : UInt8 = fillRectArg0_16
+					println "!" , "3" , "," , (`((` & fillRectxwidthheightArg0_34 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & fillRectxwidthheightArg1_35 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & fillRectxwidthheightArg2_36 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & fillRectxwidthheightArg3_37 & ` >> 0) & 0xFF)`) as Int8 , ","
+					display!fillRectxwidthheight(fillRectxwidthheightArg0_34, fillRectxwidthheightArg1_35, fillRectxwidthheightArg2_36, fillRectxwidthheightArg3_37)
+					bytesSentCounter = bytesSentCounter + 5
+				end
+			end
+		end
+	end
+	function erasePad() do
+		var ps : Int16 = padlen / SCALE
+		if (prevPX > 0) do
+			do
+				readonly var setColorArg0_20 : UInt8 = bgcolor [0]
+				readonly var setColorArg1_21 : UInt8 = bgcolor [1]
+				readonly var setColorArg2_22 : UInt8 = bgcolor [2]
+				println "@BreakoutGameJava@" , "setColor" , "," , "r" , "," , "g" , "," , "b" , ","
+				do
+					do
+						readonly var setColorgArg0_38 : Byte = 0xB7
+						readonly var setColorgArg1_39 : UInt8 = setColorArg1_21
+						println "!" , "18" , "," , (`((` & setColorgArg0_38 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setColorgArg1_39 & ` >> 0) & 0xFF)`) as Int8 , ","
+						display!setColorg(setColorgArg0_38, setColorgArg1_39)
+						bytesSentCounter = bytesSentCounter + 3
+					end
+					do
+						readonly var setColorrbval7Arg0_40 : UInt8 = setColorArg2_22
+						readonly var setColorrbval7Arg1_41 : Byte = 0x93
+						readonly var setColorrbval7Arg2_42 : Byte = 0x46
+						readonly var setColorrbval7Arg3_43 : UInt8 = setColorArg0_20
+						println "!" , "0" , "," , (`((` & setColorrbval7Arg0_40 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setColorrbval7Arg1_41 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setColorrbval7Arg2_42 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setColorrbval7Arg3_43 & ` >> 0) & 0xFF)`) as Int8 , ","
+						display!setColorrbval7(setColorrbval7Arg0_40, setColorrbval7Arg1_41, setColorrbval7Arg2_42, setColorrbval7Arg3_43)
+						bytesSentCounter = bytesSentCounter + 5
+					end
+				end
+			end
+			do
+				readonly var fillRectArg0_23 : UInt8 = prevPX as UInt8
+				readonly var fillRectArg1_24 : UInt8 = prevPY as UInt8
+				readonly var fillRectArg2_25 : UInt8 = ps as UInt8
+				readonly var fillRectArg3_26 : UInt8 = 4
+				println "@BreakoutGameJava@" , "fillRect" , "," , "x" , "," , "y" , "," , "width" , "," , "height" , ","
+				do
+					do
+						readonly var fillRectxwidthheightArg0_44 : UInt8 = fillRectArg3_26
+						readonly var fillRectxwidthheightArg1_45 : Byte = 0xBE
+						readonly var fillRectxwidthheightArg2_46 : UInt8 = fillRectArg2_25
+						readonly var fillRectxwidthheightArg3_47 : UInt8 = fillRectArg0_23
+						println "!" , "3" , "," , (`((` & fillRectxwidthheightArg0_44 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & fillRectxwidthheightArg1_45 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & fillRectxwidthheightArg2_46 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & fillRectxwidthheightArg3_47 & ` >> 0) & 0xFF)`) as Int8 , ","
+						display!fillRectxwidthheight(fillRectxwidthheightArg0_44, fillRectxwidthheightArg1_45, fillRectxwidthheightArg2_46, fillRectxwidthheightArg3_47)
+						bytesSentCounter = bytesSentCounter + 5
+					end
+					do
+						readonly var fillRectyval2Arg0_48 : UInt8 = fillRectArg1_24
+						readonly var fillRectyval2Arg1_49 : Byte = 0xEA
+						readonly var fillRectyval2Arg2_50 : Byte = 0x7B
+						println "!" , "5" , "," , (`((` & fillRectyval2Arg0_48 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & fillRectyval2Arg1_49 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & fillRectyval2Arg2_50 & ` >> 0) & 0xFF)`) as Int8 , ","
+						display!fillRectyval2(fillRectyval2Arg0_48, fillRectyval2Arg1_49, fillRectyval2Arg2_50)
+						bytesSentCounter = bytesSentCounter + 4
+					end
+				end
+			end
+		end
+	end
+	function drawPad() do
+		var ps : Int16 = padlen / SCALE
+		erasePad()
+		prevPX = (padx - (padlen / 2)) / SCALE
+		prevPY = pady / SCALE
+		do
+			readonly var setColorArg0_27 : UInt8 = fgcolor [0]
+			readonly var setColorArg1_28 : UInt8 = fgcolor [1]
+			readonly var setColorArg2_29 : UInt8 = fgcolor [2]
+			println "@BreakoutGameJava@" , "setColor" , "," , "r" , "," , "g" , "," , "b" , ","
+			do
+				do
+					readonly var setColorgArg0_51 : Byte = 0xED
+					readonly var setColorgArg1_52 : UInt8 = setColorArg1_28
+					println "!" , "18" , "," , (`((` & setColorgArg0_51 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setColorgArg1_52 & ` >> 0) & 0xFF)`) as Int8 , ","
+					display!setColorg(setColorgArg0_51, setColorgArg1_52)
+					bytesSentCounter = bytesSentCounter + 3
+				end
+				do
+					readonly var setColorrbval7Arg0_53 : UInt8 = setColorArg2_29
+					readonly var setColorrbval7Arg1_54 : Byte = 0xB9
+					readonly var setColorrbval7Arg2_55 : Byte = 0x13
+					readonly var setColorrbval7Arg3_56 : UInt8 = setColorArg0_27
+					println "!" , "0" , "," , (`((` & setColorrbval7Arg0_53 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setColorrbval7Arg1_54 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setColorrbval7Arg2_55 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setColorrbval7Arg3_56 & ` >> 0) & 0xFF)`) as Int8 , ","
+					display!setColorrbval7(setColorrbval7Arg0_53, setColorrbval7Arg1_54, setColorrbval7Arg2_55, setColorrbval7Arg3_56)
+					bytesSentCounter = bytesSentCounter + 5
+				end
+			end
+		end
+		do
+			readonly var fillRectArg0_30 : UInt8 = prevPX as UInt8
+			readonly var fillRectArg1_31 : UInt8 = prevPY as UInt8
+			readonly var fillRectArg2_32 : UInt8 = ps as UInt8
+			readonly var fillRectArg3_33 : UInt8 = 4
+			println "@BreakoutGameJava@" , "fillRect" , "," , "x" , "," , "y" , "," , "width" , "," , "height" , ","
+			do
+				do
+					readonly var fillRectxwidthheightArg0_57 : UInt8 = fillRectArg3_33
+					readonly var fillRectxwidthheightArg1_58 : Byte = 0x97
+					readonly var fillRectxwidthheightArg2_59 : UInt8 = fillRectArg2_32
+					readonly var fillRectxwidthheightArg3_60 : UInt8 = fillRectArg0_30
+					println "!" , "3" , "," , (`((` & fillRectxwidthheightArg0_57 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & fillRectxwidthheightArg1_58 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & fillRectxwidthheightArg2_59 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & fillRectxwidthheightArg3_60 & ` >> 0) & 0xFF)`) as Int8 , ","
+					display!fillRectxwidthheight(fillRectxwidthheightArg0_57, fillRectxwidthheightArg1_58, fillRectxwidthheightArg2_59, fillRectxwidthheightArg3_60)
+					bytesSentCounter = bytesSentCounter + 5
+				end
+				do
+					readonly var fillRectyval2Arg0_61 : UInt8 = fillRectArg1_31
+					readonly var fillRectyval2Arg1_62 : Byte = 0xA4
+					readonly var fillRectyval2Arg2_63 : Byte = 0x8B
+					println "!" , "5" , "," , (`((` & fillRectyval2Arg0_61 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & fillRectyval2Arg1_62 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & fillRectyval2Arg2_63 & ` >> 0) & 0xFF)`) as Int8 , ","
+					display!fillRectyval2(fillRectyval2Arg0_61, fillRectyval2Arg1_62, fillRectyval2Arg2_63)
+					bytesSentCounter = bytesSentCounter + 4
+				end
+			end
+		end
+	end
+	function drawCountDown(c : Int16) do
+		do
+			readonly var setColorArg0_34 : UInt8 = fgcolor [0]
+			readonly var setColorArg1_35 : UInt8 = fgcolor [1]
+			readonly var setColorArg2_36 : UInt8 = fgcolor [2]
+			println "@BreakoutGameJava@" , "setColor" , "," , "r" , "," , "g" , "," , "b" , ","
+			do
+				do
+					readonly var setColorgArg0_64 : Byte = 0xA4
+					readonly var setColorgArg1_65 : UInt8 = setColorArg1_35
+					println "!" , "18" , "," , (`((` & setColorgArg0_64 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setColorgArg1_65 & ` >> 0) & 0xFF)`) as Int8 , ","
+					display!setColorg(setColorgArg0_64, setColorgArg1_65)
+					bytesSentCounter = bytesSentCounter + 3
+				end
+				do
+					readonly var setColorrbval7Arg0_66 : UInt8 = setColorArg2_36
+					readonly var setColorrbval7Arg1_67 : Byte = 0x02
+					readonly var setColorrbval7Arg2_68 : Byte = 0x9C
+					readonly var setColorrbval7Arg3_69 : UInt8 = setColorArg0_34
+					println "!" , "0" , "," , (`((` & setColorrbval7Arg0_66 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setColorrbval7Arg1_67 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setColorrbval7Arg2_68 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setColorrbval7Arg3_69 & ` >> 0) & 0xFF)`) as Int8 , ","
+					display!setColorrbval7(setColorrbval7Arg0_66, setColorrbval7Arg1_67, setColorrbval7Arg2_68, setColorrbval7Arg3_69)
+					bytesSentCounter = bytesSentCounter + 5
+				end
+			end
+		end
+		if (c > 0) do
+			do
+				readonly var setColorArg0_37 : UInt8 = fgcolor [0]
+				readonly var setColorArg1_38 : UInt8 = fgcolor [1]
+				readonly var setColorArg2_39 : UInt8 = fgcolor [2]
+				println "@BreakoutGameJava@" , "setColor" , "," , "r" , "," , "g" , "," , "b" , ","
+				do
+					do
+						readonly var setColorrbval7Arg0_70 : UInt8 = setColorArg2_39
+						readonly var setColorrbval7Arg1_71 : Byte = 0x1C
+						readonly var setColorrbval7Arg2_72 : Byte = 0x93
+						readonly var setColorrbval7Arg3_73 : UInt8 = setColorArg0_37
+						println "!" , "0" , "," , (`((` & setColorrbval7Arg0_70 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setColorrbval7Arg1_71 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setColorrbval7Arg2_72 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setColorrbval7Arg3_73 & ` >> 0) & 0xFF)`) as Int8 , ","
+						display!setColorrbval7(setColorrbval7Arg0_70, setColorrbval7Arg1_71, setColorrbval7Arg2_72, setColorrbval7Arg3_73)
+						bytesSentCounter = bytesSentCounter + 5
+					end
+					do
+						readonly var setColorgArg0_74 : Byte = 0x8B
+						readonly var setColorgArg1_75 : UInt8 = setColorArg1_38
+						println "!" , "18" , "," , (`((` & setColorgArg0_74 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setColorgArg1_75 & ` >> 0) & 0xFF)`) as Int8 , ","
+						display!setColorg(setColorgArg0_74, setColorgArg1_75)
+						bytesSentCounter = bytesSentCounter + 3
+					end
+				end
+			end
+			do
+				readonly var setBGColorArg0_40 : UInt8 = bgcolor [0]
+				readonly var setBGColorArg1_41 : UInt8 = bgcolor [1]
+				readonly var setBGColorArg2_42 : UInt8 = bgcolor [2]
+				println "@BreakoutGameJava@" , "setBGColor" , "," , "r" , "," , "g" , "," , "b" , ","
+				do
+					do
+						readonly var setBGColorval5gArg0_76 : UInt8 = setBGColorArg1_41
+						readonly var setBGColorval5gArg1_77 : Byte = 0xC6
+						readonly var setBGColorval5gArg2_78 : Byte = 0xF4
+						println "!" , "15" , "," , (`((` & setBGColorval5gArg0_76 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setBGColorval5gArg1_77 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setBGColorval5gArg2_78 & ` >> 0) & 0xFF)`) as Int8 , ","
+						display!setBGColorval5g(setBGColorval5gArg0_76, setBGColorval5gArg1_77, setBGColorval5gArg2_78)
+						bytesSentCounter = bytesSentCounter + 4
+					end
+					do
+						readonly var setBGColorrbArg0_79 : Byte = 0xD5
+						readonly var setBGColorrbArg1_80 : UInt8 = setBGColorArg0_40
+						readonly var setBGColorrbArg2_81 : UInt8 = setBGColorArg2_42
+						println "!" , "17" , "," , (`((` & setBGColorrbArg0_79 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setBGColorrbArg1_80 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setBGColorrbArg2_81 & ` >> 0) & 0xFF)`) as Int8 , ","
+						display!setBGColorrb(setBGColorrbArg0_79, setBGColorrbArg1_80, setBGColorrbArg2_81)
+						bytesSentCounter = bytesSentCounter + 4
+					end
+				end
+			end
+			do
+				readonly var drawIntegerArg0_43 : UInt8 = 80 - 6
+				readonly var drawIntegerArg1_44 : UInt8 = 90
+				readonly var drawIntegerArg2_45 : Int16 = c
+				readonly var drawIntegerArg3_46 : UInt8 = 1
+				readonly var drawIntegerArg4_47 : UInt8 = 4
+				println "@BreakoutGameJava@" , "drawInteger" , "," , "x" , "," , "y" , "," , "v" , "," , "v" , "," , "digits" , "," , "scale" , ","
+				do
+					do
+						readonly var drawIntegerval0xyArg0_82 : Byte = 0x4E
+						readonly var drawIntegerval0xyArg1_83 : Byte = 0x34
+						readonly var drawIntegerval0xyArg2_84 : UInt8 = drawIntegerArg0_43
+						readonly var drawIntegerval0xyArg3_85 : UInt8 = drawIntegerArg1_44
+						println "!" , "2" , "," , (`((` & drawIntegerval0xyArg0_82 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & drawIntegerval0xyArg1_83 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & drawIntegerval0xyArg2_84 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & drawIntegerval0xyArg3_85 & ` >> 0) & 0xFF)`) as Int8 , ","
+						display!drawIntegerval0xy(drawIntegerval0xyArg0_82, drawIntegerval0xyArg1_83, drawIntegerval0xyArg2_84, drawIntegerval0xyArg3_85)
+						bytesSentCounter = bytesSentCounter + 5
+					end
+					do
+						readonly var drawIntegerdigitsscalevArg0_86 : Int16 = drawIntegerArg2_45
+						readonly var drawIntegerdigitsscalevArg1_87 : UInt8 = drawIntegerArg3_46
+						readonly var drawIntegerdigitsscalevArg2_88 : Byte = 0xBE
+						readonly var drawIntegerdigitsscalevArg3_89 : UInt8 = drawIntegerArg4_47
+						println "!" , "21" , "," , (`((` & drawIntegerdigitsscalevArg0_86 & ` >> 8) & 0xFF)`) as Int8 , "," , (`((` & drawIntegerdigitsscalevArg0_86 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & drawIntegerdigitsscalevArg1_87 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & drawIntegerdigitsscalevArg2_88 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & drawIntegerdigitsscalevArg3_89 & ` >> 0) & 0xFF)`) as Int8 , ","
+						display!drawIntegerdigitsscalev(drawIntegerdigitsscalevArg0_86, drawIntegerdigitsscalevArg1_87, drawIntegerdigitsscalevArg2_88, drawIntegerdigitsscalevArg3_89)
+						bytesSentCounter = bytesSentCounter + 6
+					end
+				end
+			end
+		end
+		else do
+			do
+				readonly var setColorArg0_48 : UInt8 = bgcolor [0]
+				readonly var setColorArg1_49 : UInt8 = bgcolor [1]
+				readonly var setColorArg2_50 : UInt8 = bgcolor [2]
+				println "@BreakoutGameJava@" , "setColor" , "," , "r" , "," , "g" , "," , "b" , ","
+				do
+					do
+						readonly var setColorgArg0_90 : Byte = 0xE1
+						readonly var setColorgArg1_91 : UInt8 = setColorArg1_49
+						println "!" , "18" , "," , (`((` & setColorgArg0_90 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setColorgArg1_91 & ` >> 0) & 0xFF)`) as Int8 , ","
+						display!setColorg(setColorgArg0_90, setColorgArg1_91)
+						bytesSentCounter = bytesSentCounter + 3
+					end
+					do
+						readonly var setColorrbval7Arg0_92 : UInt8 = setColorArg2_50
+						readonly var setColorrbval7Arg1_93 : Byte = 0x5E
+						readonly var setColorrbval7Arg2_94 : Byte = 0x46
+						readonly var setColorrbval7Arg3_95 : UInt8 = setColorArg0_48
+						println "!" , "0" , "," , (`((` & setColorrbval7Arg0_92 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setColorrbval7Arg1_93 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setColorrbval7Arg2_94 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setColorrbval7Arg3_95 & ` >> 0) & 0xFF)`) as Int8 , ","
+						display!setColorrbval7(setColorrbval7Arg0_92, setColorrbval7Arg1_93, setColorrbval7Arg2_94, setColorrbval7Arg3_95)
+						bytesSentCounter = bytesSentCounter + 5
+					end
+				end
+			end
+			do
+				readonly var fillRectArg0_51 : UInt8 = 80 - 6
+				readonly var fillRectArg1_52 : UInt8 = 90
+				readonly var fillRectArg2_53 : UInt8 = 12
+				readonly var fillRectArg3_54 : UInt8 = 20
+				println "@BreakoutGameJava@" , "fillRect" , "," , "x" , "," , "y" , "," , "width" , "," , "height" , ","
+				do
+					do
+						readonly var fillRectyval2Arg0_96 : UInt8 = fillRectArg1_52
+						readonly var fillRectyval2Arg1_97 : Byte = 0xA1
+						readonly var fillRectyval2Arg2_98 : Byte = 0x9F
+						println "!" , "5" , "," , (`((` & fillRectyval2Arg0_96 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & fillRectyval2Arg1_97 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & fillRectyval2Arg2_98 & ` >> 0) & 0xFF)`) as Int8 , ","
+						display!fillRectyval2(fillRectyval2Arg0_96, fillRectyval2Arg1_97, fillRectyval2Arg2_98)
+						bytesSentCounter = bytesSentCounter + 4
+					end
+					do
+						readonly var fillRectxwidthheightArg0_99 : UInt8 = fillRectArg3_54
+						readonly var fillRectxwidthheightArg1_100 : Byte = 0x8E
+						readonly var fillRectxwidthheightArg2_101 : UInt8 = fillRectArg2_53
+						readonly var fillRectxwidthheightArg3_102 : UInt8 = fillRectArg0_51
+						println "!" , "3" , "," , (`((` & fillRectxwidthheightArg0_99 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & fillRectxwidthheightArg1_100 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & fillRectxwidthheightArg2_101 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & fillRectxwidthheightArg3_102 & ` >> 0) & 0xFF)`) as Int8 , ","
+						display!fillRectxwidthheight(fillRectxwidthheightArg0_99, fillRectxwidthheightArg1_100, fillRectxwidthheightArg2_101, fillRectxwidthheightArg3_102)
+						bytesSentCounter = bytesSentCounter + 5
+					end
+				end
+			end
+		end
+	end
+	function drawWalls() do
+		do
+			readonly var setColorArg0_55 : UInt8 = fgcolor [0]
+			readonly var setColorArg1_56 : UInt8 = fgcolor [1]
+			readonly var setColorArg2_57 : UInt8 = fgcolor [2]
+			println "@BreakoutGameJava@" , "setColor" , "," , "r" , "," , "g" , "," , "b" , ","
+			do
+				do
+					readonly var setColorrbval7Arg0_103 : UInt8 = setColorArg2_57
+					readonly var setColorrbval7Arg1_104 : Byte = 0xED
+					readonly var setColorrbval7Arg2_105 : Byte = 0x30
+					readonly var setColorrbval7Arg3_106 : UInt8 = setColorArg0_55
+					println "!" , "0" , "," , (`((` & setColorrbval7Arg0_103 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setColorrbval7Arg1_104 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setColorrbval7Arg2_105 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setColorrbval7Arg3_106 & ` >> 0) & 0xFF)`) as Int8 , ","
+					display!setColorrbval7(setColorrbval7Arg0_103, setColorrbval7Arg1_104, setColorrbval7Arg2_105, setColorrbval7Arg3_106)
+					bytesSentCounter = bytesSentCounter + 5
+				end
+				do
+					readonly var setColorgArg0_107 : Byte = 0xE0
+					readonly var setColorgArg1_108 : UInt8 = setColorArg1_56
+					println "!" , "18" , "," , (`((` & setColorgArg0_107 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setColorgArg1_108 & ` >> 0) & 0xFF)`) as Int8 , ","
+					display!setColorg(setColorgArg0_107, setColorgArg1_108)
+					bytesSentCounter = bytesSentCounter + 3
+				end
+			end
+		end
+		readonly var left : UInt8 = (LEFT / SCALE) as UInt8
+		readonly var right : UInt8 = (RIGHT / SCALE) as UInt8
+		readonly var top : UInt8 = (TOP / SCALE) as UInt8
+		readonly var bottom : UInt8 = (BOTTOM / SCALE) as UInt8
+		readonly var xcenter : UInt8 = ((RIGHT - LEFT) / SCALE) as UInt8
+		readonly var ycenter : UInt8 = ((BOTTOM - TOP) / SCALE) as UInt8
+		do
+			readonly var fillRectArg0_58 : UInt8 = left - 1
+			readonly var fillRectArg1_59 : UInt8 = top - 1
+			readonly var fillRectArg2_60 : UInt8 = xcenter + 1
+			readonly var fillRectArg3_61 : UInt8 = 1
+			println "@BreakoutGameJava@" , "fillRect" , "," , "x" , "," , "y" , "," , "width" , "," , "height" , ","
+			do
+				do
+					readonly var fillRectyval2Arg0_109 : UInt8 = fillRectArg1_59
+					readonly var fillRectyval2Arg1_110 : Byte = 0x32
+					readonly var fillRectyval2Arg2_111 : Byte = 0x2F
+					println "!" , "5" , "," , (`((` & fillRectyval2Arg0_109 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & fillRectyval2Arg1_110 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & fillRectyval2Arg2_111 & ` >> 0) & 0xFF)`) as Int8 , ","
+					display!fillRectyval2(fillRectyval2Arg0_109, fillRectyval2Arg1_110, fillRectyval2Arg2_111)
+					bytesSentCounter = bytesSentCounter + 4
+				end
+				do
+					readonly var fillRectxwidthheightArg0_112 : UInt8 = fillRectArg3_61
+					readonly var fillRectxwidthheightArg1_113 : Byte = 0x41
+					readonly var fillRectxwidthheightArg2_114 : UInt8 = fillRectArg2_60
+					readonly var fillRectxwidthheightArg3_115 : UInt8 = fillRectArg0_58
+					println "!" , "3" , "," , (`((` & fillRectxwidthheightArg0_112 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & fillRectxwidthheightArg1_113 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & fillRectxwidthheightArg2_114 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & fillRectxwidthheightArg3_115 & ` >> 0) & 0xFF)`) as Int8 , ","
+					display!fillRectxwidthheight(fillRectxwidthheightArg0_112, fillRectxwidthheightArg1_113, fillRectxwidthheightArg2_114, fillRectxwidthheightArg3_115)
+					bytesSentCounter = bytesSentCounter + 5
+				end
+			end
+		end
+		do
+			readonly var fillRectArg0_62 : UInt8 = left - 1
+			readonly var fillRectArg1_63 : UInt8 = bottom
+			readonly var fillRectArg2_64 : UInt8 = xcenter + 1
+			readonly var fillRectArg3_65 : UInt8 = 1
+			println "@BreakoutGameJava@" , "fillRect" , "," , "x" , "," , "y" , "," , "width" , "," , "height" , ","
+			do
+				do
+					readonly var fillRectyval2Arg0_116 : UInt8 = fillRectArg1_63
+					readonly var fillRectyval2Arg1_117 : Byte = 0xC1
+					readonly var fillRectyval2Arg2_118 : Byte = 0x00
+					println "!" , "5" , "," , (`((` & fillRectyval2Arg0_116 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & fillRectyval2Arg1_117 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & fillRectyval2Arg2_118 & ` >> 0) & 0xFF)`) as Int8 , ","
+					display!fillRectyval2(fillRectyval2Arg0_116, fillRectyval2Arg1_117, fillRectyval2Arg2_118)
+					bytesSentCounter = bytesSentCounter + 4
+				end
+				do
+					readonly var fillRectxwidthheightArg0_119 : UInt8 = fillRectArg3_65
+					readonly var fillRectxwidthheightArg1_120 : Byte = 0x3D
+					readonly var fillRectxwidthheightArg2_121 : UInt8 = fillRectArg2_64
+					readonly var fillRectxwidthheightArg3_122 : UInt8 = fillRectArg0_62
+					println "!" , "3" , "," , (`((` & fillRectxwidthheightArg0_119 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & fillRectxwidthheightArg1_120 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & fillRectxwidthheightArg2_121 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & fillRectxwidthheightArg3_122 & ` >> 0) & 0xFF)`) as Int8 , ","
+					display!fillRectxwidthheight(fillRectxwidthheightArg0_119, fillRectxwidthheightArg1_120, fillRectxwidthheightArg2_121, fillRectxwidthheightArg3_122)
+					bytesSentCounter = bytesSentCounter + 5
+				end
+			end
+		end
+		do
+			readonly var fillRectArg0_66 : UInt8 = left - 1
+			readonly var fillRectArg1_67 : UInt8 = top
+			readonly var fillRectArg2_68 : UInt8 = 1
+			readonly var fillRectArg3_69 : UInt8 = ycenter
+			println "@BreakoutGameJava@" , "fillRect" , "," , "x" , "," , "y" , "," , "width" , "," , "height" , ","
+			do
+				do
+					readonly var fillRectyval2Arg0_123 : UInt8 = fillRectArg1_67
+					readonly var fillRectyval2Arg1_124 : Byte = 0x28
+					readonly var fillRectyval2Arg2_125 : Byte = 0x02
+					println "!" , "5" , "," , (`((` & fillRectyval2Arg0_123 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & fillRectyval2Arg1_124 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & fillRectyval2Arg2_125 & ` >> 0) & 0xFF)`) as Int8 , ","
+					display!fillRectyval2(fillRectyval2Arg0_123, fillRectyval2Arg1_124, fillRectyval2Arg2_125)
+					bytesSentCounter = bytesSentCounter + 4
+				end
+				do
+					readonly var fillRectxwidthheightArg0_126 : UInt8 = fillRectArg3_69
+					readonly var fillRectxwidthheightArg1_127 : Byte = 0x6C
+					readonly var fillRectxwidthheightArg2_128 : UInt8 = fillRectArg2_68
+					readonly var fillRectxwidthheightArg3_129 : UInt8 = fillRectArg0_66
+					println "!" , "3" , "," , (`((` & fillRectxwidthheightArg0_126 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & fillRectxwidthheightArg1_127 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & fillRectxwidthheightArg2_128 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & fillRectxwidthheightArg3_129 & ` >> 0) & 0xFF)`) as Int8 , ","
+					display!fillRectxwidthheight(fillRectxwidthheightArg0_126, fillRectxwidthheightArg1_127, fillRectxwidthheightArg2_128, fillRectxwidthheightArg3_129)
+					bytesSentCounter = bytesSentCounter + 5
+				end
+			end
+		end
+		do
+			readonly var fillRectArg0_70 : UInt8 = right
+			readonly var fillRectArg1_71 : UInt8 = top
+			readonly var fillRectArg2_72 : UInt8 = 1
+			readonly var fillRectArg3_73 : UInt8 = ycenter
+			println "@BreakoutGameJava@" , "fillRect" , "," , "x" , "," , "y" , "," , "width" , "," , "height" , ","
+			do
+				do
+					readonly var fillRectxwidthheightArg0_130 : UInt8 = fillRectArg3_73
+					readonly var fillRectxwidthheightArg1_131 : Byte = 0x0A
+					readonly var fillRectxwidthheightArg2_132 : UInt8 = fillRectArg2_72
+					readonly var fillRectxwidthheightArg3_133 : UInt8 = fillRectArg0_70
+					println "!" , "3" , "," , (`((` & fillRectxwidthheightArg0_130 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & fillRectxwidthheightArg1_131 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & fillRectxwidthheightArg2_132 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & fillRectxwidthheightArg3_133 & ` >> 0) & 0xFF)`) as Int8 , ","
+					display!fillRectxwidthheight(fillRectxwidthheightArg0_130, fillRectxwidthheightArg1_131, fillRectxwidthheightArg2_132, fillRectxwidthheightArg3_133)
+					bytesSentCounter = bytesSentCounter + 5
+				end
+				do
+					readonly var fillRectyval2Arg0_134 : UInt8 = fillRectArg1_71
+					readonly var fillRectyval2Arg1_135 : Byte = 0x90
+					readonly var fillRectyval2Arg2_136 : Byte = 0xAE
+					println "!" , "5" , "," , (`((` & fillRectyval2Arg0_134 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & fillRectyval2Arg1_135 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & fillRectyval2Arg2_136 & ` >> 0) & 0xFF)`) as Int8 , ","
+					display!fillRectyval2(fillRectyval2Arg0_134, fillRectyval2Arg1_135, fillRectyval2Arg2_136)
+					bytesSentCounter = bytesSentCounter + 4
+				end
+			end
+		end
+	end
+	function bitIsSet(variable : UInt8, bit : UInt8) : Boolean return (`((1 << ` & bit & `) & ` & variable & `) != 0`) as Boolean
+	abstract function unsetBit(variable : UInt8, bit : UInt8) : UInt8
+
+	function createBricks() do
+		var y : UInt8 = 0
+		while (y < BRICK_ROWS) do
+			bricks[y] = 0xFF
+			var x : UInt8 = 0
+			while (x < 8) do
+				if (bitIsSet(bricks [y], x)) do
+					drawBrick(x, y)
+				end
+				x = x + 1
+			end
+			y = y + 1
+		end
+	end
+	function bricksLeft() : UInt8 do
+		var result : UInt8 = 0
+		var y : UInt8 = 0
+		while (y < BRICK_ROWS) do
+			var x : UInt8 = 0
+			while (x < 8) do
+				if (bitIsSet(bricks [y], x)) do
+					result = result + 1
+				end
+				x = x + 1
+			end
+			y = y + 1
+		end
+		return result
+	end
+	function drawBrick(x : UInt8, y : UInt8) do
+		readonly var bx : UInt8 = ((LEFT + ((RIGHT - LEFT) / 8) * x as Int16) / SCALE + 1) as UInt8
+		readonly var by : UInt8 = ((TOP + 20 * SCALE + BRICK_HEIGHT as Int16 * y as Int16 * SCALE) / SCALE + 1) as UInt8
+		readonly var w : UInt8 = (((RIGHT - LEFT) / 8) / SCALE - 2) as UInt8
+		readonly var h : UInt8 = (BRICK_HEIGHT - 2) as UInt8
+		do
+			readonly var setColorArg0_74 : UInt8 = 155
+			readonly var setColorArg1_75 : UInt8 = 103
+			readonly var setColorArg2_76 : UInt8 = 89
+			println "@BreakoutGameJava@" , "setColor" , "," , "r" , "," , "g" , "," , "b" , ","
+			do
+				do
+					readonly var setColorgArg0_137 : Byte = 0x60
+					readonly var setColorgArg1_138 : UInt8 = setColorArg1_75
+					println "!" , "18" , "," , (`((` & setColorgArg0_137 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setColorgArg1_138 & ` >> 0) & 0xFF)`) as Int8 , ","
+					display!setColorg(setColorgArg0_137, setColorgArg1_138)
+					bytesSentCounter = bytesSentCounter + 3
+				end
+				do
+					readonly var setColorrbval7Arg0_139 : UInt8 = setColorArg2_76
+					readonly var setColorrbval7Arg1_140 : Byte = 0x0C
+					readonly var setColorrbval7Arg2_141 : Byte = 0x29
+					readonly var setColorrbval7Arg3_142 : UInt8 = setColorArg0_74
+					println "!" , "0" , "," , (`((` & setColorrbval7Arg0_139 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setColorrbval7Arg1_140 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setColorrbval7Arg2_141 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setColorrbval7Arg3_142 & ` >> 0) & 0xFF)`) as Int8 , ","
+					display!setColorrbval7(setColorrbval7Arg0_139, setColorrbval7Arg1_140, setColorrbval7Arg2_141, setColorrbval7Arg3_142)
+					bytesSentCounter = bytesSentCounter + 5
+				end
+			end
+		end
+		do
+			readonly var fillRectArg0_77 : UInt8 = bx
+			readonly var fillRectArg1_78 : UInt8 = by
+			readonly var fillRectArg2_79 : UInt8 = w
+			readonly var fillRectArg3_80 : UInt8 = h
+			println "@BreakoutGameJava@" , "fillRect" , "," , "x" , "," , "y" , "," , "width" , "," , "height" , ","
+			do
+				do
+					readonly var fillRectxwidthheightArg0_143 : UInt8 = fillRectArg3_80
+					readonly var fillRectxwidthheightArg1_144 : Byte = 0xC9
+					readonly var fillRectxwidthheightArg2_145 : UInt8 = fillRectArg2_79
+					readonly var fillRectxwidthheightArg3_146 : UInt8 = fillRectArg0_77
+					println "!" , "3" , "," , (`((` & fillRectxwidthheightArg0_143 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & fillRectxwidthheightArg1_144 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & fillRectxwidthheightArg2_145 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & fillRectxwidthheightArg3_146 & ` >> 0) & 0xFF)`) as Int8 , ","
+					display!fillRectxwidthheight(fillRectxwidthheightArg0_143, fillRectxwidthheightArg1_144, fillRectxwidthheightArg2_145, fillRectxwidthheightArg3_146)
+					bytesSentCounter = bytesSentCounter + 5
+				end
+				do
+					readonly var fillRectyval2Arg0_147 : UInt8 = fillRectArg1_78
+					readonly var fillRectyval2Arg1_148 : Byte = 0xE5
+					readonly var fillRectyval2Arg2_149 : Byte = 0x7C
+					println "!" , "5" , "," , (`((` & fillRectyval2Arg0_147 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & fillRectyval2Arg1_148 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & fillRectyval2Arg2_149 & ` >> 0) & 0xFF)`) as Int8 , ","
+					display!fillRectyval2(fillRectyval2Arg0_147, fillRectyval2Arg1_148, fillRectyval2Arg2_149)
+					bytesSentCounter = bytesSentCounter + 4
+				end
+			end
+		end
+		do
+			readonly var setColorArg0_81 : UInt8 = 100
+			readonly var setColorArg1_82 : UInt8 = 56
+			readonly var setColorArg2_83 : UInt8 = 43
+			println "@BreakoutGameJava@" , "setColor" , "," , "r" , "," , "g" , "," , "b" , ","
+			do
+				do
+					readonly var setColorgArg0_150 : Byte = 0xB6
+					readonly var setColorgArg1_151 : UInt8 = setColorArg1_82
+					println "!" , "18" , "," , (`((` & setColorgArg0_150 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setColorgArg1_151 & ` >> 0) & 0xFF)`) as Int8 , ","
+					display!setColorg(setColorgArg0_150, setColorgArg1_151)
+					bytesSentCounter = bytesSentCounter + 3
+				end
+				do
+					readonly var setColorrbval7Arg0_152 : UInt8 = setColorArg2_83
+					readonly var setColorrbval7Arg1_153 : Byte = 0x4A
+					readonly var setColorrbval7Arg2_154 : Byte = 0x2D
+					readonly var setColorrbval7Arg3_155 : UInt8 = setColorArg0_81
+					println "!" , "0" , "," , (`((` & setColorrbval7Arg0_152 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setColorrbval7Arg1_153 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setColorrbval7Arg2_154 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setColorrbval7Arg3_155 & ` >> 0) & 0xFF)`) as Int8 , ","
+					display!setColorrbval7(setColorrbval7Arg0_152, setColorrbval7Arg1_153, setColorrbval7Arg2_154, setColorrbval7Arg3_155)
+					bytesSentCounter = bytesSentCounter + 5
+				end
+			end
+		end
+		do
+			readonly var drawRectArg0_84 : UInt8 = bx
+			readonly var drawRectArg1_85 : UInt8 = by
+			readonly var drawRectArg2_86 : UInt8 = w
+			readonly var drawRectArg3_87 : UInt8 = h
+			println "@BreakoutGameJava@" , "drawRect" , "," , "x" , "," , "y" , "," , "width" , "," , "height" , ","
+			do
+				do
+					readonly var drawRectwidthxArg0_156 : UInt8 = drawRectArg0_84
+					readonly var drawRectwidthxArg1_157 : Byte = 0x1C
+					readonly var drawRectwidthxArg2_158 : UInt8 = drawRectArg2_86
+					println "!" , "6" , "," , (`((` & drawRectwidthxArg0_156 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & drawRectwidthxArg1_157 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & drawRectwidthxArg2_158 & ` >> 0) & 0xFF)`) as Int8 , ","
+					display!drawRectwidthx(drawRectwidthxArg0_156, drawRectwidthxArg1_157, drawRectwidthxArg2_158)
+					bytesSentCounter = bytesSentCounter + 4
+				end
+				do
+					readonly var drawRectval3yheightArg0_159 : Byte = 0x7C
+					readonly var drawRectval3yheightArg1_160 : UInt8 = drawRectArg1_85
+					readonly var drawRectval3yheightArg2_161 : Byte = 0xCC
+					readonly var drawRectval3yheightArg3_162 : UInt8 = drawRectArg3_87
+					println "!" , "14" , "," , (`((` & drawRectval3yheightArg0_159 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & drawRectval3yheightArg1_160 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & drawRectval3yheightArg2_161 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & drawRectval3yheightArg3_162 & ` >> 0) & 0xFF)`) as Int8 , ","
+					display!drawRectval3yheight(drawRectval3yheightArg0_159, drawRectval3yheightArg1_160, drawRectval3yheightArg2_161, drawRectval3yheightArg3_162)
+					bytesSentCounter = bytesSentCounter + 5
+				end
+			end
+		end
+	end
+	function removeBrick(x : UInt8, y : UInt8) do
+		readonly var bx : UInt8 = ((LEFT + ((RIGHT - LEFT) / 8) * x as Int16) / SCALE + 1) as UInt8
+		readonly var by : UInt8 = ((TOP + 20 * SCALE + BRICK_HEIGHT as Int16 * y as Int16 * SCALE) / SCALE + 1) as UInt8
+		do
+			readonly var setColorArg0_88 : UInt8 = bgcolor [0]
+			readonly var setColorArg1_89 : UInt8 = bgcolor [1]
+			readonly var setColorArg2_90 : UInt8 = bgcolor [2]
+			println "@BreakoutGameJava@" , "setColor" , "," , "r" , "," , "g" , "," , "b" , ","
+			do
+				do
+					readonly var setColorrbval7Arg0_163 : UInt8 = setColorArg2_90
+					readonly var setColorrbval7Arg1_164 : Byte = 0xC3
+					readonly var setColorrbval7Arg2_165 : Byte = 0x8A
+					readonly var setColorrbval7Arg3_166 : UInt8 = setColorArg0_88
+					println "!" , "0" , "," , (`((` & setColorrbval7Arg0_163 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setColorrbval7Arg1_164 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setColorrbval7Arg2_165 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setColorrbval7Arg3_166 & ` >> 0) & 0xFF)`) as Int8 , ","
+					display!setColorrbval7(setColorrbval7Arg0_163, setColorrbval7Arg1_164, setColorrbval7Arg2_165, setColorrbval7Arg3_166)
+					bytesSentCounter = bytesSentCounter + 5
+				end
+				do
+					readonly var setColorgArg0_167 : Byte = 0x86
+					readonly var setColorgArg1_168 : UInt8 = setColorArg1_89
+					println "!" , "18" , "," , (`((` & setColorgArg0_167 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setColorgArg1_168 & ` >> 0) & 0xFF)`) as Int8 , ","
+					display!setColorg(setColorgArg0_167, setColorgArg1_168)
+					bytesSentCounter = bytesSentCounter + 3
+				end
+			end
+		end
+		do
+			readonly var fillRectArg0_91 : UInt8 = bx
+			readonly var fillRectArg1_92 : UInt8 = by
+			readonly var fillRectArg2_93 : UInt8 = (((RIGHT - LEFT) / 8) / SCALE - 2) as UInt8
+			readonly var fillRectArg3_94 : UInt8 = BRICK_HEIGHT - 2
+			println "@BreakoutGameJava@" , "fillRect" , "," , "x" , "," , "y" , "," , "width" , "," , "height" , ","
+			do
+				do
+					readonly var fillRectxwidthheightArg0_169 : UInt8 = fillRectArg3_94
+					readonly var fillRectxwidthheightArg1_170 : Byte = 0x07
+					readonly var fillRectxwidthheightArg2_171 : UInt8 = fillRectArg2_93
+					readonly var fillRectxwidthheightArg3_172 : UInt8 = fillRectArg0_91
+					println "!" , "3" , "," , (`((` & fillRectxwidthheightArg0_169 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & fillRectxwidthheightArg1_170 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & fillRectxwidthheightArg2_171 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & fillRectxwidthheightArg3_172 & ` >> 0) & 0xFF)`) as Int8 , ","
+					display!fillRectxwidthheight(fillRectxwidthheightArg0_169, fillRectxwidthheightArg1_170, fillRectxwidthheightArg2_171, fillRectxwidthheightArg3_172)
+					bytesSentCounter = bytesSentCounter + 5
+				end
+				do
+					readonly var fillRectyval2Arg0_173 : UInt8 = fillRectArg1_92
+					readonly var fillRectyval2Arg1_174 : Byte = 0x6A
+					readonly var fillRectyval2Arg2_175 : Byte = 0x20
+					println "!" , "5" , "," , (`((` & fillRectyval2Arg0_173 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & fillRectyval2Arg1_174 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & fillRectyval2Arg2_175 & ` >> 0) & 0xFF)`) as Int8 , ","
+					display!fillRectyval2(fillRectyval2Arg0_173, fillRectyval2Arg1_174, fillRectyval2Arg2_175)
+					bytesSentCounter = bytesSentCounter + 4
+				end
+			end
+		end
+		bricks[y] = unsetBit(bricks [y], x)
+	end
+	function collideBrick(xpos : Int16, ypos : Int16) : Boolean do
+		var bry : Int16 = (ypos as Int16 - TOP - 20 * SCALE) / (BRICK_HEIGHT as Int16 * SCALE)
+		var result : Boolean = false
+		if (bry >= 0 and bry < BRICK_ROWS as Int16) do
+			var brx : Int16 = (xpos as Int16 - LEFT) / ((RIGHT - LEFT) / 8)
+			if (bitIsSet(bricks [bry], brx as UInt8)) do
+				removeBrick(brx as UInt8, bry as UInt8)
+				result = true
+			end
+		end
+		return result
+	end
+	function drawLevel() do
+		do
+			readonly var setColorArg0_95 : UInt8 = 158
+			readonly var setColorArg1_96 : UInt8 = 209
+			readonly var setColorArg2_97 : UInt8 = 130
+			println "@BreakoutGameJava@" , "setColor" , "," , "r" , "," , "g" , "," , "b" , ","
+			do
+				do
+					readonly var setColorgArg0_176 : Byte = 0x51
+					readonly var setColorgArg1_177 : UInt8 = setColorArg1_96
+					println "!" , "18" , "," , (`((` & setColorgArg0_176 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setColorgArg1_177 & ` >> 0) & 0xFF)`) as Int8 , ","
+					display!setColorg(setColorgArg0_176, setColorgArg1_177)
+					bytesSentCounter = bytesSentCounter + 3
+				end
+				do
+					readonly var setColorrbval7Arg0_178 : UInt8 = setColorArg2_97
+					readonly var setColorrbval7Arg1_179 : Byte = 0xDC
+					readonly var setColorrbval7Arg2_180 : Byte = 0xF9
+					readonly var setColorrbval7Arg3_181 : UInt8 = setColorArg0_95
+					println "!" , "0" , "," , (`((` & setColorrbval7Arg0_178 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setColorrbval7Arg1_179 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setColorrbval7Arg2_180 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setColorrbval7Arg3_181 & ` >> 0) & 0xFF)`) as Int8 , ","
+					display!setColorrbval7(setColorrbval7Arg0_178, setColorrbval7Arg1_179, setColorrbval7Arg2_180, setColorrbval7Arg3_181)
+					bytesSentCounter = bytesSentCounter + 5
+				end
+			end
+		end
+		do
+			readonly var setBGColorArg0_98 : UInt8 = fgcolor [0]
+			readonly var setBGColorArg1_99 : UInt8 = fgcolor [1]
+			readonly var setBGColorArg2_100 : UInt8 = fgcolor [2]
+			println "@BreakoutGameJava@" , "setBGColor" , "," , "r" , "," , "g" , "," , "b" , ","
+			do
+				do
+					readonly var setBGColorval5gArg0_182 : UInt8 = setBGColorArg1_99
+					readonly var setBGColorval5gArg1_183 : Byte = 0xAA
+					readonly var setBGColorval5gArg2_184 : Byte = 0x21
+					println "!" , "15" , "," , (`((` & setBGColorval5gArg0_182 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setBGColorval5gArg1_183 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setBGColorval5gArg2_184 & ` >> 0) & 0xFF)`) as Int8 , ","
+					display!setBGColorval5g(setBGColorval5gArg0_182, setBGColorval5gArg1_183, setBGColorval5gArg2_184)
+					bytesSentCounter = bytesSentCounter + 4
+				end
+				do
+					readonly var setBGColorrbArg0_185 : Byte = 0xF0
+					readonly var setBGColorrbArg1_186 : UInt8 = setBGColorArg0_98
+					readonly var setBGColorrbArg2_187 : UInt8 = setBGColorArg2_100
+					println "!" , "17" , "," , (`((` & setBGColorrbArg0_185 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setBGColorrbArg1_186 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setBGColorrbArg2_187 & ` >> 0) & 0xFF)`) as Int8 , ","
+					display!setBGColorrb(setBGColorrbArg0_185, setBGColorrbArg1_186, setBGColorrbArg2_187)
+					bytesSentCounter = bytesSentCounter + 4
+				end
+			end
+		end
+		do
+			readonly var setColorArg0_101 : UInt8 = bgcolor [0]
+			readonly var setColorArg1_102 : UInt8 = bgcolor [1]
+			readonly var setColorArg2_103 : UInt8 = bgcolor [2]
+			println "@BreakoutGameJava@" , "setColor" , "," , "r" , "," , "g" , "," , "b" , ","
+			do
+				do
+					readonly var setColorrbval7Arg0_188 : UInt8 = setColorArg2_103
+					readonly var setColorrbval7Arg1_189 : Byte = 0x6D
+					readonly var setColorrbval7Arg2_190 : Byte = 0x3E
+					readonly var setColorrbval7Arg3_191 : UInt8 = setColorArg0_101
+					println "!" , "0" , "," , (`((` & setColorrbval7Arg0_188 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setColorrbval7Arg1_189 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setColorrbval7Arg2_190 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setColorrbval7Arg3_191 & ` >> 0) & 0xFF)`) as Int8 , ","
+					display!setColorrbval7(setColorrbval7Arg0_188, setColorrbval7Arg1_189, setColorrbval7Arg2_190, setColorrbval7Arg3_191)
+					bytesSentCounter = bytesSentCounter + 5
+				end
+				do
+					readonly var setColorgArg0_192 : Byte = 0x78
+					readonly var setColorgArg1_193 : UInt8 = setColorArg1_102
+					println "!" , "18" , "," , (`((` & setColorgArg0_192 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setColorgArg1_193 & ` >> 0) & 0xFF)`) as Int8 , ","
+					display!setColorg(setColorgArg0_192, setColorgArg1_193)
+					bytesSentCounter = bytesSentCounter + 3
+				end
+			end
+		end
+		do
+			readonly var drawIntegerArg0_104 : UInt8 = 6
+			readonly var drawIntegerArg1_105 : UInt8 = 2
+			readonly var drawIntegerArg2_106 : Int16 = level as Int16
+			readonly var drawIntegerArg3_107 : UInt8 = 2
+			readonly var drawIntegerArg4_108 : UInt8 = 2
+			println "@BreakoutGameJava@" , "drawInteger" , "," , "x" , "," , "y" , "," , "v" , "," , "v" , "," , "digits" , "," , "scale" , ","
+			do
+				do
+					readonly var drawIntegerval0xyArg0_194 : Byte = 0x66
+					readonly var drawIntegerval0xyArg1_195 : Byte = 0x34
+					readonly var drawIntegerval0xyArg2_196 : UInt8 = drawIntegerArg0_104
+					readonly var drawIntegerval0xyArg3_197 : UInt8 = drawIntegerArg1_105
+					println "!" , "2" , "," , (`((` & drawIntegerval0xyArg0_194 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & drawIntegerval0xyArg1_195 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & drawIntegerval0xyArg2_196 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & drawIntegerval0xyArg3_197 & ` >> 0) & 0xFF)`) as Int8 , ","
+					display!drawIntegerval0xy(drawIntegerval0xyArg0_194, drawIntegerval0xyArg1_195, drawIntegerval0xyArg2_196, drawIntegerval0xyArg3_197)
+					bytesSentCounter = bytesSentCounter + 5
+				end
+				do
+					readonly var drawIntegerdigitsscalevArg0_198 : Int16 = drawIntegerArg2_106
+					readonly var drawIntegerdigitsscalevArg1_199 : UInt8 = drawIntegerArg3_107
+					readonly var drawIntegerdigitsscalevArg2_200 : Byte = 0x10
+					readonly var drawIntegerdigitsscalevArg3_201 : UInt8 = drawIntegerArg4_108
+					println "!" , "21" , "," , (`((` & drawIntegerdigitsscalevArg0_198 & ` >> 8) & 0xFF)`) as Int8 , "," , (`((` & drawIntegerdigitsscalevArg0_198 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & drawIntegerdigitsscalevArg1_199 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & drawIntegerdigitsscalevArg2_200 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & drawIntegerdigitsscalevArg3_201 & ` >> 0) & 0xFF)`) as Int8 , ","
+					display!drawIntegerdigitsscalev(drawIntegerdigitsscalevArg0_198, drawIntegerdigitsscalevArg1_199, drawIntegerdigitsscalevArg2_200, drawIntegerdigitsscalevArg3_201)
+					bytesSentCounter = bytesSentCounter + 6
+				end
+			end
+		end
+	end
+	function incrementScore(diff : Int8) do
+		score = score + diff as Int16
+		if (score < 0) score = 0
+		drawScore()
+	end
+	function drawScore() do
+		do
+			readonly var setColorArg0_109 : UInt8 = 158
+			readonly var setColorArg1_110 : UInt8 = 209
+			readonly var setColorArg2_111 : UInt8 = 130
+			println "@BreakoutGameJava@" , "setColor" , "," , "r" , "," , "g" , "," , "b" , ","
+			do
+				do
+					readonly var setColorrbval7Arg0_202 : UInt8 = setColorArg2_111
+					readonly var setColorrbval7Arg1_203 : Byte = 0xBE
+					readonly var setColorrbval7Arg2_204 : Byte = 0x64
+					readonly var setColorrbval7Arg3_205 : UInt8 = setColorArg0_109
+					println "!" , "0" , "," , (`((` & setColorrbval7Arg0_202 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setColorrbval7Arg1_203 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setColorrbval7Arg2_204 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setColorrbval7Arg3_205 & ` >> 0) & 0xFF)`) as Int8 , ","
+					display!setColorrbval7(setColorrbval7Arg0_202, setColorrbval7Arg1_203, setColorrbval7Arg2_204, setColorrbval7Arg3_205)
+					bytesSentCounter = bytesSentCounter + 5
+				end
+				do
+					readonly var setColorgArg0_206 : Byte = 0x8C
+					readonly var setColorgArg1_207 : UInt8 = setColorArg1_110
+					println "!" , "18" , "," , (`((` & setColorgArg0_206 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setColorgArg1_207 & ` >> 0) & 0xFF)`) as Int8 , ","
+					display!setColorg(setColorgArg0_206, setColorgArg1_207)
+					bytesSentCounter = bytesSentCounter + 3
+				end
+			end
+		end
+		do
+			readonly var setBGColorArg0_112 : UInt8 = fgcolor [0]
+			readonly var setBGColorArg1_113 : UInt8 = fgcolor [1]
+			readonly var setBGColorArg2_114 : UInt8 = fgcolor [2]
+			println "@BreakoutGameJava@" , "setBGColor" , "," , "r" , "," , "g" , "," , "b" , ","
+			do
+				do
+					readonly var setBGColorval5gArg0_208 : UInt8 = setBGColorArg1_113
+					readonly var setBGColorval5gArg1_209 : Byte = 0x5D
+					readonly var setBGColorval5gArg2_210 : Byte = 0xD8
+					println "!" , "15" , "," , (`((` & setBGColorval5gArg0_208 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setBGColorval5gArg1_209 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setBGColorval5gArg2_210 & ` >> 0) & 0xFF)`) as Int8 , ","
+					display!setBGColorval5g(setBGColorval5gArg0_208, setBGColorval5gArg1_209, setBGColorval5gArg2_210)
+					bytesSentCounter = bytesSentCounter + 4
+				end
+				do
+					readonly var setBGColorrbArg0_211 : Byte = 0x13
+					readonly var setBGColorrbArg1_212 : UInt8 = setBGColorArg0_112
+					readonly var setBGColorrbArg2_213 : UInt8 = setBGColorArg2_114
+					println "!" , "17" , "," , (`((` & setBGColorrbArg0_211 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setBGColorrbArg1_212 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setBGColorrbArg2_213 & ` >> 0) & 0xFF)`) as Int8 , ","
+					display!setBGColorrb(setBGColorrbArg0_211, setBGColorrbArg1_212, setBGColorrbArg2_213)
+					bytesSentCounter = bytesSentCounter + 4
+				end
+			end
+		end
+		do
+			readonly var drawIntegerArg0_115 : UInt8 = 58
+			readonly var drawIntegerArg1_116 : UInt8 = 2
+			readonly var drawIntegerArg2_117 : Int16 = score
+			readonly var drawIntegerArg3_118 : UInt8 = 5
+			readonly var drawIntegerArg4_119 : UInt8 = 2
+			println "@BreakoutGameJava@" , "drawInteger" , "," , "x" , "," , "y" , "," , "v" , "," , "v" , "," , "digits" , "," , "scale" , ","
+			do
+				do
+					readonly var drawIntegerval0xyArg0_214 : Byte = 0xC3
+					readonly var drawIntegerval0xyArg1_215 : Byte = 0x37
+					readonly var drawIntegerval0xyArg2_216 : UInt8 = drawIntegerArg0_115
+					readonly var drawIntegerval0xyArg3_217 : UInt8 = drawIntegerArg1_116
+					println "!" , "2" , "," , (`((` & drawIntegerval0xyArg0_214 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & drawIntegerval0xyArg1_215 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & drawIntegerval0xyArg2_216 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & drawIntegerval0xyArg3_217 & ` >> 0) & 0xFF)`) as Int8 , ","
+					display!drawIntegerval0xy(drawIntegerval0xyArg0_214, drawIntegerval0xyArg1_215, drawIntegerval0xyArg2_216, drawIntegerval0xyArg3_217)
+					bytesSentCounter = bytesSentCounter + 5
+				end
+				do
+					readonly var drawIntegerdigitsscalevArg0_218 : Int16 = drawIntegerArg2_117
+					readonly var drawIntegerdigitsscalevArg1_219 : UInt8 = drawIntegerArg3_118
+					readonly var drawIntegerdigitsscalevArg2_220 : Byte = 0xA6
+					readonly var drawIntegerdigitsscalevArg3_221 : UInt8 = drawIntegerArg4_119
+					println "!" , "21" , "," , (`((` & drawIntegerdigitsscalevArg0_218 & ` >> 8) & 0xFF)`) as Int8 , "," , (`((` & drawIntegerdigitsscalevArg0_218 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & drawIntegerdigitsscalevArg1_219 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & drawIntegerdigitsscalevArg2_220 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & drawIntegerdigitsscalevArg3_221 & ` >> 0) & 0xFF)`) as Int8 , ","
+					display!drawIntegerdigitsscalev(drawIntegerdigitsscalevArg0_218, drawIntegerdigitsscalevArg1_219, drawIntegerdigitsscalevArg2_220, drawIntegerdigitsscalevArg3_221)
+					bytesSentCounter = bytesSentCounter + 6
+				end
+			end
+		end
+	end
+	function drawLives() do
+		do
+			readonly var setColorArg0_120 : UInt8 = fgcolor [0]
+			readonly var setColorArg1_121 : UInt8 = fgcolor [1]
+			readonly var setColorArg2_122 : UInt8 = fgcolor [2]
+			println "@BreakoutGameJava@" , "setColor" , "," , "r" , "," , "g" , "," , "b" , ","
+			do
+				do
+					readonly var setColorgArg0_222 : Byte = 0x52
+					readonly var setColorgArg1_223 : UInt8 = setColorArg1_121
+					println "!" , "18" , "," , (`((` & setColorgArg0_222 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setColorgArg1_223 & ` >> 0) & 0xFF)`) as Int8 , ","
+					display!setColorg(setColorgArg0_222, setColorgArg1_223)
+					bytesSentCounter = bytesSentCounter + 3
+				end
+				do
+					readonly var setColorrbval7Arg0_224 : UInt8 = setColorArg2_122
+					readonly var setColorrbval7Arg1_225 : Byte = 0xDB
+					readonly var setColorrbval7Arg2_226 : Byte = 0x68
+					readonly var setColorrbval7Arg3_227 : UInt8 = setColorArg0_120
+					println "!" , "0" , "," , (`((` & setColorrbval7Arg0_224 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setColorrbval7Arg1_225 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setColorrbval7Arg2_226 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setColorrbval7Arg3_227 & ` >> 0) & 0xFF)`) as Int8 , ","
+					display!setColorrbval7(setColorrbval7Arg0_224, setColorrbval7Arg1_225, setColorrbval7Arg2_226, setColorrbval7Arg3_227)
+					bytesSentCounter = bytesSentCounter + 5
+				end
+			end
+		end
+		do
+			readonly var fillRectArg0_123 : UInt8 = 124
+			readonly var fillRectArg1_124 : UInt8 = 4
+			readonly var fillRectArg2_125 : UInt8 = 24 + 6
+			readonly var fillRectArg3_126 : UInt8 = 6
+			println "@BreakoutGameJava@" , "fillRect" , "," , "x" , "," , "y" , "," , "width" , "," , "height" , ","
+			do
+				do
+					readonly var fillRectxwidthheightArg0_228 : UInt8 = fillRectArg3_126
+					readonly var fillRectxwidthheightArg1_229 : Byte = 0x83
+					readonly var fillRectxwidthheightArg2_230 : UInt8 = fillRectArg2_125
+					readonly var fillRectxwidthheightArg3_231 : UInt8 = fillRectArg0_123
+					println "!" , "3" , "," , (`((` & fillRectxwidthheightArg0_228 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & fillRectxwidthheightArg1_229 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & fillRectxwidthheightArg2_230 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & fillRectxwidthheightArg3_231 & ` >> 0) & 0xFF)`) as Int8 , ","
+					display!fillRectxwidthheight(fillRectxwidthheightArg0_228, fillRectxwidthheightArg1_229, fillRectxwidthheightArg2_230, fillRectxwidthheightArg3_231)
+					bytesSentCounter = bytesSentCounter + 5
+				end
+				do
+					readonly var fillRectyval2Arg0_232 : UInt8 = fillRectArg1_124
+					readonly var fillRectyval2Arg1_233 : Byte = 0xC9
+					readonly var fillRectyval2Arg2_234 : Byte = 0x6E
+					println "!" , "5" , "," , (`((` & fillRectyval2Arg0_232 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & fillRectyval2Arg1_233 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & fillRectyval2Arg2_234 & ` >> 0) & 0xFF)`) as Int8 , ","
+					display!fillRectyval2(fillRectyval2Arg0_232, fillRectyval2Arg1_233, fillRectyval2Arg2_234)
+					bytesSentCounter = bytesSentCounter + 4
+				end
+			end
+		end
+		do
+			readonly var setColorArg0_127 : UInt8 = 183
+			readonly var setColorArg1_128 : UInt8 = 199
+			readonly var setColorArg2_129 : UInt8 = 111
+			println "@BreakoutGameJava@" , "setColor" , "," , "r" , "," , "g" , "," , "b" , ","
+			do
+				do
+					readonly var setColorgArg0_235 : Byte = 0x7A
+					readonly var setColorgArg1_236 : UInt8 = setColorArg1_128
+					println "!" , "18" , "," , (`((` & setColorgArg0_235 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setColorgArg1_236 & ` >> 0) & 0xFF)`) as Int8 , ","
+					display!setColorg(setColorgArg0_235, setColorgArg1_236)
+					bytesSentCounter = bytesSentCounter + 3
+				end
+				do
+					readonly var setColorrbval7Arg0_237 : UInt8 = setColorArg2_129
+					readonly var setColorrbval7Arg1_238 : Byte = 0x02
+					readonly var setColorrbval7Arg2_239 : Byte = 0xF3
+					readonly var setColorrbval7Arg3_240 : UInt8 = setColorArg0_127
+					println "!" , "0" , "," , (`((` & setColorrbval7Arg0_237 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setColorrbval7Arg1_238 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setColorrbval7Arg2_239 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setColorrbval7Arg3_240 & ` >> 0) & 0xFF)`) as Int8 , ","
+					display!setColorrbval7(setColorrbval7Arg0_237, setColorrbval7Arg1_238, setColorrbval7Arg2_239, setColorrbval7Arg3_240)
+					bytesSentCounter = bytesSentCounter + 5
+				end
+			end
+		end
+		var i : UInt8 = 0
+		while (i < lives) do
+			do
+				readonly var fillRectArg0_130 : UInt8 = 124 + (2 - i) * 12
+				readonly var fillRectArg1_131 : UInt8 = 4
+				readonly var fillRectArg2_132 : UInt8 = 6
+				readonly var fillRectArg3_133 : UInt8 = 6
+				println "@BreakoutGameJava@" , "fillRect" , "," , "x" , "," , "y" , "," , "width" , "," , "height" , ","
+				do
+					do
+						readonly var fillRectyval2Arg0_241 : UInt8 = fillRectArg1_131
+						readonly var fillRectyval2Arg1_242 : Byte = 0x21
+						readonly var fillRectyval2Arg2_243 : Byte = 0x3B
+						println "!" , "5" , "," , (`((` & fillRectyval2Arg0_241 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & fillRectyval2Arg1_242 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & fillRectyval2Arg2_243 & ` >> 0) & 0xFF)`) as Int8 , ","
+						display!fillRectyval2(fillRectyval2Arg0_241, fillRectyval2Arg1_242, fillRectyval2Arg2_243)
+						bytesSentCounter = bytesSentCounter + 4
+					end
+					do
+						readonly var fillRectxwidthheightArg0_244 : UInt8 = fillRectArg3_133
+						readonly var fillRectxwidthheightArg1_245 : Byte = 0x0A
+						readonly var fillRectxwidthheightArg2_246 : UInt8 = fillRectArg2_132
+						readonly var fillRectxwidthheightArg3_247 : UInt8 = fillRectArg0_130
+						println "!" , "3" , "," , (`((` & fillRectxwidthheightArg0_244 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & fillRectxwidthheightArg1_245 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & fillRectxwidthheightArg2_246 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & fillRectxwidthheightArg3_247 & ` >> 0) & 0xFF)`) as Int8 , ","
+						display!fillRectxwidthheight(fillRectxwidthheightArg0_244, fillRectxwidthheightArg1_245, fillRectxwidthheightArg2_246, fillRectxwidthheightArg3_247)
+						bytesSentCounter = bytesSentCounter + 5
+					end
+				end
+			end
+			i = i + 1
+		end
+	end
+	statechart SC init INIT {
+		property controller_position_x : Int16
+		property controller_position_val11 : Byte
+		property controller_position_y : Int16
+		property received_controller_positionx : Boolean
+		property received_controller_positionval11y : Boolean
+		state INIT {
+			property display_displayReady_val8 : Byte
+			property received_display_displayReady_ : Boolean
+			property received_display_displayReadyval8 : Boolean
+			on entry do
+				startTime = timestamp()
+				do
+					readonly var createArg0_134 : UInt8 = XDISPSIZE
+					readonly var createArg1_135 : UInt8 = YDISPSIZE
+					println "@BreakoutGameJava@" , "create" , "," , "xsize" , "," , "ysize" , ","
+					do
+						do
+							readonly var createxsizeArg0_248 : Byte = 0x08
+							readonly var createxsizeArg1_249 : UInt8 = createArg0_134
+							println "!" , "4" , "," , (`((` & createxsizeArg0_248 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & createxsizeArg1_249 & ` >> 0) & 0xFF)`) as Int8 , ","
+							display!createxsize(createxsizeArg0_248, createxsizeArg1_249)
+							bytesSentCounter = bytesSentCounter + 3
+						end
+						do
+							readonly var createysizeval9Arg0_250 : Byte = 0x85
+							readonly var createysizeval9Arg1_251 : Byte = 0x73
+							readonly var createysizeval9Arg2_252 : UInt8 = createArg1_135
+							println "!" , "11" , "," , (`((` & createysizeval9Arg0_250 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & createysizeval9Arg1_251 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & createysizeval9Arg2_252 & ` >> 0) & 0xFF)`) as Int8 , ","
+							display!createysizeval9(createysizeval9Arg0_250, createysizeval9Arg1_251, createysizeval9Arg2_252)
+							bytesSentCounter = bytesSentCounter + 4
+						end
+					end
+				end
+			end
+			internal
+			event display?displayReady_
+			guard not received_display_displayReadyval8
+			action do
+				received_display_displayReady_ = true
+			end
+			internal
+			event display?displayReadyval8
+			guard not received_display_displayReady_
+			action do
+				received_display_displayReadyval8 = true
+			end
+			transition -> LAUNCH
+			event display?displayReady_
+			guard received_display_displayReadyval8
+			action do
+				do
+					do
+						println "@BreakoutGameJava@" , "clear" , ","
+						do
+							do
+								readonly var clear_Arg0_253 : Byte = 0x71
+								println "!" , "12" , "," , (`((` & clear_Arg0_253 & ` >> 0) & 0xFF)`) as Int8 , ","
+								display!clear_(clear_Arg0_253)
+								bytesSentCounter = bytesSentCounter + 2
+							end
+							do
+								readonly var clearval1Arg0_254 : Byte = 0x44
+								readonly var clearval1Arg1_255 : Byte = 0xE3
+								println "!" , "13" , "," , (`((` & clearval1Arg0_254 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & clearval1Arg1_255 & ` >> 0) & 0xFF)`) as Int8 , ","
+								display!clearval1(clearval1Arg0_254, clearval1Arg1_255)
+								bytesSentCounter = bytesSentCounter + 3
+							end
+						end
+					end
+					initColors()
+					do
+						readonly var setColorArg0_136 : UInt8 = bgcolor [0]
+						readonly var setColorArg1_137 : UInt8 = bgcolor [1]
+						readonly var setColorArg2_138 : UInt8 = bgcolor [2]
+						println "@BreakoutGameJava@" , "setColor" , "," , "r" , "," , "g" , "," , "b" , ","
+						do
+							do
+								readonly var setColorrbval7Arg0_256 : UInt8 = setColorArg2_138
+								readonly var setColorrbval7Arg1_257 : Byte = 0xB1
+								readonly var setColorrbval7Arg2_258 : Byte = 0x63
+								readonly var setColorrbval7Arg3_259 : UInt8 = setColorArg0_136
+								println "!" , "0" , "," , (`((` & setColorrbval7Arg0_256 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setColorrbval7Arg1_257 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setColorrbval7Arg2_258 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setColorrbval7Arg3_259 & ` >> 0) & 0xFF)`) as Int8 , ","
+								display!setColorrbval7(setColorrbval7Arg0_256, setColorrbval7Arg1_257, setColorrbval7Arg2_258, setColorrbval7Arg3_259)
+								bytesSentCounter = bytesSentCounter + 5
+							end
+							do
+								readonly var setColorgArg0_260 : Byte = 0xF2
+								readonly var setColorgArg1_261 : UInt8 = setColorArg1_137
+								println "!" , "18" , "," , (`((` & setColorgArg0_260 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setColorgArg1_261 & ` >> 0) & 0xFF)`) as Int8 , ","
+								display!setColorg(setColorgArg0_260, setColorgArg1_261)
+								bytesSentCounter = bytesSentCounter + 3
+							end
+						end
+					end
+					do
+						readonly var fillRectArg0_139 : UInt8 = 0
+						readonly var fillRectArg1_140 : UInt8 = 0
+						readonly var fillRectArg2_141 : UInt8 = XDISPSIZE
+						readonly var fillRectArg3_142 : UInt8 = YDISPSIZE
+						println "@BreakoutGameJava@" , "fillRect" , "," , "x" , "," , "y" , "," , "width" , "," , "height" , ","
+						do
+							do
+								readonly var fillRectxwidthheightArg0_262 : UInt8 = fillRectArg3_142
+								readonly var fillRectxwidthheightArg1_263 : Byte = 0xB8
+								readonly var fillRectxwidthheightArg2_264 : UInt8 = fillRectArg2_141
+								readonly var fillRectxwidthheightArg3_265 : UInt8 = fillRectArg0_139
+								println "!" , "3" , "," , (`((` & fillRectxwidthheightArg0_262 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & fillRectxwidthheightArg1_263 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & fillRectxwidthheightArg2_264 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & fillRectxwidthheightArg3_265 & ` >> 0) & 0xFF)`) as Int8 , ","
+								display!fillRectxwidthheight(fillRectxwidthheightArg0_262, fillRectxwidthheightArg1_263, fillRectxwidthheightArg2_264, fillRectxwidthheightArg3_265)
+								bytesSentCounter = bytesSentCounter + 5
+							end
+							do
+								readonly var fillRectyval2Arg0_266 : UInt8 = fillRectArg1_140
+								readonly var fillRectyval2Arg1_267 : Byte = 0x5F
+								readonly var fillRectyval2Arg2_268 : Byte = 0x09
+								println "!" , "5" , "," , (`((` & fillRectyval2Arg0_266 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & fillRectyval2Arg1_267 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & fillRectyval2Arg2_268 & ` >> 0) & 0xFF)`) as Int8 , ","
+								display!fillRectyval2(fillRectyval2Arg0_266, fillRectyval2Arg1_267, fillRectyval2Arg2_268)
+								bytesSentCounter = bytesSentCounter + 4
+							end
+						end
+					end
+					do
+						readonly var setColorArg0_143 : UInt8 = fgcolor [0]
+						readonly var setColorArg1_144 : UInt8 = fgcolor [1]
+						readonly var setColorArg2_145 : UInt8 = fgcolor [2]
+						println "@BreakoutGameJava@" , "setColor" , "," , "r" , "," , "g" , "," , "b" , ","
+						do
+							do
+								readonly var setColorrbval7Arg0_269 : UInt8 = setColorArg2_145
+								readonly var setColorrbval7Arg1_270 : Byte = 0xC7
+								readonly var setColorrbval7Arg2_271 : Byte = 0x45
+								readonly var setColorrbval7Arg3_272 : UInt8 = setColorArg0_143
+								println "!" , "0" , "," , (`((` & setColorrbval7Arg0_269 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setColorrbval7Arg1_270 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setColorrbval7Arg2_271 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setColorrbval7Arg3_272 & ` >> 0) & 0xFF)`) as Int8 , ","
+								display!setColorrbval7(setColorrbval7Arg0_269, setColorrbval7Arg1_270, setColorrbval7Arg2_271, setColorrbval7Arg3_272)
+								bytesSentCounter = bytesSentCounter + 5
+							end
+							do
+								readonly var setColorgArg0_273 : Byte = 0x07
+								readonly var setColorgArg1_274 : UInt8 = setColorArg1_144
+								println "!" , "18" , "," , (`((` & setColorgArg0_273 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setColorgArg1_274 & ` >> 0) & 0xFF)`) as Int8 , ","
+								display!setColorg(setColorgArg0_273, setColorgArg1_274)
+								bytesSentCounter = bytesSentCounter + 3
+							end
+						end
+					end
+					do
+						readonly var fillRectArg0_146 : UInt8 = 0
+						readonly var fillRectArg1_147 : UInt8 = 0
+						readonly var fillRectArg2_148 : UInt8 = XDISPSIZE
+						readonly var fillRectArg3_149 : UInt8 = 14
+						println "@BreakoutGameJava@" , "fillRect" , "," , "x" , "," , "y" , "," , "width" , "," , "height" , ","
+						do
+							do
+								readonly var fillRectyval2Arg0_275 : UInt8 = fillRectArg1_147
+								readonly var fillRectyval2Arg1_276 : Byte = 0x49
+								readonly var fillRectyval2Arg2_277 : Byte = 0x97
+								println "!" , "5" , "," , (`((` & fillRectyval2Arg0_275 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & fillRectyval2Arg1_276 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & fillRectyval2Arg2_277 & ` >> 0) & 0xFF)`) as Int8 , ","
+								display!fillRectyval2(fillRectyval2Arg0_275, fillRectyval2Arg1_276, fillRectyval2Arg2_277)
+								bytesSentCounter = bytesSentCounter + 4
+							end
+							do
+								readonly var fillRectxwidthheightArg0_278 : UInt8 = fillRectArg3_149
+								readonly var fillRectxwidthheightArg1_279 : Byte = 0xC5
+								readonly var fillRectxwidthheightArg2_280 : UInt8 = fillRectArg2_148
+								readonly var fillRectxwidthheightArg3_281 : UInt8 = fillRectArg0_146
+								println "!" , "3" , "," , (`((` & fillRectxwidthheightArg0_278 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & fillRectxwidthheightArg1_279 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & fillRectxwidthheightArg2_280 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & fillRectxwidthheightArg3_281 & ` >> 0) & 0xFF)`) as Int8 , ","
+								display!fillRectxwidthheight(fillRectxwidthheightArg0_278, fillRectxwidthheightArg1_279, fillRectxwidthheightArg2_280, fillRectxwidthheightArg3_281)
+								bytesSentCounter = bytesSentCounter + 5
+							end
+						end
+					end
+					drawWalls()
+					createBricks()
+					drawLevel()
+				end
+				received_display_displayReady_ = false
+				received_display_displayReadyval8 = false
+			end
+			transition -> LAUNCH
+			event display?displayReadyval8
+			guard received_display_displayReady_
+			action do
+				do
+					do
+						println "@BreakoutGameJava@" , "clear" , ","
+						do
+							do
+								readonly var clear_Arg0_282 : Byte = 0xC8
+								println "!" , "12" , "," , (`((` & clear_Arg0_282 & ` >> 0) & 0xFF)`) as Int8 , ","
+								display!clear_(clear_Arg0_282)
+								bytesSentCounter = bytesSentCounter + 2
+							end
+							do
+								readonly var clearval1Arg0_283 : Byte = 0x8E
+								readonly var clearval1Arg1_284 : Byte = 0xE3
+								println "!" , "13" , "," , (`((` & clearval1Arg0_283 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & clearval1Arg1_284 & ` >> 0) & 0xFF)`) as Int8 , ","
+								display!clearval1(clearval1Arg0_283, clearval1Arg1_284)
+								bytesSentCounter = bytesSentCounter + 3
+							end
+						end
+					end
+					initColors()
+					do
+						readonly var setColorArg0_136 : UInt8 = bgcolor [0]
+						readonly var setColorArg1_137 : UInt8 = bgcolor [1]
+						readonly var setColorArg2_138 : UInt8 = bgcolor [2]
+						println "@BreakoutGameJava@" , "setColor" , "," , "r" , "," , "g" , "," , "b" , ","
+						do
+							do
+								readonly var setColorgArg0_285 : Byte = 0xF7
+								readonly var setColorgArg1_286 : UInt8 = setColorArg1_137
+								println "!" , "18" , "," , (`((` & setColorgArg0_285 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setColorgArg1_286 & ` >> 0) & 0xFF)`) as Int8 , ","
+								display!setColorg(setColorgArg0_285, setColorgArg1_286)
+								bytesSentCounter = bytesSentCounter + 3
+							end
+							do
+								readonly var setColorrbval7Arg0_287 : UInt8 = setColorArg2_138
+								readonly var setColorrbval7Arg1_288 : Byte = 0xF7
+								readonly var setColorrbval7Arg2_289 : Byte = 0x63
+								readonly var setColorrbval7Arg3_290 : UInt8 = setColorArg0_136
+								println "!" , "0" , "," , (`((` & setColorrbval7Arg0_287 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setColorrbval7Arg1_288 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setColorrbval7Arg2_289 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setColorrbval7Arg3_290 & ` >> 0) & 0xFF)`) as Int8 , ","
+								display!setColorrbval7(setColorrbval7Arg0_287, setColorrbval7Arg1_288, setColorrbval7Arg2_289, setColorrbval7Arg3_290)
+								bytesSentCounter = bytesSentCounter + 5
+							end
+						end
+					end
+					do
+						readonly var fillRectArg0_139 : UInt8 = 0
+						readonly var fillRectArg1_140 : UInt8 = 0
+						readonly var fillRectArg2_141 : UInt8 = XDISPSIZE
+						readonly var fillRectArg3_142 : UInt8 = YDISPSIZE
+						println "@BreakoutGameJava@" , "fillRect" , "," , "x" , "," , "y" , "," , "width" , "," , "height" , ","
+						do
+							do
+								readonly var fillRectyval2Arg0_291 : UInt8 = fillRectArg1_140
+								readonly var fillRectyval2Arg1_292 : Byte = 0xFF
+								readonly var fillRectyval2Arg2_293 : Byte = 0x09
+								println "!" , "5" , "," , (`((` & fillRectyval2Arg0_291 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & fillRectyval2Arg1_292 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & fillRectyval2Arg2_293 & ` >> 0) & 0xFF)`) as Int8 , ","
+								display!fillRectyval2(fillRectyval2Arg0_291, fillRectyval2Arg1_292, fillRectyval2Arg2_293)
+								bytesSentCounter = bytesSentCounter + 4
+							end
+							do
+								readonly var fillRectxwidthheightArg0_294 : UInt8 = fillRectArg3_142
+								readonly var fillRectxwidthheightArg1_295 : Byte = 0xC7
+								readonly var fillRectxwidthheightArg2_296 : UInt8 = fillRectArg2_141
+								readonly var fillRectxwidthheightArg3_297 : UInt8 = fillRectArg0_139
+								println "!" , "3" , "," , (`((` & fillRectxwidthheightArg0_294 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & fillRectxwidthheightArg1_295 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & fillRectxwidthheightArg2_296 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & fillRectxwidthheightArg3_297 & ` >> 0) & 0xFF)`) as Int8 , ","
+								display!fillRectxwidthheight(fillRectxwidthheightArg0_294, fillRectxwidthheightArg1_295, fillRectxwidthheightArg2_296, fillRectxwidthheightArg3_297)
+								bytesSentCounter = bytesSentCounter + 5
+							end
+						end
+					end
+					do
+						readonly var setColorArg0_143 : UInt8 = fgcolor [0]
+						readonly var setColorArg1_144 : UInt8 = fgcolor [1]
+						readonly var setColorArg2_145 : UInt8 = fgcolor [2]
+						println "@BreakoutGameJava@" , "setColor" , "," , "r" , "," , "g" , "," , "b" , ","
+						do
+							do
+								readonly var setColorgArg0_298 : Byte = 0x3D
+								readonly var setColorgArg1_299 : UInt8 = setColorArg1_144
+								println "!" , "18" , "," , (`((` & setColorgArg0_298 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setColorgArg1_299 & ` >> 0) & 0xFF)`) as Int8 , ","
+								display!setColorg(setColorgArg0_298, setColorgArg1_299)
+								bytesSentCounter = bytesSentCounter + 3
+							end
+							do
+								readonly var setColorrbval7Arg0_300 : UInt8 = setColorArg2_145
+								readonly var setColorrbval7Arg1_301 : Byte = 0x51
+								readonly var setColorrbval7Arg2_302 : Byte = 0x45
+								readonly var setColorrbval7Arg3_303 : UInt8 = setColorArg0_143
+								println "!" , "0" , "," , (`((` & setColorrbval7Arg0_300 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setColorrbval7Arg1_301 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setColorrbval7Arg2_302 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setColorrbval7Arg3_303 & ` >> 0) & 0xFF)`) as Int8 , ","
+								display!setColorrbval7(setColorrbval7Arg0_300, setColorrbval7Arg1_301, setColorrbval7Arg2_302, setColorrbval7Arg3_303)
+								bytesSentCounter = bytesSentCounter + 5
+							end
+						end
+					end
+					do
+						readonly var fillRectArg0_146 : UInt8 = 0
+						readonly var fillRectArg1_147 : UInt8 = 0
+						readonly var fillRectArg2_148 : UInt8 = XDISPSIZE
+						readonly var fillRectArg3_149 : UInt8 = 14
+						println "@BreakoutGameJava@" , "fillRect" , "," , "x" , "," , "y" , "," , "width" , "," , "height" , ","
+						do
+							do
+								readonly var fillRectyval2Arg0_304 : UInt8 = fillRectArg1_147
+								readonly var fillRectyval2Arg1_305 : Byte = 0x71
+								readonly var fillRectyval2Arg2_306 : Byte = 0x97
+								println "!" , "5" , "," , (`((` & fillRectyval2Arg0_304 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & fillRectyval2Arg1_305 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & fillRectyval2Arg2_306 & ` >> 0) & 0xFF)`) as Int8 , ","
+								display!fillRectyval2(fillRectyval2Arg0_304, fillRectyval2Arg1_305, fillRectyval2Arg2_306)
+								bytesSentCounter = bytesSentCounter + 4
+							end
+							do
+								readonly var fillRectxwidthheightArg0_307 : UInt8 = fillRectArg3_149
+								readonly var fillRectxwidthheightArg1_308 : Byte = 0xBF
+								readonly var fillRectxwidthheightArg2_309 : UInt8 = fillRectArg2_148
+								readonly var fillRectxwidthheightArg3_310 : UInt8 = fillRectArg0_146
+								println "!" , "3" , "," , (`((` & fillRectxwidthheightArg0_307 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & fillRectxwidthheightArg1_308 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & fillRectxwidthheightArg2_309 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & fillRectxwidthheightArg3_310 & ` >> 0) & 0xFF)`) as Int8 , ","
+								display!fillRectxwidthheight(fillRectxwidthheightArg0_307, fillRectxwidthheightArg1_308, fillRectxwidthheightArg2_309, fillRectxwidthheightArg3_310)
+								bytesSentCounter = bytesSentCounter + 5
+							end
+						end
+					end
+					drawWalls()
+					createBricks()
+					drawLevel()
+				end
+				received_display_displayReadyval8 = false
+				received_display_displayReady_ = false
+			end
+		}
+		state LAUNCH {
+			property countdown : UInt8
+			on entry do
+				do
+					readonly var timer_startArg0_150 : UInt8 = 0
+					readonly var timer_startArg1_151 : UInt16 = period
+					println "@BreakoutGameJava@" , "timer_start" , "," , "id" , "," , "time" , "," , "time" , ","
+					do
+						readonly var timer_startArg0_311 : UInt8 = timer_startArg0_150
+						readonly var timer_startArg1_312 : UInt16 = timer_startArg1_151
+						println "!" , "16" , "," , (`((` & timer_startArg0_311 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & timer_startArg1_312 & ` >> 8) & 0xFF)`) as Int8 , "," , (`((` & timer_startArg1_312 & ` >> 0) & 0xFF)`) as Int8 , ","
+						clock!timer_start(timer_startArg0_311, timer_startArg1_312)
+						bytesSentCounter = bytesSentCounter + 4
+					end
+				end
+				countdown = 3
+				drawScore()
+				drawLives()
+				do
+					println "@BreakoutGameJava@" , "update" , ","
+					do
+						do
+							readonly var updateval4Arg0_313 : Byte = 0x21
+							readonly var updateval4Arg1_314 : Byte = 0x1C
+							println "!" , "7" , "," , (`((` & updateval4Arg0_313 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & updateval4Arg1_314 & ` >> 0) & 0xFF)`) as Int8 , ","
+							display!updateval4(updateval4Arg0_313, updateval4Arg1_314)
+							bytesSentCounter = bytesSentCounter + 3
+						end
+						do
+							readonly var update_Arg0_315 : Byte = 0xA8
+							println "!" , "16" , "," , (`((` & update_Arg0_315 & ` >> 0) & 0xFF)`) as Int8 , ","
+							display!update_(update_Arg0_315)
+							bytesSentCounter = bytesSentCounter + 2
+						end
+					end
+				end
+			end
+			internal
+			event t : clock?timer_timeout
+			guard t.id == 0 and countdown > 0
+			action do
+				do
+					readonly var timer_startArg0_152 : UInt8 = 0
+					readonly var timer_startArg1_153 : UInt16 = period
+					println "@BreakoutGameJava@" , "timer_start" , "," , "id" , "," , "time" , "," , "time" , ","
+					do
+						readonly var timer_startArg0_316 : UInt8 = timer_startArg0_152
+						readonly var timer_startArg1_317 : UInt16 = timer_startArg1_153
+						println "!" , "16" , "," , (`((` & timer_startArg0_316 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & timer_startArg1_317 & ` >> 8) & 0xFF)`) as Int8 , "," , (`((` & timer_startArg1_317 & ` >> 0) & 0xFF)`) as Int8 , ","
+						clock!timer_start(timer_startArg0_316, timer_startArg1_317)
+						bytesSentCounter = bytesSentCounter + 4
+					end
+				end
+				drawPad()
+				if ((countdown % 30) == 0) drawCountDown(countdown as Int16 / 30)
+				countdown = countdown - 1
+				do
+					println "@BreakoutGameJava@" , "update" , ","
+					do
+						do
+							readonly var updateval4Arg0_318 : Byte = 0x3C
+							readonly var updateval4Arg1_319 : Byte = 0xA7
+							println "!" , "7" , "," , (`((` & updateval4Arg0_318 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & updateval4Arg1_319 & ` >> 0) & 0xFF)`) as Int8 , ","
+							display!updateval4(updateval4Arg0_318, updateval4Arg1_319)
+							bytesSentCounter = bytesSentCounter + 3
+						end
+						do
+							readonly var update_Arg0_320 : Byte = 0xA6
+							println "!" , "16" , "," , (`((` & update_Arg0_320 & ` >> 0) & 0xFF)`) as Int8 , ","
+							display!update_(update_Arg0_320)
+							bytesSentCounter = bytesSentCounter + 2
+						end
+					end
+				end
+			end
+			transition -> PLAY
+			event t : clock?timer_timeout
+			guard t.id == 0 and countdown == 0
+			action do
+				drawCountDown(0)
+				resetBall()
+				do
+					println "@BreakoutGameJava@" , "update" , ","
+					do
+						do
+							readonly var update_Arg0_321 : Byte = 0xA7
+							println "!" , "16" , "," , (`((` & update_Arg0_321 & ` >> 0) & 0xFF)`) as Int8 , ","
+							display!update_(update_Arg0_321)
+							bytesSentCounter = bytesSentCounter + 2
+						end
+						do
+							readonly var updateval4Arg0_322 : Byte = 0x2B
+							readonly var updateval4Arg1_323 : Byte = 0x3A
+							println "!" , "7" , "," , (`((` & updateval4Arg0_322 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & updateval4Arg1_323 & ` >> 0) & 0xFF)`) as Int8 , ","
+							display!updateval4(updateval4Arg0_322, updateval4Arg1_323)
+							bytesSentCounter = bytesSentCounter + 3
+						end
+					end
+				end
+			end
+		}
+		state PLAY {
+			on entry do
+				do
+					readonly var timer_startArg0_154 : UInt8 = 0
+					readonly var timer_startArg1_155 : UInt16 = period
+					println "@BreakoutGameJava@" , "timer_start" , "," , "id" , "," , "time" , "," , "time" , ","
+					do
+						readonly var timer_startArg0_324 : UInt8 = timer_startArg0_154
+						readonly var timer_startArg1_325 : UInt16 = timer_startArg1_155
+						println "!" , "16" , "," , (`((` & timer_startArg0_324 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & timer_startArg1_325 & ` >> 8) & 0xFF)`) as Int8 , "," , (`((` & timer_startArg1_325 & ` >> 0) & 0xFF)`) as Int8 , ","
+						clock!timer_start(timer_startArg0_324, timer_startArg1_325)
+						bytesSentCounter = bytesSentCounter + 4
+					end
+				end
+			end
+			internal
+			event t : clock?timer_timeout
+			guard t.id == 0
+			action do
+				bx = bx + dx
+				by = by + dy
+				var wl : Int16 = LEFT + br
+				var wr : Int16 = RIGHT - br
+				var wt : Int16 = TOP + br
+				var wb : Int16 = BOTTOM - br
+				if (bx < wl) do
+					dx = -dx
+					bx = 2 * wl - bx
+					incrementScore(-1)
+				end
+				else if (bx > wr) do
+					dx = -dx
+					bx = 2 * wr - bx
+					incrementScore(-1)
+				end
+				if (by < wt) do
+					dy = -dy
+					by = 2 * wt - by
+					incrementScore(-1)
+				end
+				else if (by > wb) do
+					do
+						println "@BreakoutGameJava@" , "lostBall" , ","
+						do
+							println "!" , "0" , ","
+							game!lostBall()
+							bytesSentCounter = bytesSentCounter + 1
+						end
+					end
+					do
+						println "@BreakoutGameJava@" , "lostBall" , ","
+						do
+							println "!" , "0" , ","
+							req_game!lostBall()
+							bytesSentCounter = bytesSentCounter + 1
+						end
+					end
+				end
+				if (dy > 0) do
+					if (by > pady - br and by < pady + br) do
+						if (bx > padx - padlen / 2 and bx < padx + padlen / 2) do
+							dy = -dy
+							by = 2 * (pady - br) - by
+							dx = dx / 4 + (bx - padx) / 4
+						end
+					end
+				end
+				var collision : Boolean = collideBrick(bx - br, by - br)or collideBrick(bx + br, by - br)or collideBrick(bx + br, by + br)or collideBrick(bx - br, by + br)
+				if (collision) do
+					dy = -dy
+					incrementScore(10)
+					if (bricksLeft()== 0) do
+						do
+							println "@BreakoutGameJava@" , "nextLevel" , ","
+							do
+								println "!" , "1" , ","
+								game!nextLevel()
+								bytesSentCounter = bytesSentCounter + 1
+							end
+						end
+						do
+							println "@BreakoutGameJava@" , "nextLevel" , ","
+							do
+								println "!" , "1" , ","
+								req_game!nextLevel()
+								bytesSentCounter = bytesSentCounter + 1
+							end
+						end
+					end
+				end
+				drawBall()
+				drawPad()
+				do
+					readonly var updateIAArg0_156 : Int16 = bx
+					readonly var updateIAArg1_157 : Int16 = by
+					readonly var updateIAArg2_158 : Int16 = padx
+					readonly var updateIAArg3_159 : Int16 = pady
+					println "@BreakoutGameJava@" , "updateIA" , "," , "ballx" , "," , "ballx" , "," , "bally" , "," , "bally" , "," , "padx" , "," , "padx" , "," , "pady" , "," , "pady" , ","
+					do
+						do
+							readonly var updateIAval13padyballxArg0_326 : Int16 = updateIAArg0_156
+							readonly var updateIAval13padyballxArg1_327 : Byte = 0x92
+							readonly var updateIAval13padyballxArg2_328 : Int16 = updateIAArg3_159
+							readonly var updateIAval13padyballxArg3_329 : Byte = 0x1E
+							println "!" , "27" , "," , (`((` & updateIAval13padyballxArg0_326 & ` >> 8) & 0xFF)`) as Int8 , "," , (`((` & updateIAval13padyballxArg0_326 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & updateIAval13padyballxArg1_327 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & updateIAval13padyballxArg2_328 & ` >> 8) & 0xFF)`) as Int8 , "," , (`((` & updateIAval13padyballxArg2_328 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & updateIAval13padyballxArg3_329 & ` >> 0) & 0xFF)`) as Int8 , ","
+							ia!updateIAval13padyballx(updateIAval13padyballxArg0_326, updateIAval13padyballxArg1_327, updateIAval13padyballxArg2_328, updateIAval13padyballxArg3_329)
+							bytesSentCounter = bytesSentCounter + 7
+						end
+						do
+							readonly var updateIAballypadxArg0_330 : Byte = 0xE6
+							readonly var updateIAballypadxArg1_331 : Int16 = updateIAArg2_158
+							readonly var updateIAballypadxArg2_332 : Int16 = updateIAArg1_157
+							println "!" , "26" , "," , (`((` & updateIAballypadxArg0_330 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & updateIAballypadxArg1_331 & ` >> 8) & 0xFF)`) as Int8 , "," , (`((` & updateIAballypadxArg1_331 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & updateIAballypadxArg2_332 & ` >> 8) & 0xFF)`) as Int8 , "," , (`((` & updateIAballypadxArg2_332 & ` >> 0) & 0xFF)`) as Int8 , ","
+							ia!updateIAballypadx(updateIAballypadxArg0_330, updateIAballypadxArg1_331, updateIAballypadxArg2_332)
+							bytesSentCounter = bytesSentCounter + 6
+						end
+					end
+				end
+				do
+					println "@BreakoutGameJava@" , "update" , ","
+					do
+						do
+							readonly var update_Arg0_333 : Byte = 0x8E
+							println "!" , "16" , "," , (`((` & update_Arg0_333 & ` >> 0) & 0xFF)`) as Int8 , ","
+							display!update_(update_Arg0_333)
+							bytesSentCounter = bytesSentCounter + 2
+						end
+						do
+							readonly var updateval4Arg0_334 : Byte = 0x09
+							readonly var updateval4Arg1_335 : Byte = 0xFD
+							println "!" , "7" , "," , (`((` & updateval4Arg0_334 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & updateval4Arg1_335 & ` >> 0) & 0xFF)`) as Int8 , ","
+							display!updateval4(updateval4Arg0_334, updateval4Arg1_335)
+							bytesSentCounter = bytesSentCounter + 3
+						end
+					end
+				end
+				log(false)
+				do
+					readonly var timer_startArg0_160 : UInt8 = 0
+					readonly var timer_startArg1_161 : UInt16 = period
+					println "@BreakoutGameJava@" , "timer_start" , "," , "id" , "," , "time" , "," , "time" , ","
+					do
+						readonly var timer_startArg0_336 : UInt8 = timer_startArg0_160
+						readonly var timer_startArg1_337 : UInt16 = timer_startArg1_161
+						println "!" , "16" , "," , (`((` & timer_startArg0_336 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & timer_startArg1_337 & ` >> 8) & 0xFF)`) as Int8 , "," , (`((` & timer_startArg1_337 & ` >> 0) & 0xFF)`) as Int8 , ","
+						clock!timer_start(timer_startArg0_336, timer_startArg1_337)
+						bytesSentCounter = bytesSentCounter + 4
+					end
+				end
+			end
+			transition -> LOSTBALL
+			event game?lostBall
+			action do
+				readonly var timer_cancelArg0_162 : UInt8 = 0
+				println "@BreakoutGameJava@" , "timer_cancel" , "," , "id" , ","
+				do
+					readonly var timer_cancelArg0_338 : UInt8 = timer_cancelArg0_162
+					println "!" , "17" , "," , (`((` & timer_cancelArg0_338 & ` >> 0) & 0xFF)`) as Int8 , ","
+					clock!timer_cancel(timer_cancelArg0_338)
+					bytesSentCounter = bytesSentCounter + 2
+				end
+			end
+			transition -> NEXTLEVEL
+			event game?nextLevel
+			action do
+				readonly var timer_cancelArg0_163 : UInt8 = 0
+				println "@BreakoutGameJava@" , "timer_cancel" , "," , "id" , ","
+				do
+					readonly var timer_cancelArg0_339 : UInt8 = timer_cancelArg0_163
+					println "!" , "17" , "," , (`((` & timer_cancelArg0_339 & ` >> 0) & 0xFF)`) as Int8 , ","
+					clock!timer_cancel(timer_cancelArg0_339)
+					bytesSentCounter = bytesSentCounter + 2
+				end
+			end
+			transition -> LOSTBALL
+			event pro_game?lostBall
+			action do
+				readonly var timer_cancelArg0_164 : UInt8 = 0
+				println "@BreakoutGameJava@" , "timer_cancel" , "," , "id" , ","
+				do
+					readonly var timer_cancelArg0_340 : UInt8 = timer_cancelArg0_164
+					println "!" , "17" , "," , (`((` & timer_cancelArg0_340 & ` >> 0) & 0xFF)`) as Int8 , ","
+					clock!timer_cancel(timer_cancelArg0_340)
+					bytesSentCounter = bytesSentCounter + 2
+				end
+			end
+			transition -> NEXTLEVEL
+			event pro_game?nextLevel
+			action do
+				readonly var timer_cancelArg0_165 : UInt8 = 0
+				println "@BreakoutGameJava@" , "timer_cancel" , "," , "id" , ","
+				do
+					readonly var timer_cancelArg0_341 : UInt8 = timer_cancelArg0_165
+					println "!" , "17" , "," , (`((` & timer_cancelArg0_341 & ` >> 0) & 0xFF)`) as Int8 , ","
+					clock!timer_cancel(timer_cancelArg0_341)
+					bytesSentCounter = bytesSentCounter + 2
+				end
+			end
+		}
+		state LOSTBALL {
+			on entry do
+				do
+					readonly var timer_startArg0_166 : UInt8 = 0
+					readonly var timer_startArg1_167 : UInt16 = period
+					println "@BreakoutGameJava@" , "timer_start" , "," , "id" , "," , "time" , "," , "time" , ","
+					do
+						readonly var timer_startArg0_342 : UInt8 = timer_startArg0_166
+						readonly var timer_startArg1_343 : UInt16 = timer_startArg1_167
+						println "!" , "16" , "," , (`((` & timer_startArg0_342 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & timer_startArg1_343 & ` >> 8) & 0xFF)`) as Int8 , "," , (`((` & timer_startArg1_343 & ` >> 0) & 0xFF)`) as Int8 , ","
+						clock!timer_start(timer_startArg0_342, timer_startArg1_343)
+						bytesSentCounter = bytesSentCounter + 4
+					end
+				end
+				lives = lives - 1
+				eraseBall()
+				erasePad()
+				drawLives()
+				do
+					println "@BreakoutGameJava@" , "update" , ","
+					do
+						do
+							readonly var update_Arg0_344 : Byte = 0x40
+							println "!" , "16" , "," , (`((` & update_Arg0_344 & ` >> 0) & 0xFF)`) as Int8 , ","
+							display!update_(update_Arg0_344)
+							bytesSentCounter = bytesSentCounter + 2
+						end
+						do
+							readonly var updateval4Arg0_345 : Byte = 0x60
+							readonly var updateval4Arg1_346 : Byte = 0xA7
+							println "!" , "7" , "," , (`((` & updateval4Arg0_345 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & updateval4Arg1_346 & ` >> 0) & 0xFF)`) as Int8 , ","
+							display!updateval4(updateval4Arg0_345, updateval4Arg1_346)
+							bytesSentCounter = bytesSentCounter + 3
+						end
+					end
+				end
+				log(true)
+			end
+			transition -> LAUNCH
+			event t : clock?timer_timeout
+			guard t.id == 0 and lives > 0
+			transition -> GAMEOVER
+			event t : clock?timer_timeout
+			guard t.id == 0 and lives == 0
+		}
+		state NEXTLEVEL {
+			on entry do
+				do
+					readonly var timer_startArg0_168 : UInt8 = 0
+					readonly var timer_startArg1_169 : UInt16 = period
+					println "@BreakoutGameJava@" , "timer_start" , "," , "id" , "," , "time" , "," , "time" , ","
+					do
+						readonly var timer_startArg0_347 : UInt8 = timer_startArg0_168
+						readonly var timer_startArg1_348 : UInt16 = timer_startArg1_169
+						println "!" , "16" , "," , (`((` & timer_startArg0_347 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & timer_startArg1_348 & ` >> 8) & 0xFF)`) as Int8 , "," , (`((` & timer_startArg1_348 & ` >> 0) & 0xFF)`) as Int8 , ","
+						clock!timer_start(timer_startArg0_347, timer_startArg1_348)
+						bytesSentCounter = bytesSentCounter + 4
+					end
+				end
+				level = level + 1
+				drawLevel()
+				eraseBall()
+				erasePad()
+				if ((level % 2) == 0 and padlen > 5 * SCALE) padlen = padlen - (4 * SCALE)
+				if ((level % 2) == 1) dy = (dy * 3) / 2
+				drawLives()
+				createBricks()
+				do
+					println "@BreakoutGameJava@" , "update" , ","
+					do
+						do
+							readonly var update_Arg0_349 : Byte = 0xEB
+							println "!" , "16" , "," , (`((` & update_Arg0_349 & ` >> 0) & 0xFF)`) as Int8 , ","
+							display!update_(update_Arg0_349)
+							bytesSentCounter = bytesSentCounter + 2
+						end
+						do
+							readonly var updateval4Arg0_350 : Byte = 0x64
+							readonly var updateval4Arg1_351 : Byte = 0x96
+							println "!" , "7" , "," , (`((` & updateval4Arg0_350 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & updateval4Arg1_351 & ` >> 0) & 0xFF)`) as Int8 , ","
+							display!updateval4(updateval4Arg0_350, updateval4Arg1_351)
+							bytesSentCounter = bytesSentCounter + 3
+						end
+					end
+				end
+			end
+			transition -> LAUNCH
+			event t : clock?timer_timeout
+			guard t.id == 0
+		}
+		final state GAMEOVER {
+			on entry do
+				eraseBall()
+				erasePad()
+				do
+					readonly var setColorArg0_170 : UInt8 = 255
+					readonly var setColorArg1_171 : UInt8 = 255
+					readonly var setColorArg2_172 : UInt8 = 255
+					println "@BreakoutGameJava@" , "setColor" , "," , "r" , "," , "g" , "," , "b" , ","
+					do
+						do
+							readonly var setColorgArg0_352 : Byte = 0xB9
+							readonly var setColorgArg1_353 : UInt8 = setColorArg1_171
+							println "!" , "18" , "," , (`((` & setColorgArg0_352 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setColorgArg1_353 & ` >> 0) & 0xFF)`) as Int8 , ","
+							display!setColorg(setColorgArg0_352, setColorgArg1_353)
+							bytesSentCounter = bytesSentCounter + 3
+						end
+						do
+							readonly var setColorrbval7Arg0_354 : UInt8 = setColorArg2_172
+							readonly var setColorrbval7Arg1_355 : Byte = 0x6A
+							readonly var setColorrbval7Arg2_356 : Byte = 0xFB
+							readonly var setColorrbval7Arg3_357 : UInt8 = setColorArg0_170
+							println "!" , "0" , "," , (`((` & setColorrbval7Arg0_354 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setColorrbval7Arg1_355 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setColorrbval7Arg2_356 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setColorrbval7Arg3_357 & ` >> 0) & 0xFF)`) as Int8 , ","
+							display!setColorrbval7(setColorrbval7Arg0_354, setColorrbval7Arg1_355, setColorrbval7Arg2_356, setColorrbval7Arg3_357)
+							bytesSentCounter = bytesSentCounter + 5
+						end
+					end
+				end
+				do
+					readonly var fillRectArg0_173 : UInt8 = 8
+					readonly var fillRectArg1_174 : UInt8 = 30
+					readonly var fillRectArg2_175 : UInt8 = 142
+					readonly var fillRectArg3_176 : UInt8 = 76
+					println "@BreakoutGameJava@" , "fillRect" , "," , "x" , "," , "y" , "," , "width" , "," , "height" , ","
+					do
+						do
+							readonly var fillRectyval2Arg0_358 : UInt8 = fillRectArg1_174
+							readonly var fillRectyval2Arg1_359 : Byte = 0xC6
+							readonly var fillRectyval2Arg2_360 : Byte = 0xF6
+							println "!" , "5" , "," , (`((` & fillRectyval2Arg0_358 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & fillRectyval2Arg1_359 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & fillRectyval2Arg2_360 & ` >> 0) & 0xFF)`) as Int8 , ","
+							display!fillRectyval2(fillRectyval2Arg0_358, fillRectyval2Arg1_359, fillRectyval2Arg2_360)
+							bytesSentCounter = bytesSentCounter + 4
+						end
+						do
+							readonly var fillRectxwidthheightArg0_361 : UInt8 = fillRectArg3_176
+							readonly var fillRectxwidthheightArg1_362 : Byte = 0x0B
+							readonly var fillRectxwidthheightArg2_363 : UInt8 = fillRectArg2_175
+							readonly var fillRectxwidthheightArg3_364 : UInt8 = fillRectArg0_173
+							println "!" , "3" , "," , (`((` & fillRectxwidthheightArg0_361 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & fillRectxwidthheightArg1_362 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & fillRectxwidthheightArg2_363 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & fillRectxwidthheightArg3_364 & ` >> 0) & 0xFF)`) as Int8 , ","
+							display!fillRectxwidthheight(fillRectxwidthheightArg0_361, fillRectxwidthheightArg1_362, fillRectxwidthheightArg2_363, fillRectxwidthheightArg3_364)
+							bytesSentCounter = bytesSentCounter + 5
+						end
+					end
+				end
+				do
+					readonly var setColorArg0_177 : UInt8 = fgcolor [0]
+					readonly var setColorArg1_178 : UInt8 = fgcolor [1]
+					readonly var setColorArg2_179 : UInt8 = fgcolor [2]
+					println "@BreakoutGameJava@" , "setColor" , "," , "r" , "," , "g" , "," , "b" , ","
+					do
+						do
+							readonly var setColorrbval7Arg0_365 : UInt8 = setColorArg2_179
+							readonly var setColorrbval7Arg1_366 : Byte = 0x3E
+							readonly var setColorrbval7Arg2_367 : Byte = 0x34
+							readonly var setColorrbval7Arg3_368 : UInt8 = setColorArg0_177
+							println "!" , "0" , "," , (`((` & setColorrbval7Arg0_365 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setColorrbval7Arg1_366 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setColorrbval7Arg2_367 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setColorrbval7Arg3_368 & ` >> 0) & 0xFF)`) as Int8 , ","
+							display!setColorrbval7(setColorrbval7Arg0_365, setColorrbval7Arg1_366, setColorrbval7Arg2_367, setColorrbval7Arg3_368)
+							bytesSentCounter = bytesSentCounter + 5
+						end
+						do
+							readonly var setColorgArg0_369 : Byte = 0xB6
+							readonly var setColorgArg1_370 : UInt8 = setColorArg1_178
+							println "!" , "18" , "," , (`((` & setColorgArg0_369 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setColorgArg1_370 & ` >> 0) & 0xFF)`) as Int8 , ","
+							display!setColorg(setColorgArg0_369, setColorgArg1_370)
+							bytesSentCounter = bytesSentCounter + 3
+						end
+					end
+				end
+				do
+					readonly var fillRectArg0_180 : UInt8 = 9
+					readonly var fillRectArg1_181 : UInt8 = 31
+					readonly var fillRectArg2_182 : UInt8 = 140
+					readonly var fillRectArg3_183 : UInt8 = 50
+					println "@BreakoutGameJava@" , "fillRect" , "," , "x" , "," , "y" , "," , "width" , "," , "height" , ","
+					do
+						do
+							readonly var fillRectyval2Arg0_371 : UInt8 = fillRectArg1_181
+							readonly var fillRectyval2Arg1_372 : Byte = 0x2C
+							readonly var fillRectyval2Arg2_373 : Byte = 0x43
+							println "!" , "5" , "," , (`((` & fillRectyval2Arg0_371 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & fillRectyval2Arg1_372 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & fillRectyval2Arg2_373 & ` >> 0) & 0xFF)`) as Int8 , ","
+							display!fillRectyval2(fillRectyval2Arg0_371, fillRectyval2Arg1_372, fillRectyval2Arg2_373)
+							bytesSentCounter = bytesSentCounter + 4
+						end
+						do
+							readonly var fillRectxwidthheightArg0_374 : UInt8 = fillRectArg3_183
+							readonly var fillRectxwidthheightArg1_375 : Byte = 0x91
+							readonly var fillRectxwidthheightArg2_376 : UInt8 = fillRectArg2_182
+							readonly var fillRectxwidthheightArg3_377 : UInt8 = fillRectArg0_180
+							println "!" , "3" , "," , (`((` & fillRectxwidthheightArg0_374 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & fillRectxwidthheightArg1_375 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & fillRectxwidthheightArg2_376 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & fillRectxwidthheightArg3_377 & ` >> 0) & 0xFF)`) as Int8 , ","
+							display!fillRectxwidthheight(fillRectxwidthheightArg0_374, fillRectxwidthheightArg1_375, fillRectxwidthheightArg2_376, fillRectxwidthheightArg3_377)
+							bytesSentCounter = bytesSentCounter + 5
+						end
+					end
+				end
+				do
+					readonly var setBGColorArg0_184 : UInt8 = fgcolor [0]
+					readonly var setBGColorArg1_185 : UInt8 = fgcolor [1]
+					readonly var setBGColorArg2_186 : UInt8 = fgcolor [2]
+					println "@BreakoutGameJava@" , "setBGColor" , "," , "r" , "," , "g" , "," , "b" , ","
+					do
+						do
+							readonly var setBGColorrbArg0_378 : Byte = 0x71
+							readonly var setBGColorrbArg1_379 : UInt8 = setBGColorArg0_184
+							readonly var setBGColorrbArg2_380 : UInt8 = setBGColorArg2_186
+							println "!" , "17" , "," , (`((` & setBGColorrbArg0_378 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setBGColorrbArg1_379 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setBGColorrbArg2_380 & ` >> 0) & 0xFF)`) as Int8 , ","
+							display!setBGColorrb(setBGColorrbArg0_378, setBGColorrbArg1_379, setBGColorrbArg2_380)
+							bytesSentCounter = bytesSentCounter + 4
+						end
+						do
+							readonly var setBGColorval5gArg0_381 : UInt8 = setBGColorArg1_185
+							readonly var setBGColorval5gArg1_382 : Byte = 0x74
+							readonly var setBGColorval5gArg2_383 : Byte = 0x5F
+							println "!" , "15" , "," , (`((` & setBGColorval5gArg0_381 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setBGColorval5gArg1_382 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setBGColorval5gArg2_383 & ` >> 0) & 0xFF)`) as Int8 , ","
+							display!setBGColorval5g(setBGColorval5gArg0_381, setBGColorval5gArg1_382, setBGColorval5gArg2_383)
+							bytesSentCounter = bytesSentCounter + 4
+						end
+					end
+				end
+				do
+					readonly var setColorArg0_187 : UInt8 = 158
+					readonly var setColorArg1_188 : UInt8 = 209
+					readonly var setColorArg2_189 : UInt8 = 130
+					println "@BreakoutGameJava@" , "setColor" , "," , "r" , "," , "g" , "," , "b" , ","
+					do
+						do
+							readonly var setColorgArg0_384 : Byte = 0xD4
+							readonly var setColorgArg1_385 : UInt8 = setColorArg1_188
+							println "!" , "18" , "," , (`((` & setColorgArg0_384 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setColorgArg1_385 & ` >> 0) & 0xFF)`) as Int8 , ","
+							display!setColorg(setColorgArg0_384, setColorgArg1_385)
+							bytesSentCounter = bytesSentCounter + 3
+						end
+						do
+							readonly var setColorrbval7Arg0_386 : UInt8 = setColorArg2_189
+							readonly var setColorrbval7Arg1_387 : Byte = 0x78
+							readonly var setColorrbval7Arg2_388 : Byte = 0x5C
+							readonly var setColorrbval7Arg3_389 : UInt8 = setColorArg0_187
+							println "!" , "0" , "," , (`((` & setColorrbval7Arg0_386 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setColorrbval7Arg1_387 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setColorrbval7Arg2_388 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & setColorrbval7Arg3_389 & ` >> 0) & 0xFF)`) as Int8 , ","
+							display!setColorrbval7(setColorrbval7Arg0_386, setColorrbval7Arg1_387, setColorrbval7Arg2_388, setColorrbval7Arg3_389)
+							bytesSentCounter = bytesSentCounter + 5
+						end
+					end
+				end
+				do
+					readonly var drawIntegerArg0_190 : UInt8 = 23
+					readonly var drawIntegerArg1_191 : UInt8 = 40
+					readonly var drawIntegerArg2_192 : Int16 = score
+					readonly var drawIntegerArg3_193 : UInt8 = 5
+					readonly var drawIntegerArg4_194 : UInt8 = 6
+					println "@BreakoutGameJava@" , "drawInteger" , "," , "x" , "," , "y" , "," , "v" , "," , "v" , "," , "digits" , "," , "scale" , ","
+					do
+						do
+							readonly var drawIntegerdigitsscalevArg0_390 : Int16 = drawIntegerArg2_192
+							readonly var drawIntegerdigitsscalevArg1_391 : UInt8 = drawIntegerArg3_193
+							readonly var drawIntegerdigitsscalevArg2_392 : Byte = 0x9A
+							readonly var drawIntegerdigitsscalevArg3_393 : UInt8 = drawIntegerArg4_194
+							println "!" , "21" , "," , (`((` & drawIntegerdigitsscalevArg0_390 & ` >> 8) & 0xFF)`) as Int8 , "," , (`((` & drawIntegerdigitsscalevArg0_390 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & drawIntegerdigitsscalevArg1_391 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & drawIntegerdigitsscalevArg2_392 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & drawIntegerdigitsscalevArg3_393 & ` >> 0) & 0xFF)`) as Int8 , ","
+							display!drawIntegerdigitsscalev(drawIntegerdigitsscalevArg0_390, drawIntegerdigitsscalevArg1_391, drawIntegerdigitsscalevArg2_392, drawIntegerdigitsscalevArg3_393)
+							bytesSentCounter = bytesSentCounter + 6
+						end
+						do
+							readonly var drawIntegerval0xyArg0_394 : Byte = 0x73
+							readonly var drawIntegerval0xyArg1_395 : Byte = 0x76
+							readonly var drawIntegerval0xyArg2_396 : UInt8 = drawIntegerArg0_190
+							readonly var drawIntegerval0xyArg3_397 : UInt8 = drawIntegerArg1_191
+							println "!" , "2" , "," , (`((` & drawIntegerval0xyArg0_394 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & drawIntegerval0xyArg1_395 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & drawIntegerval0xyArg2_396 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & drawIntegerval0xyArg3_397 & ` >> 0) & 0xFF)`) as Int8 , ","
+							display!drawIntegerval0xy(drawIntegerval0xyArg0_394, drawIntegerval0xyArg1_395, drawIntegerval0xyArg2_396, drawIntegerval0xyArg3_397)
+							bytesSentCounter = bytesSentCounter + 5
+						end
+					end
+				end
+				do
+					readonly var drawThingMLArg0_195 : UInt8 = 26
+					readonly var drawThingMLArg1_196 : UInt8 = 87
+					println "@BreakoutGameJava@" , "drawThingML" , "," , "x" , "," , "y" , ","
+					do
+						do
+							readonly var drawThingMLyArg0_398 : Byte = 0xA3
+							readonly var drawThingMLyArg1_399 : UInt8 = drawThingMLArg1_196
+							println "!" , "19" , "," , (`((` & drawThingMLyArg0_398 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & drawThingMLyArg1_399 & ` >> 0) & 0xFF)`) as Int8 , ","
+							display!drawThingMLy(drawThingMLyArg0_398, drawThingMLyArg1_399)
+							bytesSentCounter = bytesSentCounter + 3
+						end
+						do
+							readonly var drawThingMLval10xArg0_400 : Byte = 0x7C
+							readonly var drawThingMLval10xArg1_401 : UInt8 = drawThingMLArg0_195
+							readonly var drawThingMLval10xArg2_402 : Byte = 0xE0
+							println "!" , "10" , "," , (`((` & drawThingMLval10xArg0_400 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & drawThingMLval10xArg1_401 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & drawThingMLval10xArg2_402 & ` >> 0) & 0xFF)`) as Int8 , ","
+							display!drawThingMLval10x(drawThingMLval10xArg0_400, drawThingMLval10xArg1_401, drawThingMLval10xArg2_402)
+							bytesSentCounter = bytesSentCounter + 4
+						end
+					end
+				end
+				do
+					println "@BreakoutGameJava@" , "update" , ","
+					do
+						do
+							readonly var update_Arg0_403 : Byte = 0x4D
+							println "!" , "16" , "," , (`((` & update_Arg0_403 & ` >> 0) & 0xFF)`) as Int8 , ","
+							display!update_(update_Arg0_403)
+							bytesSentCounter = bytesSentCounter + 2
+						end
+						do
+							readonly var updateval4Arg0_404 : Byte = 0x75
+							readonly var updateval4Arg1_405 : Byte = 0x55
+							println "!" , "7" , "," , (`((` & updateval4Arg0_404 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & updateval4Arg1_405 & ` >> 0) & 0xFF)`) as Int8 , ","
+							display!updateval4(updateval4Arg0_404, updateval4Arg1_405)
+							bytesSentCounter = bytesSentCounter + 3
+						end
+					end
+				end
+				log(true)
+				stopTime = timestamp()
+				quit()
+			end
+		}
+		internal
+		event e : controller?positionx
+		action do
+			received_controller_positionx = true
+			controller_position_x = e.x
+			if (received_controller_positionval11y) do
+				do
+					var center : Int32 = (RIGHT as Int32 - LEFT as Int32 - padlen as Int32)
+					center = controller_position_x as Int32 * center
+					center = center / 200
+					padx = (LEFT as Int32 + center + (RIGHT as Int32 - LEFT as Int32) / 2) as Int16
+				end
+				do
+					received_controller_positionx = false
+					received_controller_positionval11y = false
+				end
+			end
+		end
+		internal
+		event e : controller?positionval11y
+		action do
+			received_controller_positionval11y = true
+			controller_position_val11 = e.val11
+			controller_position_y = e.y
+			if (received_controller_positionx) do
+				do
+					var center : Int32 = (RIGHT as Int32 - LEFT as Int32 - padlen as Int32)
+					center = controller_position_x as Int32 * center
+					center = center / 200
+					padx = (LEFT as Int32 + center + (RIGHT as Int32 - LEFT as Int32) / 2) as Int16
+				end
+				do
+					received_controller_positionval11y = false
+					received_controller_positionx = false
+				end
+			end
+		end
+	}
+}
+thing fragment DisplayMsgs {
+	message setColorrbval7(b : UInt8, val14 : Byte @noise, val7 : Byte @noise, r : UInt8)
+	@code "0"
+	message displayReady_(val15 : Byte @noise)
+	@code "1"
+	message drawIntegerval0xy(val16 : Byte @noise, val0 : Byte @noise, x : UInt8, y : UInt8)
+	@code "2"
+	message fillRectxwidthheight(height : UInt8, val17 : Byte @noise, width : UInt8, x : UInt8)
+	@code "3"
+	message createxsize(val18 : Byte @noise, xsize : UInt8)
+	@code "4"
+	message fillRectyval2(y : UInt8, val19 : Byte @noise, val2 : Byte @noise)
+	@code "5"
+	message drawRectwidthx(x : UInt8, val20 : Byte @noise, width : UInt8)
+	@code "6"
+	message updateval4(val21 : Byte @noise, val4 : Byte @noise)
+	@code "7"
+	message destroyval6(val22 : Byte @noise, val6 : Byte @noise)
+	@code "8"
+	message displayReadyval8(val23 : Byte @noise, val8 : Byte @noise)
+	@code "9"
+	message drawThingMLval10x(val24 : Byte @noise, x : UInt8, val10 : Byte @noise)
+	@code "10"
+	message createysizeval9(val9 : Byte @noise, val25 : Byte @noise, ysize : UInt8)
+	@code "11"
+	message clear_(val26 : Byte @noise)
+	@code "12"
+	message clearval1(val27 : Byte @noise, val1 : Byte @noise)
+	@code "13"
+	message drawRectval3yheight(val3 : Byte @noise, y : UInt8, val28 : Byte @noise, height : UInt8)
+	@code "14"
+	message setBGColorval5g(g : UInt8, val29 : Byte @noise, val5 : Byte @noise)
+	@code "15"
+	message update_(val30 : Byte @noise)
+	@code "16"
+	message setBGColorrb(val31 : Byte @noise, r : UInt8, b : UInt8)
+	@code "17"
+	message setColorg(val32 : Byte @noise, g : UInt8)
+	@code "18"
+	message drawThingMLy(val33 : Byte @noise, y : UInt8)
+	@code "19"
+	message destroy_(val34 : Byte @noise)
+	@code "20"
+	message drawIntegerdigitsscalev(v : Int16, digits : UInt8, val35 : Byte @noise, scale : UInt8)
+	@code "21"
+}
+thing fragment HeadlessDisplay includes DisplayMsgs @stdout_sync "true" {
+	provided port display {
+		sends displayReady_ sends displayReadyval8 receives createysizeval9 receives createxsize receives destroy_ receives destroyval6 receives update_ receives updateval4 receives clear_ receives clearval1 receives setColorrbval7 receives setColorg receives setBGColorval5g receives setBGColorrb receives drawRectwidthx receives drawRectval3yheight receives fillRectyval2 receives fillRectxwidthheight receives drawIntegerval0xy receives drawIntegerdigitsscalev receives drawThingMLval10x receives drawThingMLy
+	}
+	property bytesSentCounter : UInt32 = 0 @ignore "not-used"
+	abstract function rnd() : Byte
+
+	function mock() do
+	end
+	statechart init INIT {
+		state INIT {
+			on entry do
+				println "@HeadlessDisplayJava@" , "displayReady" , ","
+				do
+					do
+						readonly var displayReady_Arg0_0 : Byte = 0x10
+						println "!" , "1" , "," , (`((` & displayReady_Arg0_0 & ` >> 0) & 0xFF)`) as Int8 , ","
+						display!displayReady_(displayReady_Arg0_0)
+						bytesSentCounter = bytesSentCounter + 2
+					end
+					do
+						readonly var displayReadyval8Arg0_1 : Byte = 0xCC
+						readonly var displayReadyval8Arg1_2 : Byte = 0x4A
+						println "!" , "9" , "," , (`((` & displayReadyval8Arg0_1 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & displayReadyval8Arg1_2 & ` >> 0) & 0xFF)`) as Int8 , ","
+						display!displayReadyval8(displayReadyval8Arg0_1, displayReadyval8Arg1_2)
+						bytesSentCounter = bytesSentCounter + 3
+					end
+				end
+			end
+			transition -> MOCK
+		}
+		state MOCK {
+			property display_create_ysize : UInt8
+			property display_create_val9 : Byte
+			property display_create_xsize : UInt8
+			property received_display_createysizeval9 : Boolean
+			property received_display_createxsize : Boolean
+			property display_destroy_val6 : Byte
+			property received_display_destroy_ : Boolean
+			property received_display_destroyval6 : Boolean
+			property display_update_val4 : Byte
+			property received_display_update_ : Boolean
+			property received_display_updateval4 : Boolean
+			property display_clear_val1 : Byte
+			property received_display_clear_ : Boolean
+			property received_display_clearval1 : Boolean
+			property display_setColor_r : UInt8
+			property display_setColor_b : UInt8
+			property display_setColor_val7 : Byte
+			property display_setColor_g : UInt8
+			property received_display_setColorrbval7 : Boolean
+			property received_display_setColorg : Boolean
+			property display_setBGColor_val5 : Byte
+			property display_setBGColor_g : UInt8
+			property display_setBGColor_r : UInt8
+			property display_setBGColor_b : UInt8
+			property received_display_setBGColorval5g : Boolean
+			property received_display_setBGColorrb : Boolean
+			property display_drawRect_width : UInt8
+			property display_drawRect_x : UInt8
+			property display_drawRect_val3 : Byte
+			property display_drawRect_y : UInt8
+			property display_drawRect_height : UInt8
+			property received_display_drawRectwidthx : Boolean
+			property received_display_drawRectval3yheight : Boolean
+			property display_fillRect_y : UInt8
+			property display_fillRect_val2 : Byte
+			property display_fillRect_x : UInt8
+			property display_fillRect_width : UInt8
+			property display_fillRect_height : UInt8
+			property received_display_fillRectyval2 : Boolean
+			property received_display_fillRectxwidthheight : Boolean
+			property display_drawInteger_val0 : Byte
+			property display_drawInteger_x : UInt8
+			property display_drawInteger_y : UInt8
+			property display_drawInteger_digits : UInt8
+			property display_drawInteger_scale : UInt8
+			property display_drawInteger_v : Int16
+			property received_display_drawIntegerval0xy : Boolean
+			property received_display_drawIntegerdigitsscalev : Boolean
+			property display_drawThingML_val10 : Byte
+			property display_drawThingML_x : UInt8
+			property display_drawThingML_y : UInt8
+			property received_display_drawThingMLval10x : Boolean
+			property received_display_drawThingMLy : Boolean
+			internal
+			event display?createysizeval9
+			action do
+				received_display_createysizeval9 = true
+				if (received_display_createxsize) do
+					mock()
+					do
+						received_display_createysizeval9 = false
+						received_display_createxsize = false
+					end
+				end
+			end
+			internal
+			event display?createxsize
+			action do
+				received_display_createxsize = true
+				if (received_display_createysizeval9) do
+					mock()
+					do
+						received_display_createxsize = false
+						received_display_createysizeval9 = false
+					end
+				end
+			end
+			internal
+			event display?destroy_
+			action do
+				received_display_destroy_ = true
+				if (received_display_destroyval6) do
+					mock()
+					do
+						received_display_destroy_ = false
+						received_display_destroyval6 = false
+					end
+				end
+			end
+			internal
+			event display?destroyval6
+			action do
+				received_display_destroyval6 = true
+				if (received_display_destroy_) do
+					mock()
+					do
+						received_display_destroyval6 = false
+						received_display_destroy_ = false
+					end
+				end
+			end
+			internal
+			event display?update_
+			action do
+				received_display_update_ = true
+				if (received_display_updateval4) do
+					mock()
+					do
+						received_display_update_ = false
+						received_display_updateval4 = false
+					end
+				end
+			end
+			internal
+			event display?updateval4
+			action do
+				received_display_updateval4 = true
+				if (received_display_update_) do
+					mock()
+					do
+						received_display_updateval4 = false
+						received_display_update_ = false
+					end
+				end
+			end
+			internal
+			event display?clear_
+			action do
+				received_display_clear_ = true
+				if (received_display_clearval1) do
+					mock()
+					do
+						received_display_clear_ = false
+						received_display_clearval1 = false
+					end
+				end
+			end
+			internal
+			event display?clearval1
+			action do
+				received_display_clearval1 = true
+				if (received_display_clear_) do
+					mock()
+					do
+						received_display_clearval1 = false
+						received_display_clear_ = false
+					end
+				end
+			end
+			internal
+			event display?setColorrbval7
+			action do
+				received_display_setColorrbval7 = true
+				if (received_display_setColorg) do
+					mock()
+					do
+						received_display_setColorrbval7 = false
+						received_display_setColorg = false
+					end
+				end
+			end
+			internal
+			event display?setColorg
+			action do
+				received_display_setColorg = true
+				if (received_display_setColorrbval7) do
+					mock()
+					do
+						received_display_setColorg = false
+						received_display_setColorrbval7 = false
+					end
+				end
+			end
+			internal
+			event display?setBGColorval5g
+			action do
+				received_display_setBGColorval5g = true
+				if (received_display_setBGColorrb) do
+					mock()
+					do
+						received_display_setBGColorval5g = false
+						received_display_setBGColorrb = false
+					end
+				end
+			end
+			internal
+			event display?setBGColorrb
+			action do
+				received_display_setBGColorrb = true
+				if (received_display_setBGColorval5g) do
+					mock()
+					do
+						received_display_setBGColorrb = false
+						received_display_setBGColorval5g = false
+					end
+				end
+			end
+			internal
+			event display?drawRectwidthx
+			action do
+				received_display_drawRectwidthx = true
+				if (received_display_drawRectval3yheight) do
+					mock()
+					do
+						received_display_drawRectwidthx = false
+						received_display_drawRectval3yheight = false
+					end
+				end
+			end
+			internal
+			event display?drawRectval3yheight
+			action do
+				received_display_drawRectval3yheight = true
+				if (received_display_drawRectwidthx) do
+					mock()
+					do
+						received_display_drawRectval3yheight = false
+						received_display_drawRectwidthx = false
+					end
+				end
+			end
+			internal
+			event display?fillRectyval2
+			action do
+				received_display_fillRectyval2 = true
+				if (received_display_fillRectxwidthheight) do
+					mock()
+					do
+						received_display_fillRectyval2 = false
+						received_display_fillRectxwidthheight = false
+					end
+				end
+			end
+			internal
+			event display?fillRectxwidthheight
+			action do
+				received_display_fillRectxwidthheight = true
+				if (received_display_fillRectyval2) do
+					mock()
+					do
+						received_display_fillRectxwidthheight = false
+						received_display_fillRectyval2 = false
+					end
+				end
+			end
+			internal
+			event display?drawIntegerval0xy
+			action do
+				received_display_drawIntegerval0xy = true
+				if (received_display_drawIntegerdigitsscalev) do
+					mock()
+					do
+						received_display_drawIntegerval0xy = false
+						received_display_drawIntegerdigitsscalev = false
+					end
+				end
+			end
+			internal
+			event display?drawIntegerdigitsscalev
+			action do
+				received_display_drawIntegerdigitsscalev = true
+				if (received_display_drawIntegerval0xy) do
+					mock()
+					do
+						received_display_drawIntegerdigitsscalev = false
+						received_display_drawIntegerval0xy = false
+					end
+				end
+			end
+			internal
+			event display?drawThingMLval10x
+			action do
+				received_display_drawThingMLval10x = true
+				if (received_display_drawThingMLy) do
+					mock()
+					do
+						received_display_drawThingMLval10x = false
+						received_display_drawThingMLy = false
+					end
+				end
+			end
+			internal
+			event display?drawThingMLy
+			action do
+				received_display_drawThingMLy = true
+				if (received_display_drawThingMLval10x) do
+					mock()
+					do
+						received_display_drawThingMLy = false
+						received_display_drawThingMLval10x = false
+					end
+				end
+			end
+		}
+	}
+}
+thing fragment ControllerMsgs {
+	message positionx(val36 : Byte @noise, x : Int16)
+	@code "22"
+	message positionval11y(val11 : Byte @noise, val37 : Byte @noise, y : Int16)
+	@code "23"
+	message velocityval12(val38 : Byte @noise, val12 : Byte @noise)
+	@code "24" message velocitydxdy(val39 : Byte @noise, dx : Int16, dy : Int16)
+	@code "25"
+}
+thing fragment Controller includes ControllerMsgs {
+	provided port controls {
+		sends positionx sends positionval11y
+	}
+	property bytesSentCounter : UInt32 = 0 @ignore "not-used"
+	abstract function rnd() : Byte
+
+}
+thing fragment IAControllerMsg {
+	message updateIAballypadx(val40 : Byte @noise, padx : Int16, bally : Int16)
+	@code "26"
+	message updateIAval13padyballx(ballx : Int16, val41 : Byte @noise, pady : Int16, val13 : Byte @noise)
+	@code "27"
+}
+thing fragment IAController includes Controller , IAControllerMsg {
+	required port game {
+		receives updateIAval13padyballx receives updateIAballypadx
+	}
+}
+thing fragment BasicIAController includes IAController @stdout_sync "true" {
+	property ctrlx : Int16 = 0
+	statechart SC init Following {
+		state Following {
+			property game_updateIA_val13 : Byte
+			property game_updateIA_pady : Int16
+			property game_updateIA_ballx : Int16
+			property game_updateIA_bally : Int16
+			property game_updateIA_padx : Int16
+			property received_game_updateIAval13padyballx : Boolean
+			property received_game_updateIAballypadx : Boolean
+			on entry do
+				readonly var positionArg0_0 : Int16 = ctrlx
+				readonly var positionArg1_1 : Int16 = 0
+				println "@BasicIAControllerJava@" , "position" , "," , "x" , "," , "x" , "," , "y" , "," , "y" , ","
+				do
+					do
+						readonly var positionval11yArg0_0 : Byte = 0x71
+						readonly var positionval11yArg1_1 : Byte = 0xF0
+						readonly var positionval11yArg2_2 : Int16 = positionArg1_1
+						println "!" , "23" , "," , (`((` & positionval11yArg0_0 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & positionval11yArg1_1 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & positionval11yArg2_2 & ` >> 8) & 0xFF)`) as Int8 , "," , (`((` & positionval11yArg2_2 & ` >> 0) & 0xFF)`) as Int8 , ","
+						controls!positionval11y(positionval11yArg0_0, positionval11yArg1_1, positionval11yArg2_2)
+						bytesSentCounter = bytesSentCounter + 5
+					end
+					do
+						readonly var positionxArg0_3 : Byte = 0x55
+						readonly var positionxArg1_4 : Int16 = positionArg0_0
+						println "!" , "22" , "," , (`((` & positionxArg0_3 & ` >> 0) & 0xFF)`) as Int8 , "," , (`((` & positionxArg1_4 & ` >> 8) & 0xFF)`) as Int8 , "," , (`((` & positionxArg1_4 & ` >> 0) & 0xFF)`) as Int8 , ","
+						controls!positionx(positionxArg0_3, positionxArg1_4)
+						bytesSentCounter = bytesSentCounter + 4
+					end
+				end
+			end
+			internal
+			event e : game?updateIAval13padyballx
+			guard not received_game_updateIAballypadx
+			action do
+				received_game_updateIAval13padyballx = true
+				game_updateIA_val13 = e.val13
+				game_updateIA_pady = e.pady
+				game_updateIA_ballx = e.ballx
+			end
+			internal
+			event e : game?updateIAballypadx
+			guard not received_game_updateIAval13padyballx
+			action do
+				received_game_updateIAballypadx = true
+				game_updateIA_bally = e.bally
+				game_updateIA_padx = e.padx
+			end
+			transition -> Following
+			event e : game?updateIAval13padyballx
+			guard received_game_updateIAballypadx
+			action do
+				game_updateIA_val13 = e.val13
+				game_updateIA_pady = e.pady
+				game_updateIA_ballx = e.ballx
+				do
+					if (e.ballx > game_updateIA_padx + 400) ctrlx = ctrlx + 4
+					else if (e.ballx < game_updateIA_padx - 400) ctrlx = ctrlx - 4
+					if (ctrlx < -100) ctrlx = -100
+					else if (ctrlx > 100) ctrlx = 100
+				end
+				received_game_updateIAval13padyballx = false
+				received_game_updateIAballypadx = false
+			end
+			transition -> Following
+			event e : game?updateIAballypadx
+			guard received_game_updateIAval13padyballx
+			action do
+				game_updateIA_bally = e.bally
+				game_updateIA_padx = e.padx
+				do
+					if (game_updateIA_ballx > e.padx + 400) ctrlx = ctrlx + 4
+					else if (game_updateIA_ballx < e.padx - 400) ctrlx = ctrlx - 4
+					if (ctrlx < -100) ctrlx = -100
+					else if (ctrlx > 100) ctrlx = 100
+				end
+				received_game_updateIAballypadx = false
+				received_game_updateIAval13padyballx = false
+			end
+		}
+	}
+}
+datatype Byte<1>
+	@type_checker "Integer"
+	@c_type "uint8_t"
+	@java_type "byte"
+	@js_type "byte"
+	@go_type "byte"
+datatype Char<1>
+	@type_checker "Integer"
+	@c_type "char"
+	@java_type "byte"
+	@js_type "byte"
+	@go_type "byte"
+datatype Boolean<1>
+	@type_checker "Boolean"
+	@c_type "bool"
+	@java_type "boolean"
+	@js_type "boolean"
+	@go_type "bool"
+datatype UInt8<1>
+	@type_checker "Integer"
+	@c_type "uint8_t"
+	@java_type "int"
+	@js_type "short"
+	@go_type "uint8"
+datatype Int8<1>
+	@type_checker "Integer"
+	@c_type "int8_t"
+	@java_type "int"
+	@js_type "short"
+	@go_type "int8"
+datatype UInt16<2>
+	@type_checker "Integer"
+	@c_type "uint16_t"
+	@java_type "int"
+	@js_type "int"
+	@go_type "uint16"
+datatype Int16<2>
+	@type_checker "Integer"
+	@c_type "int16_t"
+	@java_type "int"
+	@js_type "short"
+	@go_type "int16"
+datatype Int32<4>
+	@type_checker "Integer"
+	@c_type "int32_t"
+	@java_type "long"
+	@js_type "int"
+	@go_type "int32"
+datatype UInt32<4>
+	@type_checker "Integer"
+	@c_type "uint32_t"
+	@java_type "long"
+	@js_type "long"
+	@go_type "uint32"
+datatype Long<4>
+	@type_checker "Integer"
+	@c_type "uint32_t"
+	@java_type "long"
+	@js_type "long"
+	@go_type "uint32"
+datatype Int64<8>
+	@type_checker "Integer"
+	@c_type "int64_t"
+	@java_type "long"
+	@js_type "long"
+	@go_type "int64"
+datatype UInt64<8>
+	@type_checker "Integer"
+	@c_type "uint64_t"
+	@java_type "long"
+	@js_type "long"
+	@go_type "uint64"
+datatype Integer<2>
+	@type_checker "Integer"
+	@c_type "int16_t"
+	@java_type "int"
+	@js_type "short"
+	@go_type "int16"
+datatype Float<4>
+	@type_checker "Real"
+	@c_type "float"
+	@java_type "float"
+	@js_type "float"
+	@go_type "float32"
+datatype Double<8>
+	@type_checker "Real"
+	@c_type "double"
+	@java_type "double"
+	@js_type "double"
+	@go_type "float64"
+object String
+	@serializable
+	@c_type "char *"
+	@java_type "String"
+	@js_type "String"
+	@go_type "string"
+enumeration DigitalState as Byte
+	@java_type "byte"
+	@c_type "uint8_t"
+	@go_type "uint8"
+	{
+	LOW = 0x00
+	HIGH = 0x01
+}
+thing fragment TimerMsgs @stl {
+	message timer_start(id : UInt8, time : UInt16)
+	@diversify "not" @code "16"
+	message timer_cancel(id : UInt8)
+	@diversify "not" @code "17"
+	message timer_timeout(id : UInt8)
+	@diversify "not" @code "18"
+}
+thing fragment Timer includes TimerMsgs @stl @diversify "not" {
+	provided port timer {
+		sends timer_timeout receives timer_start receives timer_cancel
+	}
+}
+thing TimerJava includes Timer @stl @diversify "not" @java_import "import java.util.*;" @java_features "
+	Hashtable<Integer, TimerTask> tasks = new Hashtable<Integer, TimerTask>();
+	Timer timer = new java.util.Timer();" {
+	function startTimer(id : UInt8, delay : UInt16) do
+		cancel(id)
+		`final int t_id = ` & id & `;`
+	`TimerTask t =  new TimerTask() { public void run(){`
+		timer!timer_timeout(`t_id` as UInt8)
+		`
+        } };
+        tasks.put(t_id, t);
+        timer.schedule(t, ` & delay & `);`
+	end
+	function cancel(id : UInt8) do
+		`TimerTask t = tasks.get(` & id & `);`
+	`if (t != null) t.cancel();`
+	`timer.purge();`
+	end
+	statechart SoftTimer init default {
+		state default {
+			internal
+			event m : timer?timer_start
+			guard m.time > 0
+			action startTimer(m.id, m.time)
+			internal cancel
+			event m : timer?timer_cancel
+			action cancel(m.id)
+		}
+	}
+}
+object JSArray
+object DriftLess
+object TimerMap @go_type "map[uint8]*time.Timer"
+configuration test @docker {
+	instance game : BreakoutGameJava
+	instance disp : HeadlessDisplayJava
+	instance timer : TimerJava
+	instance ctrl : BasicIAControllerJava
+	connector game.clock => timer . timer
+	connector game.display => disp . display
+	connector game.controller => ctrl . controls
+	connector ctrl.game => game . ia
+}

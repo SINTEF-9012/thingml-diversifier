@@ -1,5 +1,5 @@
 @startuml
-BreakoutGame -> HeadlessDisplay1: <b>  setColor(107, 94, 174)</b>\n  [<font color="red"><i>0x01</i></font>, 0x6B, 0x5E, 0xAE]
+BreakoutGame -> HeadlessDisplay1: <b>  <font color="blue"><i>@code "1"</i></font></b>\n<b>  setColor(107, 94, 174)</b>\n  [<font color="blue"><i>0x01</i></font>, 0x6B, 0x5E, 0xAE]
 ...
-BreakoutGame -> HeadlessDisplay1: <b>  setColor(107, 94, 174)</b>\n  [<font color="red"><i>0x02</i></font>, 0x6B, 0x5E, 0xAE]
+BreakoutGame -> HeadlessDisplay1: <b>  <font color="red"><i>@code "2"</i></font></b>\n<b>  setColor_bis(107, 94, 174)</b>\n  [<font color="red"><i>0x02</i></font>, 0x6B, 0x5E, 0xAE]
 @enduml
