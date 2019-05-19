@@ -3,11 +3,13 @@ package no.sintef.thingml.diversifier;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.io.FilenameUtils;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.thingml.compilers.ThingMLCompiler;
+import org.thingml.xtext.constraints.ThingMLHelpers;
 import org.thingml.xtext.helpers.ConfigurationHelper;
 import org.thingml.xtext.thingML.Configuration;
 import org.thingml.xtext.thingML.Thing;
@@ -53,6 +55,11 @@ public class CLI {
 	private boolean help;
 
 	public static void main(String[] args) throws Exception {
+		if (args.length > 0 && args[0].equals("thingml")) {//Exposes the original ThingML CLI
+			org.thingml.compilers.commandline.Main.main(Arrays.copyOfRange(args, 1, args.length));
+			return;
+		}
+		
 		final CLI cli = new CLI();
 		final JCommander jcom = JCommander.newBuilder().addObject(cli).build();
 		jcom.parse(args);
@@ -65,7 +72,7 @@ public class CLI {
 		final File input = new File(cli.input);
 		if (!input.exists() || !FilenameUtils.getExtension(cli.input).equals("thingml")) throw new FileNotFoundException("Input file " + cli.input + " cannot be found");		
 		
-		final ThingMLModel model = ThingMLCompiler.flattenModel(ThingMLCompiler.loadModel(input));
+		final ThingMLModel model = ThingMLHelpers.flattenModel(ThingMLCompiler.loadModel(input));
 		
 		//Remove useless stuff in the flatten model (not point in diversifying what won't be instantiated
 		final List<Type> types = new ArrayList<>();
@@ -175,6 +182,12 @@ public class CLI {
 		for (Mode m : Mode.values()) {
 			System.out.println("  └╼  " + m.name().toLowerCase());
 		}
+		
+		System.out.println("\n-------------------------------------\n");
+		System.out.println("To call ThingML compilers and tools: ");
+		System.out.println("  java -jar <thingml-diversifivier-XXX.jar> thingml <thingml-options>");
+		org.thingml.compilers.commandline.Main.main(new String[]{"-h"});
+		
 	}
 
 }
