@@ -1,0 +1,509 @@
+import "Display.thingml"
+import "Controller.thingml"
+
+thing fragment BreakoutGame includes TimerMsgs, DisplayMsgs, ControllerMsgs, IAControllerMsg {
+	property bytesSentCounter : UInt32 = 0 @ignore "not-used"
+	
+	message lostBall()@diversify "not"
+	message nextLevel()@diversify "not"
+
+	property startTime : UInt32
+	property stopTime : UInt32
+	property lastTimestamp : UInt32 = 0
+	property counter : UInt8 = 0
+	
+	abstract function rnd() : Byte
+	abstract function quit()
+	abstract function timestamp() : UInt32
+	abstract function usedMemory() : UInt32
+
+	function log(logMem : Boolean) do
+		if (counter == 0 or logMem) do
+			var ts : UInt32
+			if (lastTimestamp == 0) do
+				ts = 0
+				lastTimestamp = timestamp()
+			end else do
+				var t : UInt32 = timestamp()
+				ts = t - lastTimestamp
+				lastTimestamp = t
+			end
+			println "ts:", ts, ",lives:", lives, ",score:", score, ",level:", level, ",bx:", bx, ",by:", by, ",padx:", padx
+			println "#usedMem:", usedMemory()
+		end
+		counter++
+		if (counter == 33) counter = 0
+	end
+
+	required port clock {
+		sends timer_start, timer_cancel
+		receives timer_timeout
+	}
+
+	optional required port display
+	@sync_send "true"
+	{
+		receives displayReady
+		sends create, fillRect, drawRect, clear, setColor, setBGColor, drawInteger, update, drawThingML
+	}
+
+	required port controller {
+		receives position
+	}
+
+	provided port ia
+	{
+		sends updateIA
+	}
+
+	/*internal port game {
+		sends lostBall, nextLevel
+		receives lostBall, nextLevel
+	}*/
+
+	optional required port req_game {
+		sends lostBall, nextLevel
+	}
+
+	provided port pro_game {
+		receives lostBall, nextLevel
+	}
+
+	// Size of the real display
+	readonly property XDISPSIZE : UInt8 = 160
+	readonly property YDISPSIZE : UInt8 = 128
+
+	// Virtual size of the "game area"
+	readonly property SCALE : Int16 = 64
+	readonly property XMAX 	: Int16 = XDISPSIZE as Int16 * SCALE
+	readonly property YMAX 	: Int16 = YDISPSIZE as Int16 * SCALE
+
+	// Walls around the play area
+	readonly property TOP 	: Int16 = 14 * SCALE 		// Leave 12 pixels on the top for scores
+	readonly property BOTTOM	: Int16 = YMAX + 8 * SCALE	// The bottom wall is off the screen
+	readonly property LEFT	: Int16 = 1 * SCALE			// One pixel for the left wall
+	readonly property RIGHT	: Int16 = XMAX - 1 * SCALE	// One pixel for the right wall
+
+	// Ball variables
+	readonly property br : Int16 = 3 * SCALE 			// Radius of the ball
+	property bx : Int16 = XMAX / 2				// Center of the ball
+	property by : Int16 = YMAX					// Center of the ball
+	property dx : Int16 = XMAX / 98				// Horizontal speed of the ball
+	property dy : Int16 = -XMAX / 65			// Vertical speed of the ball
+
+	// Pad variables
+	property padx 	: Int16 = YMAX / 2			// Middle of the pad
+	property pady 	: Int16 = YMAX - 6 * SCALE	// Top of the pad
+	property padlen : Int16 = 25 * SCALE		// Length of the pad (should be a multiple of SCALE)
+
+	// Variables used by the drawBall function to erase the previous ball
+	property prevBX	: Int16 = -1
+	property prevBY	: Int16 = -1
+
+	property bgcolor : UInt8[3]
+	property fgcolor : UInt8[3]
+
+	readonly property period : UInt16 = 3
+
+	function initColors() do
+		bgcolor[0] = 53 	bgcolor[1] = 40 	bgcolor[2] = 120
+		fgcolor[0] = 107 	fgcolor[1] = 94 	fgcolor[2] = 174
+		display!setBGColor(bgcolor[0],bgcolor[1],bgcolor[2])
+		display!setColor(fgcolor[0],fgcolor[1],fgcolor[2])
+	end
+
+	function resetBall() do
+		bx = padx - br/SCALE
+		by = pady - br/SCALE
+		dx = (padx + prevBX + prevBY) % 300 - 150 // A sort of random number between -150 and 150
+		if (dy > 0) dy = - dy
+		prevBX = -1
+		prevBY = -1
+	end
+
+	function eraseBall() do
+		var bs : Int16 = (br*2)/SCALE 	// Size of the ball on the actual display
+
+		if (prevBX > 0) do				// Erase the previous ball
+			display!setColor(bgcolor[0],bgcolor[1],bgcolor[2])
+			display!fillRect(prevBX as UInt8, prevBY as UInt8, bs as UInt8, bs as UInt8)
+		end
+
+		prevBX = -1
+		prevBY = -1
+	end
+
+	function drawBall() do
+		var bs : Int16 = (br*2)/SCALE 	// Size of the ball on the actual display
+
+		eraseBall()
+
+		// Compute new position of the ball on the actual display
+		prevBX = (bx-br)/SCALE
+		prevBY = (by-br)/SCALE
+
+		//display!setColor(fgcolor[0],fgcolor[1],fgcolor[2])
+		display!setColor(183, 199, 111)
+		display!fillRect(prevBX as UInt8, prevBY as UInt8, bs as UInt8, bs as UInt8)
+	end
+
+
+	// Variables used by the drawPad function to erase the previous pad
+	property prevPX	: Int16 = -1
+	property prevPY	: Int16 = -1
+
+	function erasePad() do
+		var ps : Int16 = padlen/SCALE 	// Size of the pad on the actual display
+		if (prevPX > 0) do				// Erase the previous ball
+			display!setColor(bgcolor[0],bgcolor[1],bgcolor[2])
+			display!fillRect(prevPX as UInt8, prevPY as UInt8, ps as UInt8, 4)
+		end
+	end
+
+	function drawPad() do
+		var ps : Int16 = padlen/SCALE 	// Size of the pad on the actual display
+
+		erasePad()
+
+		prevPX = (padx - (padlen/2)) / SCALE
+		prevPY = pady / SCALE
+
+		display!setColor(fgcolor[0],fgcolor[1],fgcolor[2])
+		display!fillRect(prevPX as UInt8, prevPY as UInt8, ps as UInt8, 4)
+	end
+
+	function drawCountDown(c : Int16) do
+		display!setColor(fgcolor[0],fgcolor[1],fgcolor[2])
+		if (c > 0) do
+			display!setColor(fgcolor[0],fgcolor[1],fgcolor[2])
+			display!setBGColor(bgcolor[0],bgcolor[1],bgcolor[2])
+			display!drawInteger(80-6, 90, c, 1, 4)
+		end
+		else do
+			display!setColor(bgcolor[0],bgcolor[1],bgcolor[2])
+			display!fillRect(80-6, 90, 12, 20)
+		end
+	end
+
+	function drawWalls() do
+		display!setColor(fgcolor[0],fgcolor[1],fgcolor[2])
+		readonly var left : UInt8 = (LEFT/SCALE) as UInt8
+		readonly var right : UInt8 = (RIGHT/SCALE) as UInt8
+		readonly var top : UInt8 = (TOP/SCALE) as UInt8
+		readonly var bottom : UInt8 = (BOTTOM/SCALE) as UInt8
+		readonly var xcenter : UInt8 = ((RIGHT-LEFT)/SCALE) as UInt8
+		readonly var ycenter : UInt8 = ((BOTTOM-TOP)/SCALE) as UInt8
+		display!fillRect(left-1, top-1, xcenter+1, 1)
+		display!fillRect(left-1, bottom, xcenter+1, 1)
+		display!fillRect(left-1, top, 1, ycenter)
+		display!fillRect(right, top, 1, ycenter)
+	end
+
+	// Bricks variable
+	readonly property BRICK_ROWS : UInt8 = 5
+	readonly property BRICK_HEIGHT : UInt8 = 9
+	property bricks : UInt8[BRICK_ROWS]
+
+	function bitIsSet(variable : UInt8, bit : UInt8) : Boolean return (`((1 << `& bit &`) & `& variable &`) != 0`) as Boolean
+	//function setBit(variable : UInt8, bit : UInt8) : UInt8 return ``&variable&` | (1 << `& bit &`)`
+	abstract function unsetBit(variable : UInt8, bit : UInt8) : UInt8 //return ``&variable&` & ~(1 << `& bit &`)` //it appears that ~ is ^ in Go (yes, we need a PIM version of those operators...)
+
+	function createBricks() do
+		var y : UInt8 = 0
+		while (y<BRICK_ROWS) do
+			bricks[y] = 0xFF
+			// Draw the Bricks
+			var x : UInt8 = 0
+			while(x < 8) do
+				if ( bitIsSet(bricks[y], x) ) do
+					drawBrick(x, y)
+				end
+				x = x + 1
+			end
+			y = y + 1
+		end
+	end
+
+	function bricksLeft() : UInt8 do
+		var result : UInt8 = 0
+		var y : UInt8 = 0
+		while (y<BRICK_ROWS) do
+			var x : UInt8 = 0
+			while(x < 8) do
+				if ( bitIsSet(bricks[y], x) ) do
+					result = result + 1
+				end
+				x = x + 1
+			end
+			y = y + 1
+		end
+		return result
+	end
+
+	function drawBrick(x : UInt8, y: UInt8) do
+		readonly var bx : UInt8 = ((LEFT + ((RIGHT-LEFT)/8) * x as Int16)/SCALE+1) as UInt8
+		readonly var by : UInt8 = ((TOP + 20 * SCALE + BRICK_HEIGHT as Int16 * y as Int16 * SCALE)/SCALE+1) as UInt8
+		readonly var w : UInt8 = (((RIGHT-LEFT)/8)/SCALE-2) as UInt8
+		readonly var h : UInt8 = (BRICK_HEIGHT-2) as UInt8
+		display!setColor(155,103,89)
+		display!fillRect(bx, by, w, h)
+		display!setColor(100,56,43)
+		display!drawRect(bx, by, w, h)
+	end
+
+	function removeBrick(x : UInt8, y: UInt8) do
+		readonly var bx : UInt8 = ((LEFT + ((RIGHT-LEFT)/8) * x as Int16)/SCALE+1) as UInt8
+		readonly var by : UInt8 = ((TOP + 20 * SCALE + BRICK_HEIGHT as Int16 * y as Int16 * SCALE)/SCALE+1) as UInt8
+		display!setColor(bgcolor[0],bgcolor[1],bgcolor[2])
+		display!fillRect(bx, by, (((RIGHT-LEFT)/8)/SCALE-2) as UInt8, BRICK_HEIGHT-2)
+		bricks[y] = unsetBit(bricks[y], x)
+	end
+
+	function collideBrick(xpos : Int16, ypos : Int16) : Boolean do
+		var bry : Int16 = (ypos as Int16 - TOP - 20*SCALE) / (BRICK_HEIGHT as Int16*SCALE)
+		var result : Boolean = false
+		if (bry >= 0 and bry < BRICK_ROWS as Int16) do // There may be a collision
+			var brx : Int16 = (xpos as Int16 - LEFT) / ((RIGHT - LEFT) / 8)
+			if (bitIsSet(bricks[bry], brx as UInt8)) do // There is a brick
+				removeBrick(brx as UInt8, bry as UInt8)
+				result = true
+			end
+		end
+		return result
+	end
+
+	property score : Int16 = 0
+	property lives : UInt8 = 3
+	property level : UInt8 = 1
+
+	function drawLevel() do
+		display!setColor(158,209,130)
+		display!setBGColor(fgcolor[0],fgcolor[1],fgcolor[2])
+		display!setColor(bgcolor[0],bgcolor[1],bgcolor[2])
+		display!drawInteger(6, 2, level as Int16, 2, 2)
+	end
+
+	function incrementScore(diff : Int8) do
+		score = score + diff as Int16
+		if (score < 0) score = 0
+		drawScore()
+	end
+
+	function drawScore() do
+		display!setColor(158,209,130)
+		display!setBGColor(fgcolor[0],fgcolor[1],fgcolor[2])
+		display!drawInteger(58, 2, score, 5, 2)
+	end
+
+	function drawLives() do
+		// erase all existing ball
+		display!setColor(fgcolor[0],fgcolor[1],fgcolor[2])
+		display!fillRect(124,4,24+6, 6)
+		display!setColor(183, 199, 111)
+		var i : UInt8 = 0
+		while(i<lives) do
+			display!fillRect(124 + (2-i)*12,4,6, 6)
+			i = i + 1
+		end
+
+	end
+
+
+	statechart SC init INIT {
+
+		internal event e : controller?position action do
+			// Map the controller values [-100..100] to the pad position
+			var center : Int32 = (RIGHT as Int32 - LEFT as Int32 - padlen as Int32)
+			center = e.x as Int32 * center
+			center = center / 200
+			padx = (LEFT as Int32 + center + (RIGHT as Int32 - LEFT as Int32) / 2) as Int16
+		end
+
+		state INIT {
+
+			on entry do
+				startTime = timestamp()
+				display!create(XDISPSIZE, YDISPSIZE)
+			end
+
+			transition -> LAUNCH event display?displayReady action do
+				display!clear()
+				initColors()
+				display!setColor(bgcolor[0],bgcolor[1],bgcolor[2])
+				display!fillRect(0,0,XDISPSIZE, YDISPSIZE)
+				display!setColor(fgcolor[0],fgcolor[1],fgcolor[2])
+				display!fillRect(0,0,XDISPSIZE, 14)
+				drawWalls()
+				createBricks()
+				drawLevel()
+			end
+		}
+
+		state LAUNCH {
+			property countdown : UInt8
+
+			on entry do
+				clock!timer_start(0, period)
+				countdown = 3 // 3sec
+				drawScore()
+				drawLives()
+				display!update()
+			end
+
+			internal event t : clock?timer_timeout
+			guard t.id == 0 and countdown > 0 action do
+				clock!timer_start(0, period)
+				drawPad() // Draw the Pad
+				if ((countdown % 30) == 0) drawCountDown(countdown as Int16/30)
+				countdown = countdown - 1
+				display!update()
+			end
+
+			transition -> PLAY  event t : clock?timer_timeout
+			guard t.id == 0 and countdown == 0 action do
+				drawCountDown(0)
+				resetBall()
+				display!update()
+			end
+		}
+
+		state PLAY {
+
+	  on entry do
+        clock!timer_start(0, period)
+      end
+
+      internal event t : clock?timer_timeout guard t.id == 0 action do
+
+				// Calculate the position of the new ball
+				bx = bx + dx
+				by = by + dy
+
+				var wl : Int16 = LEFT + br
+				var wr : Int16 = RIGHT - br
+				var wt : Int16 = TOP + br
+				var wb : Int16 = BOTTOM - br
+
+				// Check for collisions with the walls
+				if (bx < wl) do
+					dx = -dx
+					bx = 2*wl-bx
+					incrementScore(-1)
+				end
+				else if (bx > wr)	do
+					dx = -dx
+					bx = 2*wr-bx
+					incrementScore(-1)
+				end
+
+				if (by < wt)	do
+				  dy = -dy
+					by = 2*wt-by
+					incrementScore(-1)
+				end
+				else if (by > wb)	do
+					//game!lostBall()
+					req_game!lostBall()
+				end
+
+				// check for collision with the pad
+				if (dy > 0) do // the ball has to be going down
+					if (by > pady-br and by < pady+br ) do // Collision on the Y axis
+						if (bx > padx-padlen/2 and bx < padx+padlen/2) do // Collision on the X axis
+							dy = -dy 					// Bounce on the pad
+							by = 2*(pady-br)-by			// Adjust the position of the ball
+							dx = dx/4 + (bx-padx)/4		// Adjust horizontal speed
+						end
+					end
+				end
+
+				// check collisions on bricks with the 4 corners of the ball
+				var collision : Boolean = collideBrick(bx-br, by-br) or collideBrick(bx+br, by-br) or
+											collideBrick(bx+br, by+br) or collideBrick(bx-br, by+br)
+
+				if (collision) do
+				  	dy = -dy // Update the direction of the ball
+					incrementScore(10)
+					if (bricksLeft() == 0) do
+						//game!nextLevel()
+						req_game!nextLevel()
+					end
+				end
+
+				drawBall() // Draw the Ball
+				drawPad() // Draw the Pad
+				ia!updateIA(bx, by, padx, pady)
+				display!update()
+
+				log(false)
+       			clock!timer_start(0, period)
+			end
+
+			/*transition -> LOSTBALL event game?lostBall action clock!timer_cancel(0)
+			transition -> NEXTLEVEL event game?nextLevel action clock!timer_cancel(0)*/
+
+			transition -> LOSTBALL event pro_game?lostBall action clock!timer_cancel(0)
+			transition -> NEXTLEVEL event pro_game?nextLevel action clock!timer_cancel(0)
+		}
+
+		state LOSTBALL {
+
+			on entry do
+				clock!timer_start(0, period)
+				lives = lives - 1
+				eraseBall()
+				erasePad()
+				drawLives()
+				display!update()
+				log(true)
+			end
+
+			transition -> LAUNCH event t : clock?timer_timeout
+			guard t.id == 0 and lives > 0
+
+			transition -> GAMEOVER event t : clock?timer_timeout
+			guard t.id == 0 and lives == 0
+		}
+
+		state NEXTLEVEL {
+
+			on entry do
+				clock!timer_start(0, period)
+				level = level + 1
+				drawLevel()
+				eraseBall()
+				erasePad()
+				if ((level % 2) == 0 and padlen > 5 * SCALE) padlen = padlen - (4 * SCALE) //reduce size of the pad
+				if ((level % 2) == 1) dy = (dy * 3) / 2	// increase speed of the ball by 3/2
+				drawLives()
+				createBricks()
+				display!update()
+			end
+
+			transition -> LAUNCH event t : clock?timer_timeout guard t.id == 0
+
+		}
+
+		final state GAMEOVER {
+
+			on entry do
+				eraseBall()
+				erasePad()
+				display!setColor(255,255,255)
+				display!fillRect(8, 30, 142, 76)
+				display!setColor(fgcolor[0],fgcolor[1],fgcolor[2])
+				display!fillRect(9, 31, 140, 50)
+				display!setBGColor(fgcolor[0],fgcolor[1],fgcolor[2])
+				display!setColor(158,209,130)
+				display!drawInteger(23, 40, score, 5, 6)
+				display!drawThingML(26, 87)
+				display!update()
+				log(true)
+				stopTime = timestamp()
+				quit()
+			end
+
+		}
+
+	}
+}

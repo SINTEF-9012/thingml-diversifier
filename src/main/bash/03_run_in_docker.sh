@@ -10,7 +10,7 @@ rm -r $LOGSDIR/* 2> /dev/null
 #$3: id
 function build
 {
-  timeout -k 30s 300s docker build -t $1-$2-$3 .
+  timeout -k 45s 180s docker build -t $1-$2-$3 .
 }
 
 #$1: language
@@ -19,7 +19,7 @@ function build
 #$4: nolog (optional)
 function run
 {
-  timeout -k 15s 120s docker run --name $1-$2-$3 $1-$2-$3:latest > $LOGSDIR/$1/$2/$4$1$3.log
+  timeout -k 30s 120s docker run --name $1-$2-$3 $1-$2-$3:latest > $LOGSDIR/$1/$2/$4$1$3.log
 }
 
 #$1: language
@@ -35,12 +35,12 @@ function clean
 #$3: id
 function clean2
 {
-  docker rmi $1-$2-$3
+  docker rmi -f $1-$2-$3
 }
 
 function clean3
 {
-  docker rmi $(docker images -q --filter "dangling=true")
+  docker rmi -f $(docker images -q --filter "dangling=true")
 }
 
 function perform
@@ -62,7 +62,7 @@ function xp
   LANGUAGE=$1
   MODE=$2
   i=$3
-  
+
   mkdir $LOGSDIR/$LANGUAGE/
   mkdir $LOGSDIR/$LANGUAGE/$MODE
 

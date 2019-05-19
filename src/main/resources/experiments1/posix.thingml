@@ -1,4 +1,4 @@
-import "pim/BreakoutGame.thingml"
+import "pim/BreakoutGame2.thingml"
 
 thing fragment RndPosix {
 	function rnd() : Byte do
@@ -48,7 +48,7 @@ typedef struct {
 
 
 configuration test
-@c_static_linking "true"
+//@c_static_linking "true"
 @docker
 {
 	instance game : BreakoutGamePosix

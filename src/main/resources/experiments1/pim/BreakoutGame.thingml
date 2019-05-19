@@ -61,13 +61,13 @@ thing fragment BreakoutGame includes TimerMsgs, DisplayMsgs, ControllerMsgs, IAC
 		receives lostBall, nextLevel
 	}
 
-	optional required port req_game {
+	/*optional required port req_game {
 		sends lostBall, nextLevel
 	}
 
 	provided port pro_game {
 		receives lostBall, nextLevel
-	}
+	}*/
 
 	// Size of the real display
 	readonly property XDISPSIZE : UInt8 = 160
@@ -403,7 +403,7 @@ thing fragment BreakoutGame includes TimerMsgs, DisplayMsgs, ControllerMsgs, IAC
 				end
 				else if (by > wb)	do
 					game!lostBall()
-					req_game!lostBall()
+					//req_game!lostBall()
 				end
 
 				// check for collision with the pad
@@ -426,7 +426,7 @@ thing fragment BreakoutGame includes TimerMsgs, DisplayMsgs, ControllerMsgs, IAC
 					incrementScore(10)
 					if (bricksLeft() == 0) do
 						game!nextLevel()
-						req_game!nextLevel()
+						//req_game!nextLevel()
 					end
 				end
 
@@ -442,8 +442,8 @@ thing fragment BreakoutGame includes TimerMsgs, DisplayMsgs, ControllerMsgs, IAC
 			transition -> LOSTBALL event game?lostBall action clock!timer_cancel(0)
 			transition -> NEXTLEVEL event game?nextLevel action clock!timer_cancel(0)
 
-			transition -> LOSTBALL event pro_game?lostBall action clock!timer_cancel(0)
-			transition -> NEXTLEVEL event pro_game?nextLevel action clock!timer_cancel(0)
+			/*transition -> LOSTBALL event pro_game?lostBall action clock!timer_cancel(0)
+			transition -> NEXTLEVEL event pro_game?nextLevel action clock!timer_cancel(0)*/
 		}
 
 		state LOSTBALL {
