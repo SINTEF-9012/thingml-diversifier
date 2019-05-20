@@ -1,7 +1,7 @@
 #Get ThingML (at a given commit) and compile it
 FROM maven:3-jdk-8-slim
 
-ARG SHA=a4948b3ec565d8bf5ae80ef7ee951f5b9b5dae92
+ARG SHA=a0e482d8c3b19ca1251ffd399e9186375bef6932
 
 COPY ./settings.xml settings.xml
 RUN curl --silent -O -J -L https://github.com/TelluIoT/ThingML/archive/$SHA.zip \

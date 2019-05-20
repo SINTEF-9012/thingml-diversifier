@@ -1,0 +1,65 @@
+import "pim/BreakoutGame2.thingml"
+
+thing fragment RndPosix {
+	function rnd() : Byte do
+		return `(rand() % 246) + 5`  as Byte
+	end
+}
+
+thing HeadlessDisplayPosix includes HeadlessDisplay, RndPosix {}
+
+thing BasicIAControllerPosix includes BasicIAController, RndPosix {}
+
+thing BreakoutGamePosix includes BreakoutGame, RndPosix 
+@c_header "#include <time.h>
+#include <stdlib.h>"
+@c_global "struct timespec t;
+
+typedef struct {
+	unsigned long size,resident,share,text,lib,data,dt;
+} statm_t;"
+{	
+	function quit() do
+		println ">sent ", bytesSentCounter, " bytes."
+		println ">done in ", stopTime-startTime, "ms!"
+		`exit(0);`
+	end
+	
+	function timestamp() : UInt32 do
+		`clock_gettime(CLOCK_REALTIME, &t);`
+		return `t.tv_sec*1000 + t.tv_nsec/1000000` as UInt32
+	end
+	
+	function usedMemory() : UInt32 do
+		`statm_t result;
+		const char* statm_path = "/proc/self/statm";
+		FILE *f = fopen(statm_path, "r");
+		if (!f) {`
+			return -1	
+		`}
+		if (7 != fscanf(f, "%ld %ld %ld %ld %ld %ld %ld", &result.size, &result.resident, &result.share, &result.text, &result.lib, &result.data, &result.dt)) {`
+			return -1
+		`}`
+		return `result.size` as UInt32
+	end
+	
+	function unsetBit(variable : UInt8, bit : UInt8) : UInt8 return (``&variable&` & ~(1 << `& bit &`)`) as UInt8
+}
+
+
+configuration test
+//@c_static_linking "true"
+@docker
+{
+	instance game : BreakoutGamePosix
+	instance disp : HeadlessDisplayPosix
+	instance timer : TimerPosix
+
+	connector game.clock => timer.timer
+	connector game.display => disp.display
+	connector game.req_game => game.pro_game
+
+	instance ctrl : BasicIAControllerPosix
+	connector game.controller => ctrl.controls
+	connector ctrl.game => game.ia
+}
