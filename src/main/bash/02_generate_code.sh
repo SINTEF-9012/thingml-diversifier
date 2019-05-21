@@ -40,6 +40,10 @@ function generate
     fi
     docker run -v $BASEDIR:/thingml-div thingml-div thingml -c $LANGUAGE -s $TARGETMODELDOCKER/nolog/dynamic/$LANGUAGE$i.thingml -o $PLATFORMDIRDOCKER/nolog/dynamic/$LANGUAGE$i
   done
+  
+  cloc $BASEDIR/target/code/$LANGUAGE/nolog/base/* > $BASEDIR/target/code/$LANGUAGE/nolog/base/cloc.log
+  cloc $BASEDIR/target/code/$LANGUAGE/nolog/static/* > $BASEDIR/target/code/$LANGUAGE/nolog/static/cloc.log
+  cloc $BASEDIR/target/code/$LANGUAGE/nolog/dynamic/* > $BASEDIR/target/code/$LANGUAGE/nolog/dynamic/cloc.log
 }
 
 ### Generate platform code ###
