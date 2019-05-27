@@ -3,11 +3,13 @@ FROM maven:3-jdk-8-slim
 
 ARG SHA=a0e482d8c3b19ca1251ffd399e9186375bef6932
 
+RUN apt-get update && apt-get install -y unzip && rm -rf /var/lib/apt/lists/*
+
 COPY ./settings.xml settings.xml
-RUN curl --silent -O -J -L https://github.com/TelluIoT/ThingML/archive/$SHA.zip \
+RUN curl -O -J -L https://github.com/TelluIoT/ThingML/archive/$SHA.zip \
     && unzip -qq ThingML-$SHA.zip -d . && rm ThingML-$SHA.zip
 
-RUN cd ThingML-$SHA && mvn -q -s ../settings.xml -DskipTests clean install \
+RUN cd ThingML-$SHA && mvn -s ../settings.xml -DskipTests clean install \
     && mkdir /thingml && mv compilers/official-network-plugins/target/*-jar-with-dependencies.jar /thingml/thingml.jar
 
 ADD . .

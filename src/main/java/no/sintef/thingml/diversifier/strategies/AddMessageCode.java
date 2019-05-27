@@ -31,8 +31,9 @@ public class AddMessageCode extends Strategy {
                     m.getAnnotations().add(a);
                     //a.setValue(String.format("0x%02X", code));
                     a.setValue(""+code);
-                    if (code < 127) code++;
-                    else code = -128;
+                    code++;
+                    /*if (code < 127) code++;
+                    else code = -128;*/
                 }
             }
         }
