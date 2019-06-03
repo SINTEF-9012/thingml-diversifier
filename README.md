@@ -1,6 +1,6 @@
 # thingml-diversifier
 
-A model-based tool to automatically diversify communications.
+A model-based tool to automatically diversify protocols.
 
 [![DOI](https://zenodo.org/badge/118929049.svg)](https://zenodo.org/badge/latestdoi/118929049)
 
@@ -8,9 +8,22 @@ The science behind this artefact is decribed in:
 
 > B. Morin, J. Høgenes, H. Song, N. Harrand and B. Baudry.<br/>*Engineering Software Diversity: a Model-Based Approach to Systematically Diversify Communications.*<br/>**ACM/IEEE MODELS'18 Conference**, Copenhagen, Danmark.<br/>
 
+```
+@inproceedings{morin2018engineering,
+  title={Engineering Software Diversity: a Model-Based Approach to Systematically Diversify Communications},
+  author={Morin, Brice and H{\o}genes, Jakob and Song, Hui and Harrand, Nicolas and Baudry, Benoit},
+  booktitle={Proceedings of the 21th ACM/IEEE International Conference on Model Driven Engineering Languages and Systems},
+  pages={155--165},
+  year={2018},
+  organization={ACM}
+}
+```
+
 Please cite this paper if you reuse or mention the underlying approach in a scientific paper. Please use the DOI if you reuse or mention the tool itself in a scientific paper.
 
 ## 1. Specify protocols
+
+A complete protocol is available in [`src/main/resources/experiments1`](https://github.com/SINTEF-9012/thingml-diversifier/tree/master/src/main/resources/experiments1). We show below how to model protocols on a simpler example.
 
 We model communication protocols as a set of communicating state-machines, encapsulated into components. 
 We use [ThingML](https://github.com/TelluIoT/ThingML) to model those protocols. 
@@ -129,74 +142,34 @@ Congratulations! You have implemented the following protocol:
 
 ![simpleProtocol](docs/simpleProtocol.png)
 
-## 2. Diversify protocols
+## 2. Diversify, compile and run protocols
 
-1. `cd thingml-diversifier`
-2. `mvn clean install`
-3. `cd target`
-4. `java -jar thingml.diversifier-1.0.0-SNAPSHOT-jar-with-dependencies.jar` with the following parameters:
+The recommended way of using this tool is through Docker.
 
-    - *input model* (a valid ThingML file). Mandatory.
-    - *number* of diversified model to generate. Mandatory.
-    - *mode*. Mandatory. *runtime* or *default*.
-    - *output directory* to store diversified models. Optional. Default = current directory
-    - *random seed* to generate repeatable outputs. Optional. Default = a magic random seed (likely to be different every time)
-    
-For example: 
+> On Linux, you may need to run the docker commands with `sudo`
 
-`java -jar thingml.diversifier-1.0.0-SNAPSHOT-jar-with-dependencies.jar mymodel.thingml 100 runtime /tmp/thingml-diversifier 1`
-    
-## 3. Compile
+1. `cd thingml-diversifier && docker build -t thingml-div` This will build a docker image containing ThingML and the ThingML-diversifier tool.
+2. `docker run thingml-div` will provide you with information about how to use the ThingML-diversifier and ThingML through CLI.
+3. `cd <into dir containing base-file.thingml> && docker run -v $(pwd):/thingml-div thingml-div -i /thingml-div/<base-file.thingml> -r 1 -n 10 -m dynamic -o /thingml-div/target/models -s shuff-msg -s dup-msg` will for example call the ThingML-diversifier and produce 10 dynamically-diversified protocols using the shuffle message and duplicate message operators. The diversified protocols will be available in the current directory, in sub-folder `target/models`. 
+4. `docker run -v $(pwd):/thingml-div thingml-div thingml -c java -s /thingml-div/target/models/<div-file.thingml> -o /thingml-div/target/code/java` will for example generate Java code from the diversified protocol
+5. `cd target/code/java/<my-config> && docker build -t java-div && docker run java-div` will build a docker image for the Java code you have just generated from the diverfied model, and run it into a docker container. You can also compile and run this code outside Docker, locally on your computer. In the case of Java: `mvn clean install exec:java`, assuming you have Maven and Java properly configured.
 
-Please have a look at the [ThingML README](https://github.com/TelluIoT/ThingML), explaining how to compiler models to different platforms: 
+> For this last step to work, you need [to annotate your configuration with `@docker`](https://github.com/SINTEF-9012/thingml-diversifier/blob/master/src/main/resources/experiments1/java.thingml) 
 
-- C (Arduino and Linux)
-- Java
-- JavaScript (Node.JS and Browser)
-- Go
-- UML (PlantUML diagrams)
+## 3. Evaluate the results
 
-## 4. Evaluate the results
+> You need Docker and Jupyter Notebook!
 
-This repository contain scripts for two experiments:
-1) To evaluate the diversification of the protocols, that log the actual data sent between components. [Here](src/main/bash/bytes)
-2) To evaluate the impact of diversifying protocols in terms of overhead in execution time, used memory, and bytes sent. [Here](src/main/bash/summary)
+We provide [a set of scripts](https://github.com/SINTEF-9012/thingml-diversifier/tree/master/src/main/bash) to run some experiments automatically with Docker:
 
-> Note: The bash-scripts mentioned in this section has only been tested on a single machine with a specific setup (Git bash on Windows 10).
-> So if you can't get them to work on your machine, please contact @jakhog or post an issue in this repo so we can help you.
+- `00_build_thingml.sh` builds ThingML and the ThingML-diversifier into a Docker image.
+- `01_diversify_models.sh` diversifies our test protocol by generating `N` versions in different modes
+- `02_generate_code.sh` generates code for a number of target platforms
+- `03_run_in_docker.sh` runs the generated code and produce logs, which we exploit later on
 
-### 4.1 Run diversification experiments
-> These scripts live in the `src/main/bash/bytes` directory
+> You may want to configure `setup.sh` before running an experiment. The more protocols you generate (`N`), the more langauges you target (`LANGUGES`) and the more modes you apply (`MODES`), the longer it will take. It is probably a good idea to start with `N=3` :-)
 
-First edit the `setup.sh` script to fit your needs, and make sure you have the proper environment variables set up, with a copy of the ThingML compiler, and that the Java part of this repository is built.
+Two Jupyter Notebooks analyze the genrated logs to provide [some insight about our approach](https://github.com/SINTEF-9012/thingml-diversifier/tree/master/src/main/python/experiment1):
 
-Then run the scripts:
-1) `generate_models.sh`
-2) `generate_platform_code.sh`
-3) `run_generated_code.sh`
-
-This should produce ThingML models, plaform code, binary files, and logs in the `target` directory in the root of the repo. These will be used to produce the statistics table with Jupyter Notebook later.
-
-### 4.2 Run diversification overhead experiments
-> These scripts live in the `src/main/bash/summary` directory
-
-First edit the `setup.sh` script to fit your needs, and make sure you have the proper environment variables set up, with a copy of the ThingML compiler, and that the Java part of this repository is built.
-
-Then run the scripts:
-1) `generate_models.sh`
-2) `generate_platform_code.sh`
-3) `run_generated_code.sh`
-
-This should produce ThingML models, plaform code, binary files, and logs in the `target` directory in the root of the repo. These will be used to produce the plots with Jupyter Notebook later.
-
-### 4.3 Run Jupyter Notebooks to produce results
-> The Jupyter notebooks live in the `src/main/python/` directory
-
-#### `images.ipynb`
-This script produces two images that 1) visualize the actual data that is sent between components by representing values as colors, 2) visualize the type and position of a simulated _weak_ parameter in the exchanged data. Uses the results from 4.1.
-
-#### `graphs.ipynb`
-This script produces two graphs that visualize the quantitative difference between datas sent between components. Uses the results from 4.1.
-
-#### `stastistics.ipynb`
-This script produces a table that shows the overhead of the diversification techniques, compared to no diversifications. Uses the results from 4.2.
+- `performances.ipynb`: how much time and memory did different versions of the protocol use
+- `tensorflow.ipynb`: uses TensorFlow (you need to install TensorFlow 1.x) to learn about each individual protocol and make predictions about all protocols
