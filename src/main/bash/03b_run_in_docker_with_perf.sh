@@ -18,23 +18,28 @@ function run
   LANGUAGE=$1
   MODE=$2
   ID=$3
-  
-  cd $BASEDIR/target/flamegraph/$LANGUAGE/$MODE/
-  
+
+  mkdir -p $BASEDIR/target/flamegraph/$LANGUAGE/$MODE/$ID/
+  cd $BASEDIR/target/flamegraph/$LANGUAGE/$MODE/$ID
+
   #CONTAINER_ID=$(docker run -v $(pwd):/data -d --cap-add=ALL --name $1-$2-$3 $1-$2-$3:latest)
   #docker wait $CONTAINER_ID
   docker run -v $(pwd):/data --cap-add=ALL --name $1-$2-$3 $1-$2-$3:latest > ./out.log
 
   if [ "$LANGUAGE" == "java" ]; then
-    $FLAMEGRAPH_DIR/stackcollapse-ljp.awk < traces.txt | $FLAMEGRAPH_DIR/flamegraph.pl --color=java > perf.java.svg    
-    echo "Java Flame graph SVG written to $BASEDIR/target/flamegraph/$LANGUAGE/$MODE/perf.java.svg"
+    $FLAMEGRAPH_DIR/stackcollapse-ljp.awk < traces.txt | $FLAMEGRAPH_DIR/flamegraph.pl --color=java > perf.java.svg
+    echo "Java Flame graph SVG written to $(pwd)/perf.java.svg"
     cp *.map /tmp/.
   fi
 
-  #for some reasons, does not work inside the container... we need to run it locally...  
+  #for some reasons, does not work inside the container... we need to run it locally...
   perf script > out.perf
   $FLAMEGRAPH_DIR/stackcollapse-perf.pl out.perf | $FLAMEGRAPH_DIR/flamegraph.pl --color=java > perf.generic.svg
-  echo "Generic Flame graph SVG written to $BASEDIR/target/flamegraph/$LANGUAGE/$MODE/perf.generic.svg"
+  echo "Generic Flame graph SVG written to $(pwd)/perf.generic.svg"
+
+  if [ "$LANGUAGE" == "java" ]; then
+    rm -f /tmp/*.map
+  fi
 }
 
 #$1: language
@@ -70,9 +75,7 @@ function perform
   build $LANGUAGE $MODE $i
   run $LANGUAGE $MODE $i $nolog
   clean $LANGUAGE $MODE $i
-  clean2 $LANGUAGE $MODE $i
-  
-  rm -rf $TARGETDIR/FlameGraph
+  #clean2 $LANGUAGE $MODE $i
 }
 
 function xp
@@ -81,8 +84,6 @@ function xp
   LANGUAGE=$1
   MODE=$2
   i=$3
-
-  mkdir $BASEDIR/target/flamegraph/$LANGUAGE/$MODE/
 
   echo "-- RUNNING MODEL $i [$LANGUAGE] in $MODE mode--"
   if [ "$MODE" == "base" ]; then
@@ -94,7 +95,7 @@ function xp
 
 ### Install Flamegraph locally ###
 echo "---- Installing FlameGraph ----"
-cd $TARGETDIR && git clone git@github.com:brendangregg/FlameGraph.git
+cd $TARGETDIR && git clone https://github.com/brendangregg/FlameGraph.git
 FLAMEGRAPH_DIR=$TARGETDIR/FlameGraph
 
 ### Generate platform code ###

@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-N=100 # Number of diversified version to make
-LANGUAGES=(java graal nodejs go posix posixmt) # Languages to use
-MODES=(base static dynamic)
+N=1 # Number of diversified version to make
+LANGUAGES=(java graal nodejs go posix) # posixmt) # Languages to use
+MODES=(base) # static dynamic)
 
 DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 BASEDIR=$DIR/../../..
