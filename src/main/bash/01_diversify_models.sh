@@ -14,7 +14,8 @@ function generate
   mkdir -p $MODELSDIR/$LANGUAGE/dynamic
 
   BASEMODEL=$BASEMODELDIR/$LANGUAGE.thingml
-  BASEMODELDOCKER=/thingml-div/src/main/resources/experiments1/$LANGUAGE.thingml
+  ((WITH_PERF)) && BASEMODELDOCKER=/thingml-div/src/main/resources/experiments1/perf/$LANGUAGE.thingml
+  ((!WITH_PERF)) && BASEMODELDOCKER=/thingml-div/src/main/resources/experiments1/$LANGUAGE.thingml
   TARGETMODELDOCKER=/thingml-div/target/models/$LANGUAGE
 
   docker run -v $BASEDIR:/thingml-div thingml-div -i $BASEMODELDOCKER -r 1 -n 1 -m static -o $TARGETMODELDOCKER/nolog -s code-msg

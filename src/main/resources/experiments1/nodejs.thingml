@@ -1,37 +1,4 @@
-import "pim/BreakoutGame.thingml"
-
-thing fragment RndJS {
-	function rnd() : Byte do
-		return `Math.floor(Math.random() * Math.floor(246)) + 5`  as Byte
-	end
-}
-
-thing HeadlessDisplayJS includes HeadlessDisplay, RndJS {}
-
-thing BasicIAControllerJS includes BasicIAController, RndJS {}
-
-thing BreakoutGameNodeJS includes BreakoutGame, RndJS {	
-	function quit() do
-		`if (global.gc) {
-			global.gc();
-		}`
-		println ">sent ", bytesSentCounter, " bytes."
-		println ">done in ", (`Number(` & stopTime & `)` - `Number(` & startTime & `)`), "ms!"
-		log(true)
-		`process.exitCode = 1;`
-	end
-	
-	function timestamp() : UInt32 return `process.hrtime.bigint()/1000000n` as UInt32
-	
-	function usedMemory() : UInt32 do
-		`if (global.gc) {
-			global.gc();
-		}`
-		return `process.memoryUsage().heapUsed` as UInt32
-	end
-	
-	function unsetBit(variable : UInt8, bit : UInt8) : UInt8 return (``&variable&` & ~(1 << `& bit &`)`) as UInt8
-}
+import "psm/nodejs.thingml"
 
 configuration test
 @docker

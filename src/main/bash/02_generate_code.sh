@@ -13,7 +13,6 @@ function generate
   mkdir -p $PLATFORMDIR/$LANGUAGE/static
   mkdir -p $PLATFORMDIR/$LANGUAGE/dynamic
 
-  BASEMODELDOCKER=/thingml-div/src/main/resources/experiments1/$LANGUAGE.thingml
   TARGETMODELDOCKER=/thingml-div/target/models/$LANGUAGE
   PLATFORMDIRDOCKER=/thingml-div/target/code/$LANGUAGE
 
@@ -21,7 +20,8 @@ function generate
   if [ "$LANGUAGE" == "nodejs" ]; then
     docker run -v $BASEDIR:/thingml-div thingml-div thingml -c $LANGUAGE -s $TARGETMODELDOCKER/${LANGUAGE}0.thingml -o $PLATFORMDIRDOCKER/base
   fi
-  docker run -v $BASEDIR:/thingml-div thingml-div thingml -c $LANGUAGE -s $TARGETMODELDOCKER/nolog/${LANGUAGE}0.thingml -o $PLATFORMDIRDOCKER/nolog/base
+  docker run -v $BASEDIR:/thingml-div thingml-div thingml -c $LANGUAGE -s $TARGETMODELDOCKER/nolog/${LANGUAGE}0.thingml -o $PLATFORMDIRDOCKER/nolog/base  
+  docker run -v $BASEDIR:/thingml-div --entrypoint /bin/sh thingml-div -c "cd $PLATFORMDIRDOCKER/nolog/base && cloc . > cloc.log"
 
   echo "-- GENERATING STATIC DIVERSIFIED CODE --"
   for i in `seq 0 $((N-1))`; do
@@ -30,6 +30,7 @@ function generate
       docker run -v $BASEDIR:/thingml-div thingml-div thingml -c $LANGUAGE -s $TARGETMODELDOCKER/static/$LANGUAGE$i.thingml -o $PLATFORMDIRDOCKER/static/$LANGUAGE$i
     fi
     docker run -v $BASEDIR:/thingml-div thingml-div thingml -c $LANGUAGE -s $TARGETMODELDOCKER/nolog/static/$LANGUAGE$i.thingml -o $PLATFORMDIRDOCKER/nolog/static/$LANGUAGE$i
+    docker run -v $BASEDIR:/thingml-div  --entrypoint /bin/sh thingml-div -c "cd $PLATFORMDIRDOCKER/nolog/static/$LANGUAGE$i && cloc . > cloc.log"
   done
 
   echo "-- GENERATING DYNAMIC DIVERSIFIED CODE --"
@@ -39,11 +40,8 @@ function generate
       docker run -v $BASEDIR:/thingml-div thingml-div thingml -c $LANGUAGE -s $TARGETMODELDOCKER/dynamic/$LANGUAGE$i.thingml -o $PLATFORMDIRDOCKER/dynamic/$LANGUAGE$i
     fi
     docker run -v $BASEDIR:/thingml-div thingml-div thingml -c $LANGUAGE -s $TARGETMODELDOCKER/nolog/dynamic/$LANGUAGE$i.thingml -o $PLATFORMDIRDOCKER/nolog/dynamic/$LANGUAGE$i
+    docker run -v $BASEDIR:/thingml-div  --entrypoint /bin/sh thingml-div -c "cd $PLATFORMDIRDOCKER/nolog/dynamic/$LANGUAGE$i && cloc . > cloc.log"
   done
-  
-  cloc $BASEDIR/target/code/$LANGUAGE/nolog/base/* > $BASEDIR/target/code/$LANGUAGE/nolog/base/cloc.log
-  cloc $BASEDIR/target/code/$LANGUAGE/nolog/static/* > $BASEDIR/target/code/$LANGUAGE/nolog/static/cloc.log
-  cloc $BASEDIR/target/code/$LANGUAGE/nolog/dynamic/* > $BASEDIR/target/code/$LANGUAGE/nolog/dynamic/cloc.log
 }
 
 ### Generate platform code ###

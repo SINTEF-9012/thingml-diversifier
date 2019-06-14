@@ -16,6 +16,8 @@ thing fragment BreakoutGame includes TimerMsgs, DisplayMsgs, ControllerMsgs, IAC
 	abstract function quit()
 	abstract function timestamp() : UInt32
 	abstract function usedMemory() : UInt32
+	
+	readonly property trackMemory : Boolean = true
 
 	function log(logMem : Boolean) do
 		if (counter == 0 or logMem) do
@@ -29,7 +31,7 @@ thing fragment BreakoutGame includes TimerMsgs, DisplayMsgs, ControllerMsgs, IAC
 				lastTimestamp = t
 			end
 			println "ts:", ts, ",lives:", lives, ",score:", score, ",level:", level, ",bx:", bx, ",by:", by, ",padx:", padx
-			println "#usedMem:", usedMemory()
+			if (trackMemory) println "#usedMem:", usedMemory()
 		end
 		counter++
 		if (counter == 33) counter = 0

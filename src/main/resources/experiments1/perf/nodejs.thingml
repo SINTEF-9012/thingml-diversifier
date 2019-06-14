@@ -1,0 +1,17 @@
+import "../psm/nodejs.thingml"
+
+configuration perftest
+@docker "perf"
+{
+	instance game : BreakoutGameNodeJS
+		set game.trackMemory = false
+		set game.period = 33	
+	instance disp : HeadlessDisplayJS
+	instance timer : TimerNodeJS
+	instance ctrl : BasicIAControllerJS
+
+	connector game.clock => timer.timer
+	connector game.display => disp.display
+	connector game.controller => ctrl.controls
+	connector ctrl.game => game.ia
+}

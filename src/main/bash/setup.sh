@@ -1,13 +1,17 @@
 #!/usr/bin/env bash
 
-N=100 # Number of diversified version to make
+N=3 # Number of diversified version to make
 LANGUAGES=(java graal nodejs go posix) # Languages to use
 MODES=(base static dynamic)
 
 DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 BASEDIR=$DIR/../../..
 
-BASEMODELDIR=$BASEDIR/src/main/resources/experiments1
+
+WITH_PERF=1
+((WITH_PERF)) && BASEMODELDIR=$BASEDIR/src/main/resources/experiments1/perf
+((!WITH_PERF)) && BASEMODELDIR=$BASEDIR/src/main/resources/experiments1
+
 TARGETDIR=$BASEDIR/target
 MODELSDIR=$TARGETDIR/models
 PLATFORMDIR=$TARGETDIR/code

@@ -1,0 +1,32 @@
+import "../pim/BreakoutGame.thingml"
+
+thing fragment RndJava {
+	function rnd() : Byte do
+		return `Math.floor(Math.random() * Math.floor(246)) + 5` as Byte
+	end
+}
+
+thing HeadlessDisplayJava includes HeadlessDisplay, RndJava {}
+
+thing BasicIAControllerJava includes BasicIAController, RndJava {}
+
+thing BreakoutGameJava includes BreakoutGame, RndJava 
+@stdout_sync "true"
+{	
+	function quit() do
+		`System.gc();`
+		println ">sent ", bytesSentCounter, " bytes."
+		println ">done in ", stopTime-startTime, "ms!"
+		log(true)
+		`System.exit(0);`
+	end
+	
+	function timestamp() : UInt32 return `System.currentTimeMillis()` as UInt32
+	
+	function usedMemory() : UInt32 do
+		`System.gc();`
+		return `Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()` as UInt32
+	end
+	
+	function unsetBit(variable : UInt8, bit : UInt8) : UInt8 return (``&variable&` & ~(1 << `& bit &`)`) as UInt8
+}

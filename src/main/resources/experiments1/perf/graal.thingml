@@ -1,9 +1,11 @@
-import "psm/graal.thingml"
+import "../psm/graal.thingml"
 
-configuration test
-@docker
+configuration perftest
+@docker "perf"
 {
 	instance game : BreakoutGameJava
+		set game.trackMemory = false
+		set game.period = 33	
 	instance disp : HeadlessDisplayJava
 	instance timer : TimerJava
 	instance ctrl : BasicIAControllerJava

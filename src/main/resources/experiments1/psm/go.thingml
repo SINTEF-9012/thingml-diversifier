@@ -1,0 +1,38 @@
+import "../pim/BreakoutGame.thingml"
+
+thing fragment RndGo 
+@go_import "math/rand"
+{
+	function rnd() : Byte do
+		return `byte(rand.Intn(245) + 5)`  as Byte
+	end
+}
+
+thing HeadlessDisplayGo includes HeadlessDisplay, RndGo {}
+
+thing BasicIAControllerGo includes BasicIAController, RndGo {}
+
+thing BreakoutGameGo includes BreakoutGame, RndGo 
+@go_import `os`
+@go_import `time`
+@go_import `runtime`
+{	
+	function quit() do
+		`runtime.GC();`
+		println ">sent ", bytesSentCounter, " bytes."
+		println ">done in ", stopTime-startTime, "ms!"
+		log(true)
+		`os.Exit(0);`
+	end
+	
+	function timestamp() : UInt32 return `uint32(time.Now().UnixNano() / int64(time.Millisecond))` as UInt32
+	
+	function usedMemory() : UInt32 do
+		`runtime.GC();`
+		`var m runtime.MemStats
+		runtime.ReadMemStats(&m)`
+		return `m.HeapAlloc` as UInt32
+	end
+	
+	function unsetBit(variable : UInt8, bit : UInt8) : UInt8 return (``&variable&` & ^(1 << `& bit &`)`) as UInt8
+}
