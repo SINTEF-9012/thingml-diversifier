@@ -9,6 +9,21 @@ function build
   timeout -k 45s 180s docker build -t $1-$2-$3 .
 }
 
+function sortfolded
+{
+  INPUTFILE=$1
+  LANGUAGE=$2
+
+  while read line; do
+    newline=${line#*;} #remove the first frame (typically irrelevant, like Thread-1 in Java)
+    echo ${newline% *} >> $INPUTFILE.clean  #remove number at the end of the line
+    sed -i 's/\[.*\]//' $INPUTFILE.clean #remove all crap between [...] with sed
+  done < $INPUTFILE
+  sort $INPUTFILE.clean | uniq -u >$INPUTFILE.clean.sorted
+  rm -f $INPUTFILE.folded.clean
+  cat $INPUTFILE.clean.sorted >> $BASEDIR/target/flamegraph/$LANGUAGE/$INPUTFILE.all
+}
+
 #$1: language
 #$2: base, static, dynamic or both
 #$3: id
@@ -24,13 +39,14 @@ function run
 
   #CONTAINER_ID=$(docker run -v $(pwd):/data -d --cap-add=ALL --name $1-$2-$3 $1-$2-$3:latest)
   #docker wait $CONTAINER_ID
-  docker run -v $(pwd):/data --cap-add=ALL --name $1-$2-$3 $1-$2-$3:latest > ./out.log
+  timeout -k 120s 240s docker run -v $(pwd):/data --cap-add=ALL --name $1-$2-$3 $1-$2-$3:latest > ./out.log
 
   if [ "$LANGUAGE" == "java" ]; then
     $FLAMEGRAPH_DIR/stackcollapse-ljp.awk < traces.txt > java.folded
     $FLAMEGRAPH_DIR/flamegraph.pl java.folded --color=java > perf.java.svg
     echo "Java Flame graph SVG written to $(pwd)/perf.java.svg"
     cp *.map /tmp/.
+    sortfolded java.folded $LANGUAGE
   fi
 
   #for some reasons, does not work inside the container... we need to run it locally...
@@ -38,6 +54,7 @@ function run
   $FLAMEGRAPH_DIR/stackcollapse-perf.pl out.perf > generic.folded
   $FLAMEGRAPH_DIR/flamegraph.pl generic.folded > perf.generic.svg
   echo "Generic Flame graph SVG written to $(pwd)/perf.generic.svg"
+  sortfolded generic.folded $LANGUAGE
 
   if [ "$LANGUAGE" == "java" ]; then
     rm -f /tmp/*.map
@@ -116,6 +133,8 @@ clean3
 echo "------ DONE ------"
 logo
 
+
+
 #$1 path to diff.out file
 function diffmetric
 {
@@ -133,49 +152,56 @@ function diffmetric
   echo "$RESULT"
 }
 
+function diffmetric2
+{
+  #TODO: count $BASEDIR/target/flamegraph/$LANGUAGE/generic.folded.all.clean.sorted - count $MODE/$ID/$DIFFMODE.folded.clean.sorted
+}
+
+function dodiff
+{
+  DIFFMODE=$1
+  LANGUAGE=$2
+  MODE=$3
+  ID=$4
+  MODE2=$5
+  ID2=$6
+
+  $FLAMEGRAPH_DIR/difffolded.pl -n -s $MODE/$ID/$DIFFMODE.folded $MODE2/$ID2/$DIFFMODE.folded > $MODE/$ID/diff.$DIFFMODE.$MODE2.$ID2.out
+  $FLAMEGRAPH_DIR/flamegraph.pl $MODE/$ID/diff.$DIFFMODE.$MODE2.$ID2.out > $MODE/$ID/diff.$DIFFMODE.$MODE2.$ID2.svg
+  echo "$MODE $ID / $MODE2 $ID2 = $(diffmetric $BASEDIR/target/flamegraph/$LANGUAGE/$MODE/$ID/diff.$DIFFMODE.$MODE2.$ID2.out)" >> $(pwd)/diff.$DIFFMODE.log
+
+  git diff --no-index $MODE/$ID/$DIFFMODE.folded.clean.sorted $MODE2/$ID2/$DIFFMODE.folded.clean.sorted > $MODE/$ID/git.diff.$DIFFMODE.$MODE2.$ID2.out
+}
+
 #$1 = language
 #$2 = ID
 function diff
 {
   LANGUAGE=$1
   ID=$2
+  ID2=$3
+  MODE=$4
+  MODE2=$5
 
   cd $BASEDIR/target/flamegraph/$LANGUAGE/
 
   if [ "$LANGUAGE" == "java" ]; then
-    $FLAMEGRAPH_DIR/difffolded.pl -n -s base/$ID/java.folded base/$ID/java.folded > base/$ID/diff.java.out
-    $FLAMEGRAPH_DIR/flamegraph.pl base/$ID/diff.java.out > base/$ID/diff.java.svg
-    echo "Base-Base $ID Java diff = $(diffmetric $BASEDIR/target/flamegraph/$LANGUAGE/base/$ID/diff.java.out)"
-
-    $FLAMEGRAPH_DIR/difffolded.pl -n -s base/$ID/java.folded static/$ID/java.folded > static/$ID/diff.java.out
-    $FLAMEGRAPH_DIR/flamegraph.pl static/$ID/diff.java.out > static/$ID/diff.java.svg
-    diffmetric $BASEDIR/target/flamegraph/$LANGUAGE/static/$ID/diff.java.out
-    echo "Base-Static $ID Java diff = $(diffmetric $BASEDIR/target/flamegraph/$LANGUAGE/static/$ID/diff.java.out)"
-
-    $FLAMEGRAPH_DIR/difffolded.pl -n -s base/$ID/java.folded dynamic/$ID/java.folded > dynamic/$ID/diff.java.out
-    $FLAMEGRAPH_DIR/flamegraph.pl dynamic/$ID/diff.java.out > dynamic/$ID/diff.java.svg
-    diffmetric $BASEDIR/target/flamegraph/$LANGUAGE/dynamic/$ID/diff.java.out
-    echo "Base-Dynamic $ID Java diff = $(diffmetric $BASEDIR/target/flamegraph/$LANGUAGE/dynamic/$ID/diff.java.out)"
+    dodiff "java" $LANGUAGE $MODE $ID $MODE2 $ID2
   fi
 
-  $FLAMEGRAPH_DIR/difffolded.pl -n -s base/$ID/generic.folded base/$ID/generic.folded > base/$ID/diff.generic.out
-  $FLAMEGRAPH_DIR/flamegraph.pl base/$ID/diff.generic.out > base/$ID/diff.generic.svg
-  diffmetric $BASEDIR/target/flamegraph/$LANGUAGE/base/$ID/diff.generic.out
-  echo "Base-Base $ID Generic diff = $(diffmetric $BASEDIR/target/flamegraph/$LANGUAGE/base/$ID/diff.generic.out)"
-
-  $FLAMEGRAPH_DIR/difffolded.pl -n -s base/$ID/generic.folded static/$ID/generic.folded > static/$ID/diff.generic.out
-  $FLAMEGRAPH_DIR/flamegraph.pl static/$ID/diff.generic.out > static/$ID/diff.generic.svg
-  diffmetric $BASEDIR/target/flamegraph/$LANGUAGE/static/$ID/diff.generic.out
-  echo "Base-Static $ID Generic diff = $(diffmetric $BASEDIR/target/flamegraph/$LANGUAGE/static/$ID/diff.generic.out)"
-
-  $FLAMEGRAPH_DIR/difffolded.pl -n -s base/$ID/generic.folded dynamic/$ID/generic.folded > dynamic/$ID/diff.generic.out
-  $FLAMEGRAPH_DIR/flamegraph.pl dynamic/$ID/diff.generic.out > dynamic/$ID/diff.generic.svg
-  diffmetric $BASEDIR/target/flamegraph/$LANGUAGE/dynamic/$ID/diff.generic.out
-  echo "Base-Dynamic $ID Generic diff = $(diffmetric $BASEDIR/target/flamegraph/$LANGUAGE/dynamic/$ID/diff.generic.out)"
+  dodiff "generic" $LANGUAGE $MODE $ID $MODE2 $ID2
 }
 
-for i in `seq 0 $((N-1))`; do
-  for LANGUAGE in ${LANGUAGES[@]}; do
-    diff $LANGUAGE $i
+for LANGUAGE in ${LANGUAGES[@]}; do
+  sort $BASEDIR/target/flamegraph/$LANGUAGE/generic.folded.all | uniq -u >$BASEDIR/target/flamegraph/$LANGUAGE/generic.folded.all.clean.sorted
+  if [ "$LANGUAGE" == "java" ]; then
+    sort $BASEDIR/target/flamegraph/$LANGUAGE/java.folded.all | uniq -u >$BASEDIR/target/flamegraph/$LANGUAGE/java.folded.all.clean.sorted
+  fi
+  for i in `seq 0 $((N-1))`; do
+    for j in `seq 0 $((N-1))`; do
+      diff $LANGUAGE $i $j "base" "base"
+      diff $LANGUAGE $i $j "base" "static"
+      diff $LANGUAGE $i $j "base" "dynamic"
+    done
   done
 done
