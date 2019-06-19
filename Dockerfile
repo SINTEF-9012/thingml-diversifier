@@ -1,6 +1,6 @@
 FROM maven:3-jdk-8-slim
 
-ARG SHA=0be5109f2ae3bdde6ca7cd7dbe47153c63309cfe
+ARG SHA=94b9b2991305d98745f1ad388806cd5aa6136b99
 
 RUN apt-get update && apt-get install -y unzip && rm -rf /var/lib/apt/lists/*
 
