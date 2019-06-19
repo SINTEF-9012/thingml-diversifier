@@ -15,9 +15,15 @@ function sortfolded
   LANGUAGE=$2
 
   while read line; do
-    newline=${line#*;} #remove the first frame (typically irrelevant, like Thread-1 in Java)
-    echo ${newline% *} >> $INPUTFILE.clean  #remove number at the end of the line
-    sed -i 's/\[.*\]//' $INPUTFILE.clean #remove all crap between [...] with sed
+    line=${line#*;} #remove the first two frames (typically irrelevant, like Thread-1 in Java)
+    line=${line#*;}
+    echo ${line% *} >> $INPUTFILE.clean  #remove number at the end of the line
+    sed -i 's/\[.*\]//g' $INPUTFILE.clean #remove all crap between [...] with sed
+    sed -i 's/Interpreter//g' $INPUTFILE.clean
+    sed -i 's/[0-9]//g' $INPUTFILE.clean #remove all numbers to avoid execution-specific IDs in traces
+    sed -i 's/\.\./\./g' $INPUTFILE.clean #replace .. by . (can happen once numbers have been removed)
+    sed -i 's/;;/;/g' $INPUTFILE.clean
+    sed -i 's/^;//g' $INPUTFILE.clean #remove ; if that is the first character on a line
   done < $INPUTFILE
   sort $INPUTFILE.clean | uniq -u >$INPUTFILE.clean.sorted
   rm -f $INPUTFILE.folded.clean
@@ -154,7 +160,16 @@ function diffmetric
 
 function diffmetric2
 {
-  #TODO: count $BASEDIR/target/flamegraph/$LANGUAGE/generic.folded.all.clean.sorted - count $MODE/$ID/$DIFFMODE.folded.clean.sorted
+  LANGUAGE=$1
+  MODE=$2
+  ID=$3
+  DIFFMODE=$4
+
+  ALL=$(wc -l $BASEDIR/target/flamegraph/$LANGUAGE/$DIFFMODE.folded.all.clean.sorted | awk '{ print $1 }')
+  CURRENT=$(wc -l $MODE/$ID/$DIFFMODE.folded.clean.sorted | awk '{ print $1 }')
+  OP="scale=2; $CURRENT/$ALL*100"
+  RESULT=$(bc -l <<< $OP)
+  echo "$CURRENT/$ALL = $RESULT %"
 }
 
 function dodiff
@@ -169,6 +184,7 @@ function dodiff
   $FLAMEGRAPH_DIR/difffolded.pl -n -s $MODE/$ID/$DIFFMODE.folded $MODE2/$ID2/$DIFFMODE.folded > $MODE/$ID/diff.$DIFFMODE.$MODE2.$ID2.out
   $FLAMEGRAPH_DIR/flamegraph.pl $MODE/$ID/diff.$DIFFMODE.$MODE2.$ID2.out > $MODE/$ID/diff.$DIFFMODE.$MODE2.$ID2.svg
   echo "$MODE $ID / $MODE2 $ID2 = $(diffmetric $BASEDIR/target/flamegraph/$LANGUAGE/$MODE/$ID/diff.$DIFFMODE.$MODE2.$ID2.out)" >> $(pwd)/diff.$DIFFMODE.log
+  echo "$(diffmetric2 $LANGUAGE $MODE $ID $DIFFMODE)" > $MODE2/$ID2/diff2.$DIFFMODE.log
 
   git diff --no-index $MODE/$ID/$DIFFMODE.folded.clean.sorted $MODE2/$ID2/$DIFFMODE.folded.clean.sorted > $MODE/$ID/git.diff.$DIFFMODE.$MODE2.$ID2.out
 }
