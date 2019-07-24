@@ -1,11 +1,11 @@
 import "../psm/go.thingml"
 
-configuration perftest
+configuration test
 @docker "perf"
 {
 	instance game : BreakoutGameGo
 		set game.trackMemory = false
-		set game.period = 33
+		set game.period = 3
 	instance disp : HeadlessDisplayGo
 	instance timer : TimerGo
 	instance ctrl : BasicIAControllerGo

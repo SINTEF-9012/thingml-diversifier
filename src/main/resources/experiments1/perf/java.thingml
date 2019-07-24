@@ -1,11 +1,11 @@
 import "../psm/java.thingml"
 
-configuration perftest
+configuration test
 @docker "perf"
 {
 	instance game : BreakoutGameJava
 		set game.trackMemory = false
-		set game.period = 33	
+		set game.period = 3	
 	instance disp : HeadlessDisplayJava
 	instance timer : TimerJava
 	instance ctrl : BasicIAControllerJava

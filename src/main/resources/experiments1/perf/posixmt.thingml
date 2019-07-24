@@ -1,12 +1,12 @@
 import "../psm/posixmt.thingml"
 
-configuration perftest
+configuration test
 //@c_static_linking "true"
 @docker "perf"
 {
 	instance game : BreakoutGamePosix
 		set game.trackMemory = false
-		set game.period = 33	
+		set game.period = 3	
 	instance disp : HeadlessDisplayPosix
 	instance timer : TimerPosix
 

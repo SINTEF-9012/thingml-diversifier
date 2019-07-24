@@ -10,4 +10,4 @@ mkdir -p $TARGETDIR
 
 ./02_generate_code.sh
 
-./03_run.sh
+./03_run_in_docker.sh
