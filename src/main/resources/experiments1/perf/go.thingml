@@ -1,4 +1,4 @@
-import "../psm/go.thingml"
+import "psm/go.thingml"
 
 configuration test
 @docker "perf"

@@ -1,4 +1,4 @@
-import "../psm/java.thingml"
+import "psm/java.thingml"
 
 configuration test
 @docker "perf"

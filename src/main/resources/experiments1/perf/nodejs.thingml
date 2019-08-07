@@ -1,4 +1,4 @@
-import "../psm/nodejs.thingml"
+import "psm/nodejs.thingml"
 
 configuration test
 @docker "perf"

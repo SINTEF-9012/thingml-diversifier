@@ -1,0 +1,24 @@
+import "../../pim/BreakoutGame2.thingml"
+
+thing fragment RndPosix {
+	function rnd() : Byte do
+		return 0 as Byte
+	end
+}
+
+thing HeadlessDisplayPosix includes HeadlessDisplay, RndPosix {}
+
+thing BasicIAControllerPosix includes BasicIAController, RndPosix {}
+
+thing BreakoutGamePosix includes BreakoutGame, RndPosix 
+{	
+	function quit() do
+		`exit(0);`
+	end
+	
+	function timestamp() : UInt32 return 0
+	
+	function usedMemory() : UInt32 return 0
+	
+	function unsetBit(variable : UInt8, bit : UInt8) : UInt8 return (``&variable&` & ~(1 << `& bit &`)`) as UInt8
+}

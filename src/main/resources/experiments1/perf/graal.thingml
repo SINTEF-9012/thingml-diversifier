@@ -1,4 +1,4 @@
-import "../psm/graal.thingml"
+import "psm/graal.thingml"
 
 configuration test
 @docker "perf"

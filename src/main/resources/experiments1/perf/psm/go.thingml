@@ -1,0 +1,26 @@
+import "../../pim/BreakoutGame.thingml"
+
+thing fragment RndGo 
+{
+	function rnd() : Byte do
+		return 0  as Byte
+	end
+}
+
+thing HeadlessDisplayGo includes HeadlessDisplay, RndGo {}
+
+thing BasicIAControllerGo includes BasicIAController, RndGo {}
+
+thing BreakoutGameGo includes BreakoutGame, RndGo 
+@go_import `os`
+{	
+	function quit() do
+		`os.Exit(0);`
+	end
+	
+	function timestamp() : UInt32 return 0
+	
+	function usedMemory() : UInt32 return 0
+	
+	function unsetBit(variable : UInt8, bit : UInt8) : UInt8 return (``&variable&` & ^(1 << `& bit &`)`) as UInt8
+}

@@ -1,4 +1,4 @@
-import "../psm/posix.thingml"
+import "psm/posix.thingml"
 
 configuration test
 //@c_static_linking "true"
