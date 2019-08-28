@@ -60,7 +60,9 @@ public class AddRandomParameters extends Strategy {
                 for (Type t : model.getTypes()) {
                     if (t instanceof PrimitiveType) {
                         final PrimitiveType pt = (PrimitiveType) t;
-                        if (TyperHelper.getBroadType(pt) == Types.INTEGER_TYPE && pt.getByteSize()==1) {
+                        final TypeRef tr = ThingMLFactory.eINSTANCE.createTypeRef();
+                        tr.setType(pt);
+                        if (TyperHelper.getBroadType(tr) == Types.INTEGER_TYPEREF && pt.getByteSize()==1) {
                             bt = pt;
                             break;
                         }

@@ -294,9 +294,9 @@ public class SplitMessagesInline extends Strategy {
 				break;
 			}
 		}
-		
+				
 		if (prop1 == null) {
-			final PrimitiveType bool = Helper.getPrimitiveType(Types.BOOLEAN_TYPE, ThingMLHelpers.findContainingThing(source));				
+			final PrimitiveType bool = Helper.getPrimitiveType(Types.BOOLEAN_TYPEREF, ThingMLHelpers.findContainingThing(source));				
 			System.out.println("Creating new property received_" + rm.getPort().getName() + "_" + m1.getName() + " in state " + source.getName());
 			prop1 = ThingMLFactory.eINSTANCE.createProperty();
 			prop1.setReadonly(false);

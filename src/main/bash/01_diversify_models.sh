@@ -5,6 +5,8 @@ source setup.sh
 mkdir -p $MODELSDIR
 rm -r $MODELSDIR/* 2> /dev/null
 
+
+#FIXME: we should not systematically diversify in all modes, just the modes defined in $MODES in setup.sh
 function generate
 {
   LANGUAGE=$1

@@ -11,8 +11,10 @@ import org.thingml.xtext.helpers.TyperHelper;
 import org.thingml.xtext.thingML.Message;
 import org.thingml.xtext.thingML.Parameter;
 import org.thingml.xtext.thingML.PrimitiveType;
+import org.thingml.xtext.thingML.ThingMLFactory;
 import org.thingml.xtext.thingML.ThingMLModel;
 import org.thingml.xtext.thingML.Type;
+import org.thingml.xtext.thingML.TypeRef;
 
 import no.sintef.thingml.diversifier.Manager;
 
@@ -27,14 +29,18 @@ public class UpsizeParameters extends Strategy {
             	final Parameter p = (Parameter) o;
             	if (!(p.eContainer() instanceof Message)) return;
             	if (AnnotatedElementHelper.isDefined(p, "upsize", "not")) return;
-            	final PrimitiveType original = (PrimitiveType)p.getTypeRef().getType();            	
+            	final PrimitiveType original = (PrimitiveType)p.getTypeRef().getType(); 
+            	final TypeRef originalTR = ThingMLFactory.eINSTANCE.createTypeRef();
+            	originalTR.setType(original);
             	// Find all compatible types
             	final List<PrimitiveType> options = new ArrayList<PrimitiveType>();
             	// Check all types in model, and find a different one, that is compatible, and same size or bigger
                 for (Type t : ThingMLHelpers.allSimpleTypes(model)) {
                 	if (t instanceof PrimitiveType) {
                 		final PrimitiveType other = (PrimitiveType)t;
-                		if (TyperHelper.isA(original, other) && other.getByteSize() >= original.getByteSize()) {
+                		final TypeRef otherTR = ThingMLFactory.eINSTANCE.createTypeRef();
+                    	otherTR.setType(other);		
+                		if (TyperHelper.isA(originalTR, otherTR) && other.getByteSize() >= original.getByteSize()) {
                 			options.add(other);
                 		}
                 	}
