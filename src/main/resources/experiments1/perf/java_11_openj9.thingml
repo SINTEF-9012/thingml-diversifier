@@ -1,0 +1,18 @@
+import "psm/java.thingml"
+
+configuration test
+@docker "perf"
+@docker_jre "adoptopenjdk:11-jre-openj9"
+{
+	instance game : BreakoutGameJava
+		set game.trackMemory = false
+		set game.period = 3	
+	instance disp : HeadlessDisplayJava
+	instance timer : TimerJava
+	instance ctrl : BasicIAControllerJava
+
+	connector game.clock => timer.timer
+	connector game.display => disp.display
+	connector game.controller => ctrl.controls
+	connector ctrl.game => game.ia
+}
