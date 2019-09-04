@@ -10,7 +10,7 @@ rm -r $LOGSDIR/* 2> /dev/null
 #$3: id
 function build
 {
-  timeout -k 45s 180s docker build -t $1-$2-$3 .
+  timeout -k 180s 600s docker build -t $1-$2-$3 .
 }
 
 #$1: language

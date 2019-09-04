@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 N=1 # Number of diversified version to make
-LANGUAGES=(java graal nodejs go go_gccgo posix posix_clang posixmt posixmt_clang) # Languages to use
+LANGUAGES=(java_11_hotspot java_11_openj9 java_8_hotspot java_8_openj9 graal nodejs nodejs_chakra go go_gccgo posix posix_clang posixmt posixmt_clang) # Languages to use
 MODES=(base) # static dynamic)
 
 DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
