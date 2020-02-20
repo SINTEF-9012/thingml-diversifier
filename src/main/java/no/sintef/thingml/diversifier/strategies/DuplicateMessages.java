@@ -21,6 +21,7 @@ import org.thingml.xtext.thingML.IntegerLiteral;
 import org.thingml.xtext.thingML.InternalTransition;
 import org.thingml.xtext.thingML.LowerExpression;
 import org.thingml.xtext.thingML.Message;
+import org.thingml.xtext.thingML.PlatformAnnotation;
 import org.thingml.xtext.thingML.Port;
 import org.thingml.xtext.thingML.ReceiveMessage;
 import org.thingml.xtext.thingML.SendAction;
@@ -32,8 +33,13 @@ import org.thingml.xtext.thingML.Transition;
 
 import no.sintef.thingml.diversifier.Manager;
 import no.sintef.thingml.diversifier.Mode;
+import no.sintef.thingml.diversifier.Strategies;
 
 public class DuplicateMessages extends Strategy {
+
+	public DuplicateMessages(Manager manager) {
+		super(manager);
+	}
 
 	private Map<Message, Message> copies = new HashMap<>();
 
@@ -41,7 +47,7 @@ public class DuplicateMessages extends Strategy {
 		Message copy = copies.get(m);
 		if (copy != null)
 			return copy;
-		if(Manager.mode == Mode.STATIC && Manager.rnd.nextBoolean()) {
+		if(Manager.mode == Mode.STATIC && manager.rnd.nextBoolean()) {
 			copy = m;
 		} else {
 			copy = EcoreUtil.copy(m);
@@ -62,11 +68,17 @@ public class DuplicateMessages extends Strategy {
 			final EObject o = it.next();
 			if (!(o instanceof Thing)) continue;
 			final Thing thing = (Thing)o;
-			if (AnnotatedElementHelper.hasFlag(thing, "stl")) continue;
+			if (AnnotatedElementHelper.hasFlag(thing, "stl")) continue;			
 			final List<Message> msgs = new ArrayList<Message>();
 			msgs.addAll(thing.getMessages());
 			for (Message msg : msgs) {
 				if (!Manager.diversify(msg)) continue;					
+				if (manager.rnd.nextBoolean()) {
+	        		final PlatformAnnotation annot = ThingMLFactory.eINSTANCE.createPlatformAnnotation();
+	                annot.setName("diversify");
+	                annot.setValue(Strategies.DUP_MSG.name);
+	                msg.getAnnotations().add(annot);
+	        	} else continue;
 				final Message copy = getCopy(msg);
 				thing.getMessages().add(copy);
 			}
@@ -84,7 +96,8 @@ public class DuplicateMessages extends Strategy {
 				sent.addAll(port.getSends());
 				for (Message msg : sent) {
 					if (AnnotatedElementHelper.hasFlag(ThingMLHelpers.findContainingThing(msg), "stl")) continue;				
-					if (!Manager.diversify(msg)) continue;					
+					if (!Manager.diversify(msg)) continue;	
+					if (!AnnotatedElementHelper.isDefined(msg, "diversify", Strategies.DUP_MSG.name)) continue;
 					final Message copy = getCopy(msg);
 					port.getSends().add(copy);
 				}
@@ -93,7 +106,8 @@ public class DuplicateMessages extends Strategy {
 				received.addAll(port.getReceives());
 				for (Message msg : received) {
 					if (AnnotatedElementHelper.hasFlag(ThingMLHelpers.findContainingThing(msg), "stl")) continue;				
-					if (!Manager.diversify(msg)) continue;					
+					if (!Manager.diversify(msg)) continue;
+					if (!AnnotatedElementHelper.isDefined(msg, "diversify", Strategies.DUP_MSG.name)) continue;
 					final Message copy = getCopy(msg);
 					port.getReceives().add(copy);
 				}			
@@ -107,6 +121,7 @@ public class DuplicateMessages extends Strategy {
 			if (!(o instanceof SendAction)) continue;
 			final SendAction sa = (SendAction) o;
 			if (!Manager.diversify(sa.getMessage())) continue;
+			if (!AnnotatedElementHelper.isDefined(sa.getMessage(), "diversify", Strategies.DUP_MSG.name)) continue;
 			duplicateSendAction(sa);
 		}
 		
@@ -119,9 +134,24 @@ public class DuplicateMessages extends Strategy {
 				if (h.getEvent() == null || !(h.getEvent() instanceof ReceiveMessage)) continue;
 				final ReceiveMessage rm = (ReceiveMessage)h.getEvent();
 				if (!Manager.diversify(rm.getMessage())) continue;
+				if (!AnnotatedElementHelper.isDefined(rm.getMessage(), "diversify", Strategies.DUP_MSG.name)) continue;
 				duplicateHandler(h);				
 			}
 		}
+		
+		//PASS 5: cleanup
+		for(Thing t : ThingMLHelpers.allThings(model)) {
+        	for(Message m : t.getMessages()) {
+        		PlatformAnnotation a = null;
+            	for(PlatformAnnotation annot : m.getAnnotations()) {
+            		if (annot.getName().equals("diversify") && annot.getValue().equals(Strategies.DUP_MSG.name)) {
+            			a = annot;
+            			break;
+            		}
+            	}
+            	if (a != null) m.getAnnotations().remove(a);
+        	}
+        }		
 	}
 
 	private void duplicateSendAction(SendAction sa) {
@@ -138,11 +168,11 @@ public class DuplicateMessages extends Strategy {
 			lower.setLhs(call);
 		} else {//FIXME: dirty workaround
 			final IntegerLiteral threshold = ThingMLFactory.eINSTANCE.createIntegerLiteral();
-			threshold.setIntValue(Manager.rnd.nextInt(256));
+			threshold.setIntValue(manager.rnd.nextInt(256));
 			lower.setLhs(threshold);
 		}
 		final IntegerLiteral threshold = ThingMLFactory.eINSTANCE.createIntegerLiteral();
-		threshold.setIntValue(Manager.rnd.nextInt(256));	
+		threshold.setIntValue(manager.rnd.nextInt(256));	
 		lower.setRhs(threshold);
 		ca.setCondition(lower);
 	

@@ -30,6 +30,7 @@ import org.thingml.xtext.thingML.LowerExpression;
 import org.thingml.xtext.thingML.Message;
 import org.thingml.xtext.thingML.NotExpression;
 import org.thingml.xtext.thingML.Parameter;
+import org.thingml.xtext.thingML.PlatformAnnotation;
 import org.thingml.xtext.thingML.Port;
 import org.thingml.xtext.thingML.PrimitiveType;
 import org.thingml.xtext.thingML.Property;
@@ -46,8 +47,13 @@ import org.thingml.xtext.thingML.VariableAssignment;
 
 import no.sintef.thingml.diversifier.Manager;
 import no.sintef.thingml.diversifier.Mode;
+import no.sintef.thingml.diversifier.Strategies;
 
 public class SplitMessagesInline extends Strategy {
+
+	public SplitMessagesInline(Manager manager) {
+		super(manager);
+	}
 
 	final Map<String, List<Message>> duplicates = new HashMap<>();
 	final Map<Thing, List<Message>> msgsToRemove = new HashMap<>();
@@ -77,7 +83,13 @@ public class SplitMessagesInline extends Strategy {
 				msgs.addAll(t.getMessages());
 				for (Message msg : msgs) {				
 					if (!Manager.diversify(msg) || msg.getParameters().size() == 0) continue;	
-					int splitAt = Manager.rnd.nextInt(msg.getParameters().size());
+					if (manager.rnd.nextBoolean()) {
+		        		final PlatformAnnotation annot = ThingMLFactory.eINSTANCE.createPlatformAnnotation();
+		                annot.setName("diversify");
+		                annot.setValue(Strategies.SPLIT_MSG.name);
+		                msg.getAnnotations().add(annot);
+		        	} else continue;
+					int splitAt = manager.rnd.nextInt(msg.getParameters().size());
 					System.out.println("Splitting message " + msg.getName() + " at index " + splitAt + "...");
 					final Message first = createMessage((Thing) msg.eContainer(), msg, msg.getParameters().subList(0, splitAt));
 					final Message second = createMessage((Thing) msg.eContainer(), msg, msg.getParameters().subList(splitAt, msg.getParameters().size()));
@@ -115,6 +127,7 @@ public class SplitMessagesInline extends Strategy {
 						final Thing root = ThingMLHelpers.findContainingThing(msg);
 						if (AnnotatedElementHelper.hasFlag(root, "stl")) continue;				
 						if (!Manager.diversify(msg) || msg.getParameters().size() == 0) continue;
+						if (!AnnotatedElementHelper.isDefined(msg, "diversify", Strategies.SPLIT_MSG.name)) continue;
 						List<Message> messages = duplicates.get(root.getName()+msg.getName());
 						if (messages == null) continue;
 						final Message first = messages.get(0);
@@ -131,6 +144,7 @@ public class SplitMessagesInline extends Strategy {
 						final Thing root = ThingMLHelpers.findContainingThing(msg);
 						if (AnnotatedElementHelper.hasFlag(root, "stl")) continue;				
 						if (!Manager.diversify(msg) || msg.getParameters().size() == 0) continue;
+						if (!AnnotatedElementHelper.isDefined(msg, "diversify", Strategies.SPLIT_MSG.name)) continue;
 						List<Message> messages = duplicates.get(root.getName()+msg.getName());
 						if (messages == null) continue;
 
@@ -156,6 +170,7 @@ public class SplitMessagesInline extends Strategy {
 				final Thing root = ThingMLHelpers.findContainingThing(rm.getMessage());
 				if (!Manager.diversify(rm.getMessage()) || rm.getMessage().getParameters().size() == 0) continue;
 				if (AnnotatedElementHelper.hasFlag(root, "stl")) continue;
+				if (!AnnotatedElementHelper.isDefined(rm.getMessage(), "diversify", Strategies.SPLIT_MSG.name)) continue;
 				System.out.println("Updating handler " + ((ReceiveMessage)h.getEvent()).getPort().getName() + "?" + ((ReceiveMessage)h.getEvent()).getMessage().getName());
 				if (h instanceof InternalTransition) {
 					final InternalTransition t = (InternalTransition) h;
@@ -173,10 +188,24 @@ public class SplitMessagesInline extends Strategy {
 			if (!(o instanceof SendAction)) continue;
 			final SendAction sa = (SendAction) o;
 			if (!Manager.diversify(sa.getMessage()) || sa.getMessage().getParameters().size() == 0) continue;
+			if (!AnnotatedElementHelper.isDefined(sa.getMessage(), "diversify", Strategies.SPLIT_MSG.name)) continue;
 			splitSendAction(sa);			
 		}
 		
 		//Cleanup
+		for(Thing t : ThingMLHelpers.allThings(model)) {
+        	for(Message m : t.getMessages()) {
+        		PlatformAnnotation a = null;
+            	for(PlatformAnnotation annot : m.getAnnotations()) {
+            		if (annot.getName().equals("diversify") && annot.getValue().equals(Strategies.SPLIT_MSG.name)) {
+            			a = annot;
+            			break;
+            		}
+            	}
+            	if (a != null) m.getAnnotations().remove(a);
+        	}
+        }
+		
 		for(Entry<Thing, List<Message>> e : msgsToRemove.entrySet()) {
 			e.getKey().getMessages().removeAll(e.getValue());
 		}
@@ -232,7 +261,7 @@ public class SplitMessagesInline extends Strategy {
 		final Function rnd = Manager.findRandom(ThingMLHelpers.findContainingThing(sa));			
 		if (rnd == null || Manager.mode==Mode.STATIC) {
 			final ActionBlock b1 = ThingMLFactory.eINSTANCE.createActionBlock();
-			if (Manager.rnd.nextBoolean()) {
+			if (manager.rnd.nextBoolean()) {
 				b1.getActions().add(send1);
 				b1.getActions().add(send2);
 			} else {
@@ -256,7 +285,7 @@ public class SplitMessagesInline extends Strategy {
 			final FunctionCallExpression call = ThingMLFactory.eINSTANCE.createFunctionCallExpression();
 			call.setFunction(rnd);
 			final IntegerLiteral threshold = ThingMLFactory.eINSTANCE.createIntegerLiteral();
-			threshold.setIntValue(Manager.rnd.nextInt(256));
+			threshold.setIntValue(manager.rnd.nextInt(256));
 			lower.setLhs(call);
 			lower.setRhs(threshold);
 			ca.setCondition(lower);

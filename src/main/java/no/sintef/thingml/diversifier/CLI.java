@@ -19,22 +19,13 @@ import org.thingml.xtext.thingML.Type;
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
 
-import no.sintef.thingml.diversifier.strategies.AddMessageCode;
-import no.sintef.thingml.diversifier.strategies.AddMessageLogs;
-import no.sintef.thingml.diversifier.strategies.AddMessageLogsPost;
-import no.sintef.thingml.diversifier.strategies.AddMessageLogsPre;
-import no.sintef.thingml.diversifier.strategies.AddRandomParameters;
-import no.sintef.thingml.diversifier.strategies.DuplicateMessages;
-import no.sintef.thingml.diversifier.strategies.ShuffleMessages;
-import no.sintef.thingml.diversifier.strategies.ShuffleParameters;
-import no.sintef.thingml.diversifier.strategies.SplitMessagesInline;
-import no.sintef.thingml.diversifier.strategies.UpsizeParameters;
+import no.sintef.thingml.diversifier.strategies.*;
 
 public class CLI {
 
 	@Parameter(names = {"--strategy", "-s"}, description = "A diversification strategy to be applied")
 	List<String> strategies;
-
+	
 	@Parameter(names = {"--input", "-i"}, description = "The input ThingML model")
 	String input;
 	
@@ -49,6 +40,8 @@ public class CLI {
 	
 	@Parameter(names = {"--random", "-r"}, description = "Random seed")
 	long seed = 1;
+	
+	
 	
 
 	@Parameter(names = {"--help", "-h"}, help = true)
@@ -94,41 +87,8 @@ public class CLI {
 			}
 		}
 		
-		Mode mode = Mode.STATIC;
-		if (cli.mode.equals(Mode.DYNAMIC.name().toLowerCase())) mode = Mode.DYNAMIC;
+		final Mode mode = (cli.mode.equals(Mode.DYNAMIC.name().toLowerCase())) ? Mode.DYNAMIC : Mode.STATIC;		
 		
-		final Manager manager = new Manager(cli.seed, mode);
-
-		/*if (manager.hasErrors(model))
-			throw new Error("Input model " + cli.input + " contains error(s). Please check your model in the ThingML IDE.");*/
-
-		for(String s : cli.strategies) {
-			if (s.equals(Strategies.ADD_PARAM.name)) {
-				manager.add(new AddRandomParameters()); 
-			} else if (s.equals(Strategies.DUP_MSG.name)) {
-				manager.add(new DuplicateMessages()); 
-			} else if (s.equals(Strategies.SHUFF_MSG.name)) {
-				manager.add(new ShuffleMessages()); 
-			} else if (s.equals(Strategies.SHUFF_PARAM.name)) {
-				manager.add(new ShuffleParameters()); 
-			} else if (s.equals(Strategies.SPLIT_MSG.name)) {
-				manager.add(new SplitMessagesInline());
-			} else if (s.equals(Strategies.UP_PARAM.name)) {
-				manager.add(new UpsizeParameters()); 
-			} else if (s.equals(Strategies.CODE_MSG.name)) {
-				manager.add(new AddMessageCode()); 
-			} else if (s.equals(Strategies.LOG_MSG.name)) {
-				manager.add(new AddMessageLogs()); 
-			} else if (s.equals(Strategies.PRELOG_MSG.name)) {
-				manager.add(new AddMessageLogsPre()); 
-			} else if (s.equals(Strategies.POSTLOG_MSG.name)) {
-				manager.add(new AddMessageLogsPost()); 
-			} else {
-				printUsage(jcom);
-				throw new UnsupportedOperationException("Diversification strategy " + s + " is not supported.");
-			}
-		}
-
 		if (cli.output == null) {
 			cli.output = input.getParent() + "/diversified/";			
 		}
@@ -137,6 +97,7 @@ public class CLI {
 		
 		for(int i = 0; i < cli.number; i++) {//TODO: See if we can multi-thread this
 			final ThingMLModel copy = EcoreUtil.copy(model);
+			final Manager manager = CLI.init(jcom, 31*i+cli.seed, mode, cli.strategies);
 			manager.run(copy);				
 			String saveName = FilenameUtils.getBaseName(cli.input) + i + ".thingml";
 			File saveTo = new File(outputDir, saveName);					
@@ -144,6 +105,57 @@ public class CLI {
 			System.out.println("Saved to " + saveTo.getAbsolutePath());// + (manager.hasErrors(copy)?" with errors":" without error."));
 		}
 
+	}
+	
+	private static Manager init(JCommander jcom, long seed,  Mode mode, List<String> strategies) {
+		final Manager manager = new Manager(seed, mode);
+		for(String s : strategies) {
+			if (s.matches("\\d+")) {	try {
+				final int seq = Integer.parseInt(s);						
+				for(int i = 0; i < seq; i++) {
+					if (manager.rnd.nextBoolean()) {
+						manager.add(new ShuffleMessages(manager));
+					}
+					if (manager.rnd.nextBoolean()) {
+						manager.add(new ShuffleParameters(manager));
+					}
+					if (manager.rnd.nextBoolean()) {
+						manager.add(new AddRandomParameters(manager));
+					}
+					if (manager.rnd.nextBoolean()) {
+						manager.add(new DuplicateMessages(manager));
+					}
+					if (manager.rnd.nextBoolean()) {
+						manager.add(new SplitMessagesInline(manager));
+					}
+				} } catch (NumberFormatException nfe) {/*all good!*/}
+			} else if (s.equals(Strategies.ADD_PARAM.name)) {
+				manager.add(new AddRandomParameters(manager)); 
+			} else if (s.equals(Strategies.DUP_MSG.name)) {
+				manager.add(new DuplicateMessages(manager)); 
+			} else if (s.equals(Strategies.SHUFF_MSG.name)) {
+				manager.add(new ShuffleMessages(manager)); 
+			} else if (s.equals(Strategies.SHUFF_PARAM.name)) {
+				manager.add(new ShuffleParameters(manager)); 
+			} else if (s.equals(Strategies.SPLIT_MSG.name)) {
+				manager.add(new SplitMessagesInline(manager));
+			} else if (s.equals(Strategies.UP_PARAM.name)) {
+				manager.add(new UpsizeParameters(manager)); 
+			} else if (s.equals(Strategies.CODE_MSG.name)) {
+				manager.add(new AddMessageCode(manager)); 
+			} else if (s.equals(Strategies.LOG_MSG.name)) {
+				manager.add(new AddMessageLogs(manager)); 
+			} else if (s.equals(Strategies.PRELOG_MSG.name)) {
+				manager.add(new AddMessageLogsPre(manager)); 
+			} else if (s.equals(Strategies.POSTLOG_MSG.name)) {
+				manager.add(new AddMessageLogsPost(manager)); 
+			} else {
+				printUsage(jcom);
+				throw new UnsupportedOperationException("Diversification strategy " + s + " is not supported.");
+			}
+		}
+		
+		return manager;
 	}
 
 	private static void logo() {
@@ -177,6 +189,7 @@ public class CLI {
 		for (Strategies s : Strategies.values()) {
 			System.out.println("  └╼  " + s.name + ":\t\t" + s.description);
 		}
+		System.out.println("  └╼  <n:int>:\t\tgoes n times through shuff-msg, shuff-param, add-param, dup-msg and split-msg, applying each strategy, or not, with a 50% chance");
 		
 		System.out.println("\nValid -m modes are:");
 		for (Mode m : Mode.values()) {

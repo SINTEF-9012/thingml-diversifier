@@ -2,6 +2,7 @@ package no.sintef.thingml.diversifier;
 
 public enum Strategies {
 	/* Network/serialization strategies */
+	RANDOM ("random", "A random sequence of strategies"),
 	ADD_PARAM ("add-param", "Add a random parameter in messages"), 
 	DUP_MSG ("dup-msg", "Duplicate messages, so that original or copy will be sent randomly"),  
 	SHUFF_MSG ("shuff-msg", "Shuffles the messages within each thing"),

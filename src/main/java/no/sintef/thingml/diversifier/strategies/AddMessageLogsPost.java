@@ -34,6 +34,10 @@ import no.sintef.thingml.diversifier.Manager;
 
 public class AddMessageLogsPost extends Strategy {
 
+	public AddMessageLogsPost(Manager manager) {
+		super(manager);
+	}
+
 	boolean onlySummary = false;
 
 	@Override

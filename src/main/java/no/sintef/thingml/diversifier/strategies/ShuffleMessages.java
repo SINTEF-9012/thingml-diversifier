@@ -14,6 +14,10 @@ import no.sintef.thingml.diversifier.Manager;
 
 public class ShuffleMessages extends Strategy {
 
+	public ShuffleMessages(Manager manager) {
+		super(manager);
+	}
+
 	@Override
 	protected void doApply(ThingMLModel model) {
 		final TreeIterator<EObject> it = model.eAllContents();
@@ -25,7 +29,7 @@ public class ShuffleMessages extends Strategy {
             		System.out.println("Shuffling messages of thing " + t.getName());
             		final List<Message> shuffled = new ArrayList<Message>();
             		shuffled.addAll(t.getMessages());
-            		Collections.shuffle(shuffled, Manager.rnd);
+            		Collections.shuffle(shuffled, manager.rnd);
             		t.getMessages().clear();
             		t.getMessages().addAll(shuffled);
             	}

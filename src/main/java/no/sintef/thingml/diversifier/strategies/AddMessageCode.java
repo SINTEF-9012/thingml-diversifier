@@ -7,8 +7,14 @@ import org.thingml.xtext.thingML.PlatformAnnotation;
 import org.thingml.xtext.thingML.ThingMLFactory;
 import org.thingml.xtext.thingML.ThingMLModel;
 
+import no.sintef.thingml.diversifier.Manager;
+
 public class AddMessageCode extends Strategy {
 	
+	public AddMessageCode(Manager manager) {
+		super(manager);
+	}
+
 	private int code = 0;
 	
 	@Override

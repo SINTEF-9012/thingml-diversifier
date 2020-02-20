@@ -31,6 +31,10 @@ import no.sintef.thingml.diversifier.Manager;
 
 public class AddMessageLogsPre extends Strategy {
 
+	public AddMessageLogsPre(Manager manager) {
+		super(manager);
+	}
+
 	boolean onlySummary = false;
 
 	@Override

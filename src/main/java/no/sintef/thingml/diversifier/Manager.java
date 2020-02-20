@@ -16,7 +16,7 @@ import no.sintef.thingml.diversifier.strategies.Strategy;
 
 public class Manager {
 
-	public static Random rnd;
+	public Random rnd;
 
 	//private Checker checker;
 	private List<Strategy> strategies = new LinkedList<>();
@@ -43,8 +43,6 @@ public class Manager {
 		}
 		System.out.println("Diversification took " + (System.currentTimeMillis() - start) + "ms.");	
 	}
-
-
 
 	/*boolean hasErrors(ThingMLModel model) {
 		File tmp = new File(FileUtils.getTempDirectoryPath() + UUID.randomUUID() + ".thingml");

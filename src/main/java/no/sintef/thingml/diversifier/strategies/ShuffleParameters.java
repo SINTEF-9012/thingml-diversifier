@@ -18,6 +18,10 @@ import no.sintef.thingml.diversifier.Manager;
 
 public class ShuffleParameters extends Strategy {
 
+	public ShuffleParameters(Manager manager) {
+		super(manager);
+	}
+
 	@Override
 	protected void doApply(ThingMLModel model) {
 		final TreeIterator<EObject> it = model.eAllContents();
@@ -32,7 +36,7 @@ public class ShuffleParameters extends Strategy {
                 original.addAll(m.getParameters());
                 final List<Parameter> shuffled = new ArrayList<Parameter>();
                 shuffled.addAll(m.getParameters());
-                Collections.shuffle(shuffled, Manager.rnd);
+                Collections.shuffle(shuffled, manager.rnd);
                 m.getParameters().clear();
                 m.getParameters().addAll(shuffled);
 

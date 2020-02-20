@@ -20,6 +20,10 @@ import no.sintef.thingml.diversifier.Manager;
 
 public class UpsizeParameters extends Strategy {
 
+	public UpsizeParameters(Manager manager) {
+		super(manager);
+	}
+
 	@Override
 	protected void doApply(ThingMLModel model) {
 		final TreeIterator<EObject> it = model.eAllContents();
@@ -46,7 +50,7 @@ public class UpsizeParameters extends Strategy {
                 	}
                 }
                 // Select a new type (might be the same as the original)
-                final PrimitiveType newtype = options.get(Manager.rnd.nextInt(options.size()));
+                final PrimitiveType newtype = options.get(manager.rnd.nextInt(options.size()));
                 p.getTypeRef().setType(newtype);
             }
         }
