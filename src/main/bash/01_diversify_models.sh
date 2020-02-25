@@ -20,15 +20,15 @@ function generate
   ((!WITH_PERF)) && BASEMODELDOCKER=/thingml-div/src/main/resources/experiments1/$LANGUAGE.thingml
   TARGETMODELDOCKER=/thingml-div/target/models/$LANGUAGE
 
-  docker run -v $BASEDIR:/thingml-div thingml-div -i $BASEMODELDOCKER -r 1 -n 1 -m static -o $TARGETMODELDOCKER/nolog -s code-msg
-  docker run -v $BASEDIR:/thingml-div thingml-div -i $BASEMODELDOCKER -r 1 -n $N -m static -o $TARGETMODELDOCKER/nolog/static -s 2 -s code-msg
-  docker run -v $BASEDIR:/thingml-div thingml-div -i $BASEMODELDOCKER -r 1 -n $N -m dynamic -o $TARGETMODELDOCKER/nolog/dynamic -s 2 -s code-msg
+  _docker run -v $BASEDIR:/thingml-div thingml-div -i $BASEMODELDOCKER -r 1 -n 1 -m static -o $TARGETMODELDOCKER/nolog -s code-msg
+  _docker run -v $BASEDIR:/thingml-div thingml-div -i $BASEMODELDOCKER -r 1 -n $N -m static -o $TARGETMODELDOCKER/nolog/static -s 1 -s code-msg
+  _docker run -v $BASEDIR:/thingml-div thingml-div -i $BASEMODELDOCKER -r 1 -n $N -m dynamic -o $TARGETMODELDOCKER/nolog/dynamic -s 1 -s code-msg
 
 
   if [ "$LANGUAGE" == "nodejs" ]; then
-    docker run -v $BASEDIR:/thingml-div thingml-div -i $BASEMODELDOCKER -r 1 -n 1 -m static -o $TARGETMODELDOCKER -s code-msg -s log-msg
-    docker run -v $BASEDIR:/thingml-div thingml-div -i $BASEMODELDOCKER -r 1 -n $N -m static -o $TARGETMODELDOCKER/static -s code-msg -s pre-log-msg -s 2 -s code-msg -s post-log-msg
-    docker run -v $BASEDIR:/thingml-div thingml-div -i $BASEMODELDOCKER -r 1 -n $N -m dynamic -o $TARGETMODELDOCKER/dynamic -s code-msg -s pre-log-msg -s 2 -s code-msg -s post-log-msg
+    _docker run -v $BASEDIR:/thingml-div thingml-div -i $BASEMODELDOCKER -r 1 -n 1 -m static -o $TARGETMODELDOCKER -s code-msg -s log-msg
+    _docker run -v $BASEDIR:/thingml-div thingml-div -i $BASEMODELDOCKER -r 1 -n $N -m static -o $TARGETMODELDOCKER/static -s code-msg -s pre-log-msg -s 1 -s code-msg -s post-log-msg
+    _docker run -v $BASEDIR:/thingml-div thingml-div -i $BASEMODELDOCKER -r 1 -n $N -m dynamic -o $TARGETMODELDOCKER/dynamic -s code-msg -s pre-log-msg -s 1 -s code-msg -s post-log-msg
   fi
 }
 

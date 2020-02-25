@@ -10,7 +10,7 @@ rm -r $LOGSDIR/* 2> /dev/null
 #$3: id
 function build
 {
-  timeout -k 180s 600s docker build -t $1-$2-$3 .
+  docker build -t $1-$2-$3 .
 }
 
 #$1: language
@@ -20,7 +20,7 @@ function build
 function run
 {
   ((WITH_PERF)) && echo "docker run -v $LOGSDIR/$1/$2:/data --cap-add=ALL --name $1-$2-$3 $1-$2-$3:latest" &&  timeout -k 30s 120s docker run -v $LOGSDIR/$1/$2:/data --cap-add=ALL --name $1-$2-$3 $1-$2-$3:latest > $LOGSDIR/$1/$2/$4$1$3.log
-  ((!WITH_PERF)) && timeout -k 30s 120s docker run --name $1-$2-$3 $1-$2-$3:latest > $LOGSDIR/$1/$2/$4$1$3.log
+  ((!WITH_PERF)) && _docker run --name $1-$2-$3 $1-$2-$3:latest > $LOGSDIR/$1/$2/$4$1$3.log
 }
 
 #$1: language
