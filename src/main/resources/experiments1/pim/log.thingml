@@ -1,0 +1,26 @@
+import "logbinary.thingml" from stl
+
+thing fragment ConsoleLogger2 includes Logger @monitor "not"/* @stdout_sync "true" */ {
+	
+	abstract function encrypt(payload : Byte[], size : UInt8)
+	
+	function do_log(payload : Byte[], size : UInt8) @monitor "not" do
+		encrypt(payload, size)		
+	end
+	
+}
+
+thing NoEncryptConsoleLogger includes ConsoleLogger2 {
+	function encrypt(payload : Byte[], size : UInt8) do
+		readonly var realSize : Integer = size - 3
+		var realPayload : Byte[realSize]
+		for(v : Byte, i : Integer in payload) if (i>2) realPayload[i-3] = v
+		var s : Integer = 0
+		print "#["
+		for(v : Byte, i : Integer in realPayload) do
+			print v as UInt8, ","
+			s = i
+		end					
+		println "](", (s+1), ")"
+	end
+}

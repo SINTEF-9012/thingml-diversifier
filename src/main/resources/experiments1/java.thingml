@@ -4,6 +4,11 @@ configuration test
 @docker
 {
 	instance game : BreakoutGameJava
+		set game.DEBUG_BIN_ID = 0x00
+	instance log : NoEncryptConsoleLogger
+		set log.ACTIVATE_ON_STARTUP = true
+		set log.HAS_SIGNED_BYTE = true
+	connector game.log => log.log
 	instance disp : HeadlessDisplayJava
 	instance timer : TimerJava
 	instance ctrl : BasicIAControllerJava
