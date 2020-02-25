@@ -1,8 +1,12 @@
 import "Display.thingml"
 import "Controller.thingml"
+import "log.thingml"
 
-thing fragment BreakoutGame includes TimerMsgs, DisplayMsgs, ControllerMsgs, IAControllerMsg 
+thing fragment BreakoutGame includes TimerMsgs, DisplayMsgs, ControllerMsgs, IAControllerMsg, WithBinaryLog 
 @ignore "not-used"
+@monitor "events"
+@monitor "not-discarded"
+@monitor "not-handled"
 {
 	property bytesSentCounter : UInt32 = 0 
 	
@@ -39,7 +43,7 @@ thing fragment BreakoutGame includes TimerMsgs, DisplayMsgs, ControllerMsgs, IAC
 		if (counter == 33) counter = 0
 	end
 
-	required port clock {
+	required port clock @monitor "not" {
 		sends timer_start, timer_cancel
 		receives timer_timeout
 	}

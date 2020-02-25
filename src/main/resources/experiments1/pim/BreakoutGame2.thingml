@@ -1,8 +1,12 @@
 import "Display.thingml"
 import "Controller.thingml"
+import "log.thingml"
 
-thing fragment BreakoutGame includes TimerMsgs, DisplayMsgs, ControllerMsgs, IAControllerMsg 
+thing fragment BreakoutGame includes TimerMsgs, DisplayMsgs, ControllerMsgs, IAControllerMsg, WithBinaryLog 
 @ignore "not-used"
+@monitor "events"
+@monitor "not-discarded"
+@monitor "not-handled"
 {
 	property bytesSentCounter : UInt32 = 0 
 	

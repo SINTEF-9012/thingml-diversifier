@@ -1,0 +1,105 @@
+import "logbinary.thingml" from stl
+
+thing fragment ConsoleLogger2 includes Logger @monitor "not"/* @stdout_sync "true" */ {
+	
+	abstract function encrypt(payload : Byte[], size : UInt8)
+	
+	function do_log(payload : Byte[], size : UInt8) @monitor "not" do
+		encrypt(payload, size)		
+	end
+	
+}
+
+thing NoEncryptConsoleLogger includes ConsoleLogger2 {
+	function encrypt(payload : Byte[], size : UInt8) do
+		readonly var realSize : Integer = size - 3
+		var realPayload : Byte[realSize]
+		for(v : Byte, i : Integer in payload) if (i>2) realPayload[i-3] = v
+		var s : Integer = 0
+		print "#["
+		for(v : Byte, i : Integer in realPayload) do
+			print v as UInt8, ","
+			s = i
+		end					
+		println "](", (s+1), ")"
+	end
+}
+
+thing JavaEncrypt includes ConsoleLogger2 
+@maven_dep 
+"
+<dependency>
+    <groupId>org.apache.commons</groupId>
+    <artifactId>commons-crypto</artifactId>
+    <version>1.0.0</version>
+</dependency>
+"
+@java_import 
+"
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
+import java.util.Properties;
+  
+import javax.crypto.Cipher;
+import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
+  
+import org.apache.commons.crypto.cipher.CryptoCipher;
+import org.apache.commons.crypto.cipher.CryptoCipherFactory;
+import org.apache.commons.crypto.cipher.CryptoCipherFactory.CipherProvider;
+import org.apache.commons.crypto.utils.Utils;
+"
+{
+	function encrypt(payload : Byte[], size : UInt8) do
+		readonly var realSize : Integer = size - 3
+		var realPayload : Byte[realSize]
+		for(v : Byte, i : Integer in payload) if (i>2) realPayload[i-3] = v
+		
+		var s : Integer = 0
+		print "#["
+		for(v : Byte, i : Integer in realPayload) do
+			print v as UInt8, ","
+			s = i
+		end					
+		println "](", (s+1), ")"
+		
+		var encryptedPayload : Byte[]
+		`try {
+		/** See http://commons.apache.org/proper/commons-crypto/xref-test/org/apache/commons/crypto/examples/CipherByteArrayExample.html **/
+		final SecretKeySpec key = new SecretKeySpec("1234567890123456".getBytes(StandardCharsets.UTF_8),"AES"); //FIXME: randomize
+		final IvParameterSpec iv = new IvParameterSpec("1234567890123456".getBytes(StandardCharsets.UTF_8));
+		
+		Properties properties = new Properties();
+        //properties.setProperty(CryptoCipherFactory.CLASSES_KEY, CipherProvider.OPENSSL.getClassName());
+        //Creates a CryptoCipher instance with the transformation and properties.
+        final String transform = "AES/CBC/PKCS5Padding";
+        CryptoCipher encipher = Utils.getCipherInstance(transform, properties);
+        //System.out.println("Cipher:  " + encipher.getClass().getCanonicalName());
+        
+        byte[] input = ` & realPayload & `;
+        byte[] output = new byte[32];
+        
+        //Initializes the cipher with ENCRYPT_MODE, key and iv.
+        encipher.init(Cipher.ENCRYPT_MODE, key, iv);
+        //Continues a multiple-part encryption/decryption operation for byte array.
+        int updateBytes = encipher.update(input, 0, input.length, output, 0);
+        //System.out.println(updateBytes);
+        //We must call doFinal at the end of encryption/decryption.
+        int finalBytes = encipher.doFinal(input, 0, 0, output, updateBytes);
+        //System.out.println(finalBytes);
+        //Closes the cipher.
+        encipher.close();
+        
+        ` & encryptedPayload & ` = Arrays.copyOf(output, updateBytes+finalBytes);
+        
+        } catch(Exception e) {e.printStackTrace();}
+		`
+		s = 0
+		print "@["
+		for(v : Byte, i : Integer in encryptedPayload) do
+			print v as UInt8, ","
+			s = i
+		end					
+		println "](", (s+1), ")"
+	end
+}
