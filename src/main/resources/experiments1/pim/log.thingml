@@ -12,9 +12,9 @@ thing fragment ConsoleLogger2 includes Logger @monitor "not"/* @stdout_sync "tru
 
 thing NoEncryptConsoleLogger includes ConsoleLogger2 {
 	function encrypt(payload : Byte[], size : UInt8) do
-		readonly var realSize : Integer = size - 3
+		readonly var realSize : Integer = size - 2
 		var realPayload : Byte[realSize]
-		for(v : Byte, i : Integer in payload) if (i>2) realPayload[i-3] = v
+		for(v : Byte, i : Integer in payload) if (i>1) realPayload[i-2] = v
 		var s : Integer = 0
 		print "#["
 		for(v : Byte, i : Integer in realPayload) do
@@ -50,10 +50,12 @@ import org.apache.commons.crypto.cipher.CryptoCipherFactory.CipherProvider;
 import org.apache.commons.crypto.utils.Utils;
 "
 {
+	readonly property seed : String = "1234567890123456"
+	
 	function encrypt(payload : Byte[], size : UInt8) do
-		readonly var realSize : Integer = size - 3
+		readonly var realSize : Integer = size - 2
 		var realPayload : Byte[realSize]
-		for(v : Byte, i : Integer in payload) if (i>2) realPayload[i-3] = v
+		for(v : Byte, i : Integer in payload) if (i>1) realPayload[i-2] = v
 		
 		var s : Integer = 0
 		print "#["
@@ -66,8 +68,8 @@ import org.apache.commons.crypto.utils.Utils;
 		var encryptedPayload : Byte[]
 		`try {
 		/** See http://commons.apache.org/proper/commons-crypto/xref-test/org/apache/commons/crypto/examples/CipherByteArrayExample.html **/
-		final SecretKeySpec key = new SecretKeySpec("1234567890123456".getBytes(StandardCharsets.UTF_8),"AES"); //FIXME: randomize
-		final IvParameterSpec iv = new IvParameterSpec("1234567890123456".getBytes(StandardCharsets.UTF_8));
+		final SecretKeySpec key = new SecretKeySpec(` & seed & `.getBytes(StandardCharsets.UTF_8),"AES");
+		final IvParameterSpec iv = new IvParameterSpec(` & seed & `.getBytes(StandardCharsets.UTF_8));
 		
 		Properties properties = new Properties();
         //properties.setProperty(CryptoCipherFactory.CLASSES_KEY, CipherProvider.OPENSSL.getClassName());

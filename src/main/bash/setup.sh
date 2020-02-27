@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 
-N=100 # Number of diversified version to make
+N=1 # Number of diversified version to make
 
 WIN=1	#Set to 1 if running on Windows and having problems with Docker volumes or paths...
 
 #LANGUAGES=(java_11_hotspot java_11_openj9 java_8_hotspot java_8_openj9 graal nodejs nodejs_chakra go go_gccgo posix posix_clang posixmt posixmt_clang)
-LANGUAGES=(nodejs java graal go posix)
+LANGUAGES=(java)
 MODES=(base static dynamic)
 
 BASEDIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )"/../../../ && pwd)

@@ -79,7 +79,7 @@ public class Manager {
 		if (o == null) return true;
 		if (!(o instanceof AnnotatedElement)) return diversify(o.eContainer());
 		AnnotatedElement ae = (AnnotatedElement) o;
-		if (AnnotatedElementHelper.isDefined(ae, "diversify", "not")) 
+		if (AnnotatedElementHelper.isDefined(ae, "diversify", "not") || AnnotatedElementHelper.hasFlag(ae, "stl")) 
 			return false;
 		else
 			return diversify(ae.eContainer());
