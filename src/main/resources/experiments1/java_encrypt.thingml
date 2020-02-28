@@ -12,6 +12,8 @@ configuration test
 	instance disp : HeadlessDisplayJava
 	instance timer : TimerJava
 	instance ctrl : BasicIAControllerJava
+	//connector disp.log => log.log
+	//connector ctrl.log => log.log
 
 	connector game.clock => timer.timer
 	connector game.display => disp.display

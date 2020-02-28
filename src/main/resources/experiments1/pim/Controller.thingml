@@ -1,4 +1,6 @@
 import "timer.thingml"
+import "log.thingml"
+
 
 thing fragment ControllerMsgs {
 
@@ -26,7 +28,7 @@ thing fragment IAController includes Controller, IAControllerMsg {
 	}
 }
 
-thing fragment BasicIAController includes IAController 
+thing fragment BasicIAController includes IAController, WithBinaryLog 
 @stdout_sync "true"
 {
 
@@ -36,7 +38,11 @@ thing fragment BasicIAController includes IAController
 
 		state Following {
 
-			on entry controls!position(ctrlx, 0)
+			on entry do
+				readonly var log : Byte[5] = {LogType:custom,2,10,ctrlx,0}
+				log!log(log, 5)
+				controls!position(ctrlx, 0)
+			end
 
 			transition -> Following event e : game?updateIA
 			action do

@@ -55,7 +55,7 @@ public class AddRandomParameters extends Strategy {
                     annot.setValue(Strategies.ADD_PARAM.name);
                     m.getAnnotations().add(annot);
             	} else continue;
-                System.out.println("Adding random parameter to message " + m.getName());
+                if (debug) System.out.println("Adding random parameter to message " + m.getName());
                 final PlatformAnnotation annot = ThingMLFactory.eINSTANCE.createPlatformAnnotation();
                 annot.setName("noise");
                         

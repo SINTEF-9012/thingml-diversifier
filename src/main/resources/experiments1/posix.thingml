@@ -20,4 +20,7 @@ configuration test
 	instance ctrl : BasicIAControllerPosix
 	connector game.controller => ctrl.controls
 	connector ctrl.game => game.ia
+	
+	//connector disp.log => log.log
+	//connector ctrl.log => log.log
 }

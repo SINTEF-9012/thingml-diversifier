@@ -41,6 +41,9 @@ public class CLI {
 	@Parameter(names = {"--random", "-r"}, description = "Random seed")
 	long seed = 1;
 	
+	@Parameter(names = {"--debug", "-d"}, description = "Engage debug mode (verbose logs)")
+	boolean debug = false;
+	
 	
 	
 
@@ -61,6 +64,9 @@ public class CLI {
 			printUsage(jcom);
 			System.exit(0);
 		}
+		
+		if (cli.debug)
+			Strategy.debug = true;
 
 		final File input = new File(cli.input);
 		if (!input.exists() || !FilenameUtils.getExtension(cli.input).equals("thingml")) throw new FileNotFoundException("Input file " + cli.input + " cannot be found");		
@@ -114,6 +120,9 @@ public class CLI {
 				final int seq = Integer.parseInt(s);						
 				for(int i = 0; i < seq; i++) {
 					if (manager.rnd.nextBoolean()) {
+						manager.add(new ShufflePort(manager));
+					}
+					if (manager.rnd.nextBoolean()) {
 						manager.add(new ShuffleMessages(manager));
 					}
 					if (manager.rnd.nextBoolean()) {
@@ -133,6 +142,8 @@ public class CLI {
 				manager.add(new AddRandomParameters(manager)); 
 			} else if (s.equals(Strategies.DUP_MSG.name)) {
 				manager.add(new DuplicateMessages(manager)); 
+			} else if (s.equals(Strategies.SHUFF_PORT.name)) {
+				manager.add(new ShufflePort(manager)); 
 			} else if (s.equals(Strategies.SHUFF_MSG.name)) {
 				manager.add(new ShuffleMessages(manager)); 
 			} else if (s.equals(Strategies.SHUFF_PARAM.name)) {
@@ -140,15 +151,7 @@ public class CLI {
 			} else if (s.equals(Strategies.SPLIT_MSG.name)) {
 				manager.add(new SplitMessagesInline(manager));
 			} else if (s.equals(Strategies.UP_PARAM.name)) {
-				manager.add(new UpsizeParameters(manager)); 
-			} else if (s.equals(Strategies.CODE_MSG.name)) {
-				manager.add(new AddMessageCode(manager)); 
-			} else if (s.equals(Strategies.LOG_MSG.name)) {
-				manager.add(new AddMessageLogs(manager)); 
-			} else if (s.equals(Strategies.PRELOG_MSG.name)) {
-				manager.add(new AddMessageLogsPre(manager)); 
-			} else if (s.equals(Strategies.POSTLOG_MSG.name)) {
-				manager.add(new AddMessageLogsPost(manager)); 
+				manager.add(new UpsizeParameters(manager)); 			
 			} else {
 				printUsage(jcom);
 				throw new UnsupportedOperationException("Diversification strategy " + s + " is not supported.");

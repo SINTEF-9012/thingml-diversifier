@@ -1,4 +1,6 @@
 import "datatypes.thingml" from stl
+import "log.thingml"
+
 
 thing fragment DisplayMsgs {
 
@@ -17,7 +19,7 @@ thing fragment DisplayMsgs {
 	message displayReady();
 }
 
-thing fragment HeadlessDisplay includes DisplayMsgs 
+thing fragment HeadlessDisplay includes DisplayMsgs, WithBinaryLog 
 @stdout_sync "true"
 {
 	property bytesSentCounter : UInt32 = 0 @ignore "not-used"
@@ -35,7 +37,11 @@ thing fragment HeadlessDisplay includes DisplayMsgs
 
 	statechart init INIT {
 		state INIT {
-			on entry display!displayReady()
+			on entry do
+				readonly var log : Byte[3] = {LogType:custom,3,11}
+				log!log(log, 3)
+				display!displayReady()
+			end
 			
 			transition -> MOCK
 		}

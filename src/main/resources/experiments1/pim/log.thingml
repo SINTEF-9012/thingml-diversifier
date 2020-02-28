@@ -10,22 +10,25 @@ thing fragment ConsoleLogger2 includes Logger @monitor "not"/* @stdout_sync "tru
 	
 }
 
-thing NoEncryptConsoleLogger includes ConsoleLogger2 {
+thing NoEncryptConsoleLogger includes ConsoleLogger2 
+@stdout_sync "true" {
 	function encrypt(payload : Byte[], size : UInt8) do
-		readonly var realSize : Integer = size - 2
+		var offset : Integer = 3
+		if (payload[0] == LogType:custom) offset = 2
+		readonly var realSize : Integer = size - offset
 		var realPayload : Byte[realSize]
-		for(v : Byte, i : Integer in payload) if (i>1) realPayload[i-2] = v
-		var s : Integer = 0
-		print "#["
-		for(v : Byte, i : Integer in realPayload) do
-			print v as UInt8, ","
-			s = i
+		for(v : Byte, i : Integer in payload) if (i>offset-1) realPayload[i-offset] = v
+		if (payload[0] == LogType:custom) print "@["
+		else print "#["
+		for(w : Byte in realPayload) do
+			print w as UInt8, ","
 		end					
-		println "](", (s+1), ")"
+		println "]"
 	end
 }
 
 thing JavaEncrypt includes ConsoleLogger2 
+@stdout_sync "true"
 @maven_dep 
 "
 <dependency>
@@ -53,18 +56,20 @@ import org.apache.commons.crypto.utils.Utils;
 	readonly property seed : String = "1234567890123456"
 	
 	function encrypt(payload : Byte[], size : UInt8) do
-		readonly var realSize : Integer = size - 2
+		var offset : Integer = 3
+		if (payload[0] == LogType:custom) offset = 2
+		readonly var realSize : Integer = size - offset
 		var realPayload : Byte[realSize]
-		for(v : Byte, i : Integer in payload) if (i>1) realPayload[i-2] = v
+		for(v : Byte, i : Integer in payload) if (i>offset-1) realPayload[i-offset] = v	
 		
-		var s : Integer = 0
-		print "#["
-		for(v : Byte, i : Integer in realPayload) do
-			print v as UInt8, ","
-			s = i
-		end					
-		println "](", (s+1), ")"
-		
+		if (payload[0] == LogType:custom) do
+			print "@["
+			for(w : Byte in realPayload) do
+				print w as UInt8, ","
+			end					
+			println "]"
+		end else do
+							
 		var encryptedPayload : Byte[]
 		`try {
 		/** See http://commons.apache.org/proper/commons-crypto/xref-test/org/apache/commons/crypto/examples/CipherByteArrayExample.html **/
@@ -96,12 +101,11 @@ import org.apache.commons.crypto.utils.Utils;
         
         } catch(Exception e) {e.printStackTrace();}
 		`
-		s = 0
-		print "@["
-		for(v : Byte, i : Integer in encryptedPayload) do
-			print v as UInt8, ","
-			s = i
+		print "$["
+		for(w : Byte in encryptedPayload) do
+			print w as UInt8, ","
 		end					
-		println "](", (s+1), ")"
+		println "]"
+		end
 	end
 }

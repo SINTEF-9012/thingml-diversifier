@@ -43,7 +43,67 @@ thing fragment BreakoutGame includes TimerMsgs, DisplayMsgs, ControllerMsgs, IAC
 		if (counter == 33) counter = 0
 	end
 
-	required port clock @monitor "not" {
+	function display_create(xsize : UInt8, ysize : UInt8) do
+		readonly var log : Byte[5] = {LogType:custom,0,0,xsize,ysize}
+		log!log(log, 5)
+		display!create(xsize, ysize)
+	end
+	
+	function display_fillRect(x : UInt8, y : UInt8, width : UInt8, height : UInt8) do
+		readonly var log : Byte[7] = {LogType:custom,0,1,x,y,width,height}
+		log!log(log, 7) 
+		display!fillRect(x, y, width, height)
+	end
+	
+	function display_drawRect(x : UInt8, y : UInt8, width : UInt8, height : UInt8) do
+		readonly var log : Byte[7] = {LogType:custom,0,2,x,y,width,height}
+		log!log(log, 7)
+		display!drawRect(x, y, width, height)
+	end
+	
+	function display_clear() do
+		readonly var log : Byte[3] = {LogType:custom,0,3}
+		log!log(log, 3)
+		display!clear()
+	end
+	
+	function display_setColor(r : UInt8, g : UInt8, b : UInt8) do
+		readonly var log : Byte[6] = {LogType:custom,0,4,r,g,b}
+		log!log(log, 6)
+		display!setColor(r, g, b)
+	end
+	
+	function display_setBGColor(r : UInt8, g : UInt8, b : UInt8) do
+		readonly var log : Byte[6] = {LogType:custom,0,5,r,g,b}
+		log!log(log, 6)
+		display!setBGColor(r, g, b)
+	end
+	
+	function display_drawInteger(x : UInt8, y : UInt8, v : Int16, digits : UInt8, scale:UInt8) do
+		readonly var log : Byte[9] = {LogType:custom,0,6,x,y,`((` & v & `>>8) & 0XFF)`, `((` & v & `>>0) & 0XFF)`,digits, scale}
+		log!log(log, 9)
+		display!drawInteger(x, y, v, digits, scale)
+	end	
+	
+	function display_update() do
+		readonly var log : Byte[3] = {LogType:custom,0,7}
+		log!log(log, 3)
+		display!update()
+	end	
+	
+	function display_drawThingML(x : UInt8, y : UInt8) do
+		readonly var log : Byte[5] = {LogType:custom,0,8,x,y}
+		log!log(log, 5)
+		display!drawThingML(x, y)
+	end
+	
+	function ia_updateIA(ballx:Int16, bally: Int16, padx:Int16, pady: Int16) do
+		readonly var log : Byte[11] = {LogType:custom,1,9,`((` & ballx & `>>8) & 0XFF)`, `((` & ballx & `>>0) & 0XFF)`,`((` & bally & `>>8) & 0XFF)`, `((` & bally & `>>0) & 0XFF)`,`((` & padx & `>>8) & 0XFF)`, `((` & padx & `>>0) & 0XFF)`,`((` & pady & `>>8) & 0XFF)`, `((` & pady & `>>0) & 0XFF)`}
+		log!log(log, 11)
+		ia!updateIA(ballx, bally, padx, pady)
+	end			
+
+	required port clock @monitor "not" @diversify "not" {
 		sends timer_start, timer_cancel
 		receives timer_timeout
 	}
@@ -64,18 +124,10 @@ thing fragment BreakoutGame includes TimerMsgs, DisplayMsgs, ControllerMsgs, IAC
 		sends updateIA
 	}
 
-	internal port game {
+	internal port game @monitor "not" @diversify "not"{
 		sends lostBall, nextLevel
 		receives lostBall, nextLevel
 	}
-
-	/*optional required port req_game {
-		sends lostBall, nextLevel
-	}
-
-	provided port pro_game {
-		receives lostBall, nextLevel
-	}*/
 
 	// Size of the real display
 	readonly property XDISPSIZE : UInt8 = 160
@@ -116,8 +168,8 @@ thing fragment BreakoutGame includes TimerMsgs, DisplayMsgs, ControllerMsgs, IAC
 	function initColors() do
 		bgcolor[0] = 53 	bgcolor[1] = 40 	bgcolor[2] = 120
 		fgcolor[0] = 107 	fgcolor[1] = 94 	fgcolor[2] = 174
-		display!setBGColor(bgcolor[0],bgcolor[1],bgcolor[2])
-		display!setColor(fgcolor[0],fgcolor[1],fgcolor[2])
+		display_setBGColor(bgcolor[0],bgcolor[1],bgcolor[2])
+		display_setColor(fgcolor[0],fgcolor[1],fgcolor[2])
 	end
 
 	function resetBall() do
@@ -133,8 +185,8 @@ thing fragment BreakoutGame includes TimerMsgs, DisplayMsgs, ControllerMsgs, IAC
 		var bs : Int16 = (br*2)/SCALE 	// Size of the ball on the actual display
 
 		if (prevBX > 0) do				// Erase the previous ball
-			display!setColor(bgcolor[0],bgcolor[1],bgcolor[2])
-			display!fillRect(prevBX as UInt8, prevBY as UInt8, bs as UInt8, bs as UInt8)
+			display_setColor(bgcolor[0],bgcolor[1],bgcolor[2])
+			display_fillRect(prevBX as UInt8, prevBY as UInt8, bs as UInt8, bs as UInt8)
 		end
 
 		prevBX = -1
@@ -150,9 +202,9 @@ thing fragment BreakoutGame includes TimerMsgs, DisplayMsgs, ControllerMsgs, IAC
 		prevBX = (bx-br)/SCALE
 		prevBY = (by-br)/SCALE
 
-		//display!setColor(fgcolor[0],fgcolor[1],fgcolor[2])
-		display!setColor(183, 199, 111)
-		display!fillRect(prevBX as UInt8, prevBY as UInt8, bs as UInt8, bs as UInt8)
+		//display_setColor(fgcolor[0],fgcolor[1],fgcolor[2])
+		display_setColor(183, 199, 111)
+		display_fillRect(prevBX as UInt8, prevBY as UInt8, bs as UInt8, bs as UInt8)
 	end
 
 
@@ -163,8 +215,8 @@ thing fragment BreakoutGame includes TimerMsgs, DisplayMsgs, ControllerMsgs, IAC
 	function erasePad() do
 		var ps : Int16 = padlen/SCALE 	// Size of the pad on the actual display
 		if (prevPX > 0) do				// Erase the previous ball
-			display!setColor(bgcolor[0],bgcolor[1],bgcolor[2])
-			display!fillRect(prevPX as UInt8, prevPY as UInt8, ps as UInt8, 4)
+			display_setColor(bgcolor[0],bgcolor[1],bgcolor[2])
+			display_fillRect(prevPX as UInt8, prevPY as UInt8, ps as UInt8, 4)
 		end
 	end
 
@@ -176,35 +228,35 @@ thing fragment BreakoutGame includes TimerMsgs, DisplayMsgs, ControllerMsgs, IAC
 		prevPX = (padx - (padlen/2)) / SCALE
 		prevPY = pady / SCALE
 
-		display!setColor(fgcolor[0],fgcolor[1],fgcolor[2])
-		display!fillRect(prevPX as UInt8, prevPY as UInt8, ps as UInt8, 4)
+		display_setColor(fgcolor[0],fgcolor[1],fgcolor[2])
+		display_fillRect(prevPX as UInt8, prevPY as UInt8, ps as UInt8, 4)
 	end
 
 	function drawCountDown(c : Int16) do
-		display!setColor(fgcolor[0],fgcolor[1],fgcolor[2])
+		display_setColor(fgcolor[0],fgcolor[1],fgcolor[2])
 		if (c > 0) do
-			display!setColor(fgcolor[0],fgcolor[1],fgcolor[2])
-			display!setBGColor(bgcolor[0],bgcolor[1],bgcolor[2])
-			display!drawInteger(80-6, 90, c, 1, 4)
+			display_setColor(fgcolor[0],fgcolor[1],fgcolor[2])
+			display_setBGColor(bgcolor[0],bgcolor[1],bgcolor[2])
+			display_drawInteger(80-6, 90, c, 1, 4)
 		end
 		else do
-			display!setColor(bgcolor[0],bgcolor[1],bgcolor[2])
-			display!fillRect(80-6, 90, 12, 20)
+			display_setColor(bgcolor[0],bgcolor[1],bgcolor[2])
+			display_fillRect(80-6, 90, 12, 20)
 		end
 	end
 
 	function drawWalls() do
-		display!setColor(fgcolor[0],fgcolor[1],fgcolor[2])
+		display_setColor(fgcolor[0],fgcolor[1],fgcolor[2])
 		readonly var left : UInt8 = (LEFT/SCALE) as UInt8
 		readonly var right : UInt8 = (RIGHT/SCALE) as UInt8
 		readonly var top : UInt8 = (TOP/SCALE) as UInt8
 		readonly var bottom : UInt8 = (BOTTOM/SCALE) as UInt8
 		readonly var xcenter : UInt8 = ((RIGHT-LEFT)/SCALE) as UInt8
 		readonly var ycenter : UInt8 = ((BOTTOM-TOP)/SCALE) as UInt8
-		display!fillRect(left-1, top-1, xcenter+1, 1)
-		display!fillRect(left-1, bottom, xcenter+1, 1)
-		display!fillRect(left-1, top, 1, ycenter)
-		display!fillRect(right, top, 1, ycenter)
+		display_fillRect(left-1, top-1, xcenter+1, 1)
+		display_fillRect(left-1, bottom, xcenter+1, 1)
+		display_fillRect(left-1, top, 1, ycenter)
+		display_fillRect(right, top, 1, ycenter)
 	end
 
 	// Bricks variable
@@ -253,17 +305,17 @@ thing fragment BreakoutGame includes TimerMsgs, DisplayMsgs, ControllerMsgs, IAC
 		readonly var by : UInt8 = ((TOP + 20 * SCALE + BRICK_HEIGHT as Int16 * y as Int16 * SCALE)/SCALE+1) as UInt8
 		readonly var w : UInt8 = (((RIGHT-LEFT)/8)/SCALE-2) as UInt8
 		readonly var h : UInt8 = (BRICK_HEIGHT-2) as UInt8
-		display!setColor(155,103,89)
-		display!fillRect(bx, by, w, h)
-		display!setColor(100,56,43)
-		display!drawRect(bx, by, w, h)
+		display_setColor(155,103,89)
+		display_fillRect(bx, by, w, h)
+		display_setColor(100,56,43)
+		display_drawRect(bx, by, w, h)
 	end
 
 	function removeBrick(x : UInt8, y: UInt8) do
 		readonly var bx : UInt8 = ((LEFT + ((RIGHT-LEFT)/8) * x as Int16)/SCALE+1) as UInt8
 		readonly var by : UInt8 = ((TOP + 20 * SCALE + BRICK_HEIGHT as Int16 * y as Int16 * SCALE)/SCALE+1) as UInt8
-		display!setColor(bgcolor[0],bgcolor[1],bgcolor[2])
-		display!fillRect(bx, by, (((RIGHT-LEFT)/8)/SCALE-2) as UInt8, BRICK_HEIGHT-2)
+		display_setColor(bgcolor[0],bgcolor[1],bgcolor[2])
+		display_fillRect(bx, by, (((RIGHT-LEFT)/8)/SCALE-2) as UInt8, BRICK_HEIGHT-2)
 		bricks[y] = unsetBit(bricks[y], x)
 	end
 
@@ -285,10 +337,10 @@ thing fragment BreakoutGame includes TimerMsgs, DisplayMsgs, ControllerMsgs, IAC
 	property level : UInt8 = 1
 
 	function drawLevel() do
-		display!setColor(158,209,130)
-		display!setBGColor(fgcolor[0],fgcolor[1],fgcolor[2])
-		display!setColor(bgcolor[0],bgcolor[1],bgcolor[2])
-		display!drawInteger(6, 2, level as Int16, 2, 2)
+		display_setColor(158,209,130)
+		display_setBGColor(fgcolor[0],fgcolor[1],fgcolor[2])
+		display_setColor(bgcolor[0],bgcolor[1],bgcolor[2])
+		display_drawInteger(6, 2, level as Int16, 2, 2)
 	end
 
 	function incrementScore(diff : Int8) do
@@ -298,19 +350,19 @@ thing fragment BreakoutGame includes TimerMsgs, DisplayMsgs, ControllerMsgs, IAC
 	end
 
 	function drawScore() do
-		display!setColor(158,209,130)
-		display!setBGColor(fgcolor[0],fgcolor[1],fgcolor[2])
-		display!drawInteger(58, 2, score, 5, 2)
+		display_setColor(158,209,130)
+		display_setBGColor(fgcolor[0],fgcolor[1],fgcolor[2])
+		display_drawInteger(58, 2, score, 5, 2)
 	end
 
 	function drawLives() do
 		// erase all existing ball
-		display!setColor(fgcolor[0],fgcolor[1],fgcolor[2])
-		display!fillRect(124,4,24+6, 6)
-		display!setColor(183, 199, 111)
+		display_setColor(fgcolor[0],fgcolor[1],fgcolor[2])
+		display_fillRect(124,4,24+6, 6)
+		display_setColor(183, 199, 111)
 		var i : UInt8 = 0
 		while(i<lives) do
-			display!fillRect(124 + (2-i)*12,4,6, 6)
+			display_fillRect(124 + (2-i)*12,4,6, 6)
 			i = i + 1
 		end
 
@@ -331,16 +383,16 @@ thing fragment BreakoutGame includes TimerMsgs, DisplayMsgs, ControllerMsgs, IAC
 
 			on entry do
 				startTime = timestamp()
-				display!create(XDISPSIZE, YDISPSIZE)
+				display_create(XDISPSIZE, YDISPSIZE)
 			end
 
 			transition -> LAUNCH event display?displayReady action do
-				display!clear()
+				display_clear()
 				initColors()
-				display!setColor(bgcolor[0],bgcolor[1],bgcolor[2])
-				display!fillRect(0,0,XDISPSIZE, YDISPSIZE)
-				display!setColor(fgcolor[0],fgcolor[1],fgcolor[2])
-				display!fillRect(0,0,XDISPSIZE, 14)
+				display_setColor(bgcolor[0],bgcolor[1],bgcolor[2])
+				display_fillRect(0,0,XDISPSIZE, YDISPSIZE)
+				display_setColor(fgcolor[0],fgcolor[1],fgcolor[2])
+				display_fillRect(0,0,XDISPSIZE, 14)
 				drawWalls()
 				createBricks()
 				drawLevel()
@@ -355,7 +407,7 @@ thing fragment BreakoutGame includes TimerMsgs, DisplayMsgs, ControllerMsgs, IAC
 				countdown = 3 // 3sec
 				drawScore()
 				drawLives()
-				display!update()
+				display_update()
 			end
 
 			internal event t : clock?timer_timeout
@@ -364,14 +416,14 @@ thing fragment BreakoutGame includes TimerMsgs, DisplayMsgs, ControllerMsgs, IAC
 				drawPad() // Draw the Pad
 				if ((countdown % 30) == 0) drawCountDown(countdown as Int16/30)
 				countdown = countdown - 1
-				display!update()
+				display_update()
 			end
 
 			transition -> PLAY  event t : clock?timer_timeout
 			guard t.id == 0 and countdown == 0 action do
 				drawCountDown(0)
 				resetBall()
-				display!update()
+				display_update()
 			end
 		}
 
@@ -440,8 +492,8 @@ thing fragment BreakoutGame includes TimerMsgs, DisplayMsgs, ControllerMsgs, IAC
 
 				drawBall() // Draw the Ball
 				drawPad() // Draw the Pad
-				ia!updateIA(bx, by, padx, pady)
-				display!update()
+				ia_updateIA(bx, by, padx, pady)
+				display_update()
 
 				log(false)
        			clock!timer_start(0, period)
@@ -462,7 +514,7 @@ thing fragment BreakoutGame includes TimerMsgs, DisplayMsgs, ControllerMsgs, IAC
 				eraseBall()
 				erasePad()
 				drawLives()
-				display!update()
+				display_update()
 				log(true)
 			end
 
@@ -485,7 +537,7 @@ thing fragment BreakoutGame includes TimerMsgs, DisplayMsgs, ControllerMsgs, IAC
 				if ((level % 2) == 1) dy = (dy * 3) / 2	// increase speed of the ball by 3/2
 				drawLives()
 				createBricks()
-				display!update()
+				display_update()
 			end
 
 			transition -> LAUNCH event t : clock?timer_timeout guard t.id == 0
@@ -497,15 +549,15 @@ thing fragment BreakoutGame includes TimerMsgs, DisplayMsgs, ControllerMsgs, IAC
 			on entry do
 				eraseBall()
 				erasePad()
-				display!setColor(255,255,255)
-				display!fillRect(8, 30, 142, 76)
-				display!setColor(fgcolor[0],fgcolor[1],fgcolor[2])
-				display!fillRect(9, 31, 140, 50)
-				display!setBGColor(fgcolor[0],fgcolor[1],fgcolor[2])
-				display!setColor(158,209,130)
-				display!drawInteger(23, 40, score, 5, 6)
-				display!drawThingML(26, 87)
-				display!update()
+				display_setColor(255,255,255)
+				display_fillRect(8, 30, 142, 76)
+				display_setColor(fgcolor[0],fgcolor[1],fgcolor[2])
+				display_fillRect(9, 31, 140, 50)
+				display_setBGColor(fgcolor[0],fgcolor[1],fgcolor[2])
+				display_setColor(158,209,130)
+				display_drawInteger(23, 40, score, 5, 6)
+				display_drawThingML(26, 87)
+				display_update()
 				log(true)
 				stopTime = timestamp()
 				quit()

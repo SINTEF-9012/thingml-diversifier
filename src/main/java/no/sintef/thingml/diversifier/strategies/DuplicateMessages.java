@@ -157,7 +157,7 @@ public class DuplicateMessages extends Strategy {
 	private void duplicateSendAction(SendAction sa) {
 		final Message copy = copies.get(sa.getMessage());
 		if (copy == null) return; //Most likely sa.getMessage() is from the STL...
-		System.out.println("Duplicating send action " + sa.getPort().getName() + "!" + sa.getMessage().getName());
+		if (debug) System.out.println("Duplicating send action " + sa.getPort().getName() + "!" + sa.getMessage().getName());
 		final ConditionalAction ca = ThingMLFactory.eINSTANCE.createConditionalAction();
 		final LowerExpression lower = ThingMLFactory.eINSTANCE.createLowerExpression();
 		
@@ -204,7 +204,7 @@ public class DuplicateMessages extends Strategy {
 			final Message m = rm.getMessage();
 			final Message m2 = getCopy(m);
 			final Thing thing = ThingMLHelpers.findContainingThing(h);
-			System.out.println("Duplicating handler " + rm.getPort().getName() + "?" + m.getName() + " in thing " + thing.getName());
+			if (debug) System.out.println("Duplicating handler " + rm.getPort().getName() + "?" + m.getName() + " in thing " + thing.getName());
 			Handler h2 = null;
 			if (h instanceof Transition) {
 				h2 = ThingMLFactory.eINSTANCE.createTransition();

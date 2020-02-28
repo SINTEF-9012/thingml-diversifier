@@ -90,7 +90,7 @@ public class SplitMessagesInline extends Strategy {
 		                msg.getAnnotations().add(annot);
 		        	} else continue;
 					int splitAt = manager.rnd.nextInt(msg.getParameters().size());
-					System.out.println("Splitting message " + msg.getName() + " at index " + splitAt + "...");
+					if (debug) System.out.println("Splitting message " + msg.getName() + " at index " + splitAt + "...");
 					final Message first = createMessage((Thing) msg.eContainer(), msg, msg.getParameters().subList(0, splitAt));
 					final Message second = createMessage((Thing) msg.eContainer(), msg, msg.getParameters().subList(splitAt, msg.getParameters().size()));
 					t.getMessages().add(first);
@@ -132,7 +132,7 @@ public class SplitMessagesInline extends Strategy {
 						if (messages == null) continue;
 						final Message first = messages.get(0);
 						final Message second = messages.get(1);
-						System.out.println("adding messages " + first.getName() + " and " + second.getName() + " to sent messages of port " + port.getName() + " of thing " + t.getName());						
+						if (debug) System.out.println("adding messages " + first.getName() + " and " + second.getName() + " to sent messages of port " + port.getName() + " of thing " + t.getName());						
 						port.getSends().add(first);
 						port.getSends().add(second);
 						port.getSends().remove(msg);
@@ -150,7 +150,7 @@ public class SplitMessagesInline extends Strategy {
 
 						final Message first = messages.get(0);
 						final Message second = messages.get(1);
-						System.out.println("adding messages " + first.getName() + " and " + second.getName() + " to received messages of port " + port.getName() + " of thing " + t.getName());
+						if (debug) System.out.println("adding messages " + first.getName() + " and " + second.getName() + " to received messages of port " + port.getName() + " of thing " + t.getName());
 						port.getReceives().add(first);
 						port.getReceives().add(second);
 						port.getReceives().remove(msg);
@@ -171,7 +171,7 @@ public class SplitMessagesInline extends Strategy {
 				if (!Manager.diversify(rm.getMessage()) || rm.getMessage().getParameters().size() == 0) continue;
 				if (AnnotatedElementHelper.hasFlag(root, "stl")) continue;
 				if (!AnnotatedElementHelper.isDefined(rm.getMessage(), "diversify", Strategies.SPLIT_MSG.name)) continue;
-				System.out.println("Updating handler " + ((ReceiveMessage)h.getEvent()).getPort().getName() + "?" + ((ReceiveMessage)h.getEvent()).getMessage().getName());
+				if (debug) System.out.println("Updating handler " + ((ReceiveMessage)h.getEvent()).getPort().getName() + "?" + ((ReceiveMessage)h.getEvent()).getMessage().getName());
 				if (h instanceof InternalTransition) {
 					final InternalTransition t = (InternalTransition) h;
 					updateHandlers(root, t);
@@ -230,7 +230,7 @@ public class SplitMessagesInline extends Strategy {
 			msg.getParameters().add(EcoreUtil.copy(p));
 		}
 		msg.setName(name);
-		System.out.println("Creating new message " + msg.getName());
+		if (debug) System.out.println("Creating new message " + msg.getName());
 		t.getMessages().add(msg);
 		return msg;
 	}
@@ -326,7 +326,7 @@ public class SplitMessagesInline extends Strategy {
 				
 		if (prop1 == null) {
 			final PrimitiveType bool = Helper.getPrimitiveType(Types.BOOLEAN_TYPEREF, ThingMLHelpers.findContainingThing(source));				
-			System.out.println("Creating new property received_" + rm.getPort().getName() + "_" + m1.getName() + " in state " + source.getName());
+			if (debug) System.out.println("Creating new property received_" + rm.getPort().getName() + "_" + m1.getName() + " in state " + source.getName());
 			prop1 = ThingMLFactory.eINSTANCE.createProperty();
 			prop1.setReadonly(false);
 			prop1.setName("received_" + rm.getPort().getName() + "_" + m1.getName());
@@ -342,13 +342,13 @@ public class SplitMessagesInline extends Strategy {
 			if (it.getEvent() != null) {
 				final ReceiveMessage rec = (ReceiveMessage)it.getEvent();
 				if (EcoreUtil.equals(rec.getPort(), rm.getPort()) && EcoreUtil.equals(rec.getMessage(), m1)) {
-					System.out.println("NOT creating new internal transtion in " + source.getName() + " on " + rm.getPort().getName() + "?" + m1.getName());
+					if (debug) System.out.println("NOT creating new internal transtion in " + source.getName() + " on " + rm.getPort().getName() + "?" + m1.getName());
 					return it;
 				}
 			}
 		}
 		
-		System.out.println("Creating new internal transtion in " + source.getName() + " on " + rm.getPort().getName() + "?" + m1.getName());		
+		if (debug) System.out.println("Creating new internal transtion in " + source.getName() + " on " + rm.getPort().getName() + "?" + m1.getName());		
 		final InternalTransition t1 = ThingMLFactory.eINSTANCE.createInternalTransition();
 		final ReceiveMessage rm1 = ThingMLFactory.eINSTANCE.createReceiveMessage();//EcoreUtil.copy(rm);
 		rm1.setMessage(m1);
@@ -435,7 +435,7 @@ public class SplitMessagesInline extends Strategy {
 				props.put(source, map);
 			}
 			if (props.get(source).get(pname) != null) continue;
-			System.out.println("Creating new property " + pname + " in state " + source.getName());
+			if (debug) System.out.println("Creating new property " + pname + " in state " + source.getName());
 			final Property prop = ThingMLFactory.eINSTANCE.createProperty();
 			prop.setReadonly(false);
 			prop.setName(pname);
@@ -475,7 +475,7 @@ public class SplitMessagesInline extends Strategy {
 	}
 	
 	private void updateHandlers(Thing root, Transition t) {
-		System.out.println("Splitting transition " + ((State)t.eContainer()).getName() + " --" + ((ReceiveMessage)t.getEvent()).getPort().getName() + "?" + ((ReceiveMessage)t.getEvent()).getMessage().getName() + "--> " + t.getTarget().getName());
+		if (debug) System.out.println("Splitting transition " + ((State)t.eContainer()).getName() + " --" + ((ReceiveMessage)t.getEvent()).getPort().getName() + "?" + ((ReceiveMessage)t.getEvent()).getMessage().getName() + "--> " + t.getTarget().getName());
 		final ReceiveMessage rm = (ReceiveMessage)t.getEvent();
 		final State source = (State)t.eContainer();		
 		
@@ -514,7 +514,7 @@ public class SplitMessagesInline extends Strategy {
 	}
 	
 	private void createTransition(Message m1, Message m2, ReceiveMessage rm, Transition t, State source, Property prop1, Property prop2, PropertyReference pr) {		
-		System.out.println("Creating new transtion " + source.getName() + " --" + rm.getPort().getName() + "?" + m1.getName() + "--> " + t.getTarget().getName());
+		if (debug) System.out.println("Creating new transtion " + source.getName() + " --" + rm.getPort().getName() + "?" + m1.getName() + "--> " + t.getTarget().getName());
 		final Transition t1 = ThingMLFactory.eINSTANCE.createTransition();
 		final ReceiveMessage rm1 = ThingMLFactory.eINSTANCE.createReceiveMessage();//EcoreUtil.copy(rm);
 		rm1.setMessage(m1);
@@ -603,7 +603,7 @@ public class SplitMessagesInline extends Strategy {
 				}
 				if (param != null) {
 					final EventReference er1 = EcoreUtil.copy(er);
-					System.out.println("Updating event reference " + ((ReceiveMessage)er.getReceiveMsg()).getPort().getName() + "?" + ((ReceiveMessage)er.getReceiveMsg()).getMessage().getName() + "." + er.getParameter().getName()
+					if (debug) System.out.println("Updating event reference " + ((ReceiveMessage)er.getReceiveMsg()).getPort().getName() + "?" + ((ReceiveMessage)er.getReceiveMsg()).getMessage().getName() + "." + er.getParameter().getName()
 							+ " to "  + rm.getPort().getName() + "?" + rm.getMessage().getName() + "." + param.getName());
 					er1.setParameter(param);
 					er1.setReceiveMsg(rm);
@@ -630,7 +630,7 @@ public class SplitMessagesInline extends Strategy {
 				final ReceiveMessage rm = (ReceiveMessage)er.getReceiveMsg();
 				final Property p = props.get(rm.getPort().getName() + "_" + rm.getMessage().getName() + "_" + er.getParameter().getName());																
 				if (p == null) continue;
-				System.out.println("Updating event reference " + ((ReceiveMessage)er.getReceiveMsg()).getPort().getName() + "?" + ((ReceiveMessage)er.getReceiveMsg()).getMessage().getName() + "." + er.getParameter().getName()
+				if (debug) System.out.println("Updating event reference " + ((ReceiveMessage)er.getReceiveMsg()).getPort().getName() + "?" + ((ReceiveMessage)er.getReceiveMsg()).getMessage().getName() + "." + er.getParameter().getName()
 						+ " to property reference to " + p.getName());
 				final PropertyReference pr = ThingMLFactory.eINSTANCE.createPropertyReference();
 				pr.setProperty(p);

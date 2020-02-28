@@ -11,7 +11,7 @@ thing fragment TimerMsgs
 thing fragment TimerClientPort includes TimerMsgs 
 @stl {
 	
-	required port timer {
+	required port timer @monitor "not" @diversify "not" {
 		sends timer_start, timer_cancel
 		receives timer_timeout
 	}
@@ -21,7 +21,7 @@ thing fragment Timer includes TimerMsgs
 @stl 
 @diversify "not"{
 	
-	provided port timer {
+	provided port timer @monitor "not" @diversify "not" {
 		receives timer_start, timer_cancel
 		sends timer_timeout
 	}

@@ -6,15 +6,15 @@ import java.util.List;
 
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EObject;
-import org.thingml.xtext.thingML.Message;
+import org.thingml.xtext.thingML.Port;
 import org.thingml.xtext.thingML.Thing;
 import org.thingml.xtext.thingML.ThingMLModel;
 
 import no.sintef.thingml.diversifier.Manager;
 
-public class ShuffleMessages extends Strategy {
+public class ShufflePort extends Strategy {
 
-	public ShuffleMessages(Manager manager) {
+	public ShufflePort(Manager manager) {
 		super(manager);
 	}
 
@@ -26,12 +26,12 @@ public class ShuffleMessages extends Strategy {
             if (o instanceof Thing) {
             	final Thing t = (Thing) o;
             	if (Manager.diversify(t)) {
-            		if (debug) System.out.println("Shuffling messages of thing " + t.getName());
-            		final List<Message> shuffled = new ArrayList<Message>();
-            		shuffled.addAll(t.getMessages());
+            		if (debug) System.out.println("Shuffling ports of thing " + t.getName());
+            		final List<Port> shuffled = new ArrayList<Port>();
+            		shuffled.addAll(t.getPorts());
             		Collections.shuffle(shuffled, manager.rnd);
-            		t.getMessages().clear();
-            		t.getMessages().addAll(shuffled);
+            		t.getPorts().clear();
+            		t.getPorts().addAll(shuffled);
             	}
             }
         }

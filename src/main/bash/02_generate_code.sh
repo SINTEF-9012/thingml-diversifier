@@ -50,6 +50,7 @@ function generate
 logo
 for LANGUAGE in ${LANGUAGES[@]}; do
   generate $LANGUAGE &
+  generate ${LANGUAGE}_encrypt &
 done
 wait
 logo

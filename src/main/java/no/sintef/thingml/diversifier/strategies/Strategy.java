@@ -6,7 +6,7 @@ import no.sintef.thingml.diversifier.Manager;
 
 public abstract class Strategy {
 	
-	protected static final boolean debug = false;
+	public static boolean debug = false;
 	protected final Manager manager;
 	public long executionTime = -1;
 	
