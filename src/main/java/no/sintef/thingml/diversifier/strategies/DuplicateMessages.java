@@ -37,13 +37,15 @@ import no.sintef.thingml.diversifier.Strategies;
 
 public class DuplicateMessages extends Strategy {
 
+	private static long counter = 0;
+	
 	public DuplicateMessages(Manager manager) {
 		super(manager);
 	}
 
-	private Map<Message, Message> copies = new HashMap<>();
+	private Map<String, Message> copies = new HashMap<>();
 
-	private Message getCopy(Message m) {
+	/*private Message getCopy(Message m) {
 		Message copy = copies.get(m);
 		if (copy != null)
 			return copy;
@@ -55,7 +57,7 @@ public class DuplicateMessages extends Strategy {
 		}
 		copies.put(m, copy);
 		return copy;
-	}
+	}*/
 
 	@Override
 	protected void doApply(ThingMLModel model) {
@@ -73,14 +75,17 @@ public class DuplicateMessages extends Strategy {
 			msgs.addAll(thing.getMessages());
 			for (Message msg : msgs) {
 				if (!Manager.diversify(msg)) continue;					
-				if (manager.rnd.nextBoolean()) {
+				if (manager.rnd.nextInt(4)==0) {
 	        		final PlatformAnnotation annot = ThingMLFactory.eINSTANCE.createPlatformAnnotation();
 	                annot.setName("diversify");
 	                annot.setValue(Strategies.DUP_MSG.name);
 	                msg.getAnnotations().add(annot);
+					final Message copy = EcoreUtil.copy(msg);
+					copy.setName(msg.getName() + "_bis" + (counter++));
+					thing.getMessages().add(copy);
+					System.out.println("copies.put(" + thing.getName() + "_" + msg.getName() + ", copy)");
+					copies.put(thing.getName() + "_" + msg.getName(), copy);
 	        	} else continue;
-				final Message copy = getCopy(msg);
-				thing.getMessages().add(copy);
 			}
 		}
 		
@@ -90,25 +95,27 @@ public class DuplicateMessages extends Strategy {
 			final EObject o = it2.next();
 			if (!(o instanceof Thing)) continue;
 			final Thing thing = (Thing)o;
-			if (AnnotatedElementHelper.hasFlag(thing, "stl")) continue;
+			//if (AnnotatedElementHelper.hasFlag(thing, "stl")) continue;
 			for(Port port : thing.getPorts()) {			
 				final List<Message> sent = new ArrayList<>();
 				sent.addAll(port.getSends());
 				for (Message msg : sent) {
-					if (AnnotatedElementHelper.hasFlag(ThingMLHelpers.findContainingThing(msg), "stl")) continue;				
-					if (!Manager.diversify(msg)) continue;	
+					//if (AnnotatedElementHelper.hasFlag(ThingMLHelpers.findContainingThing(msg), "stl")) continue;				
+					//if (!Manager.diversify(msg)) continue;	
 					if (!AnnotatedElementHelper.isDefined(msg, "diversify", Strategies.DUP_MSG.name)) continue;
-					final Message copy = getCopy(msg);
+					final Message copy = copies.get(((Thing)msg.eContainer()).getName() + "_" + msg.getName());
+					System.out.println("copies.(" + ((Thing)msg.eContainer()).getName() + "_" + msg.getName() + ", copy) = " +copies.get(((Thing)msg.eContainer()).getName() + "_" + msg.getName()) );
 					port.getSends().add(copy);
 				}
 
 				final List<Message> received = new ArrayList<>();
 				received.addAll(port.getReceives());
 				for (Message msg : received) {
-					if (AnnotatedElementHelper.hasFlag(ThingMLHelpers.findContainingThing(msg), "stl")) continue;				
-					if (!Manager.diversify(msg)) continue;
+					//if (AnnotatedElementHelper.hasFlag(ThingMLHelpers.findContainingThing(msg), "stl")) continue;				
+					//if (!Manager.diversify(msg)) continue;
 					if (!AnnotatedElementHelper.isDefined(msg, "diversify", Strategies.DUP_MSG.name)) continue;
-					final Message copy = getCopy(msg);
+					final Message copy = copies.get(((Thing)msg.eContainer()).getName() + "_" + msg.getName());
+					System.out.println("copies.(" + ((Thing)msg.eContainer()).getName() + "_" + msg.getName() + ", copy) = " +copies.get(((Thing)msg.eContainer()).getName() + "_" + msg.getName()) );
 					port.getReceives().add(copy);
 				}			
 			}
@@ -120,7 +127,7 @@ public class DuplicateMessages extends Strategy {
 			final EObject o = it3.next();
 			if (!(o instanceof SendAction)) continue;
 			final SendAction sa = (SendAction) o;
-			if (!Manager.diversify(sa.getMessage())) continue;
+			//if (!Manager.diversify(sa.getMessage())) continue;
 			if (!AnnotatedElementHelper.isDefined(sa.getMessage(), "diversify", Strategies.DUP_MSG.name)) continue;
 			duplicateSendAction(sa);
 		}
@@ -133,7 +140,7 @@ public class DuplicateMessages extends Strategy {
 				final Handler h = (Handler) o;
 				if (h.getEvent() == null || !(h.getEvent() instanceof ReceiveMessage)) continue;
 				final ReceiveMessage rm = (ReceiveMessage)h.getEvent();
-				if (!Manager.diversify(rm.getMessage())) continue;
+				//if (!Manager.diversify(rm.getMessage())) continue;
 				if (!AnnotatedElementHelper.isDefined(rm.getMessage(), "diversify", Strategies.DUP_MSG.name)) continue;
 				duplicateHandler(h);				
 			}
@@ -155,7 +162,8 @@ public class DuplicateMessages extends Strategy {
 	}
 
 	private void duplicateSendAction(SendAction sa) {
-		final Message copy = copies.get(sa.getMessage());
+		final Message copy = copies.get(((Thing)sa.getMessage().eContainer()).getName() + "_" + sa.getMessage().getName());
+		System.out.println("copies.(" + ((Thing)sa.getMessage().eContainer()).getName() + "_" + sa.getMessage().getName() + ", copy) = " +copies.get(((Thing)sa.getMessage().eContainer()).getName() + "_" + sa.getMessage().getName()) );
 		if (copy == null) return; //Most likely sa.getMessage() is from the STL...
 		if (debug) System.out.println("Duplicating send action " + sa.getPort().getName() + "!" + sa.getMessage().getName());
 		final ConditionalAction ca = ThingMLFactory.eINSTANCE.createConditionalAction();
@@ -202,7 +210,8 @@ public class DuplicateMessages extends Strategy {
 			final Thing root = ThingMLHelpers.findContainingThing(rm.getMessage());
 			if (AnnotatedElementHelper.hasFlag(root, "stl")) return;
 			final Message m = rm.getMessage();
-			final Message m2 = getCopy(m);
+			final Message m2 = copies.get(((Thing)m.eContainer()).getName() + "_" + m.getName());
+			System.out.println("copies.(" + ((Thing)m.eContainer()).getName() + "_" + m.getName() + ", copy) = " +copies.get(((Thing)m.eContainer()).getName() + "_" + m.getName()) );
 			final Thing thing = ThingMLHelpers.findContainingThing(h);
 			if (debug) System.out.println("Duplicating handler " + rm.getPort().getName() + "?" + m.getName() + " in thing " + thing.getName());
 			Handler h2 = null;

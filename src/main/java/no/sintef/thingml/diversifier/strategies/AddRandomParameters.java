@@ -49,7 +49,7 @@ public class AddRandomParameters extends Strategy {
             if (o instanceof Message) {            	
             	final Message m = (Message) o;
             	if (!Manager.diversify(m)) continue;
-            	if (manager.rnd.nextBoolean()) {
+            	if (manager.rnd.nextInt(4)>0) {
             		final PlatformAnnotation annot = ThingMLFactory.eINSTANCE.createPlatformAnnotation();
                     annot.setName("diversify");
                     annot.setValue(Strategies.ADD_PARAM.name);

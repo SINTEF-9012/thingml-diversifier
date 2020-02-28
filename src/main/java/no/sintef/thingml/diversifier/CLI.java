@@ -119,27 +119,27 @@ public class CLI {
 			if (s.matches("\\d+")) {	try {
 				final int seq = Integer.parseInt(s);						
 				for(int i = 0; i < seq; i++) {
-					if (manager.rnd.nextBoolean()) {
-						manager.add(new ShufflePort(manager));
-					}
-					if (manager.rnd.nextBoolean()) {
-						manager.add(new ShuffleMessages(manager));
-					}
-					if (manager.rnd.nextBoolean()) {
-						manager.add(new ShuffleParameters(manager));
-					}
-					if (manager.rnd.nextBoolean()) {
-						manager.add(new AddRandomParameters(manager));
-					}
-					if (manager.rnd.nextBoolean()) {
+					manager.add(new ShufflePort(manager));
+					manager.add(new ShuffleParameters(manager));
+					if (manager.rnd.nextInt(4)>0) {
 						manager.add(new DuplicateMessages(manager));
 					}
 					if (manager.rnd.nextBoolean()) {
 						manager.add(new SplitMessagesInline(manager));
 					}
+					manager.add(new ShuffleMessages(manager));
+					manager.add(new ShuffleParameters(manager));
+					if (manager.rnd.nextInt(4)>0) {
+						manager.add(new OffsetParameters(manager));
+					}
+					if (manager.rnd.nextInt(4)>0) {
+						manager.add(new AddRandomParameters(manager));
+					}
 				} } catch (NumberFormatException nfe) {/*all good!*/}
 			} else if (s.equals(Strategies.ADD_PARAM.name)) {
 				manager.add(new AddRandomParameters(manager)); 
+			} else if (s.equals(Strategies.OFF_PARAM.name)) {
+				manager.add(new OffsetParameters(manager)); 
 			} else if (s.equals(Strategies.DUP_MSG.name)) {
 				manager.add(new DuplicateMessages(manager)); 
 			} else if (s.equals(Strategies.SHUFF_PORT.name)) {
