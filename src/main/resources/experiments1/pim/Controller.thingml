@@ -46,8 +46,10 @@ thing fragment BasicIAController includes IAController, WithBinaryLog
 
 			transition -> Following event e : game?updateIA
 			action do
-				if (e.ballx > e.padx+400) ctrlx = ctrlx + 4
-				else if (e.ballx < e.padx-400) ctrlx = ctrlx - 4
+				readonly var ballx : Int16 = e.ballx
+				readonly var padx : Int16 = e.padx
+				if (ballx > padx+400) ctrlx = ctrlx + 4
+				else if (ballx < padx-400) ctrlx = ctrlx - 4
 				if (ctrlx < -100) ctrlx = -100
 				else if (ctrlx > 100) ctrlx = 100
 			end

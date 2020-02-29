@@ -83,46 +83,39 @@ public class OffsetParameters extends Strategy {
         
         for(EventReference er : ThingMLHelpers.getAllExpressions(model, EventReference.class)) {
         	if (mapping.containsKey(er.getParameter())) {
-        		final ExpressionGroup group = ThingMLFactory.eINSTANCE.createExpressionGroup();
-        		final MinusExpression minus = ThingMLFactory.eINSTANCE.createMinusExpression();
-        		if (er.eContainer() instanceof CastExpression) {
-        			final ExpressionGroup group2 = ThingMLFactory.eINSTANCE.createExpressionGroup();
-        			group2.setTerm((CastExpression)er.eContainer());
-        			minus.setLhs(group2);
-        		}
-        		else minus.setLhs(er);
         		final IntegerLiteral offset = ThingMLFactory.eINSTANCE.createIntegerLiteral();
         		offset.setIntValue(mapping.get(er.getParameter()));
-        		minus.setRhs(offset);
-        		group.setTerm(minus);
-        		EcoreUtil.replace(er, group);
-        		/*final EObject container = er.eContainer();
-        		final EStructuralFeature containment = er.eContainingFeature();
-        		if (containment.isMany()) {
-        			Object list = container.eGet(containment);
-        			if (list instanceof EList<?>) {
-        				EList<Expression> eList = (EList<Expression>) list;
-        				eList.add(eList.indexOf(er), minus);
-        				eList.remove(er);
+        		if (er.eContainer() instanceof CastExpression) {
+        			final CastExpression cast = (CastExpression) er.eContainer();
+            		final MinusExpression minus = ThingMLFactory.eINSTANCE.createMinusExpression();
+        			final ExpressionGroup group = ThingMLFactory.eINSTANCE.createExpressionGroup();
+        			minus.setLhs(cast.getTerm());
+        			minus.setRhs(offset);
+        			group.setTerm(minus);
+        			cast.setTerm(group);
+        		}
+        		else {
+        			final EObject container = er.eContainer();
+        			final EStructuralFeature cf = er.eContainingFeature();
+        			final Object ref = container.eGet(cf);
+        			
+        			int index = 0;
+        			if (ref instanceof EList) {
+						index = ((EList)ref).indexOf(er);
         			}
-        		} else {
-        			container.eSet(containment, minus);
-        		}  */
+            		final ExpressionGroup group = ThingMLFactory.eINSTANCE.createExpressionGroup();
+            		final MinusExpression minus = ThingMLFactory.eINSTANCE.createMinusExpression();
+        			minus.setLhs(er);
+        			minus.setRhs(offset);
+            		group.setTerm(minus);
+					if (ref instanceof EList) {
+						((EList)ref).add(index, group);
+						((EList)ref).remove(er);
+					} else {
+						container.eSet(cf, group);
+					}
+        		}
         	}
-        
-        /*final TreeIterator<EObject> it2 = model.eAllContents();
-        while (it2.hasNext()) {
-            final EObject o = it2.next();
-            if (o instanceof Handler) {
-                final Handler h = (Handler) o;
-                List<EventReference> refs = new ArrayList<EventReference>();
-                refs.addAll(ThingMLHelpers.getAllExpressions(h, EventReference.class));
-                for(EventReference er : refs) {
-                	              		
-                		//EcoreUtil.replace(er, minus);
-                	}
-                }
-            }*/
         }
 	}
 

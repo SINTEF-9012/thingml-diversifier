@@ -44,18 +44,18 @@ function generate
   ((!WITH_PERF)) && BASEMODELDOCKER=/thingml-div/src/main/resources/experiments1/$LANGUAGE.thingml
   TARGETMODELDOCKER=/thingml-div/target/models/$LANGUAGE/diversify$TIMES
 
-#  _docker run -v $BASEDIR:/thingml-div thingml-div thingml --tool monitor-bin --output $TARGETMODELDOCKER --source $BASEMODELDOCKER
-#  cp $TARGETDIR/models/$LANGUAGE/diversify$TIMES/monitor/merged.thingml $TARGETDIR/models/$LANGUAGE/diversify$TIMES/$LANGUAGE.thingml
-#  rm -rf $TARGETDIR/models/$LANGUAGE/diversify$TIMES/monitor
+  _docker run -v $BASEDIR:/thingml-div thingml-div thingml --tool monitor-bin --output $TARGETMODELDOCKER --source $BASEMODELDOCKER
+  cp $TARGETDIR/models/$LANGUAGE/diversify$TIMES/monitor/merged.thingml $TARGETDIR/models/$LANGUAGE/diversify$TIMES/$LANGUAGE.thingml
+  rm -rf $TARGETDIR/models/$LANGUAGE/diversify$TIMES/monitor
   
-#  _docker run -v $BASEDIR:/thingml-div thingml-div -i $BASEMODELDOCKER -r 1 -n $N -m static -o $TARGETMODELDOCKER/nolog/static -s $TIMES
-#  for i in `seq 0 $((N-1))`; do
-#  	_docker run -v $BASEDIR:/thingml-div thingml-div thingml --tool monitor-bin --output $TARGETMODELDOCKER/static --source $TARGETMODELDOCKER/nolog/static/$LANGUAGE$i.thingml
-#  	cp $TARGETDIR/models/$LANGUAGE/diversify$TIMES/static/monitor/merged.thingml $TARGETDIR/models/$LANGUAGE/diversify$TIMES/static/$LANGUAGE$i.thingml
-#  	rm -rf $TARGETDIR/models/$LANGUAGE/diversify$TIMES/static/monitor
-#  done
+  _docker run -v $BASEDIR:/thingml-div thingml-div -i $BASEMODELDOCKER -r 1 -n $N -m static -o $TARGETMODELDOCKER/nolog/static -s $TIMES
+  for i in `seq 0 $((N-1))`; do
+  	_docker run -v $BASEDIR:/thingml-div thingml-div thingml --tool monitor-bin --output $TARGETMODELDOCKER/static --source $TARGETMODELDOCKER/nolog/static/$LANGUAGE$i.thingml
+  	cp $TARGETDIR/models/$LANGUAGE/diversify$TIMES/static/monitor/merged.thingml $TARGETDIR/models/$LANGUAGE/diversify$TIMES/static/$LANGUAGE$i.thingml
+  	rm -rf $TARGETDIR/models/$LANGUAGE/diversify$TIMES/static/monitor
+  done
   
-  _docker run -v $BASEDIR:/thingml-div thingml-div -i $BASEMODELDOCKER -r 1 -n $N -m dynamic -o $TARGETMODELDOCKER/nolog/dynamic -s $TIMES --debug
+  _docker run -v $BASEDIR:/thingml-div thingml-div -i $BASEMODELDOCKER -r 1 -n $N -m dynamic -o $TARGETMODELDOCKER/nolog/dynamic -s $TIMES
   for i in `seq 0 $((N-1))`; do
   	_docker run -v $BASEDIR:/thingml-div thingml-div thingml --tool monitor-bin --output $TARGETMODELDOCKER/dynamic --source $TARGETMODELDOCKER/nolog/dynamic/$LANGUAGE$i.thingml
   	cp $TARGETDIR/models/$LANGUAGE/diversify$TIMES/dynamic/monitor/merged.thingml $TARGETDIR/models/$LANGUAGE/diversify$TIMES/dynamic/$LANGUAGE$i.thingml
@@ -68,11 +68,11 @@ logo
 mkdir -p $TARGETDIR/models/nolog/
 mkdir -p $TARGETDIR/models/nolog/
 for LANGUAGE in ${LANGUAGES[@]}; do
-#  generate $LANGUAGE 1 &
-#  generate $LANGUAGE 2 &
-#  generate $LANGUAGE 3 &
+  generate $LANGUAGE 1 &
+  generate $LANGUAGE 2 &
+  generate $LANGUAGE 3 &
   generate $LANGUAGE 4 &
-#  encrypt $LANGUAGE &
+  encrypt $LANGUAGE &
 done
 wait
 logo

@@ -382,7 +382,8 @@ thing fragment BreakoutGame includes TimerMsgs, DisplayMsgs, ControllerMsgs, IAC
 		internal event e : controller?position action do
 			// Map the controller values [-100..100] to the pad position
 			var center : Int32 = (RIGHT as Int32 - LEFT as Int32 - padlen as Int32)
-			center = e.x as Int32 * center
+			readonly var x : Int32 = e.x as Int32 
+			center = x * center
 			center = center / 200
 			padx = (LEFT as Int32 + center + (RIGHT as Int32 - LEFT as Int32) / 2) as Int16
 		end
