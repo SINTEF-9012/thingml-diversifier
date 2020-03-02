@@ -14,6 +14,7 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.thingml.xtext.constraints.ThingMLHelpers;
 import org.thingml.xtext.constraints.Types;
 import org.thingml.xtext.helpers.ActionHelper;
+import org.thingml.xtext.helpers.AnnotatedElementHelper;
 import org.thingml.xtext.helpers.StateHelper;
 import org.thingml.xtext.helpers.TyperHelper;
 import org.thingml.xtext.thingML.CastExpression;
@@ -40,6 +41,10 @@ public class OffsetParameters extends Strategy {
 		super(manager);
 	}
 
+	public OffsetParameters(Manager manager, int i) {
+		super(manager, i);
+	}
+
 	@Override
 	protected void doApply(ThingMLModel model) {
 		final Map<Parameter, Integer> mapping = new HashMap<Parameter, Integer>();
@@ -59,17 +64,18 @@ public class OffsetParameters extends Strategy {
                         int index = 0;
                         for (Expression p : params) {
                         	final Parameter param = send.getMessage().getParameters().get(index);
+                        	if (AnnotatedElementHelper.hasFlag(param, "noise")) continue; //This is a random parameter, no point in offsetting it
                             final TypeRef type = TyperHelper.getBroadType(param.getTypeRef());
                             index++;
                             if (!(type.getType() instanceof PrimitiveType) || !TyperHelper.isA(type, Types.INTEGER_TYPEREF))
                             	continue;
-                            if (manager.rnd.nextBoolean())
+                            if (manager.rnd.nextInt(10)<probability)
                             	continue;
                             final ExpressionGroup group = ThingMLFactory.eINSTANCE.createExpressionGroup();
                             final PlusExpression plus = ThingMLFactory.eINSTANCE.createPlusExpression();
                             plus.setLhs(EcoreUtil.copy(p));
                             final IntegerLiteral i = ThingMLFactory.eINSTANCE.createIntegerLiteral();
-                            final int offset = manager.rnd.nextInt(Math.max(4, (int)(8*((PrimitiveType)param.getTypeRef().getType()).getByteSize())));
+                            final int offset = Math.max(1, manager.rnd.nextInt(Math.max(2, (int)(3*((PrimitiveType)param.getTypeRef().getType()).getByteSize()))));
                             i.setIntValue(offset);
                             plus.setRhs(i);
                             group.setTerm(plus);

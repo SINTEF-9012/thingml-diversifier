@@ -120,21 +120,12 @@ public class CLI {
 				final int seq = Integer.parseInt(s);						
 				for(int i = 0; i < seq; i++) {
 					manager.add(new ShufflePort(manager));
-					manager.add(new ShuffleParameters(manager));
-					if (manager.rnd.nextInt(4)>0) {
-						manager.add(new DuplicateMessages(manager));
-					}
-					if (manager.rnd.nextBoolean()) {
-						manager.add(new SplitMessagesInline(manager));
-					}
+					manager.add(new ShuffleParameters(manager));					
+					manager.add(new DuplicateMessages(manager, 3));
 					manager.add(new ShuffleMessages(manager));
-					manager.add(new ShuffleParameters(manager));
-					if (manager.rnd.nextInt(4)>0) {
-						manager.add(new OffsetParameters(manager));
-					}
-					if (manager.rnd.nextInt(4)>0) {
-						manager.add(new AddRandomParameters(manager));
-					}
+					manager.add(new ShuffleParameters(manager));					
+					manager.add(new OffsetParameters(manager, 5));
+					manager.add(new AddRandomParameters(manager, 3));
 				} } catch (NumberFormatException nfe) {/*all good!*/}
 			} else if (s.equals(Strategies.ADD_PARAM.name)) {
 				manager.add(new AddRandomParameters(manager)); 
@@ -148,10 +139,6 @@ public class CLI {
 				manager.add(new ShuffleMessages(manager)); 
 			} else if (s.equals(Strategies.SHUFF_PARAM.name)) {
 				manager.add(new ShuffleParameters(manager)); 
-			} else if (s.equals(Strategies.SPLIT_MSG.name)) {
-				manager.add(new SplitMessagesInline(manager));
-			} else if (s.equals(Strategies.UP_PARAM.name)) {
-				manager.add(new UpsizeParameters(manager)); 			
 			} else {
 				printUsage(jcom);
 				throw new UnsupportedOperationException("Diversification strategy " + s + " is not supported.");

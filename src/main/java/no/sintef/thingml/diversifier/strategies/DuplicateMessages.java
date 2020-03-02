@@ -43,6 +43,10 @@ public class DuplicateMessages extends Strategy {
 		super(manager);
 	}
 
+	public DuplicateMessages(Manager manager, int i) {
+		super(manager, i);
+	}
+
 	private Map<String, Message> copies = new HashMap<>();
 
 	@Override
@@ -60,12 +64,21 @@ public class DuplicateMessages extends Strategy {
 			final List<Message> msgs = new ArrayList<Message>();
 			msgs.addAll(thing.getMessages());
 			for (Message msg : msgs) {
-				if (!Manager.diversify(msg)) continue;					
-				if (manager.rnd.nextInt(4)==0) {
+				if (!Manager.diversify(msg)) continue;	
+				int prob = probability;
+				if (AnnotatedElementHelper.hasFlag(msg, "duplicated") || AnnotatedElementHelper.hasFlag(msg, "split"))  prob = prob - 1; else prob = prob + 2;
+				if (manager.rnd.nextInt(10)<prob) {
 	        		final PlatformAnnotation annot = ThingMLFactory.eINSTANCE.createPlatformAnnotation();
 	                annot.setName("diversify");
 	                annot.setValue(Strategies.DUP_MSG.name);
 	                msg.getAnnotations().add(annot);
+	                
+	                if (!AnnotatedElementHelper.hasFlag(msg, "duplicated")) {
+	                	final PlatformAnnotation annot2 = ThingMLFactory.eINSTANCE.createPlatformAnnotation();
+	                	annot2.setName("duplicated");
+	                	msg.getAnnotations().add(annot2);
+	                }
+	                
 					final Message copy = EcoreUtil.copy(msg);
 					copy.setName(msg.getName() + "_bis" + (counter++));
 					thing.getMessages().add(copy);

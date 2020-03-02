@@ -38,6 +38,10 @@ public class AddRandomParameters extends Strategy {
 		super(manager);
 	}
 
+	public AddRandomParameters(Manager manager, int i) {
+		super(manager, i);
+	}
+
 	private static int param = 0;
 	private Map<String, Integer> params = new HashMap<>();
 
@@ -49,7 +53,13 @@ public class AddRandomParameters extends Strategy {
             if (o instanceof Message) {            	
             	final Message m = (Message) o;
             	if (!Manager.diversify(m)) continue;
-            	if (manager.rnd.nextInt(4)>0) {
+            	int count = 0;
+            	for (Parameter p : m.getParameters()) {
+            		if (AnnotatedElementHelper.hasFlag(p, "noise")) count++;
+            	}
+            	int prob = (m.getParameters().isEmpty()) ? probability : (m.getParameters().size()-count)*probability/m.getParameters().size();
+            	
+            	if (manager.rnd.nextInt(10)<prob) {
             		final PlatformAnnotation annot = ThingMLFactory.eINSTANCE.createPlatformAnnotation();
                     annot.setName("diversify");
                     annot.setValue(Strategies.ADD_PARAM.name);
