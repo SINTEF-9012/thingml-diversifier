@@ -5,10 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.thingml.xtext.constraints.ThingMLHelpers;
 import org.thingml.xtext.constraints.Types;
@@ -19,11 +17,11 @@ import org.thingml.xtext.thingML.CastExpression;
 import org.thingml.xtext.thingML.EventReference;
 import org.thingml.xtext.thingML.Expression;
 import org.thingml.xtext.thingML.ExpressionGroup;
+import org.thingml.xtext.thingML.ExternExpression;
 import org.thingml.xtext.thingML.IntegerLiteral;
 import org.thingml.xtext.thingML.Message;
 import org.thingml.xtext.thingML.MinusExpression;
 import org.thingml.xtext.thingML.Parameter;
-import org.thingml.xtext.thingML.PlusExpression;
 import org.thingml.xtext.thingML.PrimitiveType;
 import org.thingml.xtext.thingML.SendAction;
 import org.thingml.xtext.thingML.ThingMLFactory;
@@ -32,13 +30,13 @@ import org.thingml.xtext.thingML.TypeRef;
 
 import no.sintef.thingml.diversifier.Manager;
 
-public class OffsetParameters extends Strategy {
+public class BitShiftParameters extends Strategy {
 
-	public OffsetParameters(Manager manager) {
+	public BitShiftParameters(Manager manager) {
 		super(manager);
 	}
 
-	public OffsetParameters(Manager manager, int i) {
+	public BitShiftParameters(Manager manager, int i) {
 		super(manager, i);
 	}
 
@@ -52,7 +50,7 @@ public class OffsetParameters extends Strategy {
                 final Message m = (Message) o;
                 //if (AnnotatedElementHelper.hasFlag(ThingMLHelpers.findContainingThing(m), "stl")) continue;
         		if (m.getParameters().size() == 0 || !Manager.diversify(m)) continue;
-        		if (debug) System.out.println("Offseting parameters for message " + m.getName());
+        		if (debug) System.out.println("Bit-shifting parameters for message " + m.getName());
 
                 for (SendAction send : ActionHelper.getAllActions(model, SendAction.class)) {
                     if (EcoreUtil.equals(send.getMessage(), m)) {
@@ -70,16 +68,18 @@ public class OffsetParameters extends Strategy {
                             if (manager.rnd.nextInt(10)<((params.size()-count)*probability/params.size()))
                             	continue;
                             count++;
-                            final ExpressionGroup group = ThingMLFactory.eINSTANCE.createExpressionGroup();
-                            final PlusExpression plus = ThingMLFactory.eINSTANCE.createPlusExpression();
-                            plus.setLhs(EcoreUtil.copy(p));
-                            final IntegerLiteral i = ThingMLFactory.eINSTANCE.createIntegerLiteral();
-                            final int offset = Math.max(1, manager.rnd.nextInt(Math.max(2, (int)(3*((PrimitiveType)param.getTypeRef().getType()).getByteSize()))));
-                            i.setIntValue(offset);
-                            plus.setRhs(i);
-                            group.setTerm(plus);
-                            EcoreUtil.replace(p, group);
-                            mapping.put(param, offset);
+                          //FIXME: << (or <<<) are NOT circular shifts... use something like (x << n) | (x >> (32 - n));//x Int32
+                            final ExpressionGroup group = ThingMLFactory.eINSTANCE.createExpressionGroup();	                			
+            				final ExternExpression expr = ThingMLFactory.eINSTANCE.createExternExpression();
+            				expr.setExpression("(");
+            				expr.getSegments().add(EcoreUtil.copy(p));
+            				final ExternExpression bitshift = ThingMLFactory.eINSTANCE.createExternExpression();
+            				final int shift = Math.max(1, manager.rnd.nextInt(Math.max(2, (int)(3*((PrimitiveType)param.getTypeRef().getType()).getByteSize()))));
+            				bitshift.setExpression(" >> " + shift + ")");
+            				expr.getSegments().add(bitshift);
+            				group.setTerm(expr);
+            				EcoreUtil.replace(p, group);
+                            mapping.put(param, shift);
                         }
                     }
                 }               
@@ -88,21 +88,35 @@ public class OffsetParameters extends Strategy {
         
         for(EventReference er : ThingMLHelpers.getAllExpressions(model, EventReference.class)) {
         	if (mapping.containsKey(er.getParameter())) {
-        		final IntegerLiteral offset = ThingMLFactory.eINSTANCE.createIntegerLiteral();
-        		offset.setIntValue(mapping.get(er.getParameter()));
-           		final ExpressionGroup group2 = ThingMLFactory.eINSTANCE.createExpressionGroup();
-           		final MinusExpression minus = ThingMLFactory.eINSTANCE.createMinusExpression();
-           		if (er.eContainer() instanceof CastExpression) {
+        		final int shift = mapping.get(er.getParameter());
+        		
+        		//FIXME: << (or <<<) are NOT circular shifts... use something like (x << n) | (x >> (32 - n));//x Int32
+				
+        		final ExpressionGroup group2 = ThingMLFactory.eINSTANCE.createExpressionGroup();
+        		final ExternExpression expr = ThingMLFactory.eINSTANCE.createExternExpression();
+				expr.setExpression("(");
+        		if (er.eContainer() instanceof CastExpression) {
            			final CastExpression cast = (CastExpression) er.eContainer();
+           			final ExpressionGroup group = ThingMLFactory.eINSTANCE.createExpressionGroup();
            			EcoreUtil.replace(cast, group2);
-           			minus.setLhs(cast);
+           			group.setTerm(cast);
+           			expr.getSegments().add(group);
            		}
            		else {
            			EcoreUtil.replace(er, group2);
-           			minus.setLhs(er);
+           			expr.getSegments().add(er);
            		}
-       			minus.setRhs(offset);
-           		group2.setTerm(minus);
+        		//expr.getSegments().add(group2);
+				final ExternExpression bitshift = ThingMLFactory.eINSTANCE.createExternExpression();
+				bitshift.setExpression(" << " + shift + ")");
+				expr.getSegments().add(bitshift);
+           		group2.setTerm(expr);
+				
+				
+				
+				
+				
+				
         	}
         }
 	}

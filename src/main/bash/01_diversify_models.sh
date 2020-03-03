@@ -51,7 +51,7 @@ function generate
   	rm -rf $TARGETDIR/models/$LANGUAGE/diversify$TIMES/static/monitor
   done
   
-  _docker run -v $BASEDIR:/thingml-div thingml-div -i $BASEMODELDOCKER -r 1 -n $N -m dynamic -o $TARGETMODELDOCKER/nolog/dynamic -s $TIMES --debug
+  _docker run -v $BASEDIR:/thingml-div thingml-div -i $BASEMODELDOCKER -r 1 -n $N -m dynamic -o $TARGETMODELDOCKER/nolog/dynamic -s $TIMES
   for i in `seq 0 $((N-1))`; do
   	_docker run -v $BASEDIR:/thingml-div thingml-div thingml --tool monitor-bin --output $TARGETMODELDOCKER/dynamic --source $TARGETMODELDOCKER/nolog/dynamic/$LANGUAGE$i.thingml
   	cp $TARGETDIR/models/$LANGUAGE/diversify$TIMES/dynamic/monitor/merged.thingml $TARGETDIR/models/$LANGUAGE/diversify$TIMES/dynamic/$LANGUAGE$i.thingml

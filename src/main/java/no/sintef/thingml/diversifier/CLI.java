@@ -19,7 +19,15 @@ import org.thingml.xtext.thingML.Type;
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
 
-import no.sintef.thingml.diversifier.strategies.*;
+import no.sintef.thingml.diversifier.strategies.AddConstantParameters;
+import no.sintef.thingml.diversifier.strategies.AddRandomParameters;
+import no.sintef.thingml.diversifier.strategies.BitShiftParameters;
+import no.sintef.thingml.diversifier.strategies.DuplicateMessages;
+import no.sintef.thingml.diversifier.strategies.OffsetParameters;
+import no.sintef.thingml.diversifier.strategies.ShuffleMessages;
+import no.sintef.thingml.diversifier.strategies.ShuffleParameters;
+import no.sintef.thingml.diversifier.strategies.ShufflePort;
+import no.sintef.thingml.diversifier.strategies.Strategy;
 
 public class CLI {
 
@@ -120,17 +128,22 @@ public class CLI {
 				final int seq = Integer.parseInt(s);						
 				for(int i = 0; i < seq; i++) {
 					manager.add(new ShufflePort(manager));
-					manager.add(new ShuffleParameters(manager));					
+					manager.add(new ShuffleParameters(manager));
 					manager.add(new DuplicateMessages(manager, 3));
 					manager.add(new ShuffleMessages(manager));
 					manager.add(new ShuffleParameters(manager));					
-					manager.add(new OffsetParameters(manager, 5));
-					manager.add(new AddRandomParameters(manager, 3));
+					manager.add(new OffsetParameters(manager, 3));
+					manager.add(new BitShiftParameters(manager, 3));
+					manager.add(new AddConstantParameters(manager, 2));
+					if (mode == Mode.DYNAMIC)
+						manager.add(new AddRandomParameters(manager, 1));	
 				} } catch (NumberFormatException nfe) {/*all good!*/}
 			} else if (s.equals(Strategies.ADD_PARAM.name)) {
 				manager.add(new AddRandomParameters(manager)); 
 			} else if (s.equals(Strategies.OFF_PARAM.name)) {
 				manager.add(new OffsetParameters(manager)); 
+			} else if (s.equals(Strategies.SHIFT_PARAM.name)) {
+				manager.add(new BitShiftParameters(manager)); 
 			} else if (s.equals(Strategies.DUP_MSG.name)) {
 				manager.add(new DuplicateMessages(manager)); 
 			} else if (s.equals(Strategies.SHUFF_PORT.name)) {
@@ -179,7 +192,7 @@ public class CLI {
 		for (Strategies s : Strategies.values()) {
 			System.out.println("  └╼  " + s.name + ":\t\t" + s.description);
 		}
-		System.out.println("  └╼  <n:int>:\t\tgoes n times through shuff-msg, shuff-param, add-param, dup-msg and split-msg, applying each strategy, or not, with a 50% chance");
+		System.out.println("  └╼  <n:int>:\t\tgoes n times through all strategies, applying them or not with a given probability");
 		
 		System.out.println("\nValid -m modes are:");
 		for (Mode m : Mode.values()) {

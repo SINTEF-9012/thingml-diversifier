@@ -49,11 +49,10 @@ function perform
   LANGUAGE=$2
   MODE=$3
   i=$4
-  nolog=$5
 
   cd $1
   build $LANGUAGE $MODE $i
-  run $LANGUAGE $MODE $i $nolog
+  run $LANGUAGE $MODE $i
   clean $LANGUAGE $MODE $i
   clean2 $LANGUAGE $MODE $i
 }
@@ -63,23 +62,18 @@ function xp
   LANGUAGE=$1
   MODE=$2
   i=$3
+  TIMES=$4
 
-  mkdir $LOGSDIR/$LANGUAGE/
-  mkdir $LOGSDIR/$LANGUAGE/$MODE
+  mkdir -p $LOGSDIR/$LANGUAGE/
+  mkdir -p $LOGSDIR/$LANGUAGE/diversify$TIMES/$MODE
 
   echo "-- RUNNING MODEL $i [$LANGUAGE] in $MODE mode--"
   if [ "$MODE" == "base" ]; then
-    perform $PLATFORMDIR/$LANGUAGE/nolog/$MODE $LANGUAGE $MODE $i nolog
+    perform $PLATFORMDIR/$LANGUAGE/$MODE $LANGUAGE $MODE $i
+  elif [ "$MODE" == "encrypt" ]; then
+    perform $PLATFORMDIR/$LANGUAGE/$MODE $LANGUAGE $MODE $i
   else
-    perform $PLATFORMDIR/$LANGUAGE/nolog/$MODE/$LANGUAGE$i $LANGUAGE $MODE $i nolog
-  fi
-
-  if [ "$LANGUAGE" == "nodejs" ]; then
-    if [ "$MODE" == "base" ]; then
-      perform $PLATFORMDIR/$LANGUAGE/$MODE $LANGUAGE $MODE $i ""
-    else
-      perform $PLATFORMDIR/$LANGUAGE/$MODE/$LANGUAGE$i $LANGUAGE $MODE $i ""
-    fi
+    perform $PLATFORMDIR/$LANGUAGE/diversify$TIMES/$MODE/$LANGUAGE$i $LANGUAGE $MODE $i
   fi
 }
 
@@ -89,7 +83,15 @@ echo "---- RUNNING XP ----"
 for i in `seq 0 $((N-1))`; do
   for j in $(shuf --input-range=0-$(( ${#MODES[@]} - 1 ))); do
     for k in $(shuf --input-range=0-$(( ${#LANGUAGES[@]} - 1 ))); do
-      xp ${LANGUAGES[k]} ${MODES[j]} $i
+      if [ "${MODES[j]}" == "base" ]; then
+        xp ${LANGUAGES[k]} ${MODES[j]} $i
+        xp ${LANGUAGES[k]} encrypt $i
+      else
+        xp ${LANGUAGES[k]} ${MODES[j]} $i 1
+        xp ${LANGUAGES[k]} ${MODES[j]} $i 2
+        xp ${LANGUAGES[k]} ${MODES[j]} $i 4
+        xp ${LANGUAGES[k]} ${MODES[j]} $i 8
+      fi
     done
   done
 done

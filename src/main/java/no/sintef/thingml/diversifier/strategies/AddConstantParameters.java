@@ -10,8 +10,6 @@ import org.thingml.xtext.constraints.Types;
 import org.thingml.xtext.helpers.AnnotatedElementHelper;
 import org.thingml.xtext.helpers.TyperHelper;
 import org.thingml.xtext.thingML.ByteLiteral;
-import org.thingml.xtext.thingML.Function;
-import org.thingml.xtext.thingML.FunctionCallExpression;
 import org.thingml.xtext.thingML.Message;
 import org.thingml.xtext.thingML.Parameter;
 import org.thingml.xtext.thingML.PlatformAnnotation;
@@ -24,7 +22,6 @@ import org.thingml.xtext.thingML.Type;
 import org.thingml.xtext.thingML.TypeRef;
 
 import no.sintef.thingml.diversifier.Manager;
-import no.sintef.thingml.diversifier.Mode;
 import no.sintef.thingml.diversifier.Strategies;
 
 /**
@@ -32,13 +29,13 @@ import no.sintef.thingml.diversifier.Strategies;
  * FIXME: Generate better names, especially to avoid conflicts when we apply this strategy multiple time. As of now, it should work if applied once in static mode and once in dynamic mode
  *
  */
-public class AddRandomParameters extends Strategy {
+public class AddConstantParameters extends Strategy {
 	
-	public AddRandomParameters(Manager manager) {
+	public AddConstantParameters(Manager manager) {
 		super(manager);
 	}
 
-	public AddRandomParameters(Manager manager, int i) {
+	public AddConstantParameters(Manager manager, int i) {
 		super(manager, i);
 	}
 
@@ -47,8 +44,6 @@ public class AddRandomParameters extends Strategy {
 
 	@Override
 	protected void doApply(ThingMLModel model) {
-		if (Manager.mode != Mode.DYNAMIC) return;
-		
 		final TreeIterator<EObject> it = model.eAllContents();
         while (it.hasNext()) {
             final EObject o = it.next();
@@ -73,11 +68,7 @@ public class AddRandomParameters extends Strategy {
                         
                 int insertAt = (m.getParameters().size() == 0) ? 0 : manager.rnd.nextInt(m.getParameters().size());
                 final Parameter randomP = ThingMLFactory.eINSTANCE.createParameter();
-                if (Manager.mode == Mode.DYNAMIC) {
-                	randomP.setName("var" + (param++));
-                } else {
-                	randomP.setName("val" + (param++));
-                }
+                randomP.setName("val" + (param++));
                 randomP.getAnnotations().add(annot);
                 final TypeRef typeref = ThingMLFactory.eINSTANCE.createTypeRef();
                 Type bt = null;
@@ -105,16 +96,9 @@ public class AddRandomParameters extends Strategy {
             	final SendAction sa = (SendAction) o;
             	if (!Manager.diversify(sa.getMessage())) continue;
             	if (!AnnotatedElementHelper.isDefined(sa.getMessage(), "diversify", Strategies.ADD_PARAM.name)) continue;
-                final Function rnd = Manager.findRandom(ThingMLHelpers.findContainingThing(sa));
-                if (rnd != null) {
-                    final FunctionCallExpression call = ThingMLFactory.eINSTANCE.createFunctionCallExpression();
-                    call.setFunction(rnd);
-                    sa.getParameters().add(params.get(((Thing)sa.getMessage().eContainer()).getName() + "_" + sa.getMessage().getName()), call);
-                } else {
-                    final ByteLiteral b = ThingMLFactory.eINSTANCE.createByteLiteral();
-                    b.setByteValue((byte) manager.rnd.nextInt(256));
-                    sa.getParameters().add(params.get(((Thing)sa.getMessage().eContainer()).getName() + "_" + sa.getMessage().getName()), b);
-                }
+                final ByteLiteral b = ThingMLFactory.eINSTANCE.createByteLiteral();
+                b.setByteValue((byte) manager.rnd.nextInt(256));
+                sa.getParameters().add(params.get(((Thing)sa.getMessage().eContainer()).getName() + "_" + sa.getMessage().getName()), b);
             }
         }
         
