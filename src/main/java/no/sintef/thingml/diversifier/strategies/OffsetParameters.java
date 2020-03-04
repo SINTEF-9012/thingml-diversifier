@@ -5,10 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.thingml.xtext.constraints.ThingMLHelpers;
 import org.thingml.xtext.constraints.Types;
@@ -23,6 +21,7 @@ import org.thingml.xtext.thingML.IntegerLiteral;
 import org.thingml.xtext.thingML.Message;
 import org.thingml.xtext.thingML.MinusExpression;
 import org.thingml.xtext.thingML.Parameter;
+import org.thingml.xtext.thingML.PlatformAnnotation;
 import org.thingml.xtext.thingML.PlusExpression;
 import org.thingml.xtext.thingML.PrimitiveType;
 import org.thingml.xtext.thingML.SendAction;
@@ -59,7 +58,6 @@ public class OffsetParameters extends Strategy {
                         final List<Expression> params = new ArrayList<>();
                         params.addAll(send.getParameters());
                         int index = 0;
-                        int count = 0;
                         for (Expression p : params) {
                         	final Parameter param = send.getMessage().getParameters().get(index);
                         	if (AnnotatedElementHelper.hasFlag(param, "noise")) continue; //This is a random parameter, no point in offsetting it
@@ -67,9 +65,32 @@ public class OffsetParameters extends Strategy {
                             index++;
                             if (!(type.getType() instanceof PrimitiveType) || !TyperHelper.isA(type, Types.INTEGER_TYPEREF))
                             	continue;
-                            if (manager.rnd.nextInt(10)<((params.size()-count)*probability/params.size()))
+                            if (AnnotatedElementHelper.hasFlag(param, "offset")) {
                             	continue;
-                            count++;
+                            }
+                            int prob = probability;
+                            if (AnnotatedElementHelper.hasFlag(param, "shift")) {
+                            	prob = Math.max(1, probability - 1);
+                            }
+                            if (manager.rnd.nextInt(10)<prob)
+                            	continue;
+                            
+                            if (!AnnotatedElementHelper.hasFlag(param, "offset")) {
+                            	final PlatformAnnotation a = ThingMLFactory.eINSTANCE.createPlatformAnnotation();
+                            	a.setName("offset");
+                            	param.getAnnotations().add(a);
+                            }
+                            if (AnnotatedElementHelper.hasFlag(param, "shift")) {
+                            	PlatformAnnotation toRemove = null;
+                            	for(PlatformAnnotation a : param.getAnnotations()) {
+                            		if (a.getName().equals("shift")) {
+                            			toRemove = a;
+                            			break;
+                            		}
+                            	}
+                            	param.getAnnotations().remove(toRemove);
+                            }
+                            
                             final ExpressionGroup group = ThingMLFactory.eINSTANCE.createExpressionGroup();
                             final PlusExpression plus = ThingMLFactory.eINSTANCE.createPlusExpression();
                             plus.setLhs(EcoreUtil.copy(p));

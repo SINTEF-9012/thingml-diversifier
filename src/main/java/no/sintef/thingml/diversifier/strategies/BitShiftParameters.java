@@ -18,10 +18,9 @@ import org.thingml.xtext.thingML.EventReference;
 import org.thingml.xtext.thingML.Expression;
 import org.thingml.xtext.thingML.ExpressionGroup;
 import org.thingml.xtext.thingML.ExternExpression;
-import org.thingml.xtext.thingML.IntegerLiteral;
 import org.thingml.xtext.thingML.Message;
-import org.thingml.xtext.thingML.MinusExpression;
 import org.thingml.xtext.thingML.Parameter;
+import org.thingml.xtext.thingML.PlatformAnnotation;
 import org.thingml.xtext.thingML.PrimitiveType;
 import org.thingml.xtext.thingML.SendAction;
 import org.thingml.xtext.thingML.ThingMLFactory;
@@ -57,7 +56,6 @@ public class BitShiftParameters extends Strategy {
                         final List<Expression> params = new ArrayList<>();
                         params.addAll(send.getParameters());
                         int index = 0;
-                        int count = 0;
                         for (Expression p : params) {
                         	final Parameter param = send.getMessage().getParameters().get(index);
                         	if (AnnotatedElementHelper.hasFlag(param, "noise")) continue; //This is a random parameter, no point in offsetting it
@@ -65,18 +63,47 @@ public class BitShiftParameters extends Strategy {
                             index++;
                             if (!(type.getType() instanceof PrimitiveType) || !TyperHelper.isA(type, Types.INTEGER_TYPEREF))
                             	continue;
-                            if (manager.rnd.nextInt(10)<((params.size()-count)*probability/params.size()))
+                            if (AnnotatedElementHelper.hasFlag(param, "shift")) {
                             	continue;
-                            count++;
-                          //FIXME: << (or <<<) are NOT circular shifts... use something like (x << n) | (x >> (32 - n));//x Int32
+                            }
+                            int prob = probability;
+                            if (AnnotatedElementHelper.hasFlag(param, "offset")) {
+                            	prob = Math.max(1, probability - 1);
+                            }
+                            if (manager.rnd.nextInt(10)<prob)
+                            	continue;
+                            
+                            if (!AnnotatedElementHelper.hasFlag(param, "shift")) {
+                            	final PlatformAnnotation a = ThingMLFactory.eINSTANCE.createPlatformAnnotation();
+                            	a.setName("shift");
+                            	param.getAnnotations().add(a);
+                            }
+                            if (AnnotatedElementHelper.hasFlag(param, "offset")) {
+                            	PlatformAnnotation toRemove = null;
+                            	for(PlatformAnnotation a : param.getAnnotations()) {
+                            		if (a.getName().equals("offset")) {
+                            			toRemove = a;
+                            			break;
+                            		}
+                            	}
+                            	param.getAnnotations().remove(toRemove);
+                            }
+                            
                             final ExpressionGroup group = ThingMLFactory.eINSTANCE.createExpressionGroup();	                			
             				final ExternExpression expr = ThingMLFactory.eINSTANCE.createExternExpression();
-            				expr.setExpression("(");
-            				expr.getSegments().add(EcoreUtil.copy(p));
-            				final ExternExpression bitshift = ThingMLFactory.eINSTANCE.createExternExpression();
+            				expr.setExpression("(((");
+            				expr.getSegments().add(EcoreUtil.copy(p));            				
+            				
+            				final ExternExpression expr2 = ThingMLFactory.eINSTANCE.createExternExpression();
             				final int shift = Math.max(1, manager.rnd.nextInt(Math.max(2, (int)(3*((PrimitiveType)param.getTypeRef().getType()).getByteSize()))));
-            				bitshift.setExpression(" >> " + shift + ")");
-            				expr.getSegments().add(bitshift);
+            				expr2.setExpression(") << " + shift + ") | ((");
+            				expr2.getSegments().add(EcoreUtil.copy(p));
+            				expr.getSegments().add(expr2);
+            				
+            				final ExternExpression expr3 = ThingMLFactory.eINSTANCE.createExternExpression();
+            				expr3.setExpression(") >>> " + (-shift) + "))");
+            				expr.getSegments().add(expr3);
+            				
             				group.setTerm(expr);
             				EcoreUtil.replace(p, group);
                             mapping.put(param, shift);
@@ -90,33 +117,35 @@ public class BitShiftParameters extends Strategy {
         	if (mapping.containsKey(er.getParameter())) {
         		final int shift = mapping.get(er.getParameter());
         		
-        		//FIXME: << (or <<<) are NOT circular shifts... use something like (x << n) | (x >> (32 - n));//x Int32
-				
         		final ExpressionGroup group2 = ThingMLFactory.eINSTANCE.createExpressionGroup();
         		final ExternExpression expr = ThingMLFactory.eINSTANCE.createExternExpression();
 				expr.setExpression("(");
+				Expression instance = null;
         		if (er.eContainer() instanceof CastExpression) {
            			final CastExpression cast = (CastExpression) er.eContainer();
-           			final ExpressionGroup group = ThingMLFactory.eINSTANCE.createExpressionGroup();
            			EcoreUtil.replace(cast, group2);
-           			group.setTerm(cast);
-           			expr.getSegments().add(group);
+           			instance = cast;
            		}
            		else {
            			EcoreUtil.replace(er, group2);
-           			expr.getSegments().add(er);
+           			instance = er;
            		}
-        		//expr.getSegments().add(group2);
+				
 				final ExternExpression bitshift = ThingMLFactory.eINSTANCE.createExternExpression();
-				bitshift.setExpression(" << " + shift + ")");
+				bitshift.setExpression("((");
+				bitshift.getSegments().add(EcoreUtil.copy(instance));            				
+				
+				final ExternExpression expr2 = ThingMLFactory.eINSTANCE.createExternExpression();
+				expr2.setExpression(") >>> " + shift + ") | ((");
+				expr2.getSegments().add(EcoreUtil.copy(instance));
+				bitshift.getSegments().add(expr2);
+				
+				final ExternExpression expr3 = ThingMLFactory.eINSTANCE.createExternExpression();
+				expr3.setExpression(") << " + (-shift) + "))");
+				bitshift.getSegments().add(expr3);
 				expr.getSegments().add(bitshift);
-           		group2.setTerm(expr);
 				
-				
-				
-				
-				
-				
+				group2.setTerm(expr);	
         	}
         }
 	}
