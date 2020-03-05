@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-N=2 # Number of diversified version to make
+N=10 # Number of diversified version to make
 
 WIN=1	#Set to 1 if running on Windows and having problems with Docker volumes or paths...
 

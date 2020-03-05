@@ -19,9 +19,9 @@ thing BreakoutGameGo includes BreakoutGame, RndGo
 {	
 	function quit() do
 		`runtime.GC();`
-		println ">sent ", bytesSentCounter, " bytes."
 		println ">done in ", stopTime-startTime, "ms!"
-		log(true)
+		println ">lives:", lives, ",score:", score, ",level:", level, ",bx:", bx, ",by:", by, ",padx:", padx
+		println ">usedMem:", usedMemory()
 		`os.Exit(0);`
 	end
 	

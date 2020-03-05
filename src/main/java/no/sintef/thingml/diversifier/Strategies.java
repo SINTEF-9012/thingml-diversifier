@@ -6,6 +6,7 @@ public enum Strategies {
 	ADD_CONST ("add-const", "Adds a random constant parameter in messages"), 
 	OFF_PARAM ("off-param", "Offsets parameters in messages by a random value"),
 	SHIFT_PARAM ("shift-param", "Shifts parameters by a random number of bits"),
+	SPLIT_PARAM ("split-param", "Splits parameters into two complementary parameters"),
 	DUP_MSG ("dup-msg", "Duplicates messages, so that original or copy will be sent randomly"),
 	SHUFF_PORT ("shuff-port", "Shuffles the ports within each thing"),
 	SHUFF_MSG ("shuff-msg", "Shuffles the messages within each thing"),

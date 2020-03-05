@@ -7,10 +7,9 @@ rm -r $LOGSDIR/* 2> /dev/null
 
 #$1: language
 #$2: base, static, dynamic or both
-#$3: id
 function build
 {
-  docker build -t $1-$2-$3 .
+  docker build -t $1-$2 .
 }
 
 #$1: language
@@ -19,24 +18,20 @@ function build
 #$4: nolog (optional)
 function run
 {
+  LANGUAGE=$1
+  MODE=$2
+  i=$3
+  TIMES=$4
+
   ((WITH_PERF)) && echo "docker run -v $LOGSDIR/$1/$2:/data --cap-add=ALL --name $1-$2-$3 $1-$2-$3:latest" &&  timeout -k 30s 120s docker run -v $LOGSDIR/$1/$2:/data --cap-add=ALL --name $1-$2-$3 $1-$2-$3:latest > $LOGSDIR/$1/$2/$4$1$3.log
-  ((!WITH_PERF)) && _docker run --name $1-$2-$3 $1-$2-$3:latest > $LOGSDIR/$1/$2/$4$1$3.log
+  ((!WITH_PERF)) && _docker run --rm $1-$2:latest > $LOGSDIR/$LANGUAGE/diversify$TIMES/$MODE/$i.log
 }
 
 #$1: language
 #$2: base, static, dynamic or both
-#$3: id
-function clean
-{
-  docker rm -f $1-$2-$3
-}
-
-#$1: language
-#$2: base, static, dynamic or both
-#$3: id
 function clean2
 {
-  docker rmi -f $1-$2-$3
+  docker rmi -f $1-$2
 }
 
 function clean3
@@ -49,12 +44,12 @@ function perform
   LANGUAGE=$2
   MODE=$3
   i=$4
+  TIMES=$5
 
   cd $1
-  build $LANGUAGE $MODE $i
-  run $LANGUAGE $MODE $i
-  clean $LANGUAGE $MODE $i
-  clean2 $LANGUAGE $MODE $i
+  build $LANGUAGE $MODE
+  run $LANGUAGE $MODE $i $TIMES
+  clean2 $LANGUAGE $MODE
 }
 
 function xp
@@ -69,11 +64,11 @@ function xp
 
   echo "-- RUNNING MODEL $i [$LANGUAGE] in $MODE mode--"
   if [ "$MODE" == "base" ]; then
-    perform $PLATFORMDIR/$LANGUAGE/$MODE $LANGUAGE $MODE $i
+    perform $PLATFORMDIR/$LANGUAGE/$MODE $LANGUAGE $MODE $i $TIMES
   elif [ "$MODE" == "encrypt" ]; then
-    perform $PLATFORMDIR/$LANGUAGE/$MODE $LANGUAGE $MODE $i
+    perform $PLATFORMDIR/$LANGUAGE/$MODE/$MODE/$LANGUAGE$i $LANGUAGE $MODE $i $TIMES
   else
-    perform $PLATFORMDIR/$LANGUAGE/diversify$TIMES/$MODE/$LANGUAGE$i $LANGUAGE $MODE $i
+    perform $PLATFORMDIR/$LANGUAGE/diversify$TIMES/$MODE/$LANGUAGE$i $LANGUAGE $MODE $i $TIMES
   fi
 }
 

@@ -12,6 +12,7 @@ configuration test
 	connector game.log => log.log	
 	instance disp : HeadlessDisplayPosix
 	instance timer : TimerPosix
+		set timer.SOFT_TIMER_PERIOD = 4
 
 	connector game.clock => timer.timer
 	connector game.display => disp.display
@@ -21,6 +22,6 @@ configuration test
 	connector game.controller => ctrl.controls
 	connector ctrl.game => game.ia
 	
-	//connector disp.log => log.log
-	//connector ctrl.log => log.log
+	connector disp.log => log.log
+	connector ctrl.log => log.log
 }

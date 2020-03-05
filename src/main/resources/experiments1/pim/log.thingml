@@ -27,6 +27,66 @@ thing NoEncryptConsoleLogger includes ConsoleLogger2
 	end
 }
 
+thing CEncrypt includes ConsoleLogger2
+@docker_install_pkg "libmcrypt-dev"
+@c_header "
+#include <mcrypt.h>
+"
+@c_global `
+int encrypt(
+    void* buffer,
+    int buffer_len, /* Because the plaintext could include null bytes*/
+    char* IV, 
+    char* key,
+    int key_len 
+){
+  MCRYPT td = mcrypt_module_open("rijndael-128", NULL, "cbc", NULL);
+  int blocksize = mcrypt_enc_get_block_size(td);
+  if( buffer_len % blocksize != 0 ){return 1;}
+
+  mcrypt_generic_init(td, key, key_len, IV);
+  mcrypt_generic(td, buffer, buffer_len);
+  mcrypt_generic_deinit (td);
+  mcrypt_module_close(td);
+  
+  return 0;
+}
+`
+{
+	readonly property seed : String = "1234567890123456"
+	
+	function encrypt(payload : Byte[], size : UInt8) do
+	  var offset : Integer = 3
+	  if (payload[0] == LogType:custom) offset = 2
+	  `
+	  MCRYPT td = mcrypt_module_open("rijndael-128", NULL, "cbc", NULL);
+  	  int blocksize = mcrypt_enc_get_block_size(td);
+	  `
+	  readonly var realSize : Integer = `blocksize` as Integer //size - offset
+	  var realPayload : Byte[realSize]
+	  for(v : Byte, i : Integer in payload) if (i>offset-1) realPayload[i-offset] = v	
+		
+	  if (payload[0] == LogType:custom) do
+			print "@["
+			for(w : Byte, i : Integer in payload) do
+				if (i>offset-1) print w as UInt8, ","
+			end					
+			println "]"	  							  				
+	  		`
+  	    	char* IV = ` & seed & `;
+        	char *key = ` & seed & `;
+        	int keysize = 16; /* 128 bits */      
+        	encrypt(` & realPayload & `, ` & realSize & `, IV, key, keysize); 
+	    	`
+	    	print "$["
+			for(w : Byte in realPayload) do
+				print w as UInt8, ","
+			end					
+			println "]"	
+	  end
+	end
+}
+
 thing JavaEncrypt includes ConsoleLogger2 
 @stdout_sync "true"
 @maven_dep 
@@ -68,8 +128,7 @@ import org.apache.commons.crypto.utils.Utils;
 				print w as UInt8, ","
 			end					
 			println "]"
-		end else do
-							
+									
 		var encryptedPayload : Byte[]
 		`try {
 		/** See http://commons.apache.org/proper/commons-crypto/xref-test/org/apache/commons/crypto/examples/CipherByteArrayExample.html **/

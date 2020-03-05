@@ -1,10 +1,16 @@
-import "psm/posixmt.thingml"
+import "psm/posix.thingml"
 
 configuration test
 //@c_static_linking "true"
 @docker
+@add_c_libraries "mcrypt"
 {
 	instance game : BreakoutGamePosix
+		set game.DEBUG_BIN_ID = 0x00
+	instance log : CEncrypt
+		set log.ACTIVATE_ON_STARTUP = true
+		set log.HAS_SIGNED_BYTE = true
+	connector game.log => log.log	
 	instance disp : HeadlessDisplayPosix
 	instance timer : TimerPosix
 		set timer.SOFT_TIMER_PERIOD = 4
@@ -16,4 +22,7 @@ configuration test
 	instance ctrl : BasicIAControllerPosix
 	connector game.controller => ctrl.controls
 	connector ctrl.game => game.ia
+	
+	//connector disp.log => log.log
+	//connector ctrl.log => log.log
 }

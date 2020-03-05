@@ -1,4 +1,4 @@
-import "../pim/BreakoutGame2.thingml"
+import "../pim/BreakoutGame.thingml"
 
 thing fragment RndPosix {
 	function rnd() : Byte do
@@ -20,8 +20,9 @@ typedef struct {
 } statm_t;"
 {	
 	function quit() do
-		println ">sent ", bytesSentCounter, " bytes."
 		println ">done in ", stopTime-startTime, "ms!"
+		println ">lives:", lives, ",score:", score, ",level:", level, ",bx:", bx, ",by:", by, ",padx:", padx
+		println ">usedMem:", usedMemory()
 		`exit(0);`
 	end
 	

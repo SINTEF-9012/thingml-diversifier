@@ -1,4 +1,4 @@
-import "timer.thingml"
+import "timer.thingml" from stl
 import "log.thingml"
 
 

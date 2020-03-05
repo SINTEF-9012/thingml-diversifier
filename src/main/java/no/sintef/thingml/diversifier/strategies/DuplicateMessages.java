@@ -66,7 +66,7 @@ public class DuplicateMessages extends Strategy {
 			for (Message msg : msgs) {
 				if (!Manager.diversify(msg)) continue;	
 				int prob = probability;
-				if (AnnotatedElementHelper.hasFlag(msg, "duplicated") || AnnotatedElementHelper.hasFlag(msg, "split"))  prob = prob - 1; else prob = prob + 2;
+				if (AnnotatedElementHelper.hasFlag(msg, "duplicated"))  prob = 1;
 				if (manager.rnd.nextInt(10)<prob) {
 	        		final PlatformAnnotation annot = ThingMLFactory.eINSTANCE.createPlatformAnnotation();
 	                annot.setName("diversify");

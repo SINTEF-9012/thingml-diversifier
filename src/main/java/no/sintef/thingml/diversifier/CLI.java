@@ -27,6 +27,7 @@ import no.sintef.thingml.diversifier.strategies.OffsetParameters;
 import no.sintef.thingml.diversifier.strategies.ShuffleMessages;
 import no.sintef.thingml.diversifier.strategies.ShuffleParameters;
 import no.sintef.thingml.diversifier.strategies.ShufflePort;
+import no.sintef.thingml.diversifier.strategies.SplitParameters;
 import no.sintef.thingml.diversifier.strategies.Strategy;
 
 public class CLI {
@@ -129,8 +130,9 @@ public class CLI {
 				for(int i = 0; i < seq; i++) {
 					manager.add(new ShufflePort(manager));
 					manager.add(new ShuffleParameters(manager));
-					manager.add(new DuplicateMessages(manager, 3));
+					manager.add(new DuplicateMessages(manager, 4));
 					manager.add(new ShuffleMessages(manager));
+					manager.add(new SplitParameters(manager, 3));
 					manager.add(new ShuffleParameters(manager));					
 					manager.add(new OffsetParameters(manager, 3));
 					manager.add(new BitShiftParameters(manager, 3));
@@ -144,6 +146,8 @@ public class CLI {
 				manager.add(new OffsetParameters(manager)); 
 			} else if (s.equals(Strategies.SHIFT_PARAM.name)) {
 				manager.add(new BitShiftParameters(manager)); 
+			} else if (s.equals(Strategies.SPLIT_PARAM.name)) {
+				manager.add(new SplitParameters(manager)); 
 			} else if (s.equals(Strategies.DUP_MSG.name)) {
 				manager.add(new DuplicateMessages(manager)); 
 			} else if (s.equals(Strategies.SHUFF_PORT.name)) {

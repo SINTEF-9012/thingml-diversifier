@@ -13,19 +13,22 @@ thing fragment BreakoutGame includes TimerMsgs, DisplayMsgs, ControllerMsgs, IAC
 	message lostBall()@diversify "not"
 	message nextLevel()@diversify "not"
 
-	property startTime : UInt32
-	property stopTime : UInt32
-	property lastTimestamp : UInt32 = 0
-	property counter : UInt8 = 0
 	
-	abstract function rnd() : Byte
-	abstract function quit()
-	abstract function timestamp() : UInt32
-	abstract function usedMemory() : UInt32
-
+	
 	readonly property trackMemory : Boolean = true
+	readonly property QUIET : Boolean = true	@monitor "not"
 
-	function log(logMem : Boolean) do
+	property startTime : UInt32         @monitor "not"
+	property stopTime : UInt32          @monitor "not"
+	property lastTimestamp : UInt32 = 0 @monitor "not"
+	property counter : UInt8 = 0		@monitor "not"
+
+	abstract function rnd() : Byte	
+	abstract function quit() @monitor "not" 
+	abstract function timestamp() : UInt32 @monitor "not" 
+	abstract function usedMemory() : UInt32 @monitor "not" 
+
+	function log(logMem : Boolean) @monitor "not" do
 		if (counter == 0 or logMem) do
 			var ts : UInt32
 			if (lastTimestamp == 0) do
@@ -36,8 +39,10 @@ thing fragment BreakoutGame includes TimerMsgs, DisplayMsgs, ControllerMsgs, IAC
 				ts = t - lastTimestamp
 				lastTimestamp = t
 			end
-			println "ts:", ts, ",lives:", lives, ",score:", score, ",level:", level, ",bx:", bx, ",by:", by, ",padx:", padx
-			if (trackMemory) println "#usedMem:", usedMemory()
+			if (not QUIET) do
+				println "ts:", ts, ",lives:", lives, ",score:", score, ",level:", level, ",bx:", bx, ",by:", by, ",padx:", padx
+				if (trackMemory) println "#usedMem:", usedMemory() println "#usedMem:", usedMemory()
+			end
 		end
 		counter++
 		if (counter == 33) counter = 0
@@ -126,6 +131,14 @@ thing fragment BreakoutGame includes TimerMsgs, DisplayMsgs, ControllerMsgs, IAC
 
 	internal port game @monitor "not" @diversify "not"{
 		sends lostBall, nextLevel
+		receives lostBall, nextLevel
+	}
+	
+	optional required port req_game {
+		sends lostBall, nextLevel
+	}
+
+	provided port pro_game {
 		receives lostBall, nextLevel
 	}
 

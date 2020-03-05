@@ -15,9 +15,9 @@ thing BreakoutGameNodeJS includes BreakoutGame, RndJS {
 		`if (global.gc) {
 			global.gc();
 		}`
-		println ">sent ", bytesSentCounter, " bytes."
 		println ">done in ", (`Number(` & stopTime & `)` - `Number(` & startTime & `)`), "ms!"
-		log(true)
+		println ">lives:", lives, ",score:", score, ",level:", level, ",bx:", bx, ",by:", by, ",padx:", padx
+		println ">usedMem:", usedMemory()
 		`process.exitCode = 1;`
 	end
 	
