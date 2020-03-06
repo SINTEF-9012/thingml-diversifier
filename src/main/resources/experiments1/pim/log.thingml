@@ -156,15 +156,30 @@ import org.apache.commons.crypto.utils.Utils;
         //Closes the cipher.
         encipher.close();
         
-        ` & encryptedPayload & ` = Arrays.copyOf(output, updateBytes+finalBytes);
-        
-        } catch(Exception e) {e.printStackTrace();}
-		`
-		print "$["
+        ` & encryptedPayload & ` = Arrays.copyOf(output, updateBytes+finalBytes);`
+		print ">["
 		for(w : Byte in encryptedPayload) do
 			print w as UInt8, ","
 		end					
 		println "]"
+		
+		var decryptedPayload : Byte[realSize]
+		`
+		//properties.setProperty(CryptoCipherFactory.CLASSES_KEY, CipherProvider.JCE.getClassName());
+        CryptoCipher decipher = Utils.getCipherInstance(transform, properties);
+        //System.out.println("Cipher:  " + encipher.getClass().getCanonicalName());
+   
+        decipher.init(Cipher.DECRYPT_MODE, key, iv);
+        byte [] decoded = new byte[32];
+        decipher.doFinal(output, 0, updateBytes + finalBytes, decoded, 0);
+        ` & decryptedPayload & ` = Arrays.copyOf(decoded, ` & realSize & `);`       
+        print "<["
+		for(w : Byte in decryptedPayload) do
+			print w as UInt8, ","
+		end					
+		println "]"
+        
+		`} catch(Exception e) {e.printStackTrace();}`
 		end
 	end
 }
