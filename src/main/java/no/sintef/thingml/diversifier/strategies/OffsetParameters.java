@@ -8,6 +8,7 @@ import java.util.Map;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.thingml.compilers.java.JavaHelper;
 import org.thingml.xtext.constraints.ThingMLHelpers;
 import org.thingml.xtext.constraints.Types;
 import org.thingml.xtext.helpers.ActionHelper;
@@ -17,6 +18,7 @@ import org.thingml.xtext.thingML.CastExpression;
 import org.thingml.xtext.thingML.EventReference;
 import org.thingml.xtext.thingML.Expression;
 import org.thingml.xtext.thingML.ExpressionGroup;
+import org.thingml.xtext.thingML.ExternExpression;
 import org.thingml.xtext.thingML.IntegerLiteral;
 import org.thingml.xtext.thingML.Message;
 import org.thingml.xtext.thingML.MinusExpression;
@@ -92,14 +94,25 @@ public class OffsetParameters extends Strategy {
                             }
                             
                             final ExpressionGroup group = ThingMLFactory.eINSTANCE.createExpressionGroup();
+                            final ExternExpression ext = ThingMLFactory.eINSTANCE.createExternExpression();
+            				if ("java".equals(manager.compiler)) {					
+            					ext.setExpression("(" + JavaHelper.getJavaType(param.getTypeRef().getType(), param.getTypeRef().isIsArray()) + ")");
+            					ext.getSegments().add(group);
+            				}	
+                            
+                            
                             final PlusExpression plus = ThingMLFactory.eINSTANCE.createPlusExpression();
                             plus.setLhs(EcoreUtil.copy(p));
                             final IntegerLiteral i = ThingMLFactory.eINSTANCE.createIntegerLiteral();
-                            final int offset = Math.max(1, manager.rnd.nextInt(Math.max(2, (int)(3*((PrimitiveType)param.getTypeRef().getType()).getByteSize()))));
+                            final long size = Helper.getSize(param.getTypeRef().getType());
+                            final int offset = Math.max(1, manager.rnd.nextInt((int)(Math.pow(2, 8*size-4))));
                             i.setIntValue(offset);
                             plus.setRhs(i);
                             group.setTerm(plus);
-                            EcoreUtil.replace(p, group);
+            				if ("java".equals(manager.compiler))
+            					EcoreUtil.replace(p, ext);
+            				else
+            					EcoreUtil.replace(p, group);
                             mapping.put(param, offset);
                         }
                     }
@@ -112,14 +125,26 @@ public class OffsetParameters extends Strategy {
         		final IntegerLiteral offset = ThingMLFactory.eINSTANCE.createIntegerLiteral();
         		offset.setIntValue(mapping.get(er.getParameter()));
            		final ExpressionGroup group2 = ThingMLFactory.eINSTANCE.createExpressionGroup();
+           		final ExternExpression ext = ThingMLFactory.eINSTANCE.createExternExpression();
+				if ("java".equals(manager.compiler)) {					
+					ext.setExpression("(" + JavaHelper.getJavaType(er.getParameter().getTypeRef().getType(), er.getParameter().getTypeRef().isIsArray()) + ")");
+					ext.getSegments().add(group2);
+				}	
+           		
            		final MinusExpression minus = ThingMLFactory.eINSTANCE.createMinusExpression();
            		if (er.eContainer() instanceof CastExpression) {
            			final CastExpression cast = (CastExpression) er.eContainer();
-           			EcoreUtil.replace(cast, group2);
+           			if ("java".equals(manager.compiler))
+           				EcoreUtil.replace(cast, ext);
+           			else
+           				EcoreUtil.replace(cast, group2);
            			minus.setLhs(cast);
            		}
            		else {
-           			EcoreUtil.replace(er, group2);
+           			if ("java".equals(manager.compiler))
+           				EcoreUtil.replace(er, ext);
+           			else
+           				EcoreUtil.replace(er, group2);
            			minus.setLhs(er);
            		}
        			minus.setRhs(offset);

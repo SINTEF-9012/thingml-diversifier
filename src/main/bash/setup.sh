@@ -5,14 +5,14 @@ N=2 # Number of diversified version to make
 WIN=1	#Set to 1 if running on Windows and having problems with Docker volumes or paths...
 
 #LANGUAGES=(java_11_hotspot java_11_openj9 java_8_hotspot java_8_openj9 graal nodejs nodejs_chakra go go_gccgo posix posix_clang posixmt posixmt_clang)
-LANGUAGES=(java)
+LANGUAGES=(java posix)
 MODES=(base static dynamic)
 
 BASEDIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )"/../../../ && pwd)
 
 WITH_PERF=0
-((WITH_PERF)) && BASEMODELDIR=$BASEDIR/src/main/resources/experiments1/perf
-((!WITH_PERF)) && BASEMODELDIR=$BASEDIR/src/main/resources/experiments1
+((WITH_PERF)) && BASEMODELDIR=$BASEDIR/src/main/resources/experiments2/perf
+((!WITH_PERF)) && BASEMODELDIR=$BASEDIR/src/main/resources/experiments2
 
 TARGETDIR=$BASEDIR/target
 MODELSDIR=$TARGETDIR/models

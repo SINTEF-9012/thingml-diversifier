@@ -51,7 +51,7 @@ public class DuplicateMessages extends Strategy {
 
 	@Override
 	protected void doApply(ThingMLModel model) {
-		if (Manager.mode == Mode.STATIC) return; //this transformation has no real visible effect in static mode
+		if (manager.mode == Mode.STATIC) return; //this transformation has no real visible effect in static mode
 		//FIXME: Probably do-able in 2 passes only...
 				
 		//PASS 1: Copy all messages

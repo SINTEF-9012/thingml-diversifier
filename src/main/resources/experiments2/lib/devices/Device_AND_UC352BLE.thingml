@@ -1,0 +1,7 @@
+import "DeviceMessages.thingml"
+
+thing fragment WeightMsgs {
+  message TelluCloudWeightScale(d: Device, observationTime : UInt32, mass : UInt32);
+  message MqttRequestWeightMeasurement(d: Device);
+  message MqttConfirmWeightMeasurement(d: Device, observationTime : UInt32);
+}

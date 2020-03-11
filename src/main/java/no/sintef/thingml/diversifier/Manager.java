@@ -20,16 +20,18 @@ public class Manager {
 
 	//private Checker checker;
 	private List<Strategy> strategies = new LinkedList<>();
-	public static Mode mode = Mode.STATIC;
+	public  Mode mode = Mode.STATIC;
+	public String compiler;
 
 	private final boolean verbose = true;
 
 	private Manager() {}
 
-	public Manager(long seed, Mode mode) {
-		Manager.mode = mode;
+	public Manager(long seed, Mode mode, String compiler) {
+		this.mode = mode;
 		//checker = new Checker();	
 		rnd = new Random(seed);
+		this.compiler = compiler;
 	}
 
 	public void add(Strategy s) {

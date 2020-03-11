@@ -1,6 +1,6 @@
 import "logbinary.thingml" from stl
 
-thing fragment ConsoleLogger2 includes Logger @monitor "not"/* @stdout_sync "true" */ {
+thing fragment ConsoleLogger2 includes Logger @diversify "not" @monitor "not"/* @stdout_sync "true" */ {
 	
 	abstract function encrypt(payload : Byte[], size : UInt8)
 	
@@ -11,6 +11,7 @@ thing fragment ConsoleLogger2 includes Logger @monitor "not"/* @stdout_sync "tru
 }
 
 thing NoEncryptConsoleLogger includes ConsoleLogger2 
+@diversify "not" 
 @stdout_sync "true" {
 	function encrypt(payload : Byte[], size : UInt8) do
 		var offset : Integer = 3
@@ -18,8 +19,8 @@ thing NoEncryptConsoleLogger includes ConsoleLogger2
 		readonly var realSize : Integer = size - offset
 		var realPayload : Byte[realSize]
 		for(v : Byte, i : Integer in payload) if (i>offset-1) realPayload[i-offset] = v
-		if (payload[0] == LogType:custom) print "@["
-		else print "#["
+		if (payload[0] == LogType:custom) print "@", payload[1], "["
+		else print "#", payload[1], "["
 		for(w : Byte in realPayload) do
 			print w as UInt8, ","
 		end					
@@ -28,6 +29,7 @@ thing NoEncryptConsoleLogger includes ConsoleLogger2
 }
 
 thing CEncrypt includes ConsoleLogger2
+@diversify "not" 
 @docker_install_pkg "libmcrypt-dev"
 @c_header "
 #include <mcrypt.h>
@@ -113,6 +115,7 @@ thing CEncrypt includes ConsoleLogger2
 }
 
 thing JavaEncrypt includes ConsoleLogger2 
+@diversify "not" 
 @stdout_sync "true"
 @maven_dep 
 "

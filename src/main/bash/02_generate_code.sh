@@ -59,11 +59,11 @@ for LANGUAGE in ${LANGUAGES[@]}; do
   _docker run -v $BASEDIR:/thingml-div --entrypoint /bin/sh thingml-div -c "cd /thingml-div/target/code/$LANGUAGE/base && cloc . > cloc.log"
   
   generate $LANGUAGE 1 &
-  generate $LANGUAGE 2 &
-  generate $LANGUAGE 4 &
+#  generate $LANGUAGE 2 &
+#  generate $LANGUAGE 4 &
   generate $LANGUAGE 8 &
   
-  generate_encrypt $LANGUAGE &
+#  generate_encrypt $LANGUAGE &
 done
 wait
 logo

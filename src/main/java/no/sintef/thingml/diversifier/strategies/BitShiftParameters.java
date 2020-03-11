@@ -8,6 +8,7 @@ import java.util.Map;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.thingml.compilers.java.JavaHelper;
 import org.thingml.xtext.constraints.ThingMLHelpers;
 import org.thingml.xtext.constraints.Types;
 import org.thingml.xtext.helpers.ActionHelper;
@@ -59,7 +60,8 @@ public class BitShiftParameters extends Strategy {
                         for (Expression p : params) {
                         	final Parameter param = send.getMessage().getParameters().get(index);
                         	if (AnnotatedElementHelper.hasFlag(param, "noise")) continue; //This is a random parameter, no point in offsetting it
-                            final TypeRef type = TyperHelper.getBroadType(param.getTypeRef());
+                            //if (Helper.getSize(param.getTypeRef().getType())<2) continue; //FIXME: this is just a workaround for Java
+                        	final TypeRef type = TyperHelper.getBroadType(param.getTypeRef());
                             index++;
                             if (!(type.getType() instanceof PrimitiveType) || !TyperHelper.isA(type, Types.INTEGER_TYPEREF))
                             	continue;
@@ -91,17 +93,23 @@ public class BitShiftParameters extends Strategy {
                             
                             final ExpressionGroup group = ThingMLFactory.eINSTANCE.createExpressionGroup();	                			
             				final ExternExpression expr = ThingMLFactory.eINSTANCE.createExternExpression();
-            				expr.setExpression("(((");
+            				if ("java".equals(manager.compiler)) expr.setExpression("(" + JavaHelper.getJavaType(param.getTypeRef().getType(), param.getTypeRef().isIsArray()) + ")(((" + JavaHelper.getJavaType(param.getTypeRef().getType(), param.getTypeRef().isIsArray()) + ")(");
+            				else expr.setExpression("(((");
             				expr.getSegments().add(EcoreUtil.copy(p));            				
             				
             				final ExternExpression expr2 = ThingMLFactory.eINSTANCE.createExternExpression();
-            				final int shift = Math.max(1, manager.rnd.nextInt(Math.max(2, (int)(3*((PrimitiveType)param.getTypeRef().getType()).getByteSize()))));
-            				expr2.setExpression(") << " + shift + ") | ((");
+            				final long size = Helper.getSize(param.getTypeRef().getType());
+            				final int shift = Math.max(1, manager.rnd.nextInt((int)(7*size)));
+            				if ("java".equals(manager.compiler)) expr2.setExpression(") << " + shift + ") | ((" + JavaHelper.getJavaType(param.getTypeRef().getType(), param.getTypeRef().isIsArray()) + ")(");
+            				else expr2.setExpression(") << " + shift + ") | ((");
             				expr2.getSegments().add(EcoreUtil.copy(p));
             				expr.getSegments().add(expr2);
             				
             				final ExternExpression expr3 = ThingMLFactory.eINSTANCE.createExternExpression();
-            				expr3.setExpression(") >>> " + (-shift) + "))");
+            				if ("java".equals(manager.compiler))
+            					expr3.setExpression(") >>> " + (-shift) + "))");
+            				else
+            					expr3.setExpression(") >> " + (-shift) + "))");
             				expr.getSegments().add(expr3);
             				
             				group.setTerm(expr);
@@ -119,7 +127,9 @@ public class BitShiftParameters extends Strategy {
         		
         		final ExpressionGroup group2 = ThingMLFactory.eINSTANCE.createExpressionGroup();
         		final ExternExpression expr = ThingMLFactory.eINSTANCE.createExternExpression();
-				expr.setExpression("(");
+        		
+        		if ("java".equals(manager.compiler)) expr.setExpression("(" + JavaHelper.getJavaType(er.getParameter().getTypeRef().getType(), er.getParameter().getTypeRef().isIsArray()) + ")(");
+        		else expr.setExpression("(");
 				Expression instance = null;
         		if (er.eContainer() instanceof CastExpression) {
            			final CastExpression cast = (CastExpression) er.eContainer();
@@ -136,7 +146,10 @@ public class BitShiftParameters extends Strategy {
 				bitshift.getSegments().add(EcoreUtil.copy(instance));            				
 				
 				final ExternExpression expr2 = ThingMLFactory.eINSTANCE.createExternExpression();
-				expr2.setExpression(") >>> " + shift + ") | ((");
+				if ("java".equals(manager.compiler))
+					expr2.setExpression(") >>> " + shift + ") | ((");
+				else
+					expr2.setExpression(") >> " + shift + ") | ((");
 				expr2.getSegments().add(EcoreUtil.copy(instance));
 				bitshift.getSegments().add(expr2);
 				

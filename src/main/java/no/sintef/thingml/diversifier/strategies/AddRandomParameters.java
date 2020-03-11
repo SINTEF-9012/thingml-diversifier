@@ -47,7 +47,7 @@ public class AddRandomParameters extends Strategy {
 
 	@Override
 	protected void doApply(ThingMLModel model) {
-		if (Manager.mode != Mode.DYNAMIC) return;
+		if (manager.mode != Mode.DYNAMIC) return;
 		
 		final TreeIterator<EObject> it = model.eAllContents();
         while (it.hasNext()) {
@@ -73,7 +73,7 @@ public class AddRandomParameters extends Strategy {
                         
                 int insertAt = (m.getParameters().size() == 0) ? 0 : manager.rnd.nextInt(m.getParameters().size());
                 final Parameter randomP = ThingMLFactory.eINSTANCE.createParameter();
-                if (Manager.mode == Mode.DYNAMIC) {
+                if (manager.mode == Mode.DYNAMIC) {
                 	randomP.setName("var" + (param++));
                 } else {
                 	randomP.setName("val" + (param++));

@@ -1,19 +1,32 @@
 package no.sintef.thingml.diversifier.strategies;
 
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.thingml.xtext.constraints.ThingMLHelpers;
 import org.thingml.xtext.constraints.Types;
 import org.thingml.xtext.helpers.AnnotatedElementHelper;
+import org.thingml.xtext.helpers.StateHelper;
 import org.thingml.xtext.helpers.TyperHelper;
+import org.thingml.xtext.thingML.AndExpression;
+import org.thingml.xtext.thingML.BooleanLiteral;
 import org.thingml.xtext.thingML.ByteLiteral;
+import org.thingml.xtext.thingML.EqualsExpression;
+import org.thingml.xtext.thingML.EventReference;
+import org.thingml.xtext.thingML.Expression;
+import org.thingml.xtext.thingML.ExpressionGroup;
+import org.thingml.xtext.thingML.Handler;
 import org.thingml.xtext.thingML.Message;
 import org.thingml.xtext.thingML.Parameter;
 import org.thingml.xtext.thingML.PlatformAnnotation;
+import org.thingml.xtext.thingML.Port;
 import org.thingml.xtext.thingML.PrimitiveType;
+import org.thingml.xtext.thingML.ReceiveMessage;
 import org.thingml.xtext.thingML.SendAction;
 import org.thingml.xtext.thingML.Thing;
 import org.thingml.xtext.thingML.ThingMLFactory;
@@ -41,6 +54,7 @@ public class AddConstantParameters extends Strategy {
 
 	private static int param = 0;
 	private Map<String, Integer> params = new HashMap<>();
+	private Map<Parameter, Integer> values = new HashMap<>();
 
 	@Override
 	protected void doApply(ThingMLModel model) {
@@ -86,7 +100,8 @@ public class AddConstantParameters extends Strategy {
                 typeref.setType(bt);
                 randomP.setTypeRef(typeref);
                 m.getParameters().add(insertAt, randomP);
-                params.put(((Thing)m.eContainer()).getName() + "_" + m.getName(), insertAt);
+                params.put(((Thing)m.eContainer()).getName() + "_" + m.getName(), insertAt); 
+                values.put(randomP, manager.rnd.nextInt(256));
             }
         }
 		final TreeIterator<EObject> it2 = model.eAllContents();
@@ -97,13 +112,56 @@ public class AddConstantParameters extends Strategy {
             	if (!Manager.diversify(sa.getMessage())) continue;
             	if (!AnnotatedElementHelper.isDefined(sa.getMessage(), "diversify", Strategies.ADD_PARAM.name)) continue;
                 final ByteLiteral b = ThingMLFactory.eINSTANCE.createByteLiteral();
-                b.setByteValue((byte) manager.rnd.nextInt(256));
-                sa.getParameters().add(params.get(((Thing)sa.getMessage().eContainer()).getName() + "_" + sa.getMessage().getName()), b);
+                final int index = params.get(((Thing)sa.getMessage().eContainer()).getName() + "_" + sa.getMessage().getName());
+                final Parameter p = sa.getMessage().getParameters().get(index);                
+                final int v = values.get(p);
+                b.setByteValue((byte) v);
+                sa.getParameters().add(index, b);
             }
         }
         
         for(Thing t : ThingMLHelpers.allThings(model)) {
         	for(Message m : t.getMessages()) {
+        		for(Parameter p : values.keySet()) {
+        			if(m.getParameters().contains(p)) {
+        				final TreeIterator<EObject> it3 = model.eAllContents();
+        		        while (it3.hasNext()) {
+        		            final EObject o = it3.next();
+        		            if (o instanceof Handler) {
+        		            	final Handler h = (Handler) o;
+        		            	if (h.getEvent() != null) {
+        		            		final ReceiveMessage rm = (ReceiveMessage)h.getEvent();
+        		            		if (EcoreUtil.equals(rm.getMessage(), m)) {
+                						Expression guard = h.getGuard();
+                						if (guard == null) {
+                							final BooleanLiteral b = ThingMLFactory.eINSTANCE.createBooleanLiteral();
+                							b.setBoolValue(true);
+                							guard = b;
+                							h.setGuard(guard);
+                						}
+                    					final ExpressionGroup group = ThingMLFactory.eINSTANCE.createExpressionGroup();
+                    					EcoreUtil.replace(guard, group);           					
+                    					final AndExpression and = ThingMLFactory.eINSTANCE.createAndExpression();
+                    					final EqualsExpression equal = ThingMLFactory.eINSTANCE.createEqualsExpression();
+                    					if (rm.getName() == null)
+                    						rm.setName("e");
+                    					final EventReference er = ThingMLFactory.eINSTANCE.createEventReference();
+                    					er.setParameter(p);
+                    					er.setReceiveMsg(rm);
+                    					final ByteLiteral b = ThingMLFactory.eINSTANCE.createByteLiteral();
+                    					b.setByteValue(values.get(p).byteValue());
+                    					equal.setLhs(er);
+                    					equal.setRhs(b);
+                    					and.setLhs(guard);
+                    					and.setRhs(equal);
+                    					group.setTerm(and);
+        		            		}
+        		            	}
+        		            }
+        		        }
+        			}
+        		}
+        		
         		PlatformAnnotation a = null;
             	for(PlatformAnnotation annot : m.getAnnotations()) {
             		if (annot.getName().equals("diversify") && annot.getValue().equals(Strategies.ADD_PARAM.name)) {

@@ -1,0 +1,83 @@
+import "MedicalGW.thingml"
+
+thing MainC includes Main 
+@c_header "#include <time.h>
+#include <stdlib.h>"
+@c_global "struct timespec t;
+typedef struct {
+	unsigned long size,resident,share,text,lib,data,dt;
+} statm_t;"
+{
+	
+	function kill() do
+		println ">done in ", stop-start, "ms!"
+		println ">usedMem:", usedMemory()
+  		`exit(0);`
+  	end
+  		
+	function timestamp() : UInt32 do
+		`clock_gettime(CLOCK_REALTIME, &t);`
+		return `t.tv_sec*1000 + t.tv_nsec/1000000` as UInt32
+	end
+	
+	function usedMemory() : UInt32 do
+		`statm_t result;
+		const char* statm_path = "/proc/self/statm";
+		FILE *f = fopen(statm_path, "r");
+		if (!f) {`
+			return -1	
+		`}
+		if (7 != fscanf(f, "%ld %ld %ld %ld %ld %ld %ld", &result.size, &result.resident, &result.share, &result.text, &result.lib, &result.data, &result.dt)) {`
+			return -1
+		`}`
+		return `result.size` as UInt32
+	end
+	
+}
+
+thing fragment RndC {
+	function rnd() : Byte do
+		return `(rand() % 246) + 5`  as Byte
+	end
+}
+
+thing TelluCloudMockC includes TelluCloudMock, RndC {}
+thing WeightMockupC includes WeightMockup, RndC {}
+thing BloodPressureMockupC includes BloodPressureMockup, RndC {}
+
+configuration MedicalGW
+@docker
+{
+  instance main                   : MainC
+		set main.DEBUG_BIN_ID = 0x00
+  instance log : NoEncryptConsoleLogger
+		set log.ACTIVATE_ON_STARTUP = true
+		set log.HAS_SIGNED_BYTE = true
+  connector main.log=>log.log	  
+  
+  instance tellu : TelluCloudMockC
+  	set tellu.DEBUG_BIN_ID = 0x01
+  connector tellu.log=>log.log	
+  
+  /* Devices */  
+  instance weightmockup : WeightMockupC
+  	set main.DEBUG_BIN_ID = 0x02
+  connector weightmockup.Tellu => tellu.TelluWeight
+  connector weightmockup.log=>log.log	
+  
+  instance bpmockup : BloodPressureMockupC
+  	set main.DEBUG_BIN_ID = 0x03
+  connector bpmockup.Tellu => tellu.TelluBloodPressure
+  connector bpmockup.log=>log.log	
+  
+  
+  connector main.ANDUC352BLE => weightmockup.ANDUC352BLE
+  connector main.ANDUA651BLE => bpmockup.ANDUA651BLE
+  
+  instance timer : TimerPosix
+  	set timer.SOFT_TIMER_PERIOD = 4
+  	
+  connector bpmockup.timer => timer.timer
+  connector weightmockup.timer => timer.timer
+  connector tellu.timer => timer.timer
+}

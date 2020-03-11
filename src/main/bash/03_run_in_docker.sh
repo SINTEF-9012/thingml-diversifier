@@ -80,11 +80,11 @@ for i in `seq 0 $((N-1))`; do
     for k in $(shuf --input-range=0-$(( ${#LANGUAGES[@]} - 1 ))); do
       if [ "${MODES[j]}" == "base" ]; then
         xp ${LANGUAGES[k]} ${MODES[j]} $i
-        xp ${LANGUAGES[k]} encrypt $i
+#        xp ${LANGUAGES[k]} encrypt $i
       else
         xp ${LANGUAGES[k]} ${MODES[j]} $i 1
-        xp ${LANGUAGES[k]} ${MODES[j]} $i 2
-        xp ${LANGUAGES[k]} ${MODES[j]} $i 4
+#        xp ${LANGUAGES[k]} ${MODES[j]} $i 2
+#        xp ${LANGUAGES[k]} ${MODES[j]} $i 4
         xp ${LANGUAGES[k]} ${MODES[j]} $i 8
       fi
     done

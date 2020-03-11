@@ -1,0 +1,17 @@
+import "datatypes.thingml" from stl
+
+enumeration Device as Byte
+{
+  NONE = 0x00
+  ANDUC352BLE = 0x01
+  ANDUA651BLE = 0x02
+}
+
+thing fragment DeviceMsgs
+{
+  message WantsToConnect(d: Device);
+  message AllowedToConnect(d: Device);
+  message FinishedConnection(d: Device, status : UInt8);
+  
+  message Terminate()@diversify "not";
+}

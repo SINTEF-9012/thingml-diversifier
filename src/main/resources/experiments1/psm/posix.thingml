@@ -14,7 +14,6 @@ thing BreakoutGamePosix includes BreakoutGame, RndPosix
 @c_header "#include <time.h>
 #include <stdlib.h>"
 @c_global "struct timespec t;
-
 typedef struct {
 	unsigned long size,resident,share,text,lib,data,dt;
 } statm_t;"

@@ -20,6 +20,7 @@ import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
 
 import no.sintef.thingml.diversifier.strategies.AddConstantParameters;
+import no.sintef.thingml.diversifier.strategies.AddFakeNews;
 import no.sintef.thingml.diversifier.strategies.AddRandomParameters;
 import no.sintef.thingml.diversifier.strategies.BitShiftParameters;
 import no.sintef.thingml.diversifier.strategies.DuplicateMessages;
@@ -44,7 +45,7 @@ public class CLI {
 	@Parameter(names = {"--mode", "-m"}, description = "Mode: static or dynamic diversity")
 	String mode = Mode.STATIC.name().toLowerCase();
 
-	@Parameter(names = {"--number", "-n"}, description = "Number of output models to produce")
+	@Parameter(names = {"--amount", "-a"}, description = "Amount of output models to produce")
 	long number = 1;
 	
 	@Parameter(names = {"--random", "-r"}, description = "Random seed")
@@ -53,8 +54,11 @@ public class CLI {
 	@Parameter(names = {"--debug", "-d"}, description = "Engage debug mode (verbose logs)")
 	boolean debug = false;
 	
+	@Parameter(names = {"--compiler", "-c"}, description = "ThingML compiler")
+	String compiler;
 	
-	
+	@Parameter(names = {"--noisy", "-n"}, description = "In -s <n> mode, allow for noisy mutations (i.e. enables fake-news and add-rnd).")
+	boolean noisy = false;
 
 	@Parameter(names = {"--help", "-h"}, help = true)
 	private boolean help;
@@ -68,7 +72,7 @@ public class CLI {
 		final CLI cli = new CLI();
 		final JCommander jcom = JCommander.newBuilder().addObject(cli).build();
 		jcom.parse(args);
-
+		
 		if (cli.help || cli.input == null || cli.strategies.size() == 0) {
 			printUsage(jcom);
 			System.exit(0);
@@ -112,7 +116,7 @@ public class CLI {
 		
 		for(int i = 0; i < cli.number; i++) {//TODO: See if we can multi-thread this
 			final ThingMLModel copy = EcoreUtil.copy(model);
-			final Manager manager = CLI.init(jcom, 31*i+cli.seed, mode, cli.strategies);
+			final Manager manager = CLI.init(jcom, 31*i+cli.seed, mode, cli.strategies, cli.compiler, cli.noisy);
 			manager.run(copy);				
 			String saveName = FilenameUtils.getBaseName(cli.input) + i + ".thingml";
 			File saveTo = new File(outputDir, saveName);					
@@ -122,23 +126,25 @@ public class CLI {
 
 	}
 	
-	private static Manager init(JCommander jcom, long seed,  Mode mode, List<String> strategies) {
-		final Manager manager = new Manager(seed, mode);
+	private static Manager init(JCommander jcom, long seed,  Mode mode, List<String> strategies, String compiler, boolean isNoisy) {
+		final Manager manager = new Manager(seed, mode, compiler);
 		for(String s : strategies) {
 			if (s.matches("\\d+")) {	try {
 				final int seq = Integer.parseInt(s);						
 				for(int i = 0; i < seq; i++) {
+					/*if (isNoisy)
+						manager.add(new AddFakeNews(manager, 3));
 					manager.add(new ShufflePort(manager));
 					manager.add(new ShuffleParameters(manager));
+					manager.add(new AddConstantParameters(manager, 4));
 					manager.add(new DuplicateMessages(manager, 4));
-					manager.add(new ShuffleMessages(manager));
-					manager.add(new SplitParameters(manager, 3));
-					manager.add(new ShuffleParameters(manager));					
-					manager.add(new OffsetParameters(manager, 3));
-					manager.add(new BitShiftParameters(manager, 3));
-					manager.add(new AddConstantParameters(manager, 2));
-					if (mode == Mode.DYNAMIC)
-						manager.add(new AddRandomParameters(manager, 1));	
+					manager.add(new ShuffleMessages(manager));*/
+					manager.add(new SplitParameters(manager, 5));
+					/*manager.add(new ShuffleParameters(manager));					
+					manager.add(new OffsetParameters(manager, 4));
+					manager.add(new BitShiftParameters(manager, 4));
+					if (isNoisy)
+						manager.add(new AddRandomParameters(manager, 2));*/
 				} } catch (NumberFormatException nfe) {/*all good!*/}
 			} else if (s.equals(Strategies.ADD_PARAM.name)) {
 				manager.add(new AddRandomParameters(manager)); 
@@ -156,6 +162,8 @@ public class CLI {
 				manager.add(new ShuffleMessages(manager)); 
 			} else if (s.equals(Strategies.SHUFF_PARAM.name)) {
 				manager.add(new ShuffleParameters(manager)); 
+			} else if (s.equals(Strategies.FAKE_NEWS.name)) {
+				manager.add(new AddFakeNews(manager)); 
 			} else {
 				printUsage(jcom);
 				throw new UnsupportedOperationException("Diversification strategy " + s + " is not supported.");
@@ -187,8 +195,8 @@ public class CLI {
 		System.out.println("    -i <my-model.thingml>\\ ");
 		System.out.println("    -o <output-dir>\\ ");
 		System.out.println("    -m <mode>\\ ");
-		System.out.println("    -n <number>\\ ");
-		System.out.println("    -s <first-strategy> [-s <other-strageties>]*");
+		System.out.println("    -a <number>\\ ");
+		System.out.println("    -s <first-strategy> [-s <other-strageties>]* or -s <n:int>");
 
 		jcom.usage();
 
