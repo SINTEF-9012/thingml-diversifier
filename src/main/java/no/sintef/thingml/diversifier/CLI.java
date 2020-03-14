@@ -133,18 +133,18 @@ public class CLI {
 				final int seq = Integer.parseInt(s);						
 				for(int i = 0; i < seq; i++) {
 					/*if (isNoisy)
-						manager.add(new AddFakeNews(manager, 3));
+						manager.add(new AddFakeNews(manager, 1));*/
 					manager.add(new ShufflePort(manager));
 					manager.add(new ShuffleParameters(manager));
-					manager.add(new AddConstantParameters(manager, 4));
-					manager.add(new DuplicateMessages(manager, 4));
-					manager.add(new ShuffleMessages(manager));*/
-					manager.add(new SplitParameters(manager, 5));
-					/*manager.add(new ShuffleParameters(manager));					
-					manager.add(new OffsetParameters(manager, 4));
-					manager.add(new BitShiftParameters(manager, 4));
+					//manager.add(new AddConstantParameters(manager, 3));
+					manager.add(new DuplicateMessages(manager, 5));
+					manager.add(new ShuffleMessages(manager));
+					manager.add(new SplitParameters(manager, 3));
+					manager.add(new ShuffleParameters(manager));					
+					manager.add(new OffsetParameters(manager, 5));
+					manager.add(new BitShiftParameters(manager, 5));
 					if (isNoisy)
-						manager.add(new AddRandomParameters(manager, 2));*/
+						manager.add(new AddRandomParameters(manager, 3));
 				} } catch (NumberFormatException nfe) {/*all good!*/}
 			} else if (s.equals(Strategies.ADD_PARAM.name)) {
 				manager.add(new AddRandomParameters(manager)); 

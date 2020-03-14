@@ -9,6 +9,7 @@ import org.thingml.xtext.thingML.ActionBlock;
 import org.thingml.xtext.thingML.ByteLiteral;
 import org.thingml.xtext.thingML.Message;
 import org.thingml.xtext.thingML.Parameter;
+import org.thingml.xtext.thingML.PlatformAnnotation;
 import org.thingml.xtext.thingML.Port;
 import org.thingml.xtext.thingML.RequiredPort;
 import org.thingml.xtext.thingML.SendAction;
@@ -42,7 +43,13 @@ public class AddFakeNews extends Strategy {
 			if (t.getBehaviour() == null) continue;
 			if (!Manager.diversify(t)) continue;
 			if (AnnotatedElementHelper.hasFlag(t, "stl")) continue;
+			if (AnnotatedElementHelper.hasFlag(t, "fakenews")) continue;
 			if (manager.rnd.nextInt(10)>=probability) continue;
+			
+			final PlatformAnnotation a = ThingMLFactory.eINSTANCE.createPlatformAnnotation();
+			a.setName("fakenews");
+			t.getAnnotations().add(a);
+			
 			Message fakeNews = null;
 			RequiredPort znn = null;
 			for(Message msg : t.getMessages()) {

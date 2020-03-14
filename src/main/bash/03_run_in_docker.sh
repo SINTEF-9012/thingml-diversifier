@@ -20,11 +20,9 @@ function run
 {
   LANGUAGE=$1
   MODE=$2
-  i=$3
-  TIMES=$4
+  LOGS=$3
 
-  ((WITH_PERF)) && echo "docker run -v $LOGSDIR/$1/$2:/data --cap-add=ALL --name $1-$2-$3 $1-$2-$3:latest" &&  timeout -k 30s 120s docker run -v $LOGSDIR/$1/$2:/data --cap-add=ALL --name $1-$2-$3 $1-$2-$3:latest > $LOGSDIR/$1/$2/$4$1$3.log
-  ((!WITH_PERF)) && _docker run --rm $1-$2:latest > $LOGSDIR/$LANGUAGE/diversify$TIMES/$MODE/$i.log
+  _docker2 run --rm $1-$2:latest > $LOGS
 }
 
 #$1: language
@@ -43,12 +41,11 @@ function perform
 {
   LANGUAGE=$2
   MODE=$3
-  i=$4
-  TIMES=$5
+  LOGS=$4
 
   cd $1
   build $LANGUAGE $MODE
-  run $LANGUAGE $MODE $i $TIMES
+  run $LANGUAGE $MODE $LOGS
   clean2 $LANGUAGE $MODE
 }
 
@@ -64,11 +61,16 @@ function xp
 
   echo "-- RUNNING MODEL $i [$LANGUAGE] in $MODE mode--"
   if [ "$MODE" == "base" ]; then
-    perform $PLATFORMDIR/$LANGUAGE/$MODE $LANGUAGE $MODE $i $TIMES
+    perform $PLATFORMDIR/$LANGUAGE/$MODE $LANGUAGE $MODE $LOGSDIR/$LANGUAGE/base/$i.log
   elif [ "$MODE" == "encrypt" ]; then
-    perform $PLATFORMDIR/$LANGUAGE/$MODE/$MODE/$LANGUAGE$i $LANGUAGE $MODE $i $TIMES
+    for ENCRYPTMODE in ${ENCRYPTMODES[@]}; do
+  	  for ENCRYPTSIZE in ${ENCRYPTSIZES[@]}; do
+  	    mkdir -p $LOGSDIR/$LANGUAGE/$ENCRYPTMODE$ENCRYPTSIZE/
+        perform $PLATFORMDIR/$LANGUAGE/$ENCRYPTMODE$ENCRYPTSIZE/$LANGUAGE$i $LANGUAGE $MODE $LOGSDIR/$LANGUAGE/$ENCRYPTMODE$ENCRYPTSIZE/$i.log
+      done
+    done
   else
-    perform $PLATFORMDIR/$LANGUAGE/diversify$TIMES/$MODE/$LANGUAGE$i $LANGUAGE $MODE $i $TIMES
+    perform $PLATFORMDIR/$LANGUAGE/diversify$TIMES/$MODE/$LANGUAGE$i $LANGUAGE $MODE $LOGSDIR/$LANGUAGE/diversify$TIMES/$MODE/$i.log
   fi
 }
 
@@ -80,11 +82,11 @@ for i in `seq 0 $((N-1))`; do
     for k in $(shuf --input-range=0-$(( ${#LANGUAGES[@]} - 1 ))); do
       if [ "${MODES[j]}" == "base" ]; then
         xp ${LANGUAGES[k]} ${MODES[j]} $i
-#        xp ${LANGUAGES[k]} encrypt $i
+        xp ${LANGUAGES[k]} encrypt $i
       else
         xp ${LANGUAGES[k]} ${MODES[j]} $i 1
-#        xp ${LANGUAGES[k]} ${MODES[j]} $i 2
-#        xp ${LANGUAGES[k]} ${MODES[j]} $i 4
+        xp ${LANGUAGES[k]} ${MODES[j]} $i 2
+        xp ${LANGUAGES[k]} ${MODES[j]} $i 4
         xp ${LANGUAGES[k]} ${MODES[j]} $i 8
       fi
     done

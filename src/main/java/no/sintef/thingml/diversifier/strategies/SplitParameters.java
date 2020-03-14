@@ -10,8 +10,10 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.thingml.compilers.java.JavaHelper;
 import org.thingml.xtext.constraints.ThingMLHelpers;
+import org.thingml.xtext.constraints.Types;
 import org.thingml.xtext.helpers.ActionHelper;
 import org.thingml.xtext.helpers.AnnotatedElementHelper;
+import org.thingml.xtext.helpers.TyperHelper;
 import org.thingml.xtext.thingML.ActionBlock;
 import org.thingml.xtext.thingML.ByteLiteral;
 import org.thingml.xtext.thingML.Enumeration;
@@ -34,6 +36,8 @@ import org.thingml.xtext.thingML.SendAction;
 import org.thingml.xtext.thingML.Thing;
 import org.thingml.xtext.thingML.ThingMLFactory;
 import org.thingml.xtext.thingML.ThingMLModel;
+import org.thingml.xtext.thingML.TimesExpression;
+import org.thingml.xtext.thingML.TypeRef;
 
 import no.sintef.thingml.diversifier.Manager;
 
@@ -68,8 +72,11 @@ public class SplitParameters extends Strategy {
 					int prob = probability;
 					//if (Helper.getSize(p.getTypeRef().getType())<2) continue;
 					if (AnnotatedElementHelper.hasFlag(p, "split")) continue;
-					if (p.getTypeRef().getType() instanceof Enumeration) continue;
+                    final TypeRef type = TyperHelper.getBroadType(p.getTypeRef());
+					if (!(p.getTypeRef().getType() instanceof PrimitiveType) || !TyperHelper.isA(type, Types.INTEGER_TYPEREF)) continue;
+					//if (p.getTypeRef().getType() instanceof Enumeration) continue;
 					if (manager.rnd.nextInt(10)<prob) {
+						if (debug) System.out.println("Splitting parameter " + p.getName() + " of message " + msg.getName() + " in thing " + thing.getName());
 						if (!AnnotatedElementHelper.hasFlag(p, "split")) {
 		                	final PlatformAnnotation annot = ThingMLFactory.eINSTANCE.createPlatformAnnotation();
 		                	annot.setName("split");
@@ -107,14 +114,28 @@ public class SplitParameters extends Strategy {
 				rndVar.setTypeRef(EcoreUtil.copy(p.getTypeRef()));
 				block.getActions().add(rndVar);	
 				final Function rnd = Manager.findRandom(ThingMLHelpers.findContainingThing(block));
+				final long size = Helper.getSize(p.getTypeRef().getType());
                 if (rnd != null) {
-                    final FunctionCallExpression call = ThingMLFactory.eINSTANCE.createFunctionCallExpression();
-                    call.setFunction(rnd);
-                    rndVar.setInit(call);               
-                } else {
-    				final long size = Helper.getSize(p.getTypeRef().getType());	
+                	/*if (size == 1) {
+                		final FunctionCallExpression call = ThingMLFactory.eINSTANCE.createFunctionCallExpression();
+                		call.setFunction(rnd);
+                		rndVar.setInit(call);
+                	} else {*/
+                		Expression init = ThingMLFactory.eINSTANCE.createIntegerLiteral();
+                		((IntegerLiteral)init).setIntValue(1);
+                		for(int i = 0; i < size; i++) {
+                			final TimesExpression mult = ThingMLFactory.eINSTANCE.createTimesExpression();
+                			final FunctionCallExpression call = ThingMLFactory.eINSTANCE.createFunctionCallExpression();
+                    		call.setFunction(rnd);
+                    		mult.setLhs(init);
+                    		mult.setRhs(call);
+                    		init = mult;
+                		}
+                		rndVar.setInit(init);
+                	//}
+                } else {    					
     				final IntegerLiteral i = ThingMLFactory.eINSTANCE.createIntegerLiteral();
-    				final int offset = Math.max(1, manager.rnd.nextInt((int)Math.round((Math.pow(2, 8*size-4)))));
+    				final int offset = Math.max((int)Math.round(Math.pow(2, 8*size-4)), manager.rnd.nextInt((int)Math.round((Math.pow(2, 8*size-2)))));
     				i.setIntValue(offset);
     				rndVar.setInit(i);
                 }				
@@ -148,7 +169,7 @@ public class SplitParameters extends Strategy {
 					EcoreUtil.replace(er, group);
         		final MinusExpression minus = ThingMLFactory.eINSTANCE.createMinusExpression();
         		minus.setLhs(er);
-        		final EventReference newEr = EcoreUtil.copy(er);         				
+        		final EventReference newEr = EcoreUtil.copy(er);
         		newEr.setParameter(mappings.get(er.getParameter()));
         		minus.setRhs(newEr);
         		group.setTerm(minus);

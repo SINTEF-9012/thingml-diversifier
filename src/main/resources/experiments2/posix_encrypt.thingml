@@ -49,7 +49,7 @@ configuration MedicalGW
 @docker
 {
   instance main                   : MainC
-  instance log : NoEncryptConsoleLogger
+  instance log : CEncrypt
 		set log.ACTIVATE_ON_STARTUP = true
 		set log.HAS_SIGNED_BYTE = true
   connector main.log=>log.log	  

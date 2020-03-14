@@ -45,7 +45,7 @@ public class OffsetParameters extends Strategy {
 
 	@Override
 	protected void doApply(ThingMLModel model) {
-		final Map<Parameter, Integer> mapping = new HashMap<Parameter, Integer>();
+		final Map<Parameter, Long> mapping = new HashMap<Parameter, Long>();
 		final TreeIterator<EObject> it = model.eAllContents();
         while (it.hasNext()) {
             final EObject o = it.next();
@@ -65,14 +65,14 @@ public class OffsetParameters extends Strategy {
                         	if (AnnotatedElementHelper.hasFlag(param, "noise")) continue; //This is a random parameter, no point in offsetting it
                             final TypeRef type = TyperHelper.getBroadType(param.getTypeRef());
                             index++;
-                            if (!(type.getType() instanceof PrimitiveType) || !TyperHelper.isA(type, Types.INTEGER_TYPEREF))
+                            if (!(param.getTypeRef().getType() instanceof PrimitiveType) || !TyperHelper.isA(type, Types.INTEGER_TYPEREF))
                             	continue;
                             if (AnnotatedElementHelper.hasFlag(param, "offset")) {
                             	continue;
                             }
                             int prob = probability;
                             if (AnnotatedElementHelper.hasFlag(param, "shift")) {
-                            	prob = Math.max(1, probability - 1);
+                            	prob = 1;
                             }
                             if (manager.rnd.nextInt(10)<prob)
                             	continue;
@@ -104,8 +104,8 @@ public class OffsetParameters extends Strategy {
                             final PlusExpression plus = ThingMLFactory.eINSTANCE.createPlusExpression();
                             plus.setLhs(EcoreUtil.copy(p));
                             final IntegerLiteral i = ThingMLFactory.eINSTANCE.createIntegerLiteral();
-                            final long size = Helper.getSize(param.getTypeRef().getType());
-                            final int offset = Math.max(1, manager.rnd.nextInt((int)(Math.pow(2, 8*size-4))));
+                            final int size = (int) Helper.getSize(param.getTypeRef().getType());
+                            final long offset = (long) (Math.pow(2, 8*size-2 ) + manager.rnd.nextInt((int)(Math.pow(2, 8*size-1 ))));
                             i.setIntValue(offset);
                             plus.setRhs(i);
                             group.setTerm(plus);

@@ -3,7 +3,7 @@ import "lib/devices/Device_AND_UA651BLE.thingml"
 
 import "timer.thingml" from stl
 
-import "log.thingml"
+import "./lib/aes/aes.thingml"
 
 thing fragment Simulation {
 	property counter : UInt16 = 0
@@ -22,12 +22,15 @@ thing fragment Main includes DeviceMsgs, WithBinaryLog
 @stdout_sync "true"
 {
 
+  set DEBUG_BIN_ID = 0
+
   property start : UInt32
   property stop : UInt32
 
   abstract function kill() @monitor "not" 
   abstract function timestamp() : UInt32 @monitor "not" 
   abstract function usedMemory() : UInt32 @monitor "not"
+  abstract function rnd() : Byte @monitor "not"
 
   required port ANDUC352BLE
   {
@@ -44,8 +47,8 @@ thing fragment Main includes DeviceMsgs, WithBinaryLog
   statechart States init Scan
   {
     /* -------------------- Main logic -------------------- */
-      property WantsToConnect : Device = Device:NONE
-      property ConnectedTo : Device = Device:NONE
+      property WantsToConnect : Byte = 0
+      property ConnectedTo : Byte = 0
       
       property terminated : Boolean = false
       
@@ -69,56 +72,56 @@ thing fragment Main includes DeviceMsgs, WithBinaryLog
       state Scan
       {
         on entry do
-          //WantsToConnect = Device:NONE
-          ConnectedTo = Device:NONE
+          //WantsToConnect = 0
+          ConnectedTo = 0
         end
         
         internal event ANDUC352BLE?WantsToConnect action do
-          if (WantsToConnect == Device:NONE) WantsToConnect = Device:ANDUC352BLE
+          if (WantsToConnect == 0) WantsToConnect = 2
         end
         
         internal event ANDUA651BLE?WantsToConnect action do
-          if (WantsToConnect == Device:NONE) WantsToConnect = Device:ANDUA651BLE
+          if (WantsToConnect == 0) WantsToConnect = 1
         end
         
         transition -> ANDUC352BLE
-        guard WantsToConnect == Device:ANDUC352BLE
+        guard WantsToConnect == 2
         
         transition -> ANDUA651BLE
-        guard WantsToConnect == Device:ANDUA651BLE
+        guard WantsToConnect == 1
         
       }
       
       state ANDUC352BLE {
       	on entry do
-      		ConnectedTo = Device:ANDUC352BLE
-      		WantsToConnect = Device:NONE
-      		ANDUC352BLE!AllowedToConnect(Device:ANDUC352BLE)
+      		ConnectedTo = 2
+      		WantsToConnect = 0
+      		ANDUC352BLE!AllowedToConnect(2)
 
-      		readonly var log : Byte [ 5 ] = { LogType:custom , DEBUG_BIN_ID , 0x00 , 0x0B , Device:ANDUC352BLE}
+      		readonly var log : Byte [ 5 ] = { LogType:custom , DEBUG_BIN_ID , 0x00 , 0x0B , 2}
 			log!log(log, 5)
       	end
       	
       	//We'll give priority to the other device, next time
       	internal event ANDUA651BLE?WantsToConnect
-      	action WantsToConnect = Device:ANDUA651BLE
+      	action WantsToConnect = 1
       	
       	transition -> Scan event ANDUC352BLE?FinishedConnection 
       }
       
       state ANDUA651BLE {
       	on entry do
-      		ConnectedTo = Device:ANDUA651BLE
-      		WantsToConnect = Device:NONE
-      		ANDUA651BLE!AllowedToConnect(Device:ANDUA651BLE)
+      		ConnectedTo = 1
+      		WantsToConnect = 0
+      		ANDUA651BLE!AllowedToConnect(1)
       		
-      		readonly var log : Byte [ 5 ] = { LogType:custom , DEBUG_BIN_ID , 0x01 , 0x0B , Device:ANDUA651BLE }
+      		readonly var log : Byte [ 5 ] = { LogType:custom , DEBUG_BIN_ID , 0x01 , 0x0B , 1 }
 			log!log(log, 5)
       	end
       	
       	//We'll give priority to the other device, next time
       	internal event ANDUC352BLE?WantsToConnect
-      	action WantsToConnect = Device:ANDUC352BLE
+      	action WantsToConnect = 2
       	
       	transition -> Scan event ANDUA651BLE?FinishedConnection
       }
@@ -130,6 +133,8 @@ thing fragment WeightMockup includes WeightMsgs, DeviceMsgs, TimerMsgs, WithBina
 @monitor "not-discarded"
 @monitor "not-handled"
 {
+  set DEBUG_BIN_ID = 1
+	
   readonly property weight : UInt32[6] = {70250, 71000, 71250, 71125, 70750, 70500}
   
   required port Tellu
@@ -152,7 +157,7 @@ thing fragment WeightMockup includes WeightMsgs, DeviceMsgs, TimerMsgs, WithBina
   statechart SC init INIT {
   	state INIT {
   		on entry do
-  			ANDUC352BLE!WantsToConnect(Device:ANDUC352BLE)
+  			ANDUC352BLE!WantsToConnect(2)
   			timer!timer_start(0, 1*resolution) 
   		end 
   		
@@ -178,9 +183,9 @@ thing fragment WeightMockup includes WeightMsgs, DeviceMsgs, TimerMsgs, WithBina
   	state Measuring {
   		on entry do
   			//println "Measuring weight"
-  			Tellu!TelluCloudWeightScale(Device:ANDUC352BLE, counter, weight[counter%6]) //FIXME: vary the weight
+  			Tellu!TelluCloudWeightScale(2, counter, weight[counter%6]) //FIXME: vary the weight
   			
-  			readonly var log : Byte [ 13 ] = { LogType:custom , DEBUG_BIN_ID , 0x02 , 0x00 , Device:ANDUC352BLE , (`((` & counter & ` >> 24) & 0xFF)`) as Byte , (`((` & counter & ` >> 16) & 0xFF)`) as Byte , (`((` & counter & ` >> 8) & 0xFF)`) as Byte , (`((` & counter & ` >> 0) & 0xFF)`) as Byte , (`((` & weight[counter%6] & ` >> 24) & 0xFF)`) as Byte , (`((` & weight[counter%6] & ` >> 16) & 0xFF)`) as Byte , (`((` & weight[counter%6] & ` >> 8) & 0xFF)`) as Byte , (`((` & weight[counter%6] & ` >> 0) & 0xFF)`) as Byte }
+  			readonly var log : Byte [ 13 ] = { LogType:custom , DEBUG_BIN_ID , 0x02 , 0x00 , 2 , (`((` & counter & ` >> 24) & 0xFF)`) as Byte , (`((` & counter & ` >> 16) & 0xFF)`) as Byte , (`((` & counter & ` >> 8) & 0xFF)`) as Byte , (`((` & counter & ` >> 0) & 0xFF)`) as Byte , (`((` & weight[counter%6] & ` >> 24) & 0xFF)`) as Byte , (`((` & weight[counter%6] & ` >> 16) & 0xFF)`) as Byte , (`((` & weight[counter%6] & ` >> 8) & 0xFF)`) as Byte , (`((` & weight[counter%6] & ` >> 0) & 0xFF)`) as Byte }
 			log!log(log, 13)
   			
   			counter = counter + 1
@@ -190,9 +195,9 @@ thing fragment WeightMockup includes WeightMsgs, DeviceMsgs, TimerMsgs, WithBina
   		transition -> Terminated
   		guard counter == MAX
   		action do
-  			ANDUC352BLE!FinishedConnection(Device:ANDUC352BLE, 0)
+  			ANDUC352BLE!FinishedConnection(2, 0)
   			
-  			readonly var log : Byte [ 6 ] = { LogType:custom , DEBUG_BIN_ID , 0x03 , 0x0C , Device:ANDUC352BLE , 0 }
+  			readonly var log : Byte [ 6 ] = { LogType:custom , DEBUG_BIN_ID , 0x03 , 0x0C , 2 , 0 }
 			log!log(log, 6)
   		end
   		
@@ -205,9 +210,9 @@ thing fragment WeightMockup includes WeightMsgs, DeviceMsgs, TimerMsgs, WithBina
   		event t: timer?timer_timeout
   		guard t.id == 0 and retries == 0
   		action do
-  			ANDUC352BLE!FinishedConnection(Device:ANDUC352BLE, 1)
+  			ANDUC352BLE!FinishedConnection(2, 1)
   			
-  			readonly var log : Byte [ 6 ] = { LogType:custom , DEBUG_BIN_ID , 0x03 , 0x0C , Device:ANDUC352BLE, 1}
+  			readonly var log : Byte [ 6 ] = { LogType:custom , DEBUG_BIN_ID , 0x03 , 0x0C , 2, 1}
 			log!log(log, 6)
   			
   			retries = 2
@@ -217,9 +222,9 @@ thing fragment WeightMockup includes WeightMsgs, DeviceMsgs, TimerMsgs, WithBina
   		event Tellu?MqttConfirmWeightMeasurement
   		action do
   			timer!timer_cancel(0)
-  			ANDUC352BLE!FinishedConnection(Device:ANDUC352BLE, 0)
+  			ANDUC352BLE!FinishedConnection(2, 0)
   			
-  			readonly var log : Byte [ 6 ] = { LogType:custom , DEBUG_BIN_ID , 0x03 , 0x0C , Device:ANDUC352BLE , 0 }
+  			readonly var log : Byte [ 6 ] = { LogType:custom , DEBUG_BIN_ID , 0x03 , 0x0C , 2 , 0 }
 			log!log(log, 6)
   		end
   	}
@@ -246,6 +251,9 @@ thing fragment BloodPressureMockup includes BPMsgs, DeviceMsgs, TimerMsgs, WithB
 @monitor "not-discarded"
 @monitor "not-handled"
 {
+	
+  set DEBUG_BIN_ID = 2
+  
   readonly property systolic : UInt8[3] = {7,8,9}
   readonly property diastolic : UInt8[4] = {9,10,11,12}
   readonly property mean : UInt8[2] = {9,10}
@@ -272,7 +280,7 @@ thing fragment BloodPressureMockup includes BPMsgs, DeviceMsgs, TimerMsgs, WithB
   statechart SC init INIT {
   	state INIT {
   		on entry do
-  			ANDUA651BLE!WantsToConnect(Device:ANDUA651BLE)
+  			ANDUA651BLE!WantsToConnect(1)
   			timer!timer_start(1, 1*resolution)
   		end 
   		
@@ -300,14 +308,14 @@ thing fragment BloodPressureMockup includes BPMsgs, DeviceMsgs, TimerMsgs, WithB
   		
   		on entry do
   			//println "Measuring heart"
-  			Tellu!TelluCloudBloodPressure(Device:ANDUA651BLE, counter, diastolic[counter%4], mean[counter%2], systolic[counter%3])
+  			Tellu!TelluCloudBloodPressure(1, counter, diastolic[counter%4], mean[counter%2], systolic[counter%3])
   			
-  			readonly var log : Byte [ 12 ] = { LogType:custom , DEBUG_BIN_ID , 0x04 , 0x03 , Device:ANDUA651BLE , (`((` & counter & ` >> 24) & 0xFF)`) as Byte , (`((` & counter & ` >> 16) & 0xFF)`) as Byte , (`((` & counter & ` >> 8) & 0xFF)`) as Byte , (`((` & counter & ` >> 0) & 0xFF)`) as Byte , diastolic[counter%4], mean[counter%2], systolic[counter%3]}
+  			readonly var log : Byte [ 12 ] = { LogType:custom , DEBUG_BIN_ID , 0x04 , 0x03 , 1 , (`((` & counter & ` >> 24) & 0xFF)`) as Byte , (`((` & counter & ` >> 16) & 0xFF)`) as Byte , (`((` & counter & ` >> 8) & 0xFF)`) as Byte , (`((` & counter & ` >> 0) & 0xFF)`) as Byte , diastolic[counter%4], mean[counter%2], systolic[counter%3]}
 			log!log(log, 12)
   			
-  			Tellu!TelluCloudBPM(Device:ANDUA651BLE, counter, bpm[counter%5])
+  			Tellu!TelluCloudBPM(1, counter, bpm[counter%5])
   			
-  			readonly var log2 : Byte [ 10 ] = { LogType:custom , DEBUG_BIN_ID , 0x04 , 0x04 , Device:ANDUA651BLE, (`((` & counter & ` >> 24) & 0xFF)`) as Byte , (`((` & counter & ` >> 16) & 0xFF)`) as Byte , (`((` & counter & ` >> 8) & 0xFF)`) as Byte , (`((` & counter & ` >> 0) & 0xFF)`) as Byte , bpm[counter%5]}
+  			readonly var log2 : Byte [ 10 ] = { LogType:custom , DEBUG_BIN_ID , 0x04 , 0x04 , 1, (`((` & counter & ` >> 24) & 0xFF)`) as Byte , (`((` & counter & ` >> 16) & 0xFF)`) as Byte , (`((` & counter & ` >> 8) & 0xFF)`) as Byte , (`((` & counter & ` >> 0) & 0xFF)`) as Byte , bpm[counter%5]}
 			log!log(log2, 10)
   			
   			counter = counter + 1
@@ -317,9 +325,9 @@ thing fragment BloodPressureMockup includes BPMsgs, DeviceMsgs, TimerMsgs, WithB
   		transition -> Terminated
   		guard counter == MAX
   		action do
-  			ANDUA651BLE!FinishedConnection(Device:ANDUA651BLE, 0)
+  			ANDUA651BLE!FinishedConnection(1, 0)
   			
-  			readonly var log : Byte [ 6 ] = { LogType:custom , DEBUG_BIN_ID , 0x05 , 0x0C , Device:ANDUA651BLE, 0}
+  			readonly var log : Byte [ 6 ] = { LogType:custom , DEBUG_BIN_ID , 0x05 , 0x0C , 1, 0}
 			log!log(log, 6)
   		end
   		
@@ -332,9 +340,9 @@ thing fragment BloodPressureMockup includes BPMsgs, DeviceMsgs, TimerMsgs, WithB
   		event t: timer?timer_timeout
   		guard t.id == 1 and retries == 0
   		action do
-  			ANDUA651BLE!FinishedConnection(Device:ANDUA651BLE, 1)
+  			ANDUA651BLE!FinishedConnection(1, 1)
   			
-  			readonly var log : Byte [ 6 ] = { LogType:custom , DEBUG_BIN_ID , 0x05 , 0x0C , Device:ANDUA651BLE, 1}
+  			readonly var log : Byte [ 6 ] = { LogType:custom , DEBUG_BIN_ID , 0x05 , 0x0C , 1, 1}
 			log!log(log, 6)
   			
   			retries = 2
@@ -344,9 +352,9 @@ thing fragment BloodPressureMockup includes BPMsgs, DeviceMsgs, TimerMsgs, WithB
   		event Tellu?MqttConfirmBloodPressureMeasurement
   		action do
   			timer!timer_cancel(1)
-  			ANDUA651BLE!FinishedConnection(Device:ANDUA651BLE, 0)
+  			ANDUA651BLE!FinishedConnection(1, 0)
   			
-  			readonly var log : Byte [ 6 ] = { LogType:custom , DEBUG_BIN_ID , 0x05 , 0x0C , Device:ANDUA651BLE , 0 }
+  			readonly var log : Byte [ 6 ] = { LogType:custom , DEBUG_BIN_ID , 0x05 , 0x0C , 1 , 0 }
 			log!log(log, 6)
   		end
   	}
@@ -375,6 +383,8 @@ thing fragment TelluCloudMock includes BPMsgs, WeightMsgs, TimerMsgs, WithBinary
 @monitor "not-handled"
 {
 	
+  set DEBUG_BIN_ID = 3
+  
   property weightTerminated : Boolean = false
   property heartTerminated : Boolean = false
   
@@ -398,14 +408,14 @@ thing fragment TelluCloudMock includes BPMsgs, WeightMsgs, TimerMsgs, WithBinary
   		on entry timer!timer_start(3, 1*resolution)
   		
   		on exit do
-  			TelluWeight!MqttRequestWeightMeasurement(Device:ANDUC352BLE)
+  			TelluWeight!MqttRequestWeightMeasurement(2)
   			
-  			readonly var log : Byte [ 5 ] = { LogType:custom , DEBUG_BIN_ID , 0x07 , 0x01 , Device:ANDUC352BLE }
+  			readonly var log : Byte [ 5 ] = { LogType:custom , DEBUG_BIN_ID , 0x07 , 0x01 , 2 }
 			log!log(log, 5)
   			
-  			TelluBloodPressure!MqttRequestBloodPressureMeasurement(Device:ANDUA651BLE)
+  			TelluBloodPressure!MqttRequestBloodPressureMeasurement(1)
   			
-  			readonly var log2 : Byte [ 5 ] = { LogType:custom , DEBUG_BIN_ID , 0x06 , 0x05 , Device:ANDUA651BLE }
+  			readonly var log2 : Byte [ 5 ] = { LogType:custom , DEBUG_BIN_ID , 0x06 , 0x05 , 1 }
 			log!log(log2, 5)
   		end
   		

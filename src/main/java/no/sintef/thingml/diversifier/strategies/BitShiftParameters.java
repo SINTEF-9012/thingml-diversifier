@@ -63,14 +63,14 @@ public class BitShiftParameters extends Strategy {
                             //if (Helper.getSize(param.getTypeRef().getType())<2) continue; //FIXME: this is just a workaround for Java
                         	final TypeRef type = TyperHelper.getBroadType(param.getTypeRef());
                             index++;
-                            if (!(type.getType() instanceof PrimitiveType) || !TyperHelper.isA(type, Types.INTEGER_TYPEREF))
+                            if (!(param.getTypeRef().getType() instanceof PrimitiveType) || !TyperHelper.isA(type, Types.INTEGER_TYPEREF))
                             	continue;
                             if (AnnotatedElementHelper.hasFlag(param, "shift")) {
                             	continue;
                             }
                             int prob = probability;
                             if (AnnotatedElementHelper.hasFlag(param, "offset")) {
-                            	prob = Math.max(1, probability - 1);
+                            	prob = 1;
                             }
                             if (manager.rnd.nextInt(10)<prob)
                             	continue;
@@ -98,8 +98,8 @@ public class BitShiftParameters extends Strategy {
             				expr.getSegments().add(EcoreUtil.copy(p));            				
             				
             				final ExternExpression expr2 = ThingMLFactory.eINSTANCE.createExternExpression();
-            				final long size = Helper.getSize(param.getTypeRef().getType());
-            				final int shift = Math.max(1, manager.rnd.nextInt((int)(7*size)));
+            				final int size = (int) Helper.getSize(param.getTypeRef().getType());
+            				final int shift = Math.max(4*size, manager.rnd.nextInt((int)(8*size)));
             				if ("java".equals(manager.compiler)) expr2.setExpression(") << " + shift + ") | ((" + JavaHelper.getJavaType(param.getTypeRef().getType(), param.getTypeRef().isIsArray()) + ")(");
             				else expr2.setExpression(") << " + shift + ") | ((");
             				expr2.getSegments().add(EcoreUtil.copy(p));

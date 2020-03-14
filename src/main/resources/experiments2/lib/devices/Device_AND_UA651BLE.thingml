@@ -1,8 +1,8 @@
 import "DeviceMessages.thingml"
 
 thing fragment BPMsgs {
-  message TelluCloudBloodPressure(d: Device, observationTime : UInt32, health_pressure_diastolic : UInt8, health_pressure_mean : UInt8, health_pressure_systolic : UInt8);
-  message TelluCloudBPM(d: Device, observationTime : UInt32, health_pulseRate : UInt8);
-  message MqttRequestBloodPressureMeasurement(d: Device);
-  message MqttConfirmBloodPressureMeasurement(d: Device, observationTime : UInt32);
+  message TelluCloudBloodPressure(d: Byte, observationTime : UInt32, health_pressure_diastolic : UInt8, health_pressure_mean : UInt8, health_pressure_systolic : UInt8);
+  message TelluCloudBPM(d: Byte, observationTime : UInt32, health_pulseRate : UInt8);
+  message MqttRequestBloodPressureMeasurement(d: Byte);
+  message MqttConfirmBloodPressureMeasurement(d: Byte, observationTime : UInt32);
 }

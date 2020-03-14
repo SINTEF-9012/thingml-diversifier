@@ -1,0 +1,126 @@
+import "logbinary.thingml" from stl
+
+
+thing fragment ConsoleLogger2 includes Logger @diversify "not" @monitor "not"/* @stdout_sync "true" */ {
+	
+	abstract function encrypt(payload : Byte[], size : UInt8)
+	
+	function do_log(payload : Byte[], size : UInt8) @monitor "not" do
+		encrypt(payload, size)		
+	end
+	
+}
+
+thing NoEncryptConsoleLogger includes ConsoleLogger2 
+@monitor "not"
+@diversify "not" 
+@stdout_sync "true" {
+	function encrypt(payload : Byte[], size : UInt8) do
+		var offset : Integer = 3
+		if (payload[0] == LogType:custom) offset = 2
+		readonly var realSize : Integer = size - offset
+		var realPayload : Byte[realSize]
+		for(v : Byte, i : Integer in payload) if (i>offset-1) realPayload[i-offset] = v
+		if (payload[0] == LogType:custom) print "@", payload[1], "["
+		else print "#", payload[1], "["
+		for(w : Byte in realPayload) do
+			print w as UInt8, ","
+		end					
+		println "]"
+	end
+}
+
+enumeration AESKeySize as Byte {//in byte
+	AES128 = 16
+	AES192 = 24
+	AES256 = 32
+}
+
+enumeration AESAlgorithm as Byte {
+	ECB = 0
+	CTR = 1
+	CBC = 2
+}
+
+//See https://github.com/kokke/tiny-AES-c
+thing CEncrypt includes ConsoleLogger2
+@add_c_modules "aes"
+@monitor "not"
+@diversify "not" 
+@c_header `
+#define CBC 1
+#define CTR 1
+#define ECB 1
+
+#include "aes.h"
+`
+@c_global 
+`
+struct AES_ctx ctx;
+`
+{	
+	readonly property BLOCK_SIZE : UInt8 = 16
+	
+	readonly property KEY_SIZE : AESKeySize = 16
+	readonly property ALGO : AESAlgorithm = AESAlgorithm:CBC
+	
+	readonly property STRING_KEY : String = "abcdefghijlkmnop"
+	readonly property STRING_IV : String =  "0123456789012345"
+	
+	property KEY : Byte[KEY_SIZE]
+	property IV : Byte[BLOCK_SIZE]
+	
+	property isInit : Boolean = false
+	
+	function rnd() : Byte do
+		return `(rand() % 256)`  as Byte
+	end
+	
+	function encrypt(payload : Byte[], size : UInt8) do
+	  var offset : Integer = 3
+	  if (payload[0] == LogType:custom) offset = 2
+	  
+	  var temp_size : UInt8 = BLOCK_SIZE
+	  while (temp_size < size) temp_size = temp_size + BLOCK_SIZE	  
+	  readonly var in_size : UInt8 = temp_size
+	  var in_ : Byte[in_size]
+	  
+	  var i : UInt8 = 0
+	  while(i < in_size) do
+	  	in_[i] = rnd()
+	  	i = i + 1
+	  end
+	  for(v : Byte, i : Integer in payload) if (i>offset-1) in_[i-offset] = v
+	  	
+		
+	  if (payload[0] == LogType:custom) do
+			print "@["
+			for(w : Byte, i : Integer in payload) do
+				if (i>offset-1) print w as UInt8, ","
+			end					
+			println "]"	  
+			
+			if (not isInit) do
+				`strcpy(` & KEY & `, ` & STRING_KEY & `);`
+				`strcpy(` & IV & `, ` & STRING_IV & `);`
+				`AES_init_ctx_iv(&ctx, ` & KEY & `, ` & IV & `);`
+				isInit = true
+			end
+									
+			if (ALGO == AESAlgorithm:CBC) `AES_CBC_encrypt_buffer(&ctx, ` & in_ & `, ` & in_size & `);`							  				
+			else if (ALGO == AESAlgorithm:CTR) `AES_CTR_xcrypt_buffer(&ctx, ` & in_ & `, ` & in_size & `);`
+			else if (ALGO == AESAlgorithm:ECB) `AES_ECB_encrypt(&ctx, ` & in_ & `);`
+    		
+    		print "#", payload[1], "["
+			for(w : Byte in in_) do
+				print w as UInt8, ","
+			end					
+			println "]"
+			
+			//Since ThingML messages are both encrypted and decrypted, we also decrypt here, for fair comparison of execution time, RAM usage, etc
+			if (ALGO == AESAlgorithm:CBC) `AES_CBC_decrypt_buffer(&ctx, ` & in_ & `, ` & in_size & `);`							  				
+			else if (ALGO == AESAlgorithm:CTR) `AES_CTR_xcrypt_buffer(&ctx, ` & in_ & `, ` & in_size & `);`
+			else if (ALGO == AESAlgorithm:ECB) `AES_ECB_decrypt(&ctx, ` & in_ & `);`
+      end	  
+	end
+}
